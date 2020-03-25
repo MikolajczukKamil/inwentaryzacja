@@ -1,3 +1,4 @@
+
 class Podawak {
     constructor(wartosc) {
       this.wartosc = wartosc
@@ -9,6 +10,10 @@ class Podawak {
   }
   
 
+
+const tablica=[0,1,2,3];
+
 function Iloczyn(a,b){
-    return a.Podaj()*b.Podaj();
+    return tablica[a.Podaj()]*tablica[b.Podaj()];
+
 }
