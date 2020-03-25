@@ -82,7 +82,18 @@
 - Tu mamy 2 opcje możemy zrobić to lokalnie lub przez interfejs webowy gita, dopuszczam obie opcje
 - Wykonujemy merge brancha imie-nazwisko-nowa-suma do brancha imie-nazwisko-zadanie2
 - Musimy dostać wtedy informację o konflikcie w lini z obliczeniem sumy
-- rozwiązujemy ten konflikt powiedzmy łącząc te rozwiązania czyli mamy zrobić sumę elementów tablicy znajdującymi się pod indeksami które dostaniemy od podawaka
+
+Dla wersji przez interfejs webowy githuba
+
+![Wersja webowa](./img/konflikt-1.png)
+![Wersja webowa](./img/konflikt-1-1.png)
+
+Dla wersji konsolowej
+
+![Wersja konsolowa](./img/konflikt-2.png)
+
+- Jeżeli takiego konfliktu nie ma znaczy to że coś zrobiliśmy źle, można spróbować to poprawić lub zacząć od nowa
+- Rozwiązujemy ten konflikt powiedzmy łącząc te rozwiązania czyli mamy zrobić sumę elementów tablicy znajdującymi się pod indeksami które dostaniemy od podawaka
 - Nie robimy tego od nowa tylko przerabiamy to co dostaniemy po próbie merga np
 
 <code>
