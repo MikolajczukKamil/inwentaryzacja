@@ -13,8 +13,11 @@
 
 ### Do członków zespołu programistów
 
-- W katalogu tasks utwórz folder o nazwie kalkulator
-- Utwórz w tym katalogu nowy projekt Xamarin.Forms
+- Przełącz się na brancha training
+- Stwórz swojego brancha np imie-nazwisko-kalkulator
+- W katalogu tasks utwórz katalog imie-nazwisko
+- W katalogu imie-nazwisko utwórz katalog kalkulator
+- Utwórz w katalogu kalkulator nowy projekt Xamarin.Forms
 - Twoim zadaniem będzie zbudowanie prostej aplikacji kalkulatora
 - Kalkulator ma pobierać dwie liczby (skorzystaj z taga Editor)
 - Pod kalkulatorem ma się znajdować przycisk oblicz
