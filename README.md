@@ -26,11 +26,13 @@
 - Umieć w tym pliku funkcję dodającą 2 liczby (double) np
 
 <code>
-  // JS
 
-  function Suma(a, b) {
-    return a + b
-  }
+    // JS
+
+    function Suma(a, b) {
+      return a + b
+    }
+
 </code>
 
 - Wykonaj commita, zapisując zmiany, wyślij je na serwer
@@ -39,21 +41,23 @@
 - W razie potrzeby stwórz odpowiednią klasę Podawak lub skorzystaj z jakiejś wbudowanej np
 
 <code>
-  // JS
 
-  class Podawak {
-    constructor(wartosc) {
-      this.wartosc = wartosc
+    // JS
+
+    class Podawak {
+      constructor(wartosc) {
+        this.wartosc = wartosc
+      }
+
+      Podaj() {
+        return this.wartosc;
+      }
     }
 
-    Podaj() {
-      return this.wartosc;
+    function Suma(a, b) {
+      return a.Podaj() + b.Podaj()
     }
-  }
 
-  function Suma(a, b) {
-    return a.Podaj() + b.Podaj()
-  }
 </code>
 
 - Wykonaj commita, zapisując zmiany, wyslij je na serwer
@@ -62,13 +66,15 @@
 - Tym razem zamień a i b na liczby które znajdują się w jakiejś tablicy pod indeksem a i b, nie martwimy się o indeksy to nie jest w tym zadaniu istotne np
 
 <code>
-  // JS
 
-  const tablica = [0, 1, 2, 3]
+    // JS
 
-  function Suma(a, b) {
-    return tablica[a] + tablica[b]
-  }
+    const tablica = [0, 1, 2, 3]
+
+    function Suma(a, b) {
+      return tablica[a] + tablica[b]
+    }
+
 </code>
 
 - Zauważmy że liczenie sumy zmieniło się zupełnie inaczej niż w wersji z podawakiem, są to fragmenty niekompatybilne ze sobą
@@ -80,23 +86,25 @@
 - Nie robimy tego od nowa tylko przerabiamy to co dostaniemy po próbie merga np
 
 <code>
-  // JS
 
-  class Podawak {
-    constructor(wartosc) {
-      this.wartosc = wartosc
+    // JS
+
+    class Podawak {
+      constructor(wartosc) {
+        this.wartosc = wartosc
+      }
+
+      Podaj() {
+        return this.wartosc;
+      }
     }
 
-    Podaj() {
-      return this.wartosc;
+    const tablica = [0, 1, 2, 3]
+
+    function Suma(a, b) {
+      return tablica[a.Podaj()] + tablica[b.Podaj()]
     }
-  }
-
-  const tablica = [0, 1, 2, 3]
-
-  function Suma(a, b) {
-    return tablica[a.Podaj()] + tablica[b.Podaj()]
-  }
+  
 </code>
 
 - Zapisujemy oraz ponownie robimy merge brancha imie-nazwisko-nowa-suma do imie-nazwisko-zadanie2
