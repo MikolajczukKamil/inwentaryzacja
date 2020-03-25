@@ -8,6 +8,8 @@ class Podawak {
   }
 }
 
+const tablica = [0, 1, 2, 3]
+
 function Suma(a, b) {
-  return a.Podaj() + b.Podaj()
+  return tablica[a.Podaj()] + tablica[b.Podaj()]
 }
