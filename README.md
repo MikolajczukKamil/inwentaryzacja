@@ -86,7 +86,7 @@
 Dla wersji przez interfejs webowy githuba
 
 ![Wersja webowa](./img/konflikt-1.png)
-![Wersja webowa](./img/konflikt-1-1.png)
+![Wersja webowa](./img/konflikt-1-2.png)
 
 Dla wersji konsolowej
 
