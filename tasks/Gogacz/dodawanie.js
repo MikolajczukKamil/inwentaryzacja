@@ -1,7 +1,20 @@
-// JS
+//JS
+class Podawak
+{
+	constructor(wartosc)
+	{
+		this.wartosc = wartosc;
+	}
 
-const tablica = [0, 1, 2, 3]
+	Podaj()
+	{
+		return this.wartosc;
+	}
+}
 
-function Suma(a, b) {
-  return tablica[a] + tablica[b]
+const tablica = [0,1,2,3];
+
+function Suma(a,b)
+{
+	return tablica[a.Podaj()]+tablica[b.Podaj()];
 }
