@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Kalkulator"
+             x:Class="Kalkulator.MainPage">
+
+    <StackLayout VerticalOptions="Center" Spacing="50">
+        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
+            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Spacing="20" >
+
+                <Editor x:Name="FirstNumber" Keyboard="Numeric" />
+
+            </StackLayout>
+            
+            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" >
+                
+                <Editor x:Name="SecondNumber" Keyboard="Numeric"/>
+                
+            </StackLayout>
+        </StackLayout>
+
+        <Button x:Name="Calculate" Text="Calculate" BackgroundColor="Wheat" BorderRadius="20" TextColor="Black"/>
+
+        <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" >
+            <Label x:Name="Mul" Text="Multiplication: " Font="Bold,15" TextColor="Black" Margin="10"/>
+            <Label x:Name="Div" Text="Division: " Font="Bold,15" TextColor="Black" Margin="10"/>
+            <Label x:Name="Sub" Text="Addition: " Font="Bold,15" TextColor="Black" Margin="10"/>
+            <Label x:Name="Add" Text="Subtraction: "  Font="Bold,15" TextColor="Black" Margin="10" />
+        </StackLayout>
+        
+
+
+    </StackLayout>
+
+    
+
+</ContentPage>
