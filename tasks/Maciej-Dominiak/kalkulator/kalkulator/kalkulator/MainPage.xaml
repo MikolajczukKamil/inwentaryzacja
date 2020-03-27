@@ -6,14 +6,14 @@
              mc:Ignorable="d"
              x:Class="kalkulator.MainPage">
 
-    <!--<Grid>
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1.2*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -21,11 +21,18 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Image Source="" BackgroundColor="Blue" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
+        <Image Source="calc.jpg" BackgroundColor="PowderBlue" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
 
-        <Editor Grid.Column="0" Grid.Row="1" Placeholder="Liczba 1"/>
-        <Editor Grid.Column="1" Grid.Row="1" Placeholder="Liczba 2"/>--><!--
+        <Editor x:Name="liczba1" Grid.Column="0" Grid.Row="1" Placeholder="Liczba 1" FontSize="Large"/>
+        <Editor x:Name="liczba2" Grid.Column="1" Grid.Row="1" Placeholder="Liczba 2" FontSize="Large"/>
 
-    </Grid>-->
+        <Button Text="Oblicz!" Clicked="ObliczTo" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="PowderBlue" FontSize="Large"/>
+
+        <Label x:Name="dodawanie" AutomationId="asd" Text="Dodawanie" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" FontSize="20" Padding="20"/>
+        <Label x:Name="odejmowanie" Text="Odejmowanie" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" FontSize="20" Padding="20"/>
+        <Label x:Name="mnozenie" Text="Mnożenie" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" FontSize="20" Padding="20"/>
+        <Label x:Name="dzielenie" Text="Dzielenie" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" FontSize="20" Padding="20"/>
+
+    </Grid>
 
 </ContentPage>
