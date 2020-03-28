@@ -4,12 +4,35 @@
              xmlns:local="clr-namespace:Cal"
              x:Class="Cal.MainPage">
 
-    <StackLayout>
-        <!-- Place new controls here -->
-        <Label Text="Welcome to Xamarin.Forms!" 
-           HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
-        <Button VerticalOptions="Center" HorizontalOptions="Center" Text="Click Me!" Clicked="Button_OnClicked"></Button>
-    </StackLayout>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2.5*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Image Source="" BackgroundColor="Aqua" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"/>
+        <Entry Grid.Row="1" Grid.Column="0" Placeholder="a"/>
+        <Entry Grid.Row="1" Grid.Column="2" Placeholder="b"/>
+        <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Text="CALCULATE!" 
+                FontSize="Medium" BackgroundColor="DarkBlue" TextColor="White"/>
+        <Label Grid.Row="3" Grid.Column="0" Text="Addition:" FontSize="Micro"/>
+        <Label Grid.Row="3" Grid.Column="1" Text="" FontSize="Micro"/>
+        <Label Grid.Row="4" Grid.Column="0" Text="Substraction:" FontSize="Micro"/>
+        <Label Grid.Row="4" Grid.Column="1" Text="" FontSize="Micro"/>
+        <Label Grid.Row="5" Grid.Column="0" Text="Multiplication:" FontSize="Micro"/>
+        <Label Grid.Row="5" Grid.Column="1" Text="" FontSize="Micro"/>
+        <Label Grid.Row="6" Grid.Column="0" Text="Division:" FontSize="Micro"/>
+        <Label Grid.Row="6" Grid.Column="1" Text="" FontSize="Micro"/>
+    </Grid>
 
 </ContentPage>
