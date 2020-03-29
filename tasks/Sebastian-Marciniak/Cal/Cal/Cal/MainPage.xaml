@@ -20,19 +20,25 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Image Source="" BackgroundColor="Aqua" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"/>
-        <Entry Grid.Row="1" Grid.Column="0" Placeholder="a"/>
-        <Entry Grid.Row="1" Grid.Column="2" Placeholder="b"/>
+        <Image Source="calculator" BackgroundColor="Aqua" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"/>
+        <Entry Grid.Row="1" Grid.Column="0" Placeholder="a"
+               x:Name="Input_a"/>
+        <Entry Grid.Row="1" Grid.Column="2" Placeholder="b"
+               x:Name="Input_b"/>
         <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Text="CALCULATE!" 
-                FontSize="Medium" BackgroundColor="DarkBlue" TextColor="White"/>
-        <Label Grid.Row="3" Grid.Column="0" Text="Addition:" FontSize="Micro"/>
-        <Label Grid.Row="3" Grid.Column="1" Text="" FontSize="Micro"/>
-        <Label Grid.Row="4" Grid.Column="0" Text="Substraction:" FontSize="Micro"/>
-        <Label Grid.Row="4" Grid.Column="1" Text="" FontSize="Micro"/>
-        <Label Grid.Row="5" Grid.Column="0" Text="Multiplication:" FontSize="Micro"/>
-        <Label Grid.Row="5" Grid.Column="1" Text="" FontSize="Micro"/>
-        <Label Grid.Row="6" Grid.Column="0" Text="Division:" FontSize="Micro"/>
-        <Label Grid.Row="6" Grid.Column="1" Text="" FontSize="Micro"/>
+                FontSize="Medium" BackgroundColor="DarkBlue" TextColor="White" Clicked="Button_OnClicked"/>
+        <Label Grid.Row="3" Grid.Column="0" Text=" Addition:" FontSize="Micro"/>
+        <Label Grid.Row="3" Grid.Column="1" Text="" FontSize="Micro"
+               x:Name="Label_Addition"/>
+        <Label Grid.Row="4" Grid.Column="0" Text=" Substraction:" FontSize="Micro"/>
+        <Label Grid.Row="4" Grid.Column="1" Text="" FontSize="Micro"
+               x:Name="Label_Substraction"/>
+        <Label Grid.Row="5" Grid.Column="0" Text=" Multiplication:" FontSize="Micro"/>
+        <Label Grid.Row="5" Grid.Column="1" Text="" FontSize="Micro"
+               x:Name="Label_Multiplication"/>
+        <Label Grid.Row="6" Grid.Column="0" Text=" Division:" FontSize="Micro"/>
+        <Label Grid.Row="6" Grid.Column="1" Text="" FontSize="Micro"
+               x:Name="Label_Division"/>
     </Grid>
 
 </ContentPage>
