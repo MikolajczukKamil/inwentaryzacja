@@ -52,7 +52,7 @@ namespace DoxygenTest
 	{
 		///<summary>zwraca policzoną silnię liczby całkowitej</summary>
 		///<param name="n">(int) składnik/liczba z którego będzie liczona silnia</param>
-		///<returns>(int) wartość silni podanego argumentu</return>
+		///<returns>(int) wartość silni podanego argumentu</returns>
 		public static int Factorial(int n)
 		{
 			if (n < 0)
