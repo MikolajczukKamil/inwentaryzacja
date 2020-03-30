@@ -50,7 +50,9 @@ namespace DoxygenTest
 
 	static class MoreMath
 	{
-		///<summary>zwraca policzoną silnię liczby całkowitej</summary>
+		///<summary>
+		///zwraca policzoną silnię liczby całkowitej
+		///</summary>
 		///<param name="n">(int) składnik/liczba z którego będzie liczona silnia</param>
 		///<returns>(int) wartość silni podanego argumentu</returns>
 		public static int Factorial(int n)
@@ -67,7 +69,9 @@ namespace DoxygenTest
 
 			return n * Factorial(n - 1);
 		}
-		///<summary>zwraca policzoną sumę n-składników całkowitych ciągu Fibonacciego</summary>
+		///<summary>
+		///zwraca policzoną sumę n-składników całkowitych ciągu Fibonacciego
+		///</summary>
 		///<param name="n">(int) argument mówiący z ilu wyrazów będzie liczona suma </param>
 		///<returns>(int) wartość sumy n-wyrazów ciągu Fibonacciego </returns>
 		public static int Fibonacci(int n)
