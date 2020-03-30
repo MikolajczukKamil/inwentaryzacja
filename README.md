@@ -151,8 +151,8 @@ Dla wersji konsolowej
 Użyj następujących znaczników:
 	* `<summary>` - Opis działania funkcji
 	* `<param name="">` - Opis parametru
-	* `<returns>` - Opis zwracanej wartości
-Funkcje Factorial (silnia) i Fibonacci powinny być znane, natomiast Lerp, to funkcja [interpolacji liniowej](https://pl.wikipedia.org/wiki/Interpolacja_liniowa).
+	* `<returns>` - Opis zwracanej wartości  
+Funkcje `Factorial` (silnia) i `Fibonacci` powinny być znane, natomiast `Lerp` to funkcja [interpolacji liniowej](https://pl.wikipedia.org/wiki/Interpolacja_liniowa).
 Nie edytuj kodu. Napisz tylko komentarze dokumentacji nad metodami.
 6. Wyślij brancha na serwer.
 7. Z poziomu GitHuba wykonaj pulla do brancha training.
