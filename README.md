@@ -152,9 +152,14 @@ Użyj następujących znaczników:
 	* `<summary>` - Opis działania funkcji
 	* `<param name="">` - Opis parametru
 	* `<returns>` - Opis zwracanej wartości
-Funkcje Factorial (silnia) i Fibonacci powinny być znane, natomiast Lerp, to funkcja [interpolacji liniowej][https://pl.wikipedia.org/wiki/Interpolacja_liniowa].
+Funkcje Factorial (silnia) i Fibonacci powinny być znane, natomiast Lerp, to funkcja [interpolacji liniowej](https://pl.wikipedia.org/wiki/Interpolacja_liniowa).
 Nie edytuj kodu. Napisz tylko komentarze dokumentacji nad metodami.
 6. Wyślij brancha na serwer.
 7. Z poziomu GitHuba wykonaj pulla do brancha training.
 
 Wszelkie pytania proszę zadawać na Slacku na kanale `#zespół-dokumentacja`.
+
+### Doxygen
+1. Zainstaluj [Doxygen](http://www.doxygen.nl/download.html).
+2. Na podstawie [tego filmu](https://youtu.be/-V_vHZPOZfY) wygeneruj dokumentację HTML dla kodu z poprzedniego zadania.
+3. Umieść zrzut ekranu z dokumentacji klasy `MoreMath` na kanał `#zespół-dokumentacja`.
