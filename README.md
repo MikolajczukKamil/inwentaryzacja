@@ -137,3 +137,24 @@ Dla wersji konsolowej
 - Po kliknięciu przycisku pod kalkulatorem powinny się pojawiać wyniki 4 działań arytmetycznych(dodawanie, odejmowanie, mnożenie, dzielenie)
 - (Opcjonalnie) Dodaj na górze ładne tło z obrazkiem kalkulatora
 - Całość powinna wyglądać mniej więcej tak: https://imgur.com/a/kAN5dY2
+
+
+## Do członków zespołu dokumentacji
+
+### Pisanie komentarzy XML
+
+1. Przełącz się na brancha `training`.
+2. Stwórz swojego brancha `imie-nazwisko-trening-dokumentacja`.
+3. W katalogu tasks utwórz katalog `imie-nazwisko`.
+4. Skopiuj plik `Program.cs` z `training/tasks/zadanie-docs/` do swojego katalogu.
+5. Napisz dokumentację XML dla metod klasy MoreMath. W klasie Program metody są już udokumentowane, możesz się na nich wzorować.
+Użyj następujących znaczników:
+	* `<summary>` - Opis działania funkcji
+	* `<param name="">` - Opis parametru
+	* `<returns>` - Opis zwracanej wartości
+Funkcje Factorial (silnia) i Fibonacci powinny być znane, natomiast Lerp, to funkcja [interpolacji liniowej][https://pl.wikipedia.org/wiki/Interpolacja_liniowa].
+Nie edytuj kodu. Napisz tylko komentarze dokumentacji nad metodami.
+6. Wyślij brancha na serwer.
+7. Z poziomu GitHuba wykonaj pulla do brancha training.
+
+Wszelkie pytania proszę zadawać na Slacku na kanale `#zespół-dokumentacja`.
