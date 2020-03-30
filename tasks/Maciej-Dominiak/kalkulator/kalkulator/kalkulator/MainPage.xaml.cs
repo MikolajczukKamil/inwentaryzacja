@@ -25,13 +25,27 @@ namespace kalkulator
         void ObliczTo(object sender, System.EventArgs e)
         {
             double a,b;
-
             if(Double.TryParse(liczba1.Text,out a) && Double.TryParse(liczba2.Text,out b))
             {
                 dodawanie.Text = "Dodawanie: " + Convert.ToString(a + b);
                 odejmowanie.Text = "Odejmowanie: " + Convert.ToString(a - b);
                 mnozenie.Text = "Mnożenie: " + Convert.ToString(a * b);
-                dzielenie.Text = "Dzielenie: " + Convert.ToString(a / b);
+                if(b!=0)
+                {
+                    dzielenie.Text = "Dzielenie: " + Convert.ToString(a / b);
+                }
+                else
+                {
+                    dzielenie.Text = "Dzielenie: Złe dane!";
+                }
+                
+            }
+            else
+            {
+                dodawanie.Text = "Dodawanie: Złe dane!";
+                odejmowanie.Text = "Odejmowanie: Złe dane!";
+                mnozenie.Text = "Mnożenie Złe dane!";
+                dzielenie.Text = "Dzielenie: Złe dane!";
             }
         }
 
