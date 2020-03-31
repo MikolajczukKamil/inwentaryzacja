@@ -4,34 +4,33 @@
              xmlns:local="clr-namespace:Kalkulator"
              x:Class="Kalkulator.MainPage">
 
-    <StackLayout VerticalOptions="Center" Spacing="50">
-        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
-            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Spacing="20" >
-
-                <Editor x:Name="FirstNumber" Keyboard="Numeric" />
-
-            </StackLayout>
-            
-            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" >
-                
-                <Editor x:Name="SecondNumber" Keyboard="Numeric"/>
-                
-            </StackLayout>
-        </StackLayout>
-
-        <Button x:Name="Calculate" Text="Calculate" BackgroundColor="Wheat" BorderRadius="20" TextColor="Black"/>
-
-        <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" >
-            <Label x:Name="Mul" Text="Multiplication: " Font="Bold,15" TextColor="Black" Margin="10"/>
-            <Label x:Name="Div" Text="Division: " Font="Bold,15" TextColor="Black" Margin="10"/>
-            <Label x:Name="Sub" Text="Addition: " Font="Bold,15" TextColor="Black" Margin="10"/>
-            <Label x:Name="Add" Text="Subtraction: "  Font="Bold,15" TextColor="Black" Margin="10" />
-        </StackLayout>
+    <Grid Padding="10" RowSpacing="20" ColumnSpacing="10" Margin="15,15,15,15">
         
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-    </StackLayout>
-
+        <Image Source="pngbarn.png" Grid.Row="0" Grid.ColumnSpan="2"/>
+        <Editor x:Name="numberOne" FontSize="20" FontAttributes="Bold"  TextColor="Black" Grid.ColumnSpan="1" Grid.Column="0" Grid.Row="1" Keyboard="Numeric"/>
+        <Editor x:Name="numberTwo" FontSize="20" FontAttributes="Bold" TextColor="Black" Grid.ColumnSpan="1" Grid.Column="1" Grid.Row="1" Keyboard="Numeric"/>
+        <Button x:Name="result" Text="Calculate" Grid.Row="2" FontSize="25" BorderRadius="30" BackgroundColor="LightGreen" FontAttributes="Bold" Grid.ColumnSpan="2" />
+        <Label x:Name="mul" Text="Multiplication: " FontSize="15" FontAttributes="Bold" TextColor="Black" Grid.Row="3" Grid.ColumnSpan="2" VerticalTextAlignment="Center"/>
+        <Label x:Name="div" Text="Division: " FontSize="15" FontAttributes="Bold" TextColor="Black" Grid.Row="4" Grid.ColumnSpan="2" VerticalTextAlignment="Center"/>
+        <Label x:Name="sub" Text="Subtraction: " FontSize="15" FontAttributes="Bold" TextColor="Black" Grid.Row="5" Grid.ColumnSpan="2" VerticalTextAlignment="Center"/>
+        <Label x:Name="add" Text="Add: " FontSize="15" FontAttributes="Bold" TextColor="Black" Grid.Row="6" Grid.ColumnSpan="2" VerticalTextAlignment="Center"/>
+        
+    </Grid>
     
 
 </ContentPage>
