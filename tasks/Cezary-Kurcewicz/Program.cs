@@ -70,10 +70,10 @@ namespace DoxygenTest
 			return n * Factorial(n - 1);
 		}
 		/// <summary>
-		/// zwraca policzoną sumę n-składników całkowitych ciągu Fibonacciego
+		/// zwraca policzoną wartość n-składnika (całkowitego) ciągu Fibonacciego, która składa się z sumy 2 poprzednich wyrazów
 		/// </summary>
-		/// <param name="n">(int) argument mówiący z ilu wyrazów będzie liczona suma </param>
-		/// <returns>(int) wartość sumy n-wyrazów ciągu Fibonacciego </returns>
+		/// <param name="n">(int) argument mówiący którego wyrazu będzie liczona suma </param>
+		/// <returns>(int) wartość składnika n-wyrazu ciągu Fibonacciego </returns>
 		public static int Fibonacci(int n)
 		{
 			if (n < 0)
