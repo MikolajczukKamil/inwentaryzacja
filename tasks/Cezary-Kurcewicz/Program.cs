@@ -50,11 +50,11 @@ namespace DoxygenTest
 
 	static class MoreMath
 	{
-		///<summary>
-		///zwraca policzoną silnię liczby całkowitej
-		///</summary>
-		///<param name="n">(int) składnik/liczba z którego będzie liczona silnia</param>
-		///<returns>(int) wartość silni podanego argumentu</returns>
+		/// <summary>
+		/// zwraca policzoną silnię liczby całkowitej
+		/// </summary>
+		/// <param name="n">(int) składnik/liczba z którego będzie liczona silnia</param>
+		/// <returns>(int) wartość silni podanego argumentu</returns>
 		public static int Factorial(int n)
 		{
 			if (n < 0)
@@ -69,11 +69,11 @@ namespace DoxygenTest
 
 			return n * Factorial(n - 1);
 		}
-		///<summary>
-		///zwraca policzoną sumę n-składników całkowitych ciągu Fibonacciego
-		///</summary>
-		///<param name="n">(int) argument mówiący z ilu wyrazów będzie liczona suma </param>
-		///<returns>(int) wartość sumy n-wyrazów ciągu Fibonacciego </returns>
+		/// <summary>
+		/// zwraca policzoną sumę n-składników całkowitych ciągu Fibonacciego
+		/// </summary>
+		/// <param name="n">(int) argument mówiący z ilu wyrazów będzie liczona suma </param>
+		/// <returns>(int) wartość sumy n-wyrazów ciągu Fibonacciego </returns>
 		public static int Fibonacci(int n)
 		{
 			if (n < 0)
@@ -88,15 +88,15 @@ namespace DoxygenTest
 
 			return Fibonacci(n - 1) + Fibonacci(n - 2);
 		}
-		///<summary>
-		///zwraca przybliżoną wartość (zmiennoprzecinkową) funkcji liniowej interpolacyjnej(przybliżającej) 
-		/// w danym przedziale, która przyjmuje z góry zadane wartości, w ustalonych punktach nazywanych węzłami.
-		///Służy do znajdowania zależności na skończonym zbiorze danych np. pomiędzy x0, x1. 
-		///</summary>
-		///<param name="v0">(float) Wartość pierwszego punktu - f(x0)</param>
-		///<param name="v1">(float) Wartość drugiego punktu - f(x1)</param>
-		///<param name="t">(float) Znormalizowana odległość pomiędzy jednym z punktów, a nieznanym punktem</param>
-		///<returns>(float) wartość funkcji przybliżającej dla podanych 2 punktów - x0, x1</returns>
+		/// <summary>
+		/// zwraca przybliżoną wartość (zmiennoprzecinkową) funkcji liniowej interpolacyjnej(przybliżającej) 
+		///  w danym przedziale, która przyjmuje z góry zadane wartości, w ustalonych punktach nazywanych węzłami.
+		/// Służy do znajdowania zależności na skończonym zbiorze danych np. pomiędzy x0, x1. 
+		/// </summary>
+		/// <param name="v0">(float) Wartość pierwszego punktu - f(x0)</param>
+		/// <param name="v1">(float) Wartość drugiego punktu - f(x1)</param>
+		/// <param name="t">(float) Znormalizowana odległość pomiędzy jednym z punktów, a nieznanym punktem</param>
+		/// <returns>(float) wartość funkcji przybliżającej dla podanych 2 punktów - x0, x1</returns>
 		public static float Lerp(float v0, float v1, float t)
 		{
 			return (1 - t) * v0 + t * v1;
