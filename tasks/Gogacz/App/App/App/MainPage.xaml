@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:App"
+             x:Class="App.MainPage">
+    <StackLayout >
+        <Image Source="kalkulator.jpg" Margin="0"/>
+        <Editor x:Name="Liczba1" Margin="10,0" Text="Podaj a"  Keyboard="Numeric" />
+        <Editor x:Name="Liczba2" Margin="10,0" Text="Podaj b" Keyboard="Numeric" />
+        <Button Text="Oblicz" Margin="10,0" Clicked="Oblicz" FontSize="20"  BorderColor="Black" BackgroundColor="Blue" TextColor="Silver"/>
+        <Label x:Name="Add" Margin="10,0" Text="Suma: "  FontSize="10"/>
+        <Label x:Name="Sub" Margin="10,0" Text="Różnica: "  FontSize="10"/>
+        <Label x:Name="Mull" Margin="10,0" Text="Iloczyn: " FontSize="10"/>
+        <Label x:Name="Div" Margin="10,0" Text="Iloraz: "  FontSize="10"/>
+    </StackLayout>
+</ContentPage>
