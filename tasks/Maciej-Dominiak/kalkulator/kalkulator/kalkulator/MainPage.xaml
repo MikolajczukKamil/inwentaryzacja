@@ -7,24 +7,20 @@
              x:Class="kalkulator.MainPage">
 
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical">
+        <ScrollView>
             <StackLayout Orientation="Vertical">
-                <Image Source="calc.jpg" BackgroundColor="PowderBlue" HeightRequest="200"/>
-            </StackLayout>
-            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" >
-                <Editor x:Name="liczba1" Keyboard="Numeric" Placeholder="Liczba 1" FontSize="Large" HorizontalOptions="CenterAndExpand" WidthRequest="200"/>
-                <Editor x:Name="liczba2" Keyboard="Numeric" Placeholder="Liczba 2" FontSize="Large"  HorizontalOptions="CenterAndExpand" WidthRequest="200"/>
-            </StackLayout>
-            <ScrollView>
-                <StackLayout Orientation="Vertical">
-                    <Button Text="Oblicz!" Clicked="ObliczTo" BackgroundColor="PowderBlue" FontSize="Large"/>
-                    <Label x:Name="dodawanie" AutomationId="asd" Text="Dodawanie" FontSize="20" Padding="20"/>
-                    <Label x:Name="odejmowanie" Text="Odejmowanie" FontSize="20" Padding="20"/>
-                    <Label x:Name="mnozenie" Text="Mnożenie" FontSize="20" Padding="20"/>
-                    <Label x:Name="dzielenie" Text="Dzielenie" FontSize="20" Padding="20"/>
+                <Image Source="calc.jpg" BackgroundColor="PowderBlue" HeightRequest="190"/>
+                <StackLayout Orientation="Horizontal" >
+                    <Editor x:Name="liczba1" Keyboard="Numeric" Placeholder="Liczba 1" FontSize="Large" HorizontalOptions="CenterAndExpand" />
+                    <Editor x:Name="liczba2" Keyboard="Numeric" Placeholder="Liczba 2" FontSize="Large"  HorizontalOptions="CenterAndExpand" />
                 </StackLayout>
-            </ScrollView>
-        </StackLayout>
+                <Button Text="Oblicz!" Clicked="ObliczTo" BackgroundColor="PowderBlue" FontSize="Large"/>
+                <Label x:Name="dodawanie" AutomationId="asd" Text="Dodawanie" FontSize="20" Padding="20"/>
+                <Label x:Name="odejmowanie" Text="Odejmowanie" FontSize="20" Padding="20"/>
+                <Label x:Name="mnozenie" Text="Mnożenie" FontSize="20" Padding="20"/>
+                <Label x:Name="dzielenie" Text="Dzielenie" FontSize="20" Padding="20"/>
+                </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 
 
