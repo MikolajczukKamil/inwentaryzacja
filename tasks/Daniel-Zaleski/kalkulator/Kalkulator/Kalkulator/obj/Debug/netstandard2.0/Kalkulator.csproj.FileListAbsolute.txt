@@ -1,0 +1,12 @@
+c:\users\kartofel\source\KalkulatorApp\Kalkulator\Kalkulator\Kalkulator\bin\Debug\netstandard2.0\Kalkulator.deps.json
+c:\users\kartofel\source\KalkulatorApp\Kalkulator\Kalkulator\Kalkulator\bin\Debug\netstandard2.0\Kalkulator.dll
+c:\users\kartofel\source\KalkulatorApp\Kalkulator\Kalkulator\Kalkulator\bin\Debug\netstandard2.0\Kalkulator.pdb
+c:\users\kartofel\source\KalkulatorApp\Kalkulator\Kalkulator\Kalkulator\obj\Debug\netstandard2.0\Kalkulator.csprojAssemblyReference.cache
+c:\users\kartofel\source\KalkulatorApp\Kalkulator\Kalkulator\Kalkulator\obj\Debug\netstandard2.0\App.xaml.g.cs
+c:\users\kartofel\source\KalkulatorApp\Kalkulator\Kalkulator\Kalkulator\obj\Debug\netstandard2.0\MainPage.xaml.g.cs
+c:\users\kartofel\source\KalkulatorApp\Kalkulator\Kalkulator\Kalkulator\obj\Debug\netstandard2.0\Kalkulator.csproj.CoreCompileInputs.cache
+c:\users\kartofel\source\KalkulatorApp\Kalkulator\Kalkulator\Kalkulator\obj\Debug\netstandard2.0\Kalkulator.AssemblyInfoInputs.cache
+c:\users\kartofel\source\KalkulatorApp\Kalkulator\Kalkulator\Kalkulator\obj\Debug\netstandard2.0\Kalkulator.AssemblyInfo.cs
+c:\users\kartofel\source\KalkulatorApp\Kalkulator\Kalkulator\Kalkulator\obj\Debug\netstandard2.0\XamlC.stamp
+c:\users\kartofel\source\KalkulatorApp\Kalkulator\Kalkulator\Kalkulator\obj\Debug\netstandard2.0\Kalkulator.dll
+c:\users\kartofel\source\KalkulatorApp\Kalkulator\Kalkulator\Kalkulator\obj\Debug\netstandard2.0\Kalkulator.pdb
