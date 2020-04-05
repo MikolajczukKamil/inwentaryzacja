@@ -6,10 +6,45 @@
              mc:Ignorable="d"
              x:Class="Inwentaryzacja.LoginPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout BackgroundColor="#8EE3BA">
+            <Label Text="Aplikacja do inwentaryzacji"
+                Margin="20,50"
+                VerticalOptions="Start" 
+                HorizontalOptions="CenterAndExpand"
+                HorizontalTextAlignment="Center" 
+                FontSize="50"/>
+
+            <Entry Placeholder="Nazwa użytkownika"
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="Start"
+                    Margin="50,5" 
+                    BackgroundColor="#FFFFFF"/>
+
+            <Entry  Placeholder="Hasło" 
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="Start"
+                    Margin="50,5"
+                    IsPassword="true"
+                    BackgroundColor="#FFFFFF"/>
+            
+            <Button Text="Zaloguj" 
+                    HorizontalOptions="CenterAndExpand" 
+                    VerticalOptions="Start"
+                    Padding="40,20" />
+            
+            <Image Source="logo.png" 
+                   HorizontalOptions="Start" 
+                   VerticalOptions="FillAndExpand" 
+                   Margin="100,0" 
+                   
+                   />
+
+            <Label Text="Aplikacja do inwentaryzacji została stworzona przez studentów czwartego semestru informatyki na SGGW w ramach projektu na przedmiot Inżynieria Oprogramowania, rok 2020"
+                VerticalOptions="End"
+                HorizontalOptions="CenterAndExpand" 
+                FontSize="Micro" 
+                Margin="10,0,10,10" 
+                HorizontalTextAlignment="Center"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
