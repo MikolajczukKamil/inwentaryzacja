@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace Inwentaryzacja
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ScanPage : ContentPage
+    public partial class ScanItemPage : ContentPage
     {
-        public ScanPage()
+        public ScanItemPage()
         {
             InitializeComponent();
         }
