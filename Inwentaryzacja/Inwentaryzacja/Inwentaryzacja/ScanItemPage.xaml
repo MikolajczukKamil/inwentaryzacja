@@ -6,25 +6,24 @@
              mc:Ignorable="d"
              x:Class="Inwentaryzacja.ScanItemPage">
     
-    <Grid BackgroundColor="SpringGreen">
+    <Grid BackgroundColor="#8EE3BA">
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.2*"/>
-            <RowDefinition Height="0.8*"/>
-            <RowDefinition Height="0.2*"/>
-            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.6*"/>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.1*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-
         <Label Text="Skanuj kod" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Large" TextColor="Black" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
-        <BoxView BackgroundColor="Red" Margin="40, 0, 40, 0" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"/>
+        <Image Source="codeQR2.jpg" Aspect="Fill" BackgroundColor="PowderBlue" Margin="40, 0, 40, 0" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" />
         <Label Text="Zeskanowano 5/12 przedmiotów" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Large" TextColor="Black" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"/>
         <Button Text="Anuluj" BackgroundColor="White" BorderRadius="100"  BorderWidth="2" BorderColor="Gray" Margin="10, 0, 0, 20" Clicked="Cancel" Grid.Row="3" Grid.Column="0"/>
         <Button Text="Zakończ" BackgroundColor="White" BorderRadius="100" BorderWidth="2" BorderColor="Gray" Margin="0, 0, 10, 20" Clicked="EndScanning"  Grid.Row="3" Grid.Column="1"/>
-
     </Grid>
     
+
 </ContentPage>
