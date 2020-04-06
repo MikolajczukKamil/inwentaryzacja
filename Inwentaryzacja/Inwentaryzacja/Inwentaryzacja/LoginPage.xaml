@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Inwentaryzacja"
              mc:Ignorable="d"
              x:Class="Inwentaryzacja.LoginPage">
+
     <ContentPage.Content>
         <StackLayout BackgroundColor="#8EE3BA">
             <Label Text="Aplikacja do inwentaryzacji"
@@ -14,23 +16,20 @@
                 HorizontalTextAlignment="Center" 
                 FontSize="50"/>
 
-            <Entry Placeholder="Nazwa użytkownika"
+            <local:RoundedEntry Placeholder="Nazwa użytkownika"
                     HorizontalOptions="FillAndExpand" 
                     VerticalOptions="Start"
-                    Margin="50,5" 
-                    BackgroundColor="#FFFFFF"/>
+                    Margin="50,5" />
 
-            <Entry  Placeholder="Hasło" 
+            <local:RoundedEntry Placeholder="Hasło" 
                     HorizontalOptions="FillAndExpand" 
                     VerticalOptions="Start"
                     Margin="50,5"
-                    IsPassword="true"
-                    BackgroundColor="#FFFFFF"/>
-            
-            <Button Text="Zaloguj" 
+                    IsPassword="true"/>
+
+            <local:RoundedButton Text="Zaloguj" 
                     HorizontalOptions="CenterAndExpand" 
-                    VerticalOptions="Start"
-                    Padding="40,20" />
+                    VerticalOptions="Start"/>
             
             <Image Source="logo.png" 
                    HorizontalOptions="Start" 
