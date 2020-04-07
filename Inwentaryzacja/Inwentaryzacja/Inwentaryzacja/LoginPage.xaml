@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Inwentaryzacja"
+             mc:Ignorable="d"
+             x:Class="Inwentaryzacja.LoginPage">
+
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="#8EE3BA">
+            <Label Text="Aplikacja do inwentaryzacji"
+                Margin="20,50"
+                VerticalOptions="Start" 
+                HorizontalOptions="CenterAndExpand"
+                HorizontalTextAlignment="Center" 
+                FontSize="50"/>
+
+            <local:RoundedEntry Placeholder="Nazwa użytkownika"
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="Start"
+                    Margin="50,5" />
+
+            <local:RoundedEntry Placeholder="Hasło" 
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="Start"
+                    Margin="50,5"
+                    IsPassword="true"/>
+
+            <local:RoundedButton Text="Zaloguj" 
+                    HorizontalOptions="CenterAndExpand" 
+                    VerticalOptions="Start"/>
+            
+            <Image Source="logo.png" 
+                   HorizontalOptions="Start" 
+                   VerticalOptions="FillAndExpand" 
+                   Margin="100,0" 
+                   
+                   />
+
+            <Label Text="Aplikacja do inwentaryzacji została stworzona przez studentów czwartego semestru informatyki na SGGW w ramach projektu na przedmiot Inżynieria Oprogramowania, rok 2020"
+                VerticalOptions="End"
+                HorizontalOptions="CenterAndExpand" 
+                FontSize="Micro" 
+                Margin="10,0,10,10" 
+                HorizontalTextAlignment="Center"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
