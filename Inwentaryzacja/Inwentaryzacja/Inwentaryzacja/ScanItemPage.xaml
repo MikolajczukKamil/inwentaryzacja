@@ -4,8 +4,9 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             xmlns:local="clr-namespace:Inwentaryzacja"
              x:Class="Inwentaryzacja.ScanItemPage">
-    
+
     <Grid BackgroundColor="#8EE3BA">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.1*"/>
@@ -21,8 +22,8 @@
         <Label Text="Skanuj kod" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Large" TextColor="Black" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
         <Image Source="codeQR2.jpg" Aspect="Fill" BackgroundColor="PowderBlue" Margin="40, 0, 40, 0" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" />
         <Label Text="Zeskanowano 5/12 przedmiotów" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Large" TextColor="Black" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"/>
-        <Button Text="Anuluj" BackgroundColor="White" BorderRadius="100"  BorderWidth="2" BorderColor="Gray" Margin="10, 0, 0, 20" Clicked="Cancel" Grid.Row="3" Grid.Column="0"/>
-        <Button Text="Zakończ" BackgroundColor="White" BorderRadius="100" BorderWidth="2" BorderColor="Gray" Margin="0, 0, 10, 20" Clicked="EndScanning"  Grid.Row="3" Grid.Column="1"/>
+        <local:RoundedButton Text="Anuluj" TextColor="Red" FontSize="Large" Margin="10, 0, 0, 20" Clicked="Cancel" Grid.Row="3" Grid.Column="0"/>
+        <local:RoundedButton Text="Zakończ" TextColor="Green" FontSize="Large" Margin="0, 0, 10, 20" Clicked="EndScanning"  Grid.Row="3" Grid.Column="1"/>
     </Grid>
     
 

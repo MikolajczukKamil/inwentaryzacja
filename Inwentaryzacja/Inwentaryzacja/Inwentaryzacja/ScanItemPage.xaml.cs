@@ -19,7 +19,12 @@ namespace Inwentaryzacja
 
         async void Cancel(object sender, EventArgs e)
         {
-            await Navigation.PopAsync();
+            bool response = await DisplayAlert("Anulować?", "Czy na pewno chcesz anulować skanowanie?", "Tak", "Nie");
+
+            if(response)
+            {
+                await Navigation.PopAsync();
+            }
         }
 
         private void EndScanning(object sender, EventArgs e)
