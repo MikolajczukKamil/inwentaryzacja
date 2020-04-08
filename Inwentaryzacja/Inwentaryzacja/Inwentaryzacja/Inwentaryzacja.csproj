@@ -21,7 +21,7 @@
     <EmbeddedResource Update="ChooseRoomPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ReportPage.xaml">
+    <EmbeddedResource Update="RaportPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

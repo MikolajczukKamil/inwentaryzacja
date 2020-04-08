@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local="clr-namespace:Inwentaryzacja"
+            mc:Ignorable="d"
+            x:Class="Inwentaryzacja.RaportPage">
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="#8EE3BA">
+            <Label Text="Sala 44" TextDecorations="Underline" FontSize="60" TextColor="Black" HorizontalOptions="Center" />
+            
+            <ListView RowHeight="95" SeparatorVisibility="None" Margin="5">
+                
+                <ListView.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Item1</x:String>
+                        <x:String>Item2</x:String>
+                        <x:String>Item3</x:String>
+                        <x:String>Item4</x:String>
+                        <x:String>Item5</x:String>
+                    </x:Array>
+                </ListView.ItemsSource>
+                
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame CornerRadius="15" Padding="0" Margin="10,0,10,10" HasShadow="True">
+                                <StackLayout Margin="10" BackgroundColor="White">
+                                    <Grid x:Name="GridItems" RowSpacing="5">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="0.55*" />
+                                            <ColumnDefinition Width="0.55*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Text="Krzesło (id: 12345)"
+                                            FontAttributes="Bold" 
+                                            TextColor="Black"       
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="2"       
+                                            Grid.Row="0"
+                                            FontSize="16"
+                                            Margin="5,0,0,8" />
+
+                                        <Label Text="Należy do sali 44"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="1"
+                                            Grid.Row="1"
+                                            FontSize="14"
+                                            VerticalOptions="StartAndExpand"
+                                            Margin="5,0,0,8" />
+                                        
+                                        <Image
+                                            Source="tick_button.png"
+                                            Grid.Column="0"
+                                            Grid.Row="1"
+                                            VerticalOptions="Start"
+                                            Margin="10,0,0,8"
+                                            HorizontalOptions="End" />
+                                    
+                                        <Button
+                                            Text="Przenieś tutaj"
+                                            VerticalOptions="StartAndExpand"
+                                            Margin="0,3,0,5"
+                                            BorderColor="Black"
+                                            BackgroundColor="White"
+                                            BorderWidth="3"
+                                            FontSize="14"
+                                            Grid.Column="1"
+                                            Grid.RowSpan="2"
+                                            HorizontalOptions="End"
+                                            HeightRequest="60"
+                                            CornerRadius="10" />
+
+                                        <Button
+                                            Text="Nic nie zmieniaj"
+                                            VerticalOptions="StartAndExpand"
+                                            Margin="0,3,0,5"
+                                            BorderColor="Black"
+                                            BackgroundColor="White"
+                                            BorderWidth="3"
+                                            FontSize="14"
+                                            Grid.Column="2"
+                                            Grid.RowSpan="2"
+                                            HorizontalOptions="CenterAndExpand"
+                                            HeightRequest="60"
+                                            CornerRadius="10" />
+                                    </Grid>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Grid VerticalOptions="End">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <Button 
+                    Text="Przenieś wszystkie tutaj"
+                    BorderColor="White"
+                    BackgroundColor="White"
+                    BorderWidth="3"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="4"
+                    Grid.Row="0"
+                    Margin="0,5,0,0"
+                    CornerRadius="10"
+                    FontSize="18" />
+                
+                <Button 
+                    Text="Usuń raport "
+                    BorderColor="White"
+                    BackgroundColor="White"
+                    BorderWidth="3"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Grid.Row="1"
+                    CornerRadius="10"
+                    Margin="15,5"
+                    FontSize="18" />
+                
+                <Button 
+                    Text="Zatwierdź"
+                    BorderColor="White"
+                    BackgroundColor="White"
+                    BorderWidth="3"
+                    Grid.Column="3"
+                    Grid.ColumnSpan="3"
+                    Grid.Row="1"
+                    CornerRadius="10"
+                    Margin="15,5"
+                    FontSize="18" />
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
