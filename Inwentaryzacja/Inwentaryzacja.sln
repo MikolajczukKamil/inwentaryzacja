@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.271
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inwentaryzacja.Android", "Inwentaryzacja\Inwentaryzacja.Android\Inwentaryzacja.Android.csproj", "{D655958D-03B3-47D7-853E-5C104B2C1EC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inwentaryzacja", "Inwentaryzacja\Inwentaryzacja\Inwentaryzacja.csproj", "{C75793D8-D6E2-4B36-9B34-EFEFBCAA539F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inwentaryzacja", "Inwentaryzacja\Inwentaryzacja\Inwentaryzacja.csproj", "{C75793D8-D6E2-4B36-9B34-EFEFBCAA539F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
