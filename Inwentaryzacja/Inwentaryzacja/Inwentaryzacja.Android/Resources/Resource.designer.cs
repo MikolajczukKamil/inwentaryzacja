@@ -12018,7 +12018,7 @@ namespace Inwentaryzacja.Droid
 			public const int AlertDialog_multiChoiceItemLayout = 5;
 			
 			// aapt resource value: 6
-			public const int AlertDialog_showTitle = 6;
+			public const int AlertDialog_singleChoiceItemLayout = 6;
 			
 			// aapt resource value: 7
 			public const int AlertDialog_singleChoiceItemLayout = 7;
@@ -12242,7 +12242,7 @@ namespace Inwentaryzacja.Droid
 			public const int AppCompatTextView_firstBaselineToTopHeight = 6;
 			
 			// aapt resource value: 7
-			public const int AppCompatTextView_fontFamily = 7;
+			public const int AppCompatTextView_textAllCaps = 7;
 			
 			// aapt resource value: 8
 			public const int AppCompatTextView_lastBaselineToBottomHeight = 8;
@@ -12821,7 +12821,7 @@ namespace Inwentaryzacja.Droid
 			public const int BottomSheetBehavior_Layout_behavior_fitToContents = 0;
 			
 			// aapt resource value: 1
-			public const int BottomSheetBehavior_Layout_behavior_hideable = 1;
+			public const int BottomSheetBehavior_Layout_behavior_peekHeight = 1;
 			
 			// aapt resource value: 2
 			public const int BottomSheetBehavior_Layout_behavior_peekHeight = 2;
