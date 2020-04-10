@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace WidokPowitalny
+namespace Inwentaryzacja
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class WidokPowitalny : ContentPage
+    public partial class WelcomeViewPage : ContentPage
     {
-        public WidokPowitalny()
+        public WelcomeViewPage()
         {
             InitializeComponent();
         }
