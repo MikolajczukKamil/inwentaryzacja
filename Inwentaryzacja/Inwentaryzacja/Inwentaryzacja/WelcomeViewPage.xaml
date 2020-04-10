@@ -4,7 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:Inwentaryzacja"
              mc:Ignorable="d"
-             x:Class="WidokPowitalny.WidokPowitalny"
+             x:Class="Inwentaryzacja.WelcomeViewPage"
              BackgroundColor="#8EE3BA">
 
     <ContentPage.Content>
