@@ -17,9 +17,21 @@ namespace Inwentaryzacja
             InitializeComponent();
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            _scanner.IsScanning = true;
+        }
+
+        protected override void OnDisappearing()
+        {
+            _scanner.IsScanning = false;
+            base.OnDisappearing();
+        }
+
         async void Cancel(object sender, EventArgs e)
         {
-            bool response = await DisplayAlert("Anulować?", "Czy na pewno chcesz anulować skanowanie?", "Tak", "Nie");
+            bool response = await DisplayAlert("Anulować skanowanie?", "Czy na pewno chcesz anulować skanowanie?", "Tak", "Nie");
 
             if(response)
             {
@@ -30,6 +42,14 @@ namespace Inwentaryzacja
         private void EndScanning(object sender, EventArgs e)
         {
 
+        }
+
+        private void ZXingScannerView_OnScanResult(ZXing.Result result)
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await DisplayAlert("Wynik skanowania", result.Text, "OK");
+            });
         }
     }
 }
