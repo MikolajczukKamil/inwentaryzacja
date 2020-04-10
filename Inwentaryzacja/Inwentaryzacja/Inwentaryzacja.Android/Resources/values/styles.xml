@@ -2,6 +2,8 @@
 <resources>
 
   <style name="MainTheme" parent="MainTheme.Base">
+    <!--Zmienia domyslną wartość na false - nie ma automatycznie wielkich liter w Buttonach-->
+    <item name="android:textAllCaps">false</item>
   </style>
   <!-- Base theme applied no matter what API -->
   <style name="MainTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -27,4 +29,5 @@
   <style name="AppCompatDialogStyle" parent="Theme.AppCompat.Light.Dialog">
     <item name="colorAccent">#FF4081</item>
   </style>
+
 </resources>
