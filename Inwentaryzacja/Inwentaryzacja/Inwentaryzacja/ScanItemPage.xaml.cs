@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using ZXing.Mobile;
+using ZXing;
 
 namespace Inwentaryzacja
 {
@@ -15,6 +17,21 @@ namespace Inwentaryzacja
         public ScanItemPage()
         {
             InitializeComponent();
+
+            var zXingOptions = new MobileBarcodeScanningOptions()
+            {
+                DelayBetweenContinuousScans = 1000, // msec
+                UseFrontCameraIfAvailable = false,
+                PossibleFormats = new List<BarcodeFormat>(new[]
+             {
+                 BarcodeFormat.EAN_8,
+                 BarcodeFormat.EAN_13,
+                 BarcodeFormat.CODE_128,
+                 BarcodeFormat.QR_CODE
+             }),
+                TryHarder = true //Gets or sets a flag which cause a deeper look into the bitmap.
+            };
+            _scanner.Options = zXingOptions;
         }
 
         protected override void OnAppearing()
