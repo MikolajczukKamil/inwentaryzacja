@@ -12,8 +12,6 @@ namespace Inwentaryzacja
             InitializeComponent();
 
             MainPage = new MainPage();
-            //dla debug - ustaw current page jako:
-            Current.MainPage = new ChooseRoomPage();
         }
 
         protected override void OnStart()
