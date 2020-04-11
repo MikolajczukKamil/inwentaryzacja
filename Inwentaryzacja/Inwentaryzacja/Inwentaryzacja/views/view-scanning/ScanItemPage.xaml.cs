@@ -14,6 +14,8 @@ namespace Inwentaryzacja
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ScanItemPage : ContentPage
     {
+        private ZXing.Result prev=null;
+
         public ScanItemPage()
         {
             InitializeComponent();
@@ -23,13 +25,13 @@ namespace Inwentaryzacja
                 DelayBetweenContinuousScans = 1000, // msec
                 UseFrontCameraIfAvailable = false,
                 PossibleFormats = new List<BarcodeFormat>(new[]
-             {
-                 BarcodeFormat.EAN_8,
-                 BarcodeFormat.EAN_13,
-                 BarcodeFormat.CODE_128,
-                 BarcodeFormat.QR_CODE
-             }),
-                TryHarder = true //Gets or sets a flag which cause a deeper look into the bitmap.
+                {
+                     BarcodeFormat.EAN_8,
+                     BarcodeFormat.EAN_13,
+                     BarcodeFormat.CODE_128,
+                     BarcodeFormat.QR_CODE
+                }),
+                TryHarder = false //Gets or sets a flag which cause a deeper look into the bitmap.
             };
             _scanner.Options = zXingOptions;
         }
@@ -46,7 +48,7 @@ namespace Inwentaryzacja
             base.OnDisappearing();
         }
 
-        async void Cancel(object sender, EventArgs e)
+        async private void Cancel(object sender, EventArgs e)
         {
             bool response = await DisplayAlert("Anulować skanowanie?", "Czy na pewno chcesz anulować skanowanie?", "Tak", "Nie");
 
@@ -63,10 +65,14 @@ namespace Inwentaryzacja
 
         private void ZXingScannerView_OnScanResult(ZXing.Result result)
         {
-            Device.BeginInvokeOnMainThread(async () =>
+            if(prev == null || result.Text!=prev.Text)
             {
-                await DisplayAlert("Wynik skanowania", result.Text, "OK");
-            });
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    prev = result;
+                    await DisplayAlert("Wynik skanowania", result.Text, "OK");
+                });
+            }
         }
     }
 }

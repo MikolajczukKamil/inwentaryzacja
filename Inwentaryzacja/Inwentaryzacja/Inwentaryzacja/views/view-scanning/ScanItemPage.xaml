@@ -8,6 +8,7 @@
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              x:Class="Inwentaryzacja.ScanItemPage">
 
+    
     <Grid BackgroundColor="#8EE3BA">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.1*"/>
@@ -15,6 +16,7 @@
             <RowDefinition Height="0.1*"/>
             <RowDefinition Height="0.1*"/>
         </Grid.RowDefinitions>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
