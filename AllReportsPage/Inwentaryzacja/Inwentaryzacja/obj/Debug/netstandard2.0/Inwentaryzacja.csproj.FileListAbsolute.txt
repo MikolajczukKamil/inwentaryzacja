@@ -1,0 +1,17 @@
+C:\Users\HP\Desktop\Chmury\Inwentaryzacja\Inwentaryzacja\Inwentaryzacja\bin\Debug\netstandard2.0\Inwentaryzacja.deps.json
+C:\Users\HP\Desktop\Chmury\Inwentaryzacja\Inwentaryzacja\Inwentaryzacja\bin\Debug\netstandard2.0\Inwentaryzacja.dll
+C:\Users\HP\Desktop\Chmury\Inwentaryzacja\Inwentaryzacja\Inwentaryzacja\bin\Debug\netstandard2.0\ref\Inwentaryzacja.dll
+C:\Users\HP\Desktop\Chmury\Inwentaryzacja\Inwentaryzacja\Inwentaryzacja\bin\Debug\netstandard2.0\Inwentaryzacja.pdb
+C:\Users\HP\Desktop\Chmury\Inwentaryzacja\Inwentaryzacja\Inwentaryzacja\obj\Debug\netstandard2.0\Inwentaryzacja.csprojAssemblyReference.cache
+C:\Users\HP\Desktop\Chmury\Inwentaryzacja\Inwentaryzacja\Inwentaryzacja\obj\Debug\netstandard2.0\App.xaml.g.cs
+C:\Users\HP\Desktop\Chmury\Inwentaryzacja\Inwentaryzacja\Inwentaryzacja\obj\Debug\netstandard2.0\MainPage.xaml.g.cs
+C:\Users\HP\Desktop\Chmury\Inwentaryzacja\Inwentaryzacja\Inwentaryzacja\obj\Debug\netstandard2.0\Inwentaryzacja.csproj.CoreCompileInputs.cache
+C:\Users\HP\Desktop\Chmury\Inwentaryzacja\Inwentaryzacja\Inwentaryzacja\obj\Debug\netstandard2.0\Inwentaryzacja.AssemblyInfoInputs.cache
+C:\Users\HP\Desktop\Chmury\Inwentaryzacja\Inwentaryzacja\Inwentaryzacja\obj\Debug\netstandard2.0\Inwentaryzacja.AssemblyInfo.cs
+C:\Users\HP\Desktop\Chmury\Inwentaryzacja\Inwentaryzacja\Inwentaryzacja\obj\Debug\netstandard2.0\XamlC.stamp
+C:\Users\HP\Desktop\Chmury\Inwentaryzacja\Inwentaryzacja\Inwentaryzacja\obj\Debug\netstandard2.0\Inwentaryzacja.dll
+C:\Users\HP\Desktop\Chmury\Inwentaryzacja\Inwentaryzacja\Inwentaryzacja\obj\Debug\netstandard2.0\ref\Inwentaryzacja.dll
+C:\Users\HP\Desktop\Chmury\Inwentaryzacja\Inwentaryzacja\Inwentaryzacja\obj\Debug\netstandard2.0\Inwentaryzacja.pdb
+C:\Users\HP\Desktop\Chmury\Inwentaryzacja\Inwentaryzacja\Inwentaryzacja\obj\Debug\netstandard2.0\ImageButton.xaml.g.cs
+C:\Users\HP\Desktop\Chmury\Inwentaryzacja\Inwentaryzacja\Inwentaryzacja\obj\Debug\netstandard2.0\ReportButton.xaml.g.cs
+C:\Users\HP\Desktop\Chmury\Inwentaryzacja\Inwentaryzacja\Inwentaryzacja\obj\Debug\netstandard2.0\AllReportsPage.xaml.g.cs
