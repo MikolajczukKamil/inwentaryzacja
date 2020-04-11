@@ -21,7 +21,11 @@
                 CornerRadius="40"
                 HeightRequest="30"
                 WidthRequest="20">
-                <inwentaryzacja:BorderlessPicker HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+                <inwentaryzacja:BorderlessPicker
+                                                 Placeholder="Test PH"
+                                                 HorizontalOptions="FillAndExpand" 
+                                                 VerticalOptions="Center"
+                                                 x:Name="RoomPicker"/>
             </Frame>
         
             <Button Text="Kontynuuj"
