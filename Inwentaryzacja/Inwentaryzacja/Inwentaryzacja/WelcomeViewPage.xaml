@@ -10,7 +10,7 @@
              <ContentPage.Content>
                      <StackLayout>
 
-                         <Label Text="Witaj ponownie"  HorizontalOptions="Center" Margin="25,110,25,110"  FontSize="25" TextColor="Black">
+                         <Label Text="Witaj ponownie"  HorizontalOptions="Center" Margin="15,90,15,90"  FontSize="40" TextColor="Black">
                              <Label.FontFamily>
                                  <OnPlatform x:TypeArguments="x:String">
                                      <On Platform="Android" Value="Comfortaa-VariableFont_wght.ttf#Comfortaa" />
@@ -18,7 +18,7 @@
                              </Label.FontFamily>
                          </Label>
 
-                         <local:RoundedButton Text="Rozpocznij skanowanie" ContentLayout="Bottom" Margin="35,0,35,0" ImageSource="btnimg.png" Padding="0,10,0,10">
+                         <local:RoundedButton Text="Rozpocznij skanowanie" ContentLayout="Bottom" Margin="40,0,40,0" ImageSource="btnimg.png" Padding="0,10,0,10">
                              <local:RoundedButton.FontFamily>
                                  <OnPlatform x:TypeArguments="x:String">
                                      <On Platform="Android" Value="Roboto-Light.ttf#Roboto" />
@@ -27,7 +27,7 @@
                          </local:RoundedButton>
 
 
-                         <local:RoundedButton Text="Przeglądaj raporty"  HeightRequest="35" Margin="35,10,35,50" >
+                         <local:RoundedButton Text="Przeglądaj raporty"  HeightRequest="35" Margin="40,10,40,50" >
                              <local:RoundedButton.FontFamily>
                                  <OnPlatform x:TypeArguments="x:String">
                                      <On Platform="Android" Value="Roboto-Light.ttf#Roboto" />
