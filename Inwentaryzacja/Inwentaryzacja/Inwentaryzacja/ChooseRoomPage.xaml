@@ -47,6 +47,8 @@
                     WidthRequest="300"
                     HeightRequest="50" />
             <Button Text="Powrót"
+                    ImageSource="back_icon.png"
+                    ContentLayout="Right, -50"
                     HorizontalOptions="Start"
                     FontSize="20"
                     CornerRadius="12"

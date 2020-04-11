@@ -16,5 +16,6 @@ namespace Inwentaryzacja
 		{
 			InitializeComponent ();
 		}
+
 	}
 }
