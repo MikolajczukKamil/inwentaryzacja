@@ -19,10 +19,10 @@
                 HorizontalOptions="Fill"
                 VerticalOptions="End"
                 CornerRadius="40"
-                HeightRequest="30"
+                HeightRequest="44"
                 WidthRequest="20">
                 <inwentaryzacja:BorderlessPicker
-                                                 Placeholder="Test PH"
+                                                 Placeholder="Sala"
                                                  HorizontalOptions="FillAndExpand" 
                                                  VerticalOptions="Center"
                                                  x:Name="RoomPicker"/>
@@ -52,7 +52,7 @@
                     HeightRequest="50" />
             <Button Text="Powrót"
                     ImageSource="back_icon.png"
-                    ContentLayout="Right, -50"
+                    ContentLayout="Right, -40"
                     HorizontalOptions="Start"
                     FontSize="20"
                     CornerRadius="12"
