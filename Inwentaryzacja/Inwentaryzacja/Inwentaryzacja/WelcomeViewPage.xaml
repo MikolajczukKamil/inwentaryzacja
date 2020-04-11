@@ -8,41 +8,60 @@
              BackgroundColor="#8EE3BA">
 
              <ContentPage.Content>
-                     <StackLayout>
+                 <StackLayout>
 
-                         <Label Text="Witaj ponownie"  HorizontalOptions="Center" Margin="15,90,15,90"  FontSize="40" TextColor="Black">
-                             <Label.FontFamily>
-                                 <OnPlatform x:TypeArguments="x:String">
-                                     <On Platform="Android" Value="Comfortaa-VariableFont_wght.ttf#Comfortaa" />
-                                 </OnPlatform>
-                             </Label.FontFamily>
-                         </Label>
-
-                         <local:RoundedButton Text="Rozpocznij skanowanie" ContentLayout="Bottom" Margin="40,0,40,0" ImageSource="btnimg.png" Padding="0,10,0,10">
-                             <local:RoundedButton.FontFamily>
-                                 <OnPlatform x:TypeArguments="x:String">
-                                     <On Platform="Android" Value="Roboto-Light.ttf#Roboto" />
-                                 </OnPlatform>
-                             </local:RoundedButton.FontFamily>
-                         </local:RoundedButton>
+                     <Label Text="Witaj ponownie"  HorizontalOptions="Center" Margin="15,60,15,45"  FontSize="43" TextColor="Black">
+                         <Label.FontFamily>
+                             <OnPlatform x:TypeArguments="x:String">
+                                 <On Platform="Android" Value="Comfortaa-VariableFont_wght.ttf#Comfortaa" />
+                             </OnPlatform>
+                         </Label.FontFamily>
+                     </Label>
 
 
-                         <local:RoundedButton Text="Przeglądaj raporty"  HeightRequest="35" Margin="40,10,40,50" >
-                             <local:RoundedButton.FontFamily>
-                                 <OnPlatform x:TypeArguments="x:String">
-                                     <On Platform="Android" Value="Roboto-Light.ttf#Roboto" />
-                                 </OnPlatform>
-                             </local:RoundedButton.FontFamily>
-                         </local:RoundedButton>
+                     <local:RoundedButton Text="Rozpocznij skanowanie"
+                                          ContentLayout="Bottom"
+                                          Margin="40,0,40,0" FontSize="23"
+                                          ImageSource="btnimg.png"
+                                          Padding="10,20,10,20"
+                                          TextColor="Black">
 
-                         <local:RoundedButton Text="Wyloguj" VerticalOptions="EndAndExpand" HorizontalOptions="Start" HeightRequest="30" Margin="10,0,0,10">
-                             <local:RoundedButton.FontFamily>
-                                 <OnPlatform x:TypeArguments="x:String">
-                                     <On Platform="Android" Value="Roboto-Light.ttf#Roboto" />
-                                 </OnPlatform>
-                             </local:RoundedButton.FontFamily>
-                         </local:RoundedButton>
+                         <local:RoundedButton.FontFamily>
+                             <OnPlatform x:TypeArguments="x:String">
+                                 <On Platform="Android" Value="Roboto-Light.ttf#Roboto" />
+                             </OnPlatform>
+                         </local:RoundedButton.FontFamily>
 
-                     </StackLayout>
-                 </ContentPage.Content>
-             </ContentPage>
+                     </local:RoundedButton>
+
+
+                     <local:RoundedButton Text="Przeglądaj raporty" FontSize="25" Margin="40,25,40,50" Padding="10,10,10,10" TextColor="Black">
+
+                         <local:RoundedButton.FontFamily>
+                             <OnPlatform x:TypeArguments="x:String">
+                                 <On Platform="Android" Value="Roboto-Light.ttf#Roboto" />
+                             </OnPlatform>
+                         </local:RoundedButton.FontFamily>
+
+                     </local:RoundedButton>
+
+
+                     <local:RoundedButton Text="Wyloguj"
+                                          VerticalOptions="EndAndExpand"
+                                          HorizontalOptions="Start"
+                                          FontSize="20"
+                                          Margin="20,0,0,30"
+                                          TextColor="Black"
+                                          Padding="10,10,10,10">
+
+                         <local:RoundedButton.FontFamily>
+                             <OnPlatform x:TypeArguments="x:String">
+                                 <On Platform="Android" Value="Roboto-Light.ttf#Roboto" />
+                             </OnPlatform>
+                         </local:RoundedButton.FontFamily>
+
+                     </local:RoundedButton>
+
+                 </StackLayout>
+             </ContentPage.Content>
+</ContentPage>
