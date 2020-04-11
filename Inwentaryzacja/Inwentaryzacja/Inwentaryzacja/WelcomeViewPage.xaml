@@ -10,16 +10,16 @@
              <ContentPage.Content>
                  <StackLayout>
 
-                     <Label Text="Witaj ponownie"  HorizontalOptions="Center" Margin="15,60,15,45"  FontSize="43" TextColor="Black">
-                         <Label.FontFamily>
-                             <OnPlatform x:TypeArguments="x:String">
-                                 <On Platform="Android" Value="Comfortaa-VariableFont_wght.ttf#Comfortaa" />
-                             </OnPlatform>
-                         </Label.FontFamily>
-                     </Label>
+                    <Label Text="Witaj ponownie"  HorizontalOptions="Center" Margin="0,60,0,60"  FontSize="43" TextColor="Black">
+                        <Label.FontFamily>
+                            <OnPlatform x:TypeArguments="x:String">
+                                <On Platform="Android" Value="Comfortaa-VariableFont_wght.ttf#Comfortaa" />
+                            </OnPlatform>
+                        </Label.FontFamily>
+                    </Label>
 
 
-                     <local:RoundedButton Text="Rozpocznij skanowanie"
+                    <local:RoundedButton Text="Rozpocznij skanowanie"
                                           ContentLayout="Bottom"
                                           Margin="40,0,40,0" FontSize="23"
                                           ImageSource="btnimg.png"
@@ -32,7 +32,7 @@
                              </OnPlatform>
                          </local:RoundedButton.FontFamily>
 
-                     </local:RoundedButton>
+                    </local:RoundedButton>
 
 
                      <local:RoundedButton Text="Przeglądaj raporty" FontSize="25" Margin="40,25,40,50" Padding="10,10,10,10" TextColor="Black">
