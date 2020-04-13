@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing.Mobile;
 using ZXing;
+using System.Threading;
 
 namespace Inwentaryzacja
 {
@@ -22,7 +23,7 @@ namespace Inwentaryzacja
 
             var zXingOptions = new MobileBarcodeScanningOptions()
             {
-                DelayBetweenContinuousScans = 1000, // msec
+                DelayBetweenContinuousScans = 1800, // msec
                 UseFrontCameraIfAvailable = false,
                 PossibleFormats = new List<BarcodeFormat>(new[]
                 {
@@ -58,10 +59,52 @@ namespace Inwentaryzacja
             }
         }
 
-        private void EndScanning(object sender, EventArgs e)
+        private async void EndScanning(object sender, EventArgs e)
         {
+            await ShowPopup();
+        }
+
+        private async Task ShowPopup(string message = "Zeskanowano!")
+        {
+            await Task.Run(() => 
+            { 
+                Device.BeginInvokeOnMainThread(() => 
+                { 
+                    _contentPopup.IsVisible = true; 
+                }); 
+            });
+
+            await Task.Run(() => 
+            { 
+                Device.BeginInvokeOnMainThread(() => 
+                { 
+                    _contentPopup.Text = message; 
+                }); 
+            });
+
+            await Task.Run(() => 
+            { 
+                Device.BeginInvokeOnMainThread(() => 
+                { 
+                    _backColorPopup.WidthRequest = _contentPopup.Width; 
+                }); 
+            });
+            
+            await _popup.FadeTo(1, 150);
+            await Task.Delay(600);
+            await _popup.FadeTo(0, 400);
+
+
+            await Task.Run(() => 
+            { 
+                Device.BeginInvokeOnMainThread(() => 
+                { 
+                    _contentPopup.IsVisible = false; 
+                }); 
+            });
 
         }
+
 
         private void ZXingScannerView_OnScanResult(ZXing.Result result)
         {
@@ -70,7 +113,15 @@ namespace Inwentaryzacja
                 Device.BeginInvokeOnMainThread(async () =>
                 {
                     prev = result;
-                    await DisplayAlert("Wynik skanowania", result.Text, "OK");
+                    await ShowPopup();
+                    //await DisplayAlert("Wynik skanowania", result.Text, "OK");
+                });
+            }
+            else
+            {
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await ShowPopup("Już zeskanowano ten przedmiot!");
                 });
             }
         }

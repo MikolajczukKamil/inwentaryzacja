@@ -22,12 +22,79 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Text="Skanuj kod" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Large" TextColor="Black" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
-        <zxing:ZXingScannerView x:Name="_scanner" IsScanning="True" OnScanResult="ZXingScannerView_OnScanResult" Margin="40, 0, 40, 0" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" />
-        <Label Text="Zeskanowano 5/12 przedmiotów" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Large" TextColor="Black" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"/>
-        <local:RoundedButton Text="Anuluj" ImageSource="krzyzyk.png" ContentLayout="Right, -70" Padding="0, 0, 10,0" TextColor="Red" FontSize="Large" Margin="10, 0, 0, 20" Clicked="Cancel" Grid.Row="3" Grid.Column="0"/>
-        <local:RoundedButton Text="Zakończ" ImageSource="fajka.png" ContentLayout="Right, -50" Padding="0, 0, 10,0" TextColor="Green" FontSize="Large" Margin="0, 0, 10, 20" Clicked="EndScanning"  Grid.Row="3" Grid.Column="1"/>
+        <Label 
+            Text="Skanuj kod" 
+            HorizontalTextAlignment="Center" 
+            VerticalTextAlignment="Center" 
+            FontSize="Large" 
+            TextColor="Black" 
+            Grid.Column="0" 
+            Grid.Row="0" 
+            Grid.ColumnSpan="2" />
+        
+        <zxing:ZXingScannerView 
+            x:Name="_scanner" 
+            IsScanning="True" 
+            OnScanResult="ZXingScannerView_OnScanResult" 
+            Margin="40, 0, 40, 0" 
+            Grid.Column="0" 
+            Grid.Row="1" 
+            Grid.ColumnSpan="2" />
+
+
+        <AbsoluteLayout x:Name="_popup" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalOptions="Center" VerticalOptions="End" Opacity="0" Margin="20">
+            <BoxView 
+                x:Name="_backColorPopup" 
+                BackgroundColor="White" 
+                Opacity="0.5" 
+                CornerRadius="10" />
+            
+            <Label 
+                x:Name="_contentPopup" 
+                Text="Zeskanowano!" 
+                HorizontalTextAlignment="Center" 
+                VerticalTextAlignment="End" 
+                FontSize="Medium" 
+                Padding="10,8,10,10" 
+                Opacity="1" 
+                TextColor="Black" />
+            
+        </AbsoluteLayout>
+
+
+        <Label 
+            Text="Zeskanowano 5/12 przedmiotów" 
+            HorizontalTextAlignment="Center" 
+            VerticalTextAlignment="Center" 
+            FontSize="Large" 
+            TextColor="Black" 
+            Grid.Column="0" 
+            Grid.Row="2" 
+            Grid.ColumnSpan="2" />
+        
+        <local:RoundedButton 
+            Text="Anuluj" 
+            ImageSource="krzyzyk.png" 
+            ContentLayout="Right, -70" 
+            Padding="0, 0, 10,0" 
+            TextColor="Red" 
+            FontSize="Large" 
+            Margin="10, 0, 0, 20" 
+            Clicked="Cancel" 
+            Grid.Row="3" 
+            Grid.Column="0" />
+        
+        <local:RoundedButton 
+            Text="Zakończ" 
+            ImageSource="fajka.png" 
+            ContentLayout="Right, -50" 
+            Padding="0, 0, 10,0" 
+            TextColor="Green" 
+            FontSize="Large" 
+            Margin="0, 0, 10, 20" 
+            Clicked="EndScanning"  
+            Grid.Row="3" 
+            Grid.Column="1"/>
     </Grid>
-    
 
 </ContentPage>
