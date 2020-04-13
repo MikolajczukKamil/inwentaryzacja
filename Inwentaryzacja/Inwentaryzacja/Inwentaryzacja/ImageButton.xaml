@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Inwentaryzacja.ImageButton">
+
+
+    <Frame CornerRadius="10" Padding="12">
+        <StackLayout Orientation="Horizontal" >
+
+            <Label x:Name="innerLabel" VerticalOptions="Center" 
+               FontSize="Medium" TextColor="Black" HorizontalOptions="StartAndExpand"/>
+            <Image x:Name="innerImage"   WidthRequest="25" HeightRequest="25"  
+                VerticalOptions="Center"  HorizontalOptions="EndAndExpand"   />
+           
+        </StackLayout>
+      </Frame>
+
+</ContentView>
