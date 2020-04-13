@@ -50,7 +50,7 @@
 
         <local:RoundedButton 
             Text="Powrót" 
-            ImageSource="retarrow.png" 
+            ImageSource="back_icon.png" 
             ContentLayout="Right, -70" 
             Padding="0, 0, 10,0" 
             TextColor="Blue" 
