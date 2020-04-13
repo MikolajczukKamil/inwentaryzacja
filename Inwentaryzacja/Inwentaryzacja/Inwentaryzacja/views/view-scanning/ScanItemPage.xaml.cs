@@ -59,9 +59,9 @@ namespace Inwentaryzacja
             }
         }
 
-        private async void EndScanning(object sender, EventArgs e)
+        private void EndScanning(object sender, EventArgs e)
         {
-            await ShowPopup();
+
         }
 
         private async Task ShowPopup(string message = "Zeskanowano!")
@@ -114,7 +114,6 @@ namespace Inwentaryzacja
                 {
                     prev = result;
                     await ShowPopup();
-                    //await DisplayAlert("Wynik skanowania", result.Text, "OK");
                 });
             }
             else
