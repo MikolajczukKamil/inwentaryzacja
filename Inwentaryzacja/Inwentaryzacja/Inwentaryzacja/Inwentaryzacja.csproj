@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.5.0.530" />
-<<<<<<< HEAD
+
   </ItemGroup>
 
   <ItemGroup>
@@ -31,9 +31,8 @@
     <EmbeddedResource Update="WelcomeViewPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
-=======
+
     <PackageReference Include="ZXing.Net.Mobile" Version="2.3.1" />
     <PackageReference Include="ZXing.Net.Mobile.Forms" Version="2.3.1" />
->>>>>>> 6fda2c0c3728d01d0a6a33e71635d6af96e3103b
   </ItemGroup>
 </Project>
