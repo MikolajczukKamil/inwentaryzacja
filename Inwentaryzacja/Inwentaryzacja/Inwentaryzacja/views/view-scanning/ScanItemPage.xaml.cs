@@ -9,6 +9,8 @@ using Xamarin.Forms.Xaml;
 using ZXing.Mobile;
 using ZXing;
 using System.Threading;
+using Inwentaryzacja.views.view_scannedItem;
+using Inwentaryzacja.views;
 
 namespace Inwentaryzacja
 {
@@ -16,6 +18,7 @@ namespace Inwentaryzacja
     public partial class ScanItemPage : ContentPage
     {
         private ZXing.Result prev=null;
+        private List<Item> scannedItem = new List<Item>();
 
         public ScanItemPage()
         {
@@ -45,7 +48,7 @@ namespace Inwentaryzacja
 
         protected override void OnDisappearing()
         {
-            _scanner.IsScanning = false;
+            //_scanner.IsScanning = false;
             base.OnDisappearing();
         }
 
@@ -59,9 +62,9 @@ namespace Inwentaryzacja
             }
         }
 
-        private async void EndScanning(object sender, EventArgs e)
+        private async void ShowScanedItem(object sender, EventArgs e)
         {
-            await ShowPopup();
+            await Navigation.PushAsync(new ScannedItem(scannedItem), true);
         }
 
         private async Task ShowPopup(string message = "Zeskanowano!")
@@ -110,12 +113,26 @@ namespace Inwentaryzacja
         {
             if(prev == null || result.Text!=prev.Text)
             {
-                Device.BeginInvokeOnMainThread(async () =>
+                if(!ListContainItem(result.Text))
                 {
-                    prev = result;
-                    await ShowPopup();
-                    //await DisplayAlert("Wynik skanowania", result.Text, "OK");
-                });
+                    scannedItem.Add(new Item(result.Text));
+
+                    Device.BeginInvokeOnMainThread(async () =>
+                    {
+                        prev = result;
+                        _infoLabel.Text = "Liczba zeskanowanych przedmiotów: " + scannedItem.Count;
+                        await ShowPopup();
+                        
+                        //await DisplayAlert("Wynik skanowania", result.Text, "OK");
+                    });
+                }
+                else
+                {
+                    Device.BeginInvokeOnMainThread(async () =>
+                    {
+                        await ShowPopup("Już zeskanowano ten przedmiot!");
+                    });
+                }
             }
             else
             {
@@ -124,6 +141,19 @@ namespace Inwentaryzacja
                     await ShowPopup("Już zeskanowano ten przedmiot!");
                 });
             }
+        }
+
+        private bool ListContainItem(string text)
+        {
+            foreach (var item in scannedItem)
+            {
+                if(item.Text==text)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
