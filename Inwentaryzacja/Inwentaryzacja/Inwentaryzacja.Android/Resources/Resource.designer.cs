@@ -8164,11 +8164,10 @@ namespace Inwentaryzacja.Droid
 			public const int avd_show_password = 2131165275;
 			
 			// aapt resource value: 0x7F07005C
-<<<<<<< HEAD
+
 			public const int btnimg = 2131165276;
-=======
+
 			public const int back_icon = 2131165276;
->>>>>>> 6fda2c0c3728d01d0a6a33e71635d6af96e3103b
 			
 			// aapt resource value: 0x7F07005D
 			public const int design_bottom_navigation_item_background = 2131165277;
