@@ -71,6 +71,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="Assets\Comfortaa-VariableFont_wght.ttf" />
+    <AndroidAsset Include="Assets\Roboto-Light.ttf" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
@@ -110,6 +112,7 @@
     <AndroidResource Include="Resources\drawable\logo.png" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\drawable\btnimg.png" />
     <AndroidResource Include="Resources\drawable\back_icon.png" />
   </ItemGroup>
   <ItemGroup>
