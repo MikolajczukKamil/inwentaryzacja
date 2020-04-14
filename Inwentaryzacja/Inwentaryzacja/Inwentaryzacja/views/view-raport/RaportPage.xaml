@@ -23,14 +23,12 @@
             <ListView  Margin="15" 
                        RowHeight="120" 
                        SeparatorVisibility="None" 
-                       x:Name="ItemsList1"
-                       >
-
+                       x:Name="ItemsList1">
 
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                    <customControls:CustomViewCell SelectedBackgroundColor="#00FF7F">
+                        <customControls:CustomViewCell SelectedBackgroundColor="#00FF7F">
                             <ViewCell.View>
 
                                 <Frame CornerRadius="10" 
@@ -102,11 +100,8 @@
                                     </StackLayout>
                                 </Frame>
                             </ViewCell.View>
-                    </customControls:CustomViewCell>
-
-
-
-                </DataTemplate>
+                        </customControls:CustomViewCell>
+                    </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 

@@ -32,7 +32,7 @@ namespace Inwentaryzacja
 
             get
             {
-                return string.Format("{0} (id:{1}", Name, ID_items);
+                return string.Format("{0} (id:{1})", Name, ID_items);
             }
         }
     }
