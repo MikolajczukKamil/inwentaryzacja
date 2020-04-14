@@ -4,14 +4,14 @@ using System.Text;
 
 namespace Inwentaryzacja.models
 {
-    public class Item
+    public class RaportItem
     {
         public string Name { get; set; }
         public int Item_Id { get; set; }
         public int Room { get; set; }
         public string PictureUrl { get; set; }
 
-        public Item(string name, int itemId, int room, string pictureUrl)
+        public RaportItem(string name, int itemId, int room, string pictureUrl)
         {
             this.Name = name;
             this.Item_Id = itemId;

@@ -135,7 +135,7 @@
 
                 <Button  
                         Text="Usuń raport" 
-                        ImageSource="kosz.png"
+                        ImageSource="Del.png"
                         ContentLayout="Right,-10"
                         BackgroundColor="White" 
                         Grid.Column="0" 
@@ -148,7 +148,7 @@
 
                 <Button  
                         Text="Zatwierdź"  
-                        ImageSource="OK.png"
+                        ImageSource="Akcept.png"
                         ContentLayout="Right,-10"
                         BackgroundColor="White" 
                         Grid.Column="4" 
