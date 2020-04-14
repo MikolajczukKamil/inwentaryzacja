@@ -55,7 +55,7 @@
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <Label Text="{Binding NewItem}"  
+                                            <Label Text="{Binding ItemData}"  
                                                FontSize="15" 
                                                Grid.Column="0" 
                                                Grid.Row="0" 
@@ -71,7 +71,7 @@
                                                Grid.ColumnSpan="2"  
                                                TextColor="Gray"/>
 
-                                            <Image Source="{Binding UrlPicture}"   
+                                            <Image Source="{Binding PictureUrl}"   
                                                Grid.Column="1" 
                                                Grid.Row="2"/>
 
@@ -130,8 +130,7 @@
                         Grid.Row="0" 
                         Margin="10,0,0,0" 
                         CornerRadius="10" 
-                        FontSize="13" 
-                        FontAttributes="Italic" 
+                        FontSize="16"
                         android:Button.UseDefaultShadow="true"/>
 
                 <Button  
@@ -144,8 +143,7 @@
                         Grid.Row="1" 
                         CornerRadius="10" 
                         Margin="15,5" 
-                        FontSize="13" 
-                        FontAttributes="Italic" 
+                        FontSize="16" 
                         android:Button.UseDefaultShadow="true"/>
 
                 <Button  
@@ -158,8 +156,7 @@
                         Grid.Row="1" 
                         CornerRadius="10" 
                         Margin="15,5" 
-                        FontSize="13" 
-                        FontAttributes="Italic" 
+                        FontSize="16" 
                         android:Button.UseDefaultShadow="true"/>
 
             </Grid>
