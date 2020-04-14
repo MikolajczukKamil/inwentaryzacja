@@ -9,7 +9,7 @@ using Xamarin.Forms.Xaml;
 using ZXing.Mobile;
 using ZXing;
 using System.Threading;
-
+using Inwentaryzacja.view_models;
 
 namespace Inwentaryzacja
 {
