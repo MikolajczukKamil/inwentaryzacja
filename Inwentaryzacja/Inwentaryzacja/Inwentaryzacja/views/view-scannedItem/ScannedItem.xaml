@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:local="clr-namespace:Inwentaryzacja"
+             x:Class="Inwentaryzacja.views.view_scannedItem.ScannedItem">
+    
+    
+    <Grid BackgroundColor="#8EE3BA">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.7*"/>
+            <RowDefinition Height="0.1*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label 
+            Text="Zeskanowane przedmioty" 
+            HorizontalTextAlignment="Center" 
+            VerticalTextAlignment="Center" 
+            FontSize="Large" 
+            TextColor="Black" 
+            Grid.Column="0" 
+            Grid.Row="0" 
+            Grid.ColumnSpan="2" />
+        
+        <ListView 
+            BackgroundColor="White" 
+            SeparatorColor="Black"
+            Margin="20,0,20,20"
+            x:Name="_listView"
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            ItemSelected="_listView_ItemSelected">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Text}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            
+        </ListView>
+
+        <local:RoundedButton 
+            Text="Powrót" 
+            ImageSource="back_icon.png" 
+            ContentLayout="Right, -70" 
+            Padding="0, 0, 10,0" 
+            TextColor="Blue" 
+            FontSize="Large" 
+            Margin="10, 0, 0, 20" 
+            Clicked="RetPrevPage" 
+            Grid.Row="2" 
+            Grid.Column="0" />
+
+        <local:RoundedButton 
+            Text="Zakończ" 
+            ImageSource="fajka.png" 
+            ContentLayout="Right, -50" 
+            Padding="0, 0, 10,0" 
+            TextColor="Green" 
+            FontSize="Large" 
+            Margin="0, 0, 10, 20" 
+            Clicked="EndScanning"  
+            Grid.Row="2" 
+            Grid.Column="1"/>
+
+    </Grid>
+    
+    
+</ContentPage>
