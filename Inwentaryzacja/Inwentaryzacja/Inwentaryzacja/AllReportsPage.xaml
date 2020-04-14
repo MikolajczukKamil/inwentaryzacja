@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:Inwentaryzacja"
+             mc:Ignorable="d"
+             x:Class="Inwentaryzacja.AllReportsPage">
+
+<ContentPage.Resources>
+
+        <ResourceDictionary>
+
+            <Style x:Key="Reportstyle" TargetType="Button">
+                <Setter Property="Margin" Value="15,4,14,5"/>
+                <Setter Property="HeightRequest" Value="80"/>
+                <Setter Property="WidthRequest" Value="331"/>
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+            </Style>
+        </ResourceDictionary>
+ </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="#8EE3BA" >
+                 <Label Text="Raporty" TextColor="Black"
+                  Margin="106,20, 106,15"
+                  VerticalOptions="Start" 
+                  HorizontalOptions="CenterAndExpand"
+                  HorizontalTextAlignment="Center" 
+                  FontSize="36"/>
+            <ScrollView>
+                 <StackLayout>
+                 <local:ReportButton  Rtitle="Raport #1"  
+                 RData="24.05.2020" RHall="Sala:77A"
+                 Style="{StaticResource Reportstyle}" />
+                 <local:ReportButton Rtitle="Raport #2" 
+                  RData="24.05.2020" RHall="Sala:77A"
+                  Style="{StaticResource Reportstyle}" />
+                 <local:ReportButton Rtitle="Raport #3" 
+                  RData="24.05.2020" RHall="Sala:77A"
+                  Style="{StaticResource Reportstyle}" />
+                  <local:ReportButton Rtitle="Raport #4" 
+                  RData="24.05.2020" RHall="Sala:77A"
+                  Style="{StaticResource Reportstyle}" />
+                 <local:ReportButton Rtitle="Raport #5" 
+                  RData="24.05.2020" RHall="Sala:77A"
+                  Style="{StaticResource Reportstyle}" />
+                 <local:ReportButton Rtitle="Raport #6" 
+                  RData="24.05.2020" RHall="Sala:77A"
+                  Style="{StaticResource Reportstyle}" />
+                 <local:ReportButton Rtitle="Raport #7" 
+                  RData="24.05.2020" RHall="Sala:77A"
+                  Style="{StaticResource Reportstyle}" />
+                  <local:ReportButton Rtitle="Raport #8" 
+                  RData="24.05.2020" RHall="Sala:77A"
+                  Style="{StaticResource Reportstyle}" />
+                 <local:ReportButton Rtitle="Raport #9" 
+                  RData="24.05.2020" RHall="Sala:77A"
+                  Style="{StaticResource Reportstyle}" />
+                  <local:ReportButton Rtitle="Raport #10" 
+                  RData="24.05.2020" RHall="Sala:77A"
+                  Style="{StaticResource Reportstyle}" />
+                 </StackLayout>
+            </ScrollView>
+                 <local:ImageButton ButtonText="Powrót" Source="arrow.png" 
+                  HorizontalOptions="CenterAndExpand" WidthRequest="130"
+                  VerticalOptions="Start" HeightRequest="110" Margin="15,26,215,9.57" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
