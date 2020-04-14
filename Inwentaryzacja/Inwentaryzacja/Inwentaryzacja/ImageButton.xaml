@@ -9,13 +9,10 @@
 
     <Frame CornerRadius="10" Padding="12">
         <StackLayout Orientation="Horizontal" >
-
             <Label x:Name="innerLabel" VerticalOptions="Center" 
-               FontSize="Medium" TextColor="Black" HorizontalOptions="StartAndExpand"/>
+             FontSize="Medium" TextColor="Black" HorizontalOptions="StartAndExpand"/>
             <Image x:Name="innerImage"   WidthRequest="25" HeightRequest="25"  
-                VerticalOptions="Center"  HorizontalOptions="EndAndExpand"   />
-           
-        </StackLayout>
-      </Frame>
-
+             VerticalOptions="Center"  HorizontalOptions="EndAndExpand"   />
+         </StackLayout>
+    </Frame>
 </ContentView>

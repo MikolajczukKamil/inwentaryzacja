@@ -5,27 +5,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Inwentaryzacja.ReportButton">
-
-
-    <Frame CornerRadius="10" Padding="12"  >
+    
+     <Frame CornerRadius="10" Padding="12"  >
         <StackLayout  >
             <Grid RowSpacing="10">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-
-            </Grid.RowDefinitions>
-           
-
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                 </Grid.RowDefinitions>
                 <Label x:Name="Reporttitle"  Grid.Row="0" FontSize="Medium" TextColor="Black"
-                   HorizontalTextAlignment="Start" />
+                 HorizontalTextAlignment="Start" />
                 <Label x:Name="Reportdata"  Grid.Row="1"  HorizontalTextAlignment="Start"
                  FontSize="Small"   TextColor="Gray"  />
                 <Label x:Name="ReportHall"   Grid.Row="1"  HorizontalTextAlignment="End"
                  FontSize="Small"    TextColor="Gray"/>
-        </Grid>
-       
-            
+             </Grid>
         </StackLayout>
     </Frame>
 </ContentView>
