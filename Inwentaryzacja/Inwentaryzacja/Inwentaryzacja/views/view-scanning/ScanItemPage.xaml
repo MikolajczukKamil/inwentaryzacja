@@ -63,7 +63,8 @@
 
 
         <Label 
-            Text="Zeskanowano 5/12 przedmiotów" 
+            x:Name="_infoLabel"
+            Text="Liczba zeskanowanych przedmiotów: 0" 
             HorizontalTextAlignment="Center" 
             VerticalTextAlignment="Center" 
             FontSize="Large" 
@@ -85,14 +86,14 @@
             Grid.Column="0" />
         
         <local:RoundedButton 
-            Text="Zakończ" 
-            ImageSource="fajka.png" 
+            Text="Podgląd" 
+            ImageSource="loupe.png" 
             ContentLayout="Right, -50" 
             Padding="0, 0, 10,0" 
             TextColor="Green" 
             FontSize="Large" 
             Margin="0, 0, 10, 20" 
-            Clicked="EndScanning"  
+            Clicked="ShowScanedItem"  
             Grid.Row="3" 
             Grid.Column="1"/>
     </Grid>
