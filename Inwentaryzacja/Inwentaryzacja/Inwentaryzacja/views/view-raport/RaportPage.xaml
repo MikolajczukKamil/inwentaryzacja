@@ -23,7 +23,7 @@
             <ListView  Margin="15" 
                        RowHeight="120" 
                        SeparatorVisibility="None" 
-                       x:Name="Listap"
+                       x:Name="ItemsList1"
                        >
 
 
@@ -66,14 +66,14 @@
                                                TextColor="Black" 
                                                FontAttributes="Bold"/>
 
-                                            <Label Text="{Binding Sale,StringFormat='Należy do Sali {0:F0}' }"  
+                                            <Label Text="{Binding Room,StringFormat='Należy do Sali {0:F0}' }"  
                                                FontSize="10" 
                                                Grid.Column="0" 
                                                Grid.Row="2" 
                                                Grid.ColumnSpan="2"  
                                                TextColor="Gray"/>
 
-                                            <Image Source="{Binding urlobrazka}"   
+                                            <Image Source="{Binding UrlPicture}"   
                                                Grid.Column="1" 
                                                Grid.Row="2"/>
 
