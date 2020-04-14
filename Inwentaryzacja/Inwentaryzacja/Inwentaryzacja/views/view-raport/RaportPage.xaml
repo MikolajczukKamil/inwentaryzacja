@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:local="clr-namespace:Inwentaryzacja"
+             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             xmlns:customControls="clr-namespace:Inwentaryzacja"
+             x:Class="Inwentaryzacja.RaportPage">
+
+
+    
+        <StackLayout BackgroundColor="#8EE3BA" xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core">
+
+            <Label Text="Sala 997" 
+                   TextColor="Black" 
+                   HorizontalOptions="Center" 
+                   FontSize="50" 
+                   TextDecorations="Underline" 
+                   FontAttributes="Bold"/>
+
+            <ListView  Margin="15" 
+                       RowHeight="120" 
+                       SeparatorVisibility="None" 
+                       x:Name="ItemsList1">
+
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <customControls:CustomViewCell SelectedBackgroundColor="#00FF7F">
+                            <ViewCell.View>
+
+                                <Frame CornerRadius="10" 
+                                   Margin="10" 
+                                   HasShadow="False">
+
+                                    <StackLayout  BackgroundColor="White"
+                                             HorizontalOptions="FillAndExpand" 
+                                             VerticalOptions="FillAndExpand" 
+                                             Orientation="Vertical" >
+                                        <Grid Margin="0" 
+                                          Padding="0">
+
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Label Text="{Binding ItemData}"  
+                                               FontSize="15" 
+                                               Grid.Column="0" 
+                                               Grid.Row="0" 
+                                               Grid.ColumnSpan="2" 
+                                               Grid.RowSpan="2" 
+                                               TextColor="Black" 
+                                               FontAttributes="Bold"/>
+
+                                            <Label Text="{Binding Room,StringFormat='Należy do Sali {0:F0}' }"  
+                                               FontSize="10" 
+                                               Grid.Column="0" 
+                                               Grid.Row="2" 
+                                               Grid.ColumnSpan="2"  
+                                               TextColor="Gray"/>
+
+                                            <Image Source="{Binding PictureUrl}"   
+                                               Grid.Column="1" 
+                                               Grid.Row="2"/>
+
+                                            <Button Text="Przenieś tutaj"
+                                                Grid.Column="2" 
+                                                Grid.Row="0" 
+                                                Grid.RowSpan="3"  
+                                                BackgroundColor="WhiteSmoke" 
+                                                BorderColor="Black" 
+                                                CornerRadius="10" 
+                                                BorderWidth="2" 
+                                                FontSize="10"
+                                                android:Button.UseDefaultShadow="true" />
+
+                                            <Button Text="Nic nie zmieniaj" 
+                                                Grid.Column="3" 
+                                                Grid.Row="0" 
+                                                Grid.RowSpan="3"  
+                                                BackgroundColor="WhiteSmoke" 
+                                                BorderColor="Black" 
+                                                CornerRadius="10" 
+                                                BorderWidth="2"
+                                                FontSize="10"
+                                                android:Button.UseDefaultShadow="true"/>
+                                        </Grid>
+                                    </StackLayout>
+                                </Frame>
+                            </ViewCell.View>
+                        </customControls:CustomViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Text="Przenieś wszystkie tutaj" 
+                        BackgroundColor="White"  
+                        Grid.Column="1" 
+                        Grid.ColumnSpan="6" 
+                        Grid.Row="0" 
+                        Margin="10,0,0,0" 
+                        CornerRadius="10" 
+                        FontSize="16"
+                        android:Button.UseDefaultShadow="true"/>
+
+                <Button  
+                        Text="Usuń raport" 
+                        ImageSource="Del.png"
+                        ContentLayout="Right,-10"
+                        BackgroundColor="White" 
+                        Grid.Column="0" 
+                        Grid.ColumnSpan="4" 
+                        Grid.Row="1" 
+                        CornerRadius="10" 
+                        Margin="15,5" 
+                        FontSize="16" 
+                        android:Button.UseDefaultShadow="true"/>
+
+                <Button  
+                        Text="Zatwierdź"  
+                        ImageSource="Akcept.png"
+                        ContentLayout="Right,-10"
+                        BackgroundColor="White" 
+                        Grid.Column="4" 
+                        Grid.ColumnSpan="4" 
+                        Grid.Row="1" 
+                        CornerRadius="10" 
+                        Margin="15,5" 
+                        FontSize="16" 
+                        android:Button.UseDefaultShadow="true"/>
+
+            </Grid>
+        </StackLayout>
+        
+
+</ContentPage>
