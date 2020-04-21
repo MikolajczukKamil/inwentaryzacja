@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="ChooseRoomPage.xaml">
+    <EmbeddedResource Update="views\view-chooseRoom\ChooseRoomPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="WelcomeViewPage.xaml">
