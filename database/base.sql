@@ -78,7 +78,8 @@ USE mmaz;
         user_id TINYINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
         token varchar(64) NOT NULL,
         expiration_date DATETIME NOT NULL,
-        create_date DATETIME NOT NULL
+        create_date DATETIME NOT NULL,
+        PRIMARY KEY(id)
     );
 
 /* Functions */
