@@ -11,7 +11,7 @@ namespace Inwentaryzacja
         {
             InitializeComponent();
 
-            MainPage = new WelcomeViewPage();
+            MainPage = new LoginPage();
         }
 
         protected override void OnStart()
