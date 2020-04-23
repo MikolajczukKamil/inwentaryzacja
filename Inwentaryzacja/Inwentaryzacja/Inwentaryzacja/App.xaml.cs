@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -7,11 +8,14 @@ namespace Inwentaryzacja
 {
     public partial class App : Application
     {
+        static public HttpClient clientHttp;
+
         public App()
         {
             InitializeComponent();
 
-            MainPage = new LoginPage();
+            clientHttp = new HttpClient();
+            MainPage = new NavigationPage(new LoginPage());
         }
 
         protected override void OnStart()
