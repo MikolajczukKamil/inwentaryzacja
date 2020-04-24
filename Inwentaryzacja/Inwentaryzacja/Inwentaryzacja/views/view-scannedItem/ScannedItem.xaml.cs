@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inwentaryzacja.models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,14 +13,11 @@ namespace Inwentaryzacja.views.view_scannedItem
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ScannedItem : ContentPage
     {
-        List<Item> scannedItem;
-
-        public ScannedItem(List<Item> scannedItem)
+        public ScannedItem(List<Asset> scannedItem)
         {
             InitializeComponent();
 
-            this.scannedItem = scannedItem;
-            _listView.ItemsSource = this.scannedItem;
+            _listView.ItemsSource = scannedItem;
         }
 
         private void EndScanning(object sender, EventArgs e)
@@ -34,9 +32,9 @@ namespace Inwentaryzacja.views.view_scannedItem
 
         private void _listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            Item item = (Item)e.SelectedItem;
+            Asset asset = (Asset)e.SelectedItem;
 
-            DisplayAlert("Przedmiot", item.Text , "OK");
+            DisplayAlert("Przedmiot", asset.name , "OK");
         }
     }
 }

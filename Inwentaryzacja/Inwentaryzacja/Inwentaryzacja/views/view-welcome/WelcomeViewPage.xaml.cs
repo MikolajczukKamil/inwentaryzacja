@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inwentaryzacja.models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,23 @@ namespace Inwentaryzacja
         public WelcomeViewPage()
         {
             InitializeComponent();
+        }
+
+        private async void scanButtonClicked(object sender, EventArgs e)
+        {
+            Asset asset = new Asset();
+            asset.name = "k34";
+            asset.assetType = 2;
+
+            if(await Asset.sendAsset(asset))
+            {
+                await DisplayAlert("Udało się", "" , "OK");
+            }
+            else
+            {
+                await DisplayAlert("Błąd", "", "OK");
+            }
+            
         }
     }
 }

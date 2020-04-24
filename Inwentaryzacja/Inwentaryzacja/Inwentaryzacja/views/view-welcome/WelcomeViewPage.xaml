@@ -24,7 +24,8 @@
                                           Margin="40,0,40,0" FontSize="23"
                                           ImageSource="btnimg.png"
                                           Padding="10,20,10,20"
-                                          TextColor="Black">
+                                          TextColor="Black"
+                                          Clicked="scanButtonClicked">
 
                          <local:RoundedButton.FontFamily>
                              <OnPlatform x:TypeArguments="x:String">
