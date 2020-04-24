@@ -10,6 +10,7 @@ namespace Inwentaryzacja.models
 {
     public class AssetType
     {
+        public static string message = "";
         public int id { get; set; }
         public string letter { get; set; }
         public string name { get; set; }
@@ -29,10 +30,12 @@ namespace Inwentaryzacja.models
                     {
                         var content = await response.Content.ReadAsStringAsync();
                         assetType = JsonConvert.DeserializeObject<AssetType>(content);
+                        AssetType.message = "Succes";
                     }
                     else
                     {
                         //wrong request, asset does not exist
+                        AssetType.message = await response.Content.ReadAsStringAsync();
                         return null;
                     }
 
@@ -40,12 +43,14 @@ namespace Inwentaryzacja.models
                 catch (Exception failConnection)
                 {
                     //server does not exist, cannot conver data
+                    AssetType.message = failConnection.Message;
                     return null;
                 }
             }
             else
             {
                 //no internet connection
+                AssetType.message = "no internet connection";
                 return null;
             }
 
@@ -67,10 +72,12 @@ namespace Inwentaryzacja.models
                     {
                         var content = await response.Content.ReadAsStringAsync();
                         assetTypeList = JsonConvert.DeserializeObject<List<AssetType>>(content);
+                        AssetType.message = "Succes";
                     }
                     else
                     {
                         //wrong request
+                        AssetType.message = await response.Content.ReadAsStringAsync();
                         return null;
                     }
 
@@ -78,19 +85,21 @@ namespace Inwentaryzacja.models
                 catch (Exception failConnection)
                 {
                     //server does not exist, cannot conver data
+                    AssetType.message = failConnection.Message;
                     return null;
                 }
             }
             else
             {
                 //no internet connection
+                AssetType.message = "no internet connection";
                 return null;
             }
 
             return assetTypeList;
         }
 
-        public static async Task<bool> sendAsset(AssetType assetType)
+        public static async Task<bool> sendAssetType(AssetType assetType)
         {
             if (!String.IsNullOrEmpty(assetType.name) && !String.IsNullOrEmpty(assetType.letter))
             {
@@ -102,6 +111,8 @@ namespace Inwentaryzacja.models
                         var data = JsonConvert.SerializeObject(assetType);
                         var content = new StringContent(data, Encoding.UTF8, "application/json");
                         var response = await App.clientHttp.PostAsync(uri, content);
+
+                        AssetType.message = await response.Content.ReadAsStringAsync();
 
                         if (response.IsSuccessStatusCode)
                         {
@@ -117,21 +128,24 @@ namespace Inwentaryzacja.models
                     catch (Exception failConnection)
                     {
                         //server does not exist, cannot conver data
+                        AssetType.message = failConnection.Message;
                         return false;
                     }
                 }
                 else
                 {
                     //no internet connection
+                    AssetType.message = "no internet connection";
                     return false;
                 }
             }
 
             //wrong data
+            AssetType.message = "wrong data";
             return false;
         }
 
-        public static async Task<bool> deleteAsset(int id)
+        public static async Task<bool> deleteAssetType(int id)
         {
             if (Xamarin.Essentials.Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
@@ -141,6 +155,8 @@ namespace Inwentaryzacja.models
                     var data = "{\"id\":\"" + id + "\"}";
                     var content = new StringContent(data, Encoding.UTF8, "application/json");
                     var response = await App.clientHttp.PostAsync(uri, content);
+
+                    AssetType.message = await response.Content.ReadAsStringAsync();
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -156,12 +172,14 @@ namespace Inwentaryzacja.models
                 catch (Exception failConnection)
                 {
                     //server does not exist, cannot conver data
+                    AssetType.message = failConnection.Message;
                     return false;
                 }
             }
             else
             {
                 //no internet connection
+                AssetType.message = "no internet connection";
                 return false;
             }
 

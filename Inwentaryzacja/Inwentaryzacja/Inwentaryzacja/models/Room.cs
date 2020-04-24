@@ -1,46 +1,42 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
-using Xamarin.Forms;
 
 namespace Inwentaryzacja.models
 {
-    public class Asset
+    class Room
     {
-        //przechowuje komunika z ostatniego zapytania http
-        //[JsonIgnore]
         public static string message = "";
         public int id { get; set; }
         public string name { get; set; }
-        public int asset_type { get; set; }
+        public int building { get; set; }
 
-        public static async Task<Asset> findOneByID(int id)
+
+        public static async Task<Room> findOneByID(int id)
         {
-            Asset asset;
+            Room room;
 
             if (Xamarin.Essentials.Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 try
                 {
-                    var uri = new Uri("http://maciejdominiak.000webhostapp.com/InwentaryzacjaAPI/asset/read_one.php?id=" + id.ToString());
+                    var uri = new Uri("http://maciejdominiak.000webhostapp.com/InwentaryzacjaAPI/room/read_one.php?id=" + id.ToString());
                     var response = await App.clientHttp.GetAsync(uri);
 
                     if (response.IsSuccessStatusCode)
                     {
                         var content = await response.Content.ReadAsStringAsync();
-                        asset = JsonConvert.DeserializeObject<Asset>(content);
-                        Asset.message = "Succes";
+                        room = JsonConvert.DeserializeObject<Room>(content);
+                        Room.message = "Succes";
                     }
                     else
                     {
                         //wrong request, asset does not exist
-                        Asset.message = await response.Content.ReadAsStringAsync();
+                        Room.message = await response.Content.ReadAsStringAsync();
                         return null;
                     }
 
@@ -48,41 +44,41 @@ namespace Inwentaryzacja.models
                 catch (Exception failConnection)
                 {
                     //server does not exist, cannot conver data
-                    Asset.message = failConnection.Message;
+                    Room.message = failConnection.Message;
                     return null;
                 }
             }
             else
             {
                 //no internet connection
-                Asset.message = "no internet connection";
+                Room.message = "no internet connection";
                 return null;
             }
 
-            return asset;
+            return room;
         }
 
-        public static async Task<List<Asset>> findAll()
+        public static async Task<List<Room>> findAll()
         {
-            List<Asset> assetList;
+            List<Room> roomList;
 
             if (Xamarin.Essentials.Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 try
                 {
-                    var uri = new Uri("http://maciejdominiak.000webhostapp.com/InwentaryzacjaAPI/asset/read.php");
+                    var uri = new Uri("http://maciejdominiak.000webhostapp.com/InwentaryzacjaAPI/room/read.php");
                     var response = await App.clientHttp.GetAsync(uri);
 
                     if (response.IsSuccessStatusCode)
                     {
                         var content = await response.Content.ReadAsStringAsync();
-                        assetList = JsonConvert.DeserializeObject<List<Asset>>(content);
-                        Asset.message = "Succes";
+                        roomList = JsonConvert.DeserializeObject<List<Room>>(content);
+                        Room.message = "Succes";
                     }
                     else
                     {
                         //wrong request
-                        Asset.message = await response.Content.ReadAsStringAsync();
+                        Room.message = await response.Content.ReadAsStringAsync();
                         return null;
                     }
 
@@ -90,34 +86,34 @@ namespace Inwentaryzacja.models
                 catch (Exception failConnection)
                 {
                     //server does not exist, cannot conver data
-                    Asset.message = failConnection.Message;
+                    Room.message = failConnection.Message;
                     return null;
                 }
             }
             else
             {
                 //no internet connection
-                Asset.message = "no internet connection";
+                Room.message = "no internet connection";
                 return null;
             }
 
-            return assetList;
+            return roomList;
         }
 
-        public static async Task<bool> sendAsset(Asset asset)
+        public static async Task<bool> sendRoom(Room room)
         {
-            if (!String.IsNullOrEmpty(asset.name) && asset.asset_type != 0)
+            if (!String.IsNullOrEmpty(room.name) && room.building!=0)
             {
                 if (Xamarin.Essentials.Connectivity.NetworkAccess == NetworkAccess.Internet)
                 {
                     try
                     {
-                        var uri = new Uri("http://maciejdominiak.000webhostapp.com/InwentaryzacjaAPI/asset/create.php");
-                        var data = JsonConvert.SerializeObject(asset);
+                        var uri = new Uri("http://maciejdominiak.000webhostapp.com/InwentaryzacjaAPI/room/create.php");
+                        var data = JsonConvert.SerializeObject(room);
                         var content = new StringContent(data, Encoding.UTF8, "application/json");
                         var response = await App.clientHttp.PostAsync(uri, content);
 
-                        Asset.message = await response.Content.ReadAsStringAsync();
+                        Room.message = await response.Content.ReadAsStringAsync();
 
                         if (response.IsSuccessStatusCode)
                         {
@@ -133,35 +129,35 @@ namespace Inwentaryzacja.models
                     catch (Exception failConnection)
                     {
                         //server does not exist, cannot conver data
-                        Asset.message = failConnection.Message;
+                        Room.message = failConnection.Message;
                         return false;
                     }
                 }
                 else
                 {
                     //no internet connection
-                    Asset.message = "no internet connection";
+                    Room.message = "no internet connection";
                     return false;
                 }
             }
 
             //wrong data
-            Asset.message = "wrong data";
+            Room.message = "wrong data";
             return false;
         }
 
-        public static async Task<bool> deleteAsset(int id)
+        public static async Task<bool> deleteRoom(int id)
         {
             if (Xamarin.Essentials.Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 try
                 {
-                    var uri = new Uri("http://maciejdominiak.000webhostapp.com/InwentaryzacjaAPI/asset/delete.php");
+                    var uri = new Uri("http://maciejdominiak.000webhostapp.com/InwentaryzacjaAPI/room/delete.php");
                     var data = "{\"id\":\"" + id + "\"}";
                     var content = new StringContent(data, Encoding.UTF8, "application/json");
-                    var response = await App.clientHttp.PostAsync(uri,content);
+                    var response = await App.clientHttp.PostAsync(uri, content);
 
-                    Asset.message = await response.Content.ReadAsStringAsync();
+                    Room.message = await response.Content.ReadAsStringAsync();
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -177,14 +173,14 @@ namespace Inwentaryzacja.models
                 catch (Exception failConnection)
                 {
                     //server does not exist, cannot conver data
-                    Asset.message = failConnection.Message;
+                    Room.message = failConnection.Message;
                     return false;
                 }
             }
             else
             {
                 //no internet connection
-                Asset.message = "no internet connection";
+                Room.message = "no internet connection";
                 return false;
             }
 
