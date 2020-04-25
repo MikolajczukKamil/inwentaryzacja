@@ -19,7 +19,7 @@ namespace Inwentaryzacja
     public partial class ScanItemPage : ContentPage
     {
         private ZXing.Result prev=null;
-        private List<Asset> scannedItem = new List<Asset>();
+        private List<string> scannedItem = new List<string>();
 
         public ScanItemPage()
         {
@@ -116,8 +116,7 @@ namespace Inwentaryzacja
             {
                 if(!ListContainItem(result.Text))
                 {
-                    scannedItem.Add(new Asset());
-                    scannedItem.Last().name = result.Text;
+                    scannedItem.Add(result.Text);
 
                     Device.BeginInvokeOnMainThread(async () =>
                     {
@@ -149,7 +148,7 @@ namespace Inwentaryzacja
         {
             foreach (var item in scannedItem)
             {
-                if(item.name==text)
+                if(item==text)
                 {
                     return true;
                 }

@@ -31,7 +31,7 @@ namespace Inwentaryzacja
 
                 try
                 {
-                    var uri = new Uri("http://maciejdominiak.000webhostapp.com/InwentaryzacjaAPI/login/login.php");
+                    var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/login/login.php");
                     var data = "{\"login\":\"" + _login.Text + "\", \"password\":\"" + _password.Text + "\"}";
                     var content = new StringContent(data, Encoding.UTF8, "application/json");
                     var response = await App.clientHttp.PostAsync(uri, content);

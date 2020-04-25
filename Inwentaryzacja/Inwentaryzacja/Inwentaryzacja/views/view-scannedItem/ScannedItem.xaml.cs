@@ -13,7 +13,7 @@ namespace Inwentaryzacja.views.view_scannedItem
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ScannedItem : ContentPage
     {
-        public ScannedItem(List<Asset> scannedItem)
+        public ScannedItem(List<string> scannedItem)
         {
             InitializeComponent();
 
@@ -32,9 +32,9 @@ namespace Inwentaryzacja.views.view_scannedItem
 
         private void _listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            Asset asset = (Asset)e.SelectedItem;
+            string asset = (string)e.SelectedItem;
 
-            DisplayAlert("Przedmiot", asset.name , "OK");
+            DisplayAlert("Przedmiot", asset , "OK");
         }
     }
 }
