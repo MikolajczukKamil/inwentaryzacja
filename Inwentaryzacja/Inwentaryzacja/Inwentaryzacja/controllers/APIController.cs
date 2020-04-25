@@ -234,14 +234,14 @@ namespace Inwentaryzacja.controllers
             return content;
         }
 
-        public static async Task<bool> deleteRoomByID(int id)
+        public static async Task<string> deleteRoomByID(int id)
         {        
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/room/delete.php");
             var data = "{\"id\":\"" + id + "\"}";
-            var content = new StringContent(data, Encoding.UTF8, "application/json");
-            var response = await App.clientHttp.PostAsync(uri, content);
+            var cont = new StringContent(data, Encoding.UTF8, "application/json");
+            string content = await APIController.sendRequest(uri, cont);
 
-            return false;
+            return content;
         }
 
         //User
