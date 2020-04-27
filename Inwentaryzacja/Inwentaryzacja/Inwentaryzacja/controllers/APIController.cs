@@ -10,9 +10,9 @@ using Xamarin.Forms;
 
 namespace Inwentaryzacja.controllers
 {
-    public class APIController
+    class APIController
     {
-        private static async Task<(string,bool)> sendRequest(Uri uri)
+        private async Task<(string,bool)> sendRequest(Uri uri)
         {
             string result;
             bool done = false;
@@ -39,7 +39,7 @@ namespace Inwentaryzacja.controllers
 
             return (result,done);
         }
-        private static async Task<(string, bool)> sendRequest(Uri uri, StringContent cont)
+        private async Task<(string, bool)> sendRequest(Uri uri, StringContent cont)
         {
             string result;
             bool done = false;
@@ -70,198 +70,198 @@ namespace Inwentaryzacja.controllers
 
 
         //Asset
-        public static async Task<(string, bool)> takeAssetByID(int id)
+        public async Task<(string, bool)> getAssetByID(int id)
         {
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/asset/read_one.php?id=" + id.ToString());
-            var content = await APIController.sendRequest(uri);
+            var content = await sendRequest(uri);
 
             return content;
         }
 
-        public static async Task<(string, bool)> takeAllAssets()
+        public async Task<(string, bool)> getAllAssets()
         {
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/asset/read.php");
-            var content = await APIController.sendRequest(uri);
+            var content = await sendRequest(uri);
 
             return content;
         }
 
-        public static async Task<(string, bool)> sendAsset(string name, int asset_type)
+        public async Task<(string, bool)> sendAsset(string name, int asset_type)
         {
             string data = "{\"name\":\"" + name + "\", \"asset_type\":\"" + asset_type + "\"}";
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/asset/create.php");
             var cont = new StringContent(data, Encoding.UTF8, "application/json");
-            var content = await APIController.sendRequest(uri, cont);
+            var content = await sendRequest(uri, cont);
 
             return content;
         }
 
-        public static async Task<(string, bool)> deleteAssetByID(int id)
+        public async Task<(string, bool)> deleteAssetByID(int id)
         {
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/asset/delete.php");
             var data = "{\"id\":\"" + id + "\"}";
             var cont = new StringContent(data, Encoding.UTF8, "application/json");
-            var content = await APIController.sendRequest(uri, cont);
+            var content = await sendRequest(uri, cont);
 
             return content;
         }
 
         //AssetType
-        public static async Task<(string, bool)> takeAssetTypeByID(int id)
+        public async Task<(string, bool)> getAssetTypeByID(int id)
         {
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/asset_type/read_one.php?id=" + id.ToString());
-            var content = await APIController.sendRequest(uri);
+            var content = await sendRequest(uri);
       
             return content;
         }
 
-        public static async Task<(string, bool)> takeAllAssetTypes()
+        public async Task<(string, bool)> getAllAssetTypes()
         {
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/asset_type/read.php");
-            var content = await APIController.sendRequest(uri);
+            var content = await sendRequest(uri);
 
             return content;
         }
 
-        public static async Task<(string, bool)> sendAssetType(string name , string letter)
+        public async Task<(string, bool)> sendAssetType(string name , string letter)
         {
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/asset_type/create.php");
             string data = "{\"name\":\"" + name + "\", \"letter\":\"" + letter + "\"}";
             var cont = new StringContent(data, Encoding.UTF8, "application/json");
-            var content = await APIController.sendRequest(uri, cont);
+            var content = await sendRequest(uri, cont);
 
             return content;
         }
 
-        public static async Task<(string, bool)> deleteAssetTypeByID(int id)
+        public async Task<(string, bool)> deleteAssetTypeByID(int id)
         {
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/asset_type/delete.php");
             var data = "{\"id\":\"" + id + "\"}";
             var cont = new StringContent(data, Encoding.UTF8, "application/json");
-            var content = await APIController.sendRequest(uri, cont);
+            var content = await sendRequest(uri, cont);
            
             return content;
         }
 
         //Building
-        public static async Task<(string, bool)> takeBuildingByID(int id)
+        public async Task<(string, bool)> getBuildingByID(int id)
         {
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/building/read_one.php?id=" + id.ToString());
-            var content = await APIController.sendRequest(uri);
+            var content = await sendRequest(uri);
 
             return content;
         }
 
-        public static async Task<(string, bool)> takeAllBuildings()
+        public async Task<(string, bool)> getAllBuildings()
         {
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/building/read.php");
-            var content = await APIController.sendRequest(uri);
+            var content = await sendRequest(uri);
 
             return content;
         }
 
-        public static async Task<(string, bool)> sendBuilding(string name)
+        public async Task<(string, bool)> sendBuilding(string name)
         {
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/building/create.php");
             string data = "{\"name\":\"" + name + "\"}";
             var cont = new StringContent(data, Encoding.UTF8, "application/json");
-            var content = await APIController.sendRequest(uri, cont);
+            var content = await sendRequest(uri, cont);
             
             return content;
         }
 
-        public static async Task<(string, bool)> deleteBuildingByID(int id)
+        public async Task<(string, bool)> deleteBuildingByID(int id)
         {
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/building/delete.php");
             var data = "{\"id\":\"" + id + "\"}";
             var cont = new StringContent(data, Encoding.UTF8, "application/json");
-            var content = await APIController.sendRequest(uri, cont);
+            var content = await sendRequest(uri, cont);
 
             return content;
         }
 
         //Report
-        public static async Task<(string, bool)> takeReportByID(int id)
+        public async Task<(string, bool)> getReportByID(int id)
         {
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/report/read_one.php?id=" + id.ToString());
-            var content = await APIController.sendRequest(uri);
+            var content = await sendRequest(uri);
 
             return content;
         }
 
-        public static async Task<(string, bool)> takeAllReports()
+        public async Task<(string, bool)> getAllReports()
         {
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/report/read.php");
-            var content = await APIController.sendRequest(uri);
+            var content = await sendRequest(uri);
 
             return content;
         }
 
-        public static async Task<(string, bool)> sendReport(string name, int room, DateTime create_date, int owner)
+        public async Task<(string, bool)> sendReport(string name, int room, DateTime create_date, int owner)
         {
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/report/create.php");
             string data = "{\"name\":\"" + name + "\", \"room\":\"" + room + "\", \"create_date\":\"" + create_date + "\", \"owner\":\"" + owner + "\"}";
             var cont = new StringContent(data, Encoding.UTF8, "application/json");
-            var content = await APIController.sendRequest(uri, cont);
+            var content = await sendRequest(uri, cont);
           
             return content;
         }
 
-        public static async Task<(string, bool)> deleteReportByID(int id)
+        public async Task<(string, bool)> deleteReportByID(int id)
         {
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/report/delete.php");
             var data = "{\"id\":\"" + id + "\"}";
             var cont = new StringContent(data, Encoding.UTF8, "application/json");
-            var content = await APIController.sendRequest(uri, cont);
+            var content = await sendRequest(uri, cont);
     
             return content;
         }
 
         //Room
-        public static async Task<(string, bool)> takeRoomByID(int id)
+        public async Task<(string, bool)> getRoomByID(int id)
         {
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/room/read_one.php?id=" + id.ToString());
-            var content = await APIController.sendRequest(uri);
+            var content = await sendRequest(uri);
 
             return content;
         }
 
-        public static async Task<(string, bool)> takeAllRooms()
+        public async Task<(string, bool)> getAllRooms()
         {
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/room/read.php");
-            var content = await APIController.sendRequest(uri);
+            var content = await sendRequest(uri);
 
             return content;
         }
 
-        public static async Task<(string, bool)> sendRoom(string name, int building)
+        public async Task<(string, bool)> sendRoom(string name, int building)
         {
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/room/create.php");
             string data = "{\"name\":\"" + name + "\", \"building\":\"" + building + "\"}";
             var cont = new StringContent(data, Encoding.UTF8, "application/json");
-            var content = await APIController.sendRequest(uri, cont);
+            var content = await sendRequest(uri, cont);
 
             return content;
         }
 
-        public static async Task<(string, bool)> deleteRoomByID(int id)
+        public async Task<(string, bool)> deleteRoomByID(int id)
         {        
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/room/delete.php");
             var data = "{\"id\":\"" + id + "\"}";
             var cont = new StringContent(data, Encoding.UTF8, "application/json");
-            var content = await APIController.sendRequest(uri, cont);
+            var content = await sendRequest(uri, cont);
 
             return content;
         }
 
         //User
-        public static async Task<(string, bool)> createUser(string login, string password)
+        public async Task<(string, bool)> createUser(string login, string password)
         {
             //prototypowa metoda, tworzy tylko usera testowego
             var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/creator/");
             var data = "{\"login\":\"" + login + "\", \"password\":\"" + password + "\"}";
             var cont = new StringContent(data, Encoding.UTF8, "application/json");
-            var content = await APIController.sendRequest(uri, cont);
+            var content = await sendRequest(uri, cont);
 
             return content;
         }
