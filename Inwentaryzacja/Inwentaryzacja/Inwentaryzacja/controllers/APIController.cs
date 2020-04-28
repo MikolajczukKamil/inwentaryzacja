@@ -311,15 +311,27 @@ namespace Inwentaryzacja.controllers
                 switch(value)
                 {
                     case 400:
-                        messageForUser = "Nie udało się zapisać danych, dane niekompletne."; break;
+                        if(auth)
+                            messageForUser = "Niekompletne dane, nie można wykonać zapytania."; 
+                        else
+                            messageForUser = "Błąd autoryzacji, wymagane ponowne logowanie.";
+                        break;
+                    case 401:
+                        messageForUser = "Zły login lub hasło, proszę wprowadzić dane do logowania jeszcze raz."; break;
                     case 402:
                         messageForUser = "Brak połączenia z Internetem, sprawdź swoje połączenie."; break;
                     case 404:
                         messageForUser = "Nie znalezioni danych w bazie."; break;
+                    case 500:
+                        messageForUser = "Błąd przy tworzeniu sesji, proszę spróbować jeszcze raz."; break;
                     case 502:
                         messageForUser = "Nie odnaleziono serwera. Sprawdź połączenie z internetem, bądź zmień połączenie sieciowe."; break;
                     case 503:
-                        messageForUser = "Nie udało się edytować danych. Usługa czasowo niedostępna."; break;
+                        if(auth)
+                            messageForUser = "Nie udało się edytować danych. Usługa czasowo niedostępna.";
+                        else
+                            messageForUser = "Błąd autoryzacji, wymagane ponowne logowanie.";
+                        break;
                     default:
                         messageForUser = "Niezidentyfikowany błąd."; break;
                 }    
@@ -327,5 +339,7 @@ namespace Inwentaryzacja.controllers
         }
         public string message { get; set; }
         public string messageForUser { get; set; }
+
+        public bool auth = true;
     }
 }
