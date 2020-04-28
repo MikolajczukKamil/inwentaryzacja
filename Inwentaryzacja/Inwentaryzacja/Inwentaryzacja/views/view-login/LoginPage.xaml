@@ -19,17 +19,20 @@
             <local:RoundedEntry Placeholder="Nazwa użytkownika"
                     HorizontalOptions="FillAndExpand" 
                     VerticalOptions="Start"
-                    Margin="50,5" />
+                    Margin="50,5"
+                    x:Name="_login"/>
 
             <local:RoundedEntry Placeholder="Hasło" 
                     HorizontalOptions="FillAndExpand" 
                     VerticalOptions="Start"
                     Margin="50,5"
-                    IsPassword="true"/>
+                    IsPassword="true"
+                    x:Name="_password"/>
 
             <local:RoundedButton Text="Zaloguj" 
                     HorizontalOptions="CenterAndExpand" 
-                    VerticalOptions="Start"/>
+                    VerticalOptions="Start"
+                    Clicked="_loginButton_Clicked"/>
 
             <Image Source="logo.png" 
                    HorizontalOptions="Start" 

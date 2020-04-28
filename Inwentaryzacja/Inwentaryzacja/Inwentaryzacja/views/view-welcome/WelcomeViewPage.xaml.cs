@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inwentaryzacja.models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,11 @@ namespace Inwentaryzacja
         public WelcomeViewPage()
         {
             InitializeComponent();
+        }
+
+        private async void scanButtonClicked(object sender, EventArgs e)
+        {
+
         }
     }
 }

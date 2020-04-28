@@ -11,6 +11,7 @@ using ZXing;
 using System.Threading;
 using Inwentaryzacja.views.view_scannedItem;
 using Inwentaryzacja.views;
+using Inwentaryzacja.models;
 
 namespace Inwentaryzacja
 {
@@ -18,7 +19,7 @@ namespace Inwentaryzacja
     public partial class ScanItemPage : ContentPage
     {
         private ZXing.Result prev=null;
-        private List<Item> scannedItem = new List<Item>();
+        private List<string> scannedItem = new List<string>();
 
         public ScanItemPage()
         {
@@ -115,7 +116,7 @@ namespace Inwentaryzacja
             {
                 if(!ListContainItem(result.Text))
                 {
-                    scannedItem.Add(new Item(result.Text));
+                    scannedItem.Add(result.Text);
 
                     Device.BeginInvokeOnMainThread(async () =>
                     {
@@ -147,7 +148,7 @@ namespace Inwentaryzacja
         {
             foreach (var item in scannedItem)
             {
-                if(item.Text==text)
+                if(item==text)
                 {
                     return true;
                 }
