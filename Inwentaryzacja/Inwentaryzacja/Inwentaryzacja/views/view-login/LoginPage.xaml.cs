@@ -11,6 +11,7 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Text.RegularExpressions;
+using Inwentaryzacja.controllers;
 
 namespace Inwentaryzacja
 {
@@ -24,39 +25,21 @@ namespace Inwentaryzacja
 
         private async void _loginButton_Clicked(object sender, EventArgs e)
         {
-            if (Xamarin.Essentials.Connectivity.NetworkAccess == NetworkAccess.Internet)
-            {
-                _login.Text = "test";
-                _password.Text = "password";
+            _login.Text = "test";
+            _password.Text = "password";
 
-                try
-                {
-                    var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/login/login.php");
-                    var data = "{\"login\":\"" + _login.Text + "\", \"password\":\"" + _password.Text + "\"}";
-                    var content = new StringContent(data, Encoding.UTF8, "application/json");
-                    var response = await App.clientHttp.PostAsync(uri, content);
+            var apiController = new APIController();
+            apiController.ErrorEventHandler += LoginFail;
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var header = response.Headers.GetValues("Authorization").First().ToString();
-                        header = header.Remove(0,7);
-                        App.clientHttp.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", header);
-                        await Navigation.PushAsync(new WelcomeViewPage());
-                    }
-                    else
-                    {
-                        await DisplayAlert("Błędny login lub hasło", "Spróbuj ponownie wprowadzić login i hasło", "OK");
-                    }
-                }
-                catch (Exception failConnection)
-                {
-                    await DisplayAlert("Nie znaleziono serwera", "Sprawdź połączenie z internetem lub zmień połączenie sieciowe", "OK");
-                }   
-            }
-            else
+            if(await apiController.loginUser(_login.Text, _password.Text))
             {
-                await DisplayAlert("Brak Internetu", "Sprawdź połączenie z internetem", "OK");
+                App.Current.MainPage = new NavigationPage(new WelcomeViewPage());
             }
+        }
+
+        private async void LoginFail(object sender, ErrorEventArgs e)
+        {
+            await DisplayAlert("Błąd logowania", e.messageForUser, "OK");
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Inwentaryzacja
             InitializeComponent();
 
             clientHttp = new HttpClient();
-            MainPage = new NavigationPage(new LoginPage());
+            MainPage = new LoginPage();
         }
 
         protected override void OnStart()
