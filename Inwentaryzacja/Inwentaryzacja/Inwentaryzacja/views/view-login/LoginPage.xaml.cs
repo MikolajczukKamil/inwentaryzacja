@@ -33,7 +33,14 @@ namespace Inwentaryzacja
 
             if(await apiController.loginUser(_login.Text, _password.Text))
             {
-                App.Current.MainPage = new NavigationPage(new WelcomeViewPage());
+                if(Navigation.NavigationStack.Count==0)
+                {
+                    App.Current.MainPage = new NavigationPage(new WelcomeViewPage());
+                }
+                else
+                {
+                    await Navigation.PopAsync();
+                }  
             }
         }
 
