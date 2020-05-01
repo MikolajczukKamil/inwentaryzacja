@@ -125,20 +125,36 @@ namespace Inwentaryzacja.controllers
             return false;
         }
 
-        private void ErrorInvoke(string message, int statusCode)
+        private T convertToObject<T>(string json)
+        {
+            T entity;
+            try
+            {
+                entity = JsonConvert.DeserializeObject<T>(json);
+            }
+            catch (Exception)
+            {
+                entity = default;
+                ErrorInvoke("{\"message\":\"Cannot convert data.\"}", 404);
+            }
+
+            return entity;
+        }
+
+        private void ErrorInvoke(string statement, int statusCode)
         {
             if (ErrorEventHandler != null)
             {
                 ErrorEventArgs e;
                 try
                 {
-                    e = JsonConvert.DeserializeObject<ErrorEventArgs>(message);
+                    e = JsonConvert.DeserializeObject<ErrorEventArgs>(statement);
                 }
                 catch(Exception failConnection)
                 {
                     e = new ErrorEventArgs
                     {
-                        message = message
+                        message = statement
                     };
                 }
                 e.SetErrorStatus(statusCode);
@@ -150,20 +166,22 @@ namespace Inwentaryzacja.controllers
 
 
         //Asset
-        public async Task<string> getAssetByID(int id)
+        public async Task<AssetEntity> getAssetByID(int id)
         {
             var uri = "/asset/read_one.php?id=" + id.ToString();
             var content = await sendRequest(uri);
+            var entity = convertToObject<AssetEntity>(content);
 
-            return content;
+            return entity;
         }
 
-        public async Task<string> getAllAssets()
+        public async Task<List<AssetEntity>> getAllAssets()
         {
             var uri = "/asset/read.php";
             var content = await sendRequest(uri);
+            var entity = convertToObject<List<AssetEntity>>(content);
 
-            return content;
+            return entity;
         }
 
         public async Task<bool> sendAsset(string name, int asset_type)
@@ -187,20 +205,22 @@ namespace Inwentaryzacja.controllers
         }
 
         //AssetType
-        public async Task<string> getAssetTypeByID(int id)
+        public async Task<AssetTypeEntity> getAssetTypeByID(int id)
         {
             var uri = "/asset_type/read_one.php?id=" + id.ToString();
             var content = await sendRequest(uri);
-      
-            return content;
+            var entity = convertToObject<AssetTypeEntity>(content);
+
+            return entity;
         }
 
-        public async Task<string> getAllAssetTypes()
+        public async Task<List<AssetTypeEntity>> getAllAssetTypes()
         {
             var uri = "/asset_type/read.php";
             var content = await sendRequest(uri);
+            var entity = convertToObject<List<AssetTypeEntity>>(content);
 
-            return content;
+            return entity;
         }
 
         public async Task<bool> sendAssetType(string name , string letter)
@@ -224,20 +244,22 @@ namespace Inwentaryzacja.controllers
         }
 
         //Building
-        public async Task<string> getBuildingByID(int id)
+        public async Task<BuildingEntity> getBuildingByID(int id)
         {
             var uri = "/building/read_one.php?id=" + id.ToString();
             var content = await sendRequest(uri);
+            var entity = convertToObject<BuildingEntity>(content);
 
-            return content;
+            return entity;
         }
 
-        public async Task<string> getAllBuildings()
+        public async Task<List<BuildingEntity>> getAllBuildings()
         {
             var uri = "/building/read.php";
             var content = await sendRequest(uri);
+            var entity = convertToObject<List<BuildingEntity>>(content);
 
-            return content;
+            return entity;
         }
 
         public async Task<bool> sendBuilding(string name)
@@ -261,20 +283,22 @@ namespace Inwentaryzacja.controllers
         }
 
         //Report
-        public async Task<string> getReportByID(int id)
+        public async Task<ReportEntity> getReportByID(int id)
         {
             var uri = "/report/read_one.php?id=" + id.ToString();
             var content = await sendRequest(uri);
+            var entity = convertToObject<ReportEntity>(content);
 
-            return content;
+            return entity;
         }
 
-        public async Task<string> getAllReports()
+        public async Task<List<ReportEntity>> getAllReports()
         {
             var uri = "/report/read.php";
             var content = await sendRequest(uri);
+            var entity = convertToObject<List<ReportEntity>>(content);
 
-            return content;
+            return entity;
         }
 
         public async Task<bool> sendReport(string name, int room, DateTime create_date, int owner)
@@ -298,20 +322,22 @@ namespace Inwentaryzacja.controllers
         }
 
         //Room
-        public async Task<string> getRoomByID(int id)
+        public async Task<RoomEntity> getRoomByID(int id)
         {
             var uri = "/room/read_one.php?id=" + id.ToString();
             var content = await sendRequest(uri);
+            var entity = convertToObject<RoomEntity>(content);
 
-            return content;
+            return entity;
         }
 
-        public async Task<string> getAllRooms()
+        public async Task<List<RoomEntity>> getAllRooms()
         {
             var uri ="/room/read.php";
             var content = await sendRequest(uri);
+            var entity = convertToObject<List<RoomEntity>>(content);
 
-            return content;
+            return entity;
         }
 
         public async Task<bool> sendRoom(string name, int building)
@@ -381,7 +407,7 @@ namespace Inwentaryzacja.controllers
                 case 402:
                     messageForUser = "Brak połączenia z Internetem, sprawdź swoje połączenie."; break;
                 case 404:
-                    messageForUser = "Nie znalezioni danych w bazie."; break;
+                    messageForUser = "Nie można odczytać danych."; break;
                 case 500:
                     messageForUser = "Błąd przy tworzeniu sesji, proszę spróbować jeszcze raz."; break;
                 case 502:
