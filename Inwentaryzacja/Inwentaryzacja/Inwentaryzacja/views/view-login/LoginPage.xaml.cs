@@ -11,7 +11,6 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Text.RegularExpressions;
-using Inwentaryzacja.controllers;
 
 namespace Inwentaryzacja
 {
@@ -25,28 +24,39 @@ namespace Inwentaryzacja
 
         private async void _loginButton_Clicked(object sender, EventArgs e)
         {
-            _login.Text = "test";
-            _password.Text = "password";
-
-            var apiController = new APIController();
-            apiController.ErrorEventHandler += LoginFail;
-
-            if(await apiController.loginUser(_login.Text, _password.Text))
+            if (Xamarin.Essentials.Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                if(Navigation.NavigationStack.Count==0)
-                {
-                    App.Current.MainPage = new NavigationPage(new WelcomeViewPage());
-                }
-                else
-                {
-                    await Navigation.PopAsync();
-                }  
-            }
-        }
+                _login.Text = "test";
+                _password.Text = "password";
 
-        private async void LoginFail(object sender, ErrorEventArgs e)
-        {
-            await DisplayAlert("Błąd logowania", e.messageForUser, "OK");
+                try
+                {
+                    var uri = new Uri("https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI/login/login.php");
+                    var data = "{\"login\":\"" + _login.Text + "\", \"password\":\"" + _password.Text + "\"}";
+                    var content = new StringContent(data, Encoding.UTF8, "application/json");
+                    var response = await App.clientHttp.PostAsync(uri, content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var header = response.Headers.GetValues("Authorization").First().ToString();
+                        header = header.Remove(0,7);
+                        App.clientHttp.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", header);
+                        await Navigation.PushAsync(new WelcomeViewPage());
+                    }
+                    else
+                    {
+                        await DisplayAlert("Błędny login lub hasło", "Spróbuj ponownie wprowadzić login i hasło", "OK");
+                    }
+                }
+                catch (Exception failConnection)
+                {
+                    await DisplayAlert("Nie znaleziono serwera", "Sprawdź połączenie z internetem lub zmień połączenie sieciowe", "OK");
+                }   
+            }
+            else
+            {
+                await DisplayAlert("Brak Internetu", "Sprawdź połączenie z internetem", "OK");
+            }
         }
     }
 }
