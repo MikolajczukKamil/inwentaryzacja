@@ -125,12 +125,28 @@ namespace Inwentaryzacja.controllers
             return false;
         }
 
-        private T convertToObject<T>(string json)
+        private T convertJSONToObject<T>(string json)
         {
             T entity;
             try
             {
                 entity = JsonConvert.DeserializeObject<T>(json);
+            }
+            catch (Exception)
+            {
+                entity = default;
+                ErrorInvoke("{\"message\":\"Cannot convert data.\"}", 404);
+            }
+
+            return entity;
+        }
+
+        private string convertDataToJSON<T>(T data)
+        {
+            string entity;
+            try
+            {
+                entity = JsonConvert.SerializeObject(data);
             }
             catch (Exception)
             {
@@ -170,7 +186,7 @@ namespace Inwentaryzacja.controllers
         {
             var uri = "/asset/read_one.php?id=" + id.ToString();
             var content = await sendRequest(uri);
-            var entity = convertToObject<AssetEntity>(content);
+            var entity = convertJSONToObject<AssetEntity>(content);
 
             return entity;
         }
@@ -179,7 +195,7 @@ namespace Inwentaryzacja.controllers
         {
             var uri = "/asset/read.php";
             var content = await sendRequest(uri);
-            var entity = convertToObject<List<AssetEntity>>(content);
+            var entity = convertJSONToObject<List<AssetEntity>>(content);
 
             return entity;
         }
@@ -209,7 +225,7 @@ namespace Inwentaryzacja.controllers
         {
             var uri = "/asset_type/read_one.php?id=" + id.ToString();
             var content = await sendRequest(uri);
-            var entity = convertToObject<AssetTypeEntity>(content);
+            var entity = convertJSONToObject<AssetTypeEntity>(content);
 
             return entity;
         }
@@ -218,7 +234,7 @@ namespace Inwentaryzacja.controllers
         {
             var uri = "/asset_type/read.php";
             var content = await sendRequest(uri);
-            var entity = convertToObject<List<AssetTypeEntity>>(content);
+            var entity = convertJSONToObject<List<AssetTypeEntity>>(content);
 
             return entity;
         }
@@ -248,7 +264,7 @@ namespace Inwentaryzacja.controllers
         {
             var uri = "/building/read_one.php?id=" + id.ToString();
             var content = await sendRequest(uri);
-            var entity = convertToObject<BuildingEntity>(content);
+            var entity = convertJSONToObject<BuildingEntity>(content);
 
             return entity;
         }
@@ -257,7 +273,7 @@ namespace Inwentaryzacja.controllers
         {
             var uri = "/building/read.php";
             var content = await sendRequest(uri);
-            var entity = convertToObject<List<BuildingEntity>>(content);
+            var entity = convertJSONToObject<List<BuildingEntity>>(content);
 
             return entity;
         }
@@ -287,7 +303,7 @@ namespace Inwentaryzacja.controllers
         {
             var uri = "/report/read_one.php?id=" + id.ToString();
             var content = await sendRequest(uri);
-            var entity = convertToObject<ReportEntity>(content);
+            var entity = convertJSONToObject<ReportEntity>(content);
 
             return entity;
         }
@@ -296,15 +312,16 @@ namespace Inwentaryzacja.controllers
         {
             var uri = "/report/read.php";
             var content = await sendRequest(uri);
-            var entity = convertToObject<List<ReportEntity>>(content);
+            var entity = convertJSONToObject<List<ReportEntity>>(content);
 
             return entity;
         }
 
-        public async Task<bool> sendReport(string name, int room, DateTime create_date, int owner)
+        public async Task<bool> sendReportWithAssets(string name, int room, int[] assets)
         {
             var uri = "/report/create.php";
-            string data = "{\"name\":\"" + name + "\", \"room\":\"" + room + "\", \"create_date\":\"" + create_date + "\", \"owner\":\"" + owner + "\"}";
+            string data = convertDataToJSON<ReportWithAssetEntity>(new ReportWithAssetEntity(name, room, assets));
+            if (data == null) return false;
             var cont = new StringContent(data, Encoding.UTF8, "application/json");
             var content = await sendRequest(uri, cont);
           
@@ -326,7 +343,7 @@ namespace Inwentaryzacja.controllers
         {
             var uri = "/room/read_one.php?id=" + id.ToString();
             var content = await sendRequest(uri);
-            var entity = convertToObject<RoomEntity>(content);
+            var entity = convertJSONToObject<RoomEntity>(content);
 
             return entity;
         }
@@ -335,7 +352,7 @@ namespace Inwentaryzacja.controllers
         {
             var uri ="/room/read.php";
             var content = await sendRequest(uri);
-            var entity = convertToObject<List<RoomEntity>>(content);
+            var entity = convertJSONToObject<List<RoomEntity>>(content);
 
             return entity;
         }
