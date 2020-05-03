@@ -8,17 +8,25 @@ namespace Inwentaryzacja.models
 		private ReportPosition _reportPostion;
 		private ScanningPosition _scanningPosition;
 
-		public int AssetId;
 		public AssetType AssetType => _assetType;
-		public string Name;
+		public int assetId;
+		public string name;
+		public int assetType;
 
 		public Asset(string name, int id, AssetType type, ReportPosition reportPosition, ScanningPosition scanningPosition)
 		{
-			Name = name;
-			AssetId = id;
+			name = name;
+			assetId = id;
 			_assetType = type;
 			_reportPostion = reportPosition;
 			_scanningPosition = scanningPosition;
+		}
+
+		public Asset(string name, int assetId, int assetType)
+		{
+			this.assetId = assetId;
+			this.name = name;
+			this.assetType = assetType;
 		}
 
 		public bool Delete() 
