@@ -4,13 +4,13 @@ namespace Inwentaryzacja.models
 {
 	public class RoomPropotype
 	{
-		public string Name;
-		public string BuildingName;
+		public string name { get; set; }
+		public int building { get; set; }
 
-		public RoomPropotype(string name, string buildingName)
+		public RoomPropotype(string name, int building)
 		{
-			Name = name;
-			BuildingName = buildingName;
+			this.name = name;
+			this.building = building;
 		}
 	}
 }

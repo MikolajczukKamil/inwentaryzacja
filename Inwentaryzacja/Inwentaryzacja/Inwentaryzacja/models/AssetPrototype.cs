@@ -5,13 +5,13 @@ namespace Inwentaryzacja.models
 {
 	public class AssetPrototype
 	{
-		public int AssetId;
-		public AssetType AsseType;
+		public string name { get; set; }
+		public int asset_type { get; set; }
 
-		public AssetPrototype(int id, AssetType type)
+		public AssetPrototype(string name, int asset_type)
 		{
-			AssetId = id;
-			AsseType = type;
+			this.name = name;
+			this.asset_type = asset_type;
 		}
 	}
 }

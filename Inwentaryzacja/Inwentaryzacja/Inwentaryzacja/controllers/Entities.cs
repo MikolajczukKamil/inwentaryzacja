@@ -32,28 +32,18 @@ namespace Inwentaryzacja.controllers
     }
     class ReportWithAssetEntity
     {
+        public int id { get; set; }
         public string name { get; set; }
         public int room { get; set; }
+        public DateTime create_date { get; set; }
+        public int owner { get; set; }
         public List<ReportAssetsEntity> assets;
 
-        public ReportWithAssetEntity(string name, int room, int[] assets)
-        {
-            this.name = name;
-            this.room = room;
-            this.assets = new List<ReportAssetsEntity>();
-            foreach (var item in assets)
-            {
-                this.assets.Add(new ReportAssetsEntity(item));
-            }
-        }
         public class ReportAssetsEntity
         {
-            public ReportAssetsEntity(int asset_id)
-            {
-                this.asset_id = asset_id;
-            }
-
+            public int report_id { get; set; }
             public int asset_id { get; set; }
+            public int previous_room { get; set; }
         }
     }
     class RoomEntity
