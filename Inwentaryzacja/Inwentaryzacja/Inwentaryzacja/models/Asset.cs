@@ -4,9 +4,6 @@ namespace Inwentaryzacja.models
 {
 	public class Asset 
 	{
-		private ReportPosition ReportPostion;
-		private ScanningPosition ScanningPosition;
-
 		public int AssetId;
 		public string Name;
 		public int AssetType;
