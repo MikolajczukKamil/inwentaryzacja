@@ -3,13 +3,18 @@ using System.Threading.Tasks;
 using Inwentaryzacja.controllers;
 using Inwentaryzacja.models;
 
-public class ThingService {
+public class ThingService 
+{
+	private APIController ApiController;
 
-	private APIController api = new APIController();
-	
+	public ThingService(APIController apiController)
+	{
+		ApiController = new APIController();
+	}
+
 	public Asset GetAsset(int id) {
 
-		AssetEntity assetEntity = api.getAssetByID(id).Result;
+		AssetEntity assetEntity = ApiController.getAssetByID(id).Result;
 		Asset asset = new Asset(assetEntity.name, assetEntity.id, assetEntity.asset_type);
 
 		return asset;
@@ -17,13 +22,13 @@ public class ThingService {
 	}
 	public bool AddAsset(Asset newAsset) 
 	{
-		bool sent = api.sendAsset(newAsset.name, newAsset.assetId).Result;
+		bool sent = ApiController.sendAsset(newAsset.Name, newAsset.AssetId).Result;
 
 		return sent;
 	}
 	public bool DeleteAsset(int id) 
 	{
-		bool deleted = api.deleteAssetByID(id).Result;
+		bool deleted = ApiController.deleteAssetByID(id).Result;
 
 		return deleted;
 	}

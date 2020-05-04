@@ -12,7 +12,7 @@ using Xamarin.Forms;
 
 namespace Inwentaryzacja.controllers
 {
-    class APIController
+    public class APIController
     {
         private string url = "https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI";
 
