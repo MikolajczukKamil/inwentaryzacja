@@ -72,7 +72,8 @@
     report_id INT NOT NULL REFERENCES reports(id) ON DELETE CASCADE,
     asset_id INT NOT NULL REFERENCES assets(id) ON DELETE CASCADE,
     previous_room INT REFERENCES rooms(id) ON DELETE CASCADE,
-    present BOOLEAN NOT NULL DEFAULT TRUE
+    present BOOLEAN NOT NULL DEFAULT TRUE,
+    PRIMARY KEY(report_id, asset_id)
   );
 
   CREATE TABLE login_sessions (
@@ -480,7 +481,7 @@
     (9, 131, NULL, FALSE), /* Deleted */
     (9, 132, NULL, FALSE), /* Deleted */
     (9, 133, 22, TRUE), /* From room 22 */
-    (9, 133, 22, TRUE)  /* From room 22 */
+    (9, 134, 22, TRUE)  /* From room 22 */
   ;
 
 /* Examples */
