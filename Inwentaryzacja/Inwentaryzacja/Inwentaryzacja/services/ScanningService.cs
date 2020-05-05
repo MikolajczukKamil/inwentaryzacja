@@ -5,6 +5,11 @@ using Inwentaryzacja.models;
 public class ScanningService {
 	private APIController ApiController;
 
+	public ScanningService(APIController apiController)
+	{
+		ApiController = apiController;
+	}
+
 	public Scanning GetScanning(ref int id) {
 		throw new System.Exception("Not implemented");//Na razie nie ma zapisu skanowania w bazie
 	}
