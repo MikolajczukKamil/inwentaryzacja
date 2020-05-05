@@ -4,21 +4,15 @@ namespace Inwentaryzacja.models
 {
 	public class Asset 
 	{
-		private AssetType _assetType;
-		private ReportPosition _reportPostion;
-		private ScanningPosition _scanningPosition;
-
 		public int AssetId;
-		public AssetType AssetType => _assetType;
 		public string Name;
+		public int AssetType;
 
-		public Asset(string name, int id, AssetType type, ReportPosition reportPosition, ScanningPosition scanningPosition)
+		public Asset(string name, int assetId, int assetType)
 		{
+			AssetId = assetId;
 			Name = name;
-			AssetId = id;
-			_assetType = type;
-			_reportPostion = reportPosition;
-			_scanningPosition = scanningPosition;
+			AssetType = assetType;
 		}
 
 		public bool Delete() 

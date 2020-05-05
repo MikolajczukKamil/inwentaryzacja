@@ -1,20 +1,36 @@
 using System;
+using System.Threading.Tasks;
 using Inwentaryzacja.controllers;
 using Inwentaryzacja.models;
 
-public class ThingService {
-	private APIController api;
+public class ThingService 
+{
+	private APIController ApiController;
 
-	public Asset GetAsset(ref int id) {
-		throw new System.Exception("Not implemented");
-	}
-	public void AddAsset(ref AssetPrototype newAsset) {
-		throw new System.Exception("Not implemented");
-	}
-	public bool DeleteAsset(ref int id) {
-		throw new System.Exception("Not implemented");
+	public ThingService(APIController apiController)
+	{
+		ApiController = apiController;
 	}
 
-	private APIController aPIController;
+	public Asset GetAsset(int id) {
+
+		AssetEntity assetEntity = ApiController.getAssetByID(id).Result;
+		Asset asset = new Asset(assetEntity.name, assetEntity.id, assetEntity.assetType);
+
+		return asset;
+				
+	}
+	public bool AddAsset(AssetPrototype newAsset) 
+	{
+		bool sent = ApiController.createAsset(newAsset).Result;
+
+		return sent;
+	}
+	public bool DeleteAsset(int id) 
+	{
+		bool deleted = ApiController.deleteAssetByID(id).Result;
+
+		return deleted;
+	}
 
 }
