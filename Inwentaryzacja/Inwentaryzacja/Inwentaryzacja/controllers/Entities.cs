@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,7 +9,7 @@ namespace Inwentaryzacja.controllers
     {
         public int id { get; set; }
         public string name { get; set; }
-        public int asset_type { get; set; }
+        public int assetType { get; set; }
     }
     class AssetTypeEntity
     {
@@ -29,11 +30,21 @@ namespace Inwentaryzacja.controllers
         public DateTime create_date { get; set; }
         public int owner { get; set; }
     }
-    class ReportAssetEntity
+    class ReportWithAssetEntity
     {
-        public int report_id { get; set; }
-        public int asset_id { get; set; }
-        public int? previous_room { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
+        public int room { get; set; }
+        public DateTime create_date { get; set; }
+        public int owner { get; set; }
+        public List<ReportAssetsEntity> assets;
+
+        public class ReportAssetsEntity
+        {
+            public int report_id { get; set; }
+            public int asset_id { get; set; }
+            public int previous_room { get; set; }
+        }
     }
     class RoomEntity
     {

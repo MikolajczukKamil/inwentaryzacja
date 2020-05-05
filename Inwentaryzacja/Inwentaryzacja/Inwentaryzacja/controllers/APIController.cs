@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Inwentaryzacja.models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -125,12 +126,28 @@ namespace Inwentaryzacja.controllers
             return false;
         }
 
-        private T convertToObject<T>(string json)
+        private T convertJSONToObject<T>(string json)
         {
             T entity;
             try
             {
                 entity = JsonConvert.DeserializeObject<T>(json);
+            }
+            catch (Exception)
+            {
+                entity = default;
+                ErrorInvoke("{\"message\":\"Cannot convert data.\"}", 404);
+            }
+
+            return entity;
+        }
+
+        private string convertDataToJSON<T>(T data)
+        {
+            string entity;
+            try
+            {
+                entity = JsonConvert.SerializeObject(data);
             }
             catch (Exception)
             {
@@ -150,7 +167,7 @@ namespace Inwentaryzacja.controllers
                 {
                     e = JsonConvert.DeserializeObject<ErrorEventArgs>(statement);
                 }
-                catch(Exception failConnection)
+                catch(Exception)
                 {
                     e = new ErrorEventArgs
                     {
@@ -170,7 +187,7 @@ namespace Inwentaryzacja.controllers
         {
             var uri = "/asset/read_one.php?id=" + id.ToString();
             var content = await sendRequest(uri);
-            var entity = convertToObject<AssetEntity>(content);
+            var entity = convertJSONToObject<AssetEntity>(content);
 
             return entity;
         }
@@ -179,14 +196,15 @@ namespace Inwentaryzacja.controllers
         {
             var uri = "/asset/read.php";
             var content = await sendRequest(uri);
-            var entity = convertToObject<List<AssetEntity>>(content);
+            var entity = convertJSONToObject<List<AssetEntity>>(content);
 
             return entity;
         }
 
-        public async Task<bool> sendAsset(string name, int asset_type)
+        public async Task<bool> createAsset(AssetPrototype asset)
         {
-            string data = "{\"name\":\"" + name + "\", \"asset_type\":\"" + asset_type + "\"}";
+            string data = convertDataToJSON<AssetPrototype>(asset);
+            if (String.IsNullOrEmpty(data)) return false;
             var uri = "/asset/create.php";
             var cont = new StringContent(data, Encoding.UTF8, "application/json");
             var content = await sendRequest(uri, cont);
@@ -209,7 +227,7 @@ namespace Inwentaryzacja.controllers
         {
             var uri = "/asset_type/read_one.php?id=" + id.ToString();
             var content = await sendRequest(uri);
-            var entity = convertToObject<AssetTypeEntity>(content);
+            var entity = convertJSONToObject<AssetTypeEntity>(content);
 
             return entity;
         }
@@ -218,15 +236,16 @@ namespace Inwentaryzacja.controllers
         {
             var uri = "/asset_type/read.php";
             var content = await sendRequest(uri);
-            var entity = convertToObject<List<AssetTypeEntity>>(content);
+            var entity = convertJSONToObject<List<AssetTypeEntity>>(content);
 
             return entity;
         }
 
-        public async Task<bool> sendAssetType(string name , string letter)
+        public async Task<bool> createAssetType(AssetTypePrototype assetType)
         {
+            string data = convertDataToJSON<AssetTypePrototype>(assetType);
+            if (String.IsNullOrEmpty(data)) return false;
             var uri = "/asset_type/create.php";
-            string data = "{\"name\":\"" + name + "\", \"letter\":\"" + letter + "\"}";
             var cont = new StringContent(data, Encoding.UTF8, "application/json");
             var content = await sendRequest(uri, cont);
 
@@ -248,7 +267,7 @@ namespace Inwentaryzacja.controllers
         {
             var uri = "/building/read_one.php?id=" + id.ToString();
             var content = await sendRequest(uri);
-            var entity = convertToObject<BuildingEntity>(content);
+            var entity = convertJSONToObject<BuildingEntity>(content);
 
             return entity;
         }
@@ -257,15 +276,16 @@ namespace Inwentaryzacja.controllers
         {
             var uri = "/building/read.php";
             var content = await sendRequest(uri);
-            var entity = convertToObject<List<BuildingEntity>>(content);
+            var entity = convertJSONToObject<List<BuildingEntity>>(content);
 
             return entity;
         }
 
-        public async Task<bool> sendBuilding(string name)
+        public async Task<bool> createBuilding(BuildingPrototype building)
         {
+            string data = convertDataToJSON<BuildingPrototype>(building);
+            if (String.IsNullOrEmpty(data)) return false;
             var uri = "/building/create.php";
-            string data = "{\"name\":\"" + name + "\"}";
             var cont = new StringContent(data, Encoding.UTF8, "application/json");
             var content = await sendRequest(uri, cont);
             
@@ -287,7 +307,7 @@ namespace Inwentaryzacja.controllers
         {
             var uri = "/report/read_one.php?id=" + id.ToString();
             var content = await sendRequest(uri);
-            var entity = convertToObject<ReportEntity>(content);
+            var entity = convertJSONToObject<ReportEntity>(content);
 
             return entity;
         }
@@ -296,15 +316,16 @@ namespace Inwentaryzacja.controllers
         {
             var uri = "/report/read.php";
             var content = await sendRequest(uri);
-            var entity = convertToObject<List<ReportEntity>>(content);
+            var entity = convertJSONToObject<List<ReportEntity>>(content);
 
             return entity;
         }
 
-        public async Task<bool> sendReport(string name, int room, DateTime create_date, int owner)
+        public async Task<bool> createReportWithAssets(ReportPrototype report)
         {
             var uri = "/report/create.php";
-            string data = "{\"name\":\"" + name + "\", \"room\":\"" + room + "\", \"create_date\":\"" + create_date + "\", \"owner\":\"" + owner + "\"}";
+            string data = convertDataToJSON<ReportPrototype>(report);
+            if (data == null) return false;
             var cont = new StringContent(data, Encoding.UTF8, "application/json");
             var content = await sendRequest(uri, cont);
           
@@ -326,7 +347,7 @@ namespace Inwentaryzacja.controllers
         {
             var uri = "/room/read_one.php?id=" + id.ToString();
             var content = await sendRequest(uri);
-            var entity = convertToObject<RoomEntity>(content);
+            var entity = convertJSONToObject<RoomEntity>(content);
 
             return entity;
         }
@@ -335,15 +356,16 @@ namespace Inwentaryzacja.controllers
         {
             var uri ="/room/read.php";
             var content = await sendRequest(uri);
-            var entity = convertToObject<List<RoomEntity>>(content);
+            var entity = convertJSONToObject<List<RoomEntity>>(content);
 
             return entity;
         }
 
-        public async Task<bool> sendRoom(string name, int building)
+        public async Task<bool> createRoom(RoomPropotype room)
         {
+            string data = convertDataToJSON<RoomPropotype>(room);
+            if (String.IsNullOrEmpty(data)) return false;
             var uri = "/room/create.php";
-            string data = "{\"name\":\"" + name + "\", \"building\":\"" + building + "\"}";
             var cont = new StringContent(data, Encoding.UTF8, "application/json");
             var content = await sendRequest(uri, cont);
 
