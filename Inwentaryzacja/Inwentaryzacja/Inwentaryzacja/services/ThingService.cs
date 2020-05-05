@@ -9,20 +9,20 @@ public class ThingService
 
 	public ThingService(APIController apiController)
 	{
-		ApiController = new APIController();
+		ApiController = apiController;
 	}
 
 	public Asset GetAsset(int id) {
 
 		AssetEntity assetEntity = ApiController.getAssetByID(id).Result;
-		Asset asset = new Asset(assetEntity.name, assetEntity.id, assetEntity.asset_type);
+		Asset asset = new Asset(assetEntity.name, assetEntity.id, assetEntity.assetType);
 
 		return asset;
 				
 	}
-	public bool AddAsset(Asset newAsset) 
+	public bool AddAsset(AssetPrototype newAsset) 
 	{
-		bool sent = ApiController.sendAsset(newAsset.Name, newAsset.AssetId).Result;
+		bool sent = ApiController.createAsset(newAsset).Result;
 
 		return sent;
 	}
