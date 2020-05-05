@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Inwentaryzacja.models
 {
@@ -6,17 +7,17 @@ namespace Inwentaryzacja.models
 	{
 		private int _scanningId;
 		private Room _room;
-		private ScanningPosition[] _positions;
+		private List<ScanningPosition> _positions;
 
 		public int ScanningId => _scanningId;
 		public Room Room => _room;
-		public ScanningPosition[] ScanningPositions => _positions;
+		public List<ScanningPosition> ScanningPositions => _positions;
 
-		public Scanning(int id, Room room, ScanningPosition[] positions)
+		public Scanning(int id, Room room)
 		{
 			_scanningId = id;
 			_room = room;
-			_positions = positions;
+			_positions = new List<ScanningPosition>();
 		}
 
 		public void AddNewPosition()
