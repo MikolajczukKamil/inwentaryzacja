@@ -13,21 +13,12 @@ namespace Inwentaryzacja.models
 
 		public int RoomId;
 		public string Name;
-		public string BuildingName;
+		public int BuildingName;
 
-		public Room(string name, string buildingName, int id, RoomService roomService, Report report, 
-			ReportPosition reportPosition, ReportPrototype reportPrototype, Scanning scanning, ScanningPosition scanningPosition)
+		public Room(string name, int buildingName, int id)
 		{
 			Name = name;
 			BuildingName = buildingName;
-			RoomId = id;
-			_roomService = roomService;
-			_report = report;
-			_reportPosition = reportPosition;
-			_reportPrototype = reportPrototype;
-			_scanning = scanning;
-			_scanningPosition = scanningPosition;
-
-		}
+			RoomId = id;}
 	}
 }
