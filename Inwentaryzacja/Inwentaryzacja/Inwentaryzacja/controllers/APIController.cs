@@ -343,7 +343,7 @@ namespace Inwentaryzacja.controllers
         }
 
         //Room
-        public async Task<RoomEntity> GetRoomByID(int id)
+        public async Task<RoomEntity> getRoomByID(int id)
         {
             var uri = "/room/read_one.php?id=" + id.ToString();
             var content = await sendRequest(uri);
@@ -380,6 +380,24 @@ namespace Inwentaryzacja.controllers
             var content = await sendRequest(uri, cont);
 
             return content;
+        }
+
+        //Room assets
+        public async Task<int> getLastNumberRoomByAssetID(int id)
+        {
+            var uri = "/reports_assets/asset_last_room.php?id=" + id.ToString();
+            var content = await sendRequest(uri);
+            var entity = convertJSONToObject<int>(content);
+
+            return entity;
+        }
+        public async Task<ReportAssetsEntity> getLastReportAssetsByRoomID(int id)
+        {
+            var uri = "/reports_assets/room_report_content.php?id=" + id.ToString();
+            var content = await sendRequest(uri);
+            var entity = convertJSONToObject<ReportAssetsEntity>(content);
+
+            return entity;
         }
 
         //User

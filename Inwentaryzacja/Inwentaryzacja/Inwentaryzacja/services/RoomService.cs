@@ -12,7 +12,7 @@ public class RoomService {
 	}
 	public Room GetRoomById(int id) {
 
-		RoomEntity roomentity = api.GetRoomByID(id).Result;
+		RoomEntity roomentity = api.getRoomByID(id).Result;
 		Room room = new Room(roomentity.name, roomentity.building, roomentity.id);
 		return room;
 	}

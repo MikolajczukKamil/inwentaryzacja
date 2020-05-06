@@ -17,7 +17,7 @@ namespace Inwentaryzacja.models
 		{
 			Name = name;
 			ReportId = id;
-			_room = room;
+			Room = room;
 			CreateDate = date;
 	
 		}

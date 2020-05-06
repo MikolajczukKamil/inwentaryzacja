@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Inwentaryzacja.models
 {
-    class AssetTypePrototype
+    public class AssetTypePrototype
     {
         public string name { get; set; }
         public string letter { get; set; }
