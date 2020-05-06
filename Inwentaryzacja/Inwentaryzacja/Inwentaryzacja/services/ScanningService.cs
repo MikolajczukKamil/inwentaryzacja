@@ -19,7 +19,7 @@ public class ScanningService {
 	public Scanning CreateScanning(int roomID) {
 		RoomEntity roomEntity = ApiController.getRoomByID(roomID).Result;
 		BuildingEntity buildingEntity = ApiController.getBuildingByID(roomEntity.building).Result;
-		 Room room = new Room(roomEntity.name, buildingEntity.name, roomEntity.id);
+		Room room = new Room(roomEntity.name, buildingEntity.name, roomEntity.id);
 		Scanning scanning = new Scanning(0, room);
 		return scanning;
 	}
