@@ -9,17 +9,17 @@ namespace Inwentaryzacja.models
 
 		public int ReportId;
 		public string Name;
-		public Room Room => _room;
+        public int Room;
 		public DateTime CreateDate;
-		public ReportPosition[] Positions => _reportPostions;
+		
 
-		public Report(string name, int id, Room room, DateTime date, ReportPosition[] reportPositions)
+		public Report(string name, int id, int room, DateTime date)
 		{
 			Name = name;
 			ReportId = id;
 			_room = room;
 			CreateDate = date;
-			_reportPostions = reportPositions;
+	
 		}
 
 		public bool ExportToPDF() {
