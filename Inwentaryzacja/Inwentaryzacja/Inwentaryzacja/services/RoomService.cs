@@ -4,9 +4,12 @@ using Inwentaryzacja.controllers;
 using Inwentaryzacja.models;
 
 public class RoomService {
-	private APIController api;
-
-	public Room GetRoomById(ref int id) {
+	
+private APIController api;
+	public RoomService(APIController apiController)	{
+		api = apiController;
+	}
+	public Room GetRoomById(int id) {
 
 		RoomEntity roomentity = api.GetRoomByID(id).Result;
 		Room room = new Room(roomentity.name, roomentity.building, roomentity.id);
@@ -25,17 +28,12 @@ public class RoomService {
 		}
 		return roomtab;
 	}
-	public bool AddNewRoom(ref RoomPropotype newRoom) {
+	public bool AddNewRoom(RoomPropotype newRoom) {
 		bool addnew = api.createRoom(newRoom).Result;
 		return addnew;
 	}
-	public bool DeleteRoom(ref int id) {
+	public bool DeleteRoom(int id) {
 		bool delated = api.deleteRoomByID(id).Result;
 		return delated;
 	}
-
-
-
-	private Room room;
-
 }
