@@ -343,7 +343,7 @@ namespace Inwentaryzacja.controllers
         }
 
         //Room
-        public async Task<RoomEntity> getRoomByID(int id)
+        public async Task<RoomEntity> GetRoomByID(int id)
         {
             var uri = "/room/read_one.php?id=" + id.ToString();
             var content = await sendRequest(uri);

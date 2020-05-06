@@ -14,13 +14,12 @@ namespace Inwentaryzacja.models
 		public int RoomId;
 		public string Name;
 		public string BuildingName;
+		public int BuildingId;
 
-		public Room(string name, string buildingName, int id)
+		public Room(string name, int buildingId, int id)
 		{
 			Name = name;
-			BuildingName = buildingName;
+			BuildingId = buildingId;
 			RoomId = id;
-
-		}
-	}
+	  }
 }
