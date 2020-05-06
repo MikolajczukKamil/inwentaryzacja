@@ -6,8 +6,12 @@ using Inwentaryzacja.models;
 public class ReportService {
 	private APIController ApiController;
 
-   
-    public Report GetReportById(ref int id)
+    public ReportService(APIController apiController)
+    {
+        ApiController = apiController;
+    }
+
+    public Report GetReportById(int id)
     {
         ReportEntity raportEntity = ApiController.getReportByID(id).Result;
         
@@ -26,7 +30,7 @@ public class ReportService {
         }
         return reportHeader;
     }
-	public bool ExportReportToPDF(ref int id) {
+	public bool ExportReportToPDF(int id) {
 		throw new System.Exception("Not implemented");//Brak Danych
 	}
 	public bool DeleteReport(ref int id)
@@ -34,7 +38,7 @@ public class ReportService {
         bool delete = ApiController.deleteReportByID(id).Result;
         return delete;
 	}
-	public bool AddNewReport(ref ReportPrototype newReport)
+	public bool AddNewReport(ReportPrototype newReport)
     {
         bool add = ApiController.createReportWithAssets(newReport).Result;
         return add;

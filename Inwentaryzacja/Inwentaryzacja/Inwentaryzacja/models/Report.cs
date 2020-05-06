@@ -9,7 +9,7 @@ namespace Inwentaryzacja.models
 
 		public int ReportId;
 		public string Name;
-		public int Room 
+        public int Room;
 		public DateTime CreateDate;
 		
 
