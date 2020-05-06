@@ -10,10 +10,10 @@ public class ScanningService {
 		ApiController = apiController;
 	}
 
-	public Scanning GetScanning(ref int id) {
+	public Scanning GetScanning(int id) {
 		throw new System.Exception("Not implemented");//Na razie nie ma zapisu skanowania w bazie
 	}
-	public void UpdateScanning(ref ScanningPropotype scanningPropotype) {
+	public void UpdateScanning(ScanningPropotype scanningPropotype) {
 		throw new System.Exception("Not implemented");//Na razie nie ma zapisu skanowania w bazie
 	}
 	public Scanning CreateScanning(int roomID) {
