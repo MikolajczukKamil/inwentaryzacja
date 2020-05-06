@@ -17,9 +17,8 @@ public class ScanningService {
 		throw new System.Exception("Not implemented");//Na razie nie ma zapisu skanowania w bazie
 	}
 	public Scanning CreateScanning(int roomID) {
-		RoomEntity roomEntity = ApiController.getRoomByID(roomID).Result;
-		BuildingEntity buildingEntity = ApiController.getBuildingByID(roomEntity.building).Result;
-		Room room = new Room(roomEntity.name, buildingEntity.name, roomEntity.id);
+		RoomEntity roomEntity = ApiController.GetRoomByID(roomID).Result;
+		Room room = new Room(roomEntity.name, roomEntity.building, roomEntity.id);
 		Scanning scanning = new Scanning(0, room);
 		return scanning;
 	}
