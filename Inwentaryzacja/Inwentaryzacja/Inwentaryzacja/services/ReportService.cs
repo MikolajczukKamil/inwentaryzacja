@@ -33,7 +33,7 @@ public class ReportService {
 	public bool ExportReportToPDF(int id) {
 		throw new System.Exception("Not implemented");//Brak Danych
 	}
-	public bool DeleteReport(ref int id)
+	public bool DeleteReport(int id)
     {
         bool delete = ApiController.deleteReportByID(id).Result;
         return delete;
