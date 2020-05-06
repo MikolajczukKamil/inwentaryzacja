@@ -130,10 +130,13 @@
     ('m', 'monitor'),
     ('p', 'projektor'),
     ('s', 'stół'),
-    ('t', 'tablica');
+    ('t', 'tablica')
+  ;
 
+  /* b 34 - 1 */
   INSERT INTO buildings (name)
   VALUES
+    ('b 34'),
     ('b 4'),
     ('b 5'),
     ('b 6'),
@@ -142,43 +145,27 @@
     ('b 22'),
     ('b 23'),
     ('b 32'),
-    ('b 33'),
-    ('b 34');
+    ('b 33') /* Empty */
+  ;
 
+  /* from b 34 1-3 */
   INSERT INTO rooms (name, building)
   VALUES
-    ('1/1', 1),
-    ('1/2', 1),
-    ('1/3', 2),
-    ('1/4', 2),
-    ('1/5', 2),
-    ('1/6', 3),
-    ('2/7', 3),
-    ('3/8', 3),
-    ('1/9', 4),
-    ('2/10', 4),
-    ('1/11', 5),
-    ('2/12', 5),
-    ('1/14', 6),
-    ('1/25', 6),
-    ('1/16', 7),
-    ('1/26', 7),
-    ('1/19', 8),
-    ('1/11', 8),
-    ('1/22', 9),
-    ('1/13', 9),
-    ('1/12', 10),
-    ('1/13', 10),
-    ('1/14', 10),
-    ('1/15', 10),
-    ('1/16', 10),
-    ('1/17', 10),
-    ('1/18', 10),
-    ('1/19', 10),
-    ('1/20', 10),
-    ('2/1', 10);
+    ('3/6', 1),
+    ('3/40', 1),
+    ('3/19', 1),
+    ('1/1', 2),
+    ('1/2', 2),
+    ('1/3', 3),
+    ('1/4', 4),
+    ('1/5', 5),
+    ('1/6', 6),
+    ('1/7', 7),
+    ('1/8', 8),
+    ('1/9', 9)
+  ;
   
-  INSERT INTO assets (name, asset_type)
+  INSERT INTO assets (name, asset_type) /* 30 */
   VALUES
     ('c1', 1),
     ('kr1', 2),
@@ -359,129 +346,98 @@
     ('m30', 3),
     ('p30', 4),
     ('s30', 5),
-    ('t30', 6);
+    ('t30', 6)
+  ;
   
+  /* User1 password 111 ... */
   INSERT INTO users (login, salt, hash)
   VALUES
     (
-      'User_Jack', '1111111111111', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      'user1', '', '$2y$10$GefRLqURuebo9eyOrYm83O0zFeGlvVt3UujXgDd02gyjZwH6NO6N6'
     ),
     (
-      'User_Bob', '2222222222222', 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
+      'user2', '', '$2y$10$Ft84wWFy.ugVLQ6Fy.ObT..6xVMAje.pD5.zPYZop8pADmpWmmpDu'
     ),
     (
-      'User_Tory', '3333333333333', 'ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc'
+      'user3', '', '$2y$10$rqC2MTTutu/gIrhDNUf9v.y58sclDNuWPZwLKVtIKxkJ8gfHF5P.y'
     ),
     (
-      'User_Sasha', '4444444444444', 'ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd'
+      'user4', '', '$2y$10$i5O.B5ZGF9lvPS5ALIXim.4dtydW4D0qjymW5e86Jv3ulJG8CRFOO'
     ),
     (
-      'User_Robert', '5555555555555', 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-    ),
-    (
-      'User_Alica', '6666666666666', 'fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
-    );
+      'user5', '', '$2y$10$ZM4NpuGcj.Wb0EAqRpA6JuFNw.oxJCExZdcR3uEiDEp7wYwBxJVEm'
+    )
+  ;
   
   INSERT INTO reports (name, room, create_date, owner)
   VALUES
-    (
-      'Raport_1/12', 21, NOW() - INTERVAL 10 DAY,
-      1
-    ),
-    (
-      'Raport_1/13', 22, NOW() - INTERVAL 9 DAY,
-      1
-    ),
-    (
-      'Raport_1/14', 23, NOW() - INTERVAL 8 DAY,
-      1
-    ),
-    (
-      'Raport_1/15', 24, NOW() - INTERVAL 7 DAY,
-      1
-    ),
-    (
-      'Raport_1/16', 25, NOW() - INTERVAL 6 DAY,
-      1
-    ),
-    (
-      'Raport_1/17', 26, NOW() - INTERVAL 5 DAY,
-      1
-    ),
-    (
-      'Raport_1/18', 27, NOW() - INTERVAL 4 DAY,
-      1
-    ),
-    (
-      'Raport_1/19', 28, NOW() - INTERVAL 3 DAY,
-      1
-    ),
-    /* Room 21 report 2 */
-    (
-      'Raport_2/12', 21, NOW() - INTERVAL 1 DAY,
-      1
-    );
+    ('Raport 1', 1, NOW() - INTERVAL 10 DAY, 1), /* new */
 
+    ('Raport 2', 2, NOW() - INTERVAL 9 DAY, 1), /* new */
+    
+    ('Raport 1 po 1', 1, NOW() - INTERVAL 8 DAY, 1), /* Room 21 report 2 */
+
+    ('Raport 3', 3, NOW() - INTERVAL 7 DAY, 1), /* new */
+    
+    ('Raport 2 po 1 po 1', 3, NOW() - INTERVAL 6 DAY, 1), /* Room 21 report 3 */
+
+    ('Raport 4', 4, NOW() - INTERVAL 5 DAY, 1) /* new */
+  ;
+
+  /* asset_id - 30 zestawów 6 elementowych */
   INSERT INTO reports_assets (report_id, asset_id, previous_room, present)
   VALUES
-    (1, 127, NULL, TRUE),
-    (1, 128, NULL, TRUE),
-    (1, 129, NULL, TRUE),
-    (1, 130, NULL, TRUE),
-    (1, 131, NULL, TRUE),
-    (1, 132, NULL, TRUE),
-    (2, 133, 29, TRUE),
-    (2, 134, 29, TRUE),
-    (2, 135, 29, TRUE),
-    (2, 136, 29, TRUE),
-    (2, 137, 29, TRUE),
-    (2, 138, 29, TRUE),
-    (3, 139, 28, TRUE),
-    (3, 140, 28, TRUE),
-    (3, 141, 28, TRUE),
-    (3, 142, 28, TRUE),
-    (3, 143, 28, TRUE),
-    (3, 144, 28, TRUE),
-    (4, 151, 27, TRUE),
-    (4, 152, 27, TRUE),
-    (4, 153, 27, TRUE),
-    (4, 154, 27, TRUE),
-    (4, 155, 27, TRUE),
-    (4, 156, 27, TRUE),
-    (5, 157, NULL, TRUE),
-    (5, 158, 26, TRUE),
-    (5, 159, 26, TRUE),
-    (5, 160, 26, TRUE),
-    (5, 161, 26, TRUE),
-    (5, 162, 26, TRUE),
-    (6, 163, 25, TRUE),
-    (6, 164, NULL, TRUE),
-    (6, 165, 25, TRUE),
-    (6, 166, NULL, TRUE),
-    (6, 167, 25, TRUE),
-    (6, 168, NULL, TRUE),
-    (7, 169, 24, TRUE),
-    (7, 170, 24, TRUE),
-    (7, 171, NULL, TRUE),
-    (7, 172, 24, TRUE),
-    (7, 173, NULL, TRUE),
-    (7, 174, 24, TRUE),
-    (8, 175, 23, TRUE),
-    (8, 176, 23, TRUE),
-    (8, 177, 23, TRUE),
-    (8, 178, NULL, TRUE),
-    (8, 179, 23, TRUE),
-    (8, 180, NULL, TRUE),
-    
-    /* Second report in room 21 */
-    (9, 127, NULL, TRUE), /* The same */
-    (9, 128, NULL, TRUE), /* The same */
-    (9, 129, NULL, TRUE), /* The same */
-    (9, 130, NULL, TRUE), /* The same */
-    (9, 131, NULL, FALSE), /* Deleted */
-    (9, 132, NULL, FALSE), /* Deleted */
-    (9, 133, 22, TRUE), /* From room 22 */
-    (9, 134, 22, TRUE)  /* From room 22 */
+    /* Raport 1 */
+    (1, 0 + 1, NULL, TRUE),
+    (1, 0 + 2, NULL, TRUE),
+    (1, 0 + 3, NULL, TRUE),
+    (1, 0 + 4, NULL, TRUE),
+    (1, 0 + 5, NULL, TRUE),
+    (1, 0 + 6, NULL, TRUE),
+
+    /* Raport 2 */
+    (2, 6 + 1, NULL, TRUE),
+    (2, 6 + 2, NULL, TRUE),
+    (2, 6 + 3, NULL, TRUE),
+    (2, 6 + 4, NULL, TRUE),
+    (2, 6 + 5, NULL, TRUE),
+    (2, 6 + 6, NULL, TRUE),
+
+    /* Raport 1 po 1 */
+    (3, 0 + 1, 1, TRUE), /* The same */
+    (3, 0 + 2, 1, TRUE), /* The same */
+    (3, 0 + 3, 1, TRUE), /* The same */
+    (3, 0 + 4, 1, TRUE), /* The same */
+    (3, 0 + 5, 1, FALSE), /* Deleted */
+    (3, 0 + 6, 1, FALSE), /* Deleted */
+    (3, 6 + 1, 2, TRUE), /* From room 2 */
+    (3, 6 + 2, 2, TRUE),  /* From room 2 */
+
+    /* Raport 3 */
+    (4, 12 + 1, NULL, TRUE),
+    (4, 12 + 2, NULL, TRUE),
+    (4, 12 + 3, NULL, TRUE),
+    (4, 12 + 4, NULL, TRUE),
+    (4, 12 + 5, NULL, TRUE),
+    (4, 12 + 6, NULL, TRUE),
+
+    /* Raport 2 po 1 po 1 */
+    (5, 0 + 1, 1, TRUE), /* The same */
+    (5, 0 + 2, 1, TRUE), /* The same */
+    (5, 0 + 3, 1, FALSE), /* Deleted */
+    (5, 0 + 4, 1, FALSE), /* Deleted */
+    (5, 6 + 1, 1, TRUE), /* The same */
+    (5, 6 + 2, 1, TRUE), /* The same */
+    (5, 12 + 1, 3, TRUE), /* From room 3 */
+    (5, 12 + 2, 3, TRUE), /* From room 3 */
+
+    /* Raport 4 */
+    (6, 18 + 1, NULL, TRUE),
+    (6, 18 + 2, NULL, TRUE),
+    (6, 18 + 3, NULL, TRUE),
+    (6, 18 + 4, NULL, TRUE),
+    (6, 18 + 5, NULL, TRUE),
+    (6, 18 + 6, NULL, TRUE)
   ;
 
 /* Examples */
