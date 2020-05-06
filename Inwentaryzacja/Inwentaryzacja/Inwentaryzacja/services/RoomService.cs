@@ -5,7 +5,8 @@ using Inwentaryzacja.models;
 
 public class RoomService {
 	
-private APIController api;
+	private APIController api;
+
 	public RoomService(APIController apiController)	{
 		api = apiController;
 	}
