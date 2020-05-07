@@ -317,7 +317,7 @@
     DROP PROCEDURE IF EXISTS addNewReport;
 
     DELIMITER $$
-    CREATE PROCEDURE addNewReport(IN report_name VARCHAR(64), IN report_room INT, IN report_owner INT, IN report_positions VARCHAR(1024))
+    CREATE PROCEDURE addNewReport(IN report_name VARCHAR(64), IN report_room INT, IN report_owner INT, IN report_positions VARCHAR(4096))
     BEGIN
       DECLARE new_report_id INT;
       DECLARE position_id INT;
@@ -369,6 +369,36 @@
 
       SELECT
         LAST_INSERT_ID() AS id
+      ;
+    END $$ DELIMITER ;
+
+  /* Pobranie sal z budynku */
+
+    DROP PROCEDURE IF EXISTS getRooms;
+
+    DELIMITER $$
+    CREATE PROCEDURE getRooms(IN building_id INT)
+    BEGIN
+      SELECT
+        rooms.id, rooms.name
+      FROM
+        rooms
+      WHERE
+        rooms.building = building_id
+      ;
+    END $$ DELIMITER ;
+
+  /* Pobranie budynków */
+
+    DROP PROCEDURE IF EXISTS getBuildings;
+
+    DELIMITER $$
+    CREATE PROCEDURE getBuildings()
+    BEGIN
+      SELECT
+        buildings.id, buildings.name
+      FROM
+        buildings
       ;
     END $$ DELIMITER ;
 

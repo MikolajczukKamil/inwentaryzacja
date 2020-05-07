@@ -113,3 +113,19 @@
   /* addRoom(room_name VARCHAR, building_id INT): { id INT } */
 
   CALL addRoom('3/1', 1);
+
+  /* getRooms(building_id INT): {
+      id INT
+      name VARCHAR
+    }
+  */
+
+  CALL getRooms(1);
+
+  /* getBuildings(): {
+      id INT
+      name VARCHAR
+    }
+  */
+
+  CALL getBuildings();

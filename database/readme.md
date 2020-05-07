@@ -81,6 +81,24 @@ addNewReport(
 ): { id INT } 
 </pre>
 
+<pre>
+addRoom(room_name VARCHAR, building_id INT): { id INT }
+</pre>
+
+<pre>
+getRooms(building_id INT): {
+  id INT
+  name VARCHAR
+}
+</pre>
+
+<pre>
+getBuildings(): {
+  id INT
+  name VARCHAR
+}
+</pre>
+
 # Opis zawartości batel w fake bazie
 
 ## Typy środków trwałych
