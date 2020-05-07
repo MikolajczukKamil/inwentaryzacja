@@ -40,7 +40,7 @@
     name VARCHAR(30) NOT NULL,
     building INT NOT NULL,
     PRIMARY KEY(id),
-    FOREIGN KEY(building)
+    CONSTRAINT fk_room_building FOREIGN KEY(building)
       REFERENCES buildings(id)
       ON DELETE CASCADE
   );
@@ -49,7 +49,7 @@
     id INT NOT NULL AUTO_INCREMENT,
     type INT NOT NULL,
     PRIMARY KEY(id),
-    FOREIGN KEY(type)
+    CONSTRAINT fk_asset_assettype FOREIGN KEY(type)
       REFERENCES asset_types(id)
       ON DELETE CASCADE
   );
@@ -61,10 +61,10 @@
     create_date DATETIME NOT NULL,
     owner INT NOT NULL,
     PRIMARY KEY(id),
-    FOREIGN KEY(room)
+    CONSTRAINT fk_report_room FOREIGN KEY(room)
       REFERENCES rooms(id)
       ON DELETE CASCADE,
-    FOREIGN KEY(owner)
+    CONSTRAINT fk_report_user FOREIGN KEY(owner)
       REFERENCES users(id)
       ON DELETE CASCADE
   );
@@ -75,13 +75,13 @@
     previous_room INT NULL,
     present BOOLEAN NOT NULL DEFAULT TRUE,
     PRIMARY KEY(report_id, asset_id),
-    FOREIGN KEY(report_id)
+    CONSTRAINT fk_reportasset_report FOREIGN KEY(report_id)
       REFERENCES reports(id)
       ON DELETE CASCADE,
-    FOREIGN KEY(asset_id)
+    CONSTRAINT fk_reportasset_asset FOREIGN KEY(asset_id)
       REFERENCES assets(id)
       ON DELETE CASCADE,
-    FOREIGN KEY(previous_room)
+    CONSTRAINT fk_reportasset_room FOREIGN KEY(previous_room)
       REFERENCES rooms(id)
   );
 
@@ -92,7 +92,7 @@
     expiration_date DATETIME NOT NULL,
     create_date DATETIME NOT NULL,
     PRIMARY KEY(id),
-    FOREIGN KEY(user_id)
+    CONSTRAINT fk_login_user FOREIGN KEY(user_id)
       REFERENCES users(id)
       ON DELETE CASCADE
   );
