@@ -17,7 +17,7 @@
 
   CREATE TABLE users (
     id INT NOT NULL AUTO_INCREMENT,
-    login VARCHAR(20) NOT NULL UNIQUE,
+    login VARCHAR(64) NOT NULL UNIQUE,
     hash VARCHAR(64) NOT NULL,
     PRIMARY KEY(id)
   );
@@ -25,19 +25,19 @@
   CREATE TABLE asset_types (
     id INT NOT NULL AUTO_INCREMENT,
     letter CHAR(1) NOT NULL UNIQUE,
-    name VARCHAR(20) NOT NULL UNIQUE,
+    name VARCHAR(64) NOT NULL UNIQUE,
     PRIMARY KEY(id)
   );
 
   CREATE TABLE buildings (
     id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL UNIQUE,
+    name VARCHAR(64) NOT NULL UNIQUE,
     PRIMARY KEY(id)
   );
 
   CREATE TABLE rooms (
     id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(30) NOT NULL,
+    name VARCHAR(64) NOT NULL,
     building INT NOT NULL,
     PRIMARY KEY(id),
     CONSTRAINT fk_room_building FOREIGN KEY(building)
@@ -344,6 +344,20 @@
         SET i = i + 1;
       END WHILE;
       
+    END $$ DELIMITER ;
+
+  /* Utworzenie nowej sali */
+
+    DROP PROCEDURE IF EXISTS addRoom;
+
+    DELIMITER $$
+    CREATE PROCEDURE addRoom(IN name VARCHAR(64), IN expiration_date DATETIME, IN user_token VARCHAR(64))
+    BEGIN
+      INSERT INTO
+        login_sessions (user_id, token, expiration_date, create_date)
+      VALUES 
+        (user_id, user_token, expiration_date, NOW())
+      ;
     END $$ DELIMITER ;
 
 /* Fake data */
