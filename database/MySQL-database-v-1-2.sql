@@ -63,7 +63,7 @@
     name VARCHAR(50),
     room INT NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,
     create_date DATETIME NOT NULL,
-    OWNER TINYINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    owner TINYINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     PRIMARY KEY(id)
   );
 
@@ -120,6 +120,95 @@
 
     RETURN room_id;
   END $$ DELIMITER ;
+
+/* Procedures */
+
+  /* Pobranie nagłówków raportów */
+    DROP PROCEDURE IF EXISTS getReportsHeaders;
+
+    DELIMITER $$
+    CREATE PROCEDURE getReportsHeaders()
+    BEGIN
+      SELECT
+        reports.id, reports.name, reports.create_date, reports.owner AS owner_id,
+        users.login AS owner_name,
+        rooms.name AS room_name,
+        buildings.name AS building_name
+      FROM
+        reports
+      JOIN
+        users ON reports.owner = users.id
+      JOIN
+        rooms ON reports.room = rooms.id
+      JOIN
+        buildings ON rooms.building = buildings.id
+      ORDER BY
+        reports.create_date DESC,
+        reports.id DESC
+      ;
+    END $$ DELIMITER ;
+
+  /* Pobranie zawartości raportu - assety w danym raporcie */
+    DROP PROCEDURE IF EXISTS getAssetsInReport;
+
+    DELIMITER $$
+    CREATE PROCEDURE getAssetsInReport(IN ReportId INT)
+    BEGIN
+      SELECT
+        reports_assets.asset_id, reports_assets.previous_room, reports_assets.present,
+        assets.name AS asset_name, assets.asset_type,
+        asset_types.name AS asset_type_name
+      FROM
+        reports_assets
+      JOIN
+        assets ON reports_assets.asset_id = assets.id
+      JOIN
+        asset_types ON assets.asset_type = asset_types.id
+      WHERE
+        reports_assets.report_id = ReportId
+      ;
+    END $$ DELIMITER ;
+
+  /* Pobranie listy przedmiotów z danej sali - assety w danej sali */
+    DROP PROCEDURE IF EXISTS getAssetsInRoom;
+
+    DELIMITER $$
+    CREATE PROCEDURE getAssetsInRoom(IN RoomId INT)
+    BEGIN
+      SELECT
+        assets.id, assets.name, assets.asset_type,
+        asset_types.name AS asset_type_name,
+        IFNULL(reports_assets.previous_room, 0) = 0 AS new_asset,
+        IFNULL(reports_assets.previous_room, reports.room) != reports.room AS moved,
+        reports_assets.previous_room AS moved_from_id,
+        rooms.name AS moved_from_name
+      FROM
+        reports_assets
+      JOIN
+        reports ON reports_assets.report_id = reports.id
+      JOIN
+        assets ON reports_assets.asset_id = assets.id
+      JOIN
+        asset_types ON assets.asset_type = asset_types.id
+      LEFT JOIN
+        rooms ON reports_assets.previous_room = rooms.id
+      WHERE
+        reports_assets.report_id = (
+          SELECT
+            reports.id
+          FROM
+            reports
+          WHERE
+            reports.room = RoomId
+          ORDER BY
+            reports.create_date DESC,
+            reports.id DESC
+          LIMIT 1
+        ) AND 
+        reports_assets.present AND
+        reports.room = getRoomIdWithAsset(reports_assets.asset_id)
+      ;
+    END $$ DELIMITER ;
 
 /* Fake data */
 
@@ -370,7 +459,7 @@
   
   INSERT INTO reports (name, room, create_date, owner)
   VALUES
-    ('Raport 1', 1, NOW() - INTERVAL 10 DAY, 1), /* new */
+    ('Raport 1', 1, NOW() - INTERVAL 10 DAY, 1), /* new Room 21 report 1 */
 
     ('Raport 2', 2, NOW() - INTERVAL 9 DAY, 1), /* new */
     
@@ -378,7 +467,7 @@
 
     ('Raport 4', 3, NOW() - INTERVAL 7 DAY, 1), /* new */
     
-    ('Raport 5 po 3', 3, NOW() - INTERVAL 6 DAY, 1), /* Room 21 report 3 */
+    ('Raport 5 po 3', 1, NOW() - INTERVAL 6 DAY, 1), /* Room 21 report 3 */
 
     ('Raport 6', 4, NOW() - INTERVAL 5 DAY, 1) /* new b. 4 */
   ;
@@ -438,15 +527,3 @@
     (6, 18 + 5, NULL, TRUE),
     (6, 18 + 6, NULL, TRUE)
   ;
-
-/* Examples */
-
-    /* Assets with rooms */
-
-    /*
-    SELECT
-        *,
-        getRoomIdWithAsset(assets.id) AS IamInRoomId
-    FROM
-        assets;
-    */
