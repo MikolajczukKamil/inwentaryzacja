@@ -154,7 +154,6 @@
     ('3/6', 1),
     ('3/40', 1),
     ('3/19', 1),
-    ('1/1', 2),
     ('1/2', 2),
     ('1/3', 3),
     ('1/4', 4),
@@ -375,13 +374,13 @@
 
     ('Raport 2', 2, NOW() - INTERVAL 9 DAY, 1), /* new */
     
-    ('Raport 1 po 1', 1, NOW() - INTERVAL 8 DAY, 1), /* Room 21 report 2 */
+    ('Raport 3 po 1', 1, NOW() - INTERVAL 8 DAY, 1), /* Room 21 report 2 */
 
-    ('Raport 3', 3, NOW() - INTERVAL 7 DAY, 1), /* new */
+    ('Raport 4', 3, NOW() - INTERVAL 7 DAY, 1), /* new */
     
-    ('Raport 2 po 1 po 1', 3, NOW() - INTERVAL 6 DAY, 1), /* Room 21 report 3 */
+    ('Raport 5 po 3', 3, NOW() - INTERVAL 6 DAY, 1), /* Room 21 report 3 */
 
-    ('Raport 4', 4, NOW() - INTERVAL 5 DAY, 1) /* new */
+    ('Raport 6', 4, NOW() - INTERVAL 5 DAY, 1) /* new b. 4 */
   ;
 
   /* asset_id - 30 zestawów 6 elementowych */
@@ -403,7 +402,7 @@
     (2, 6 + 5, NULL, TRUE),
     (2, 6 + 6, NULL, TRUE),
 
-    /* Raport 1 po 1 */
+    /* Raport 3 po 1 */
     (3, 0 + 1, 1, TRUE), /* The same */
     (3, 0 + 2, 1, TRUE), /* The same */
     (3, 0 + 3, 1, TRUE), /* The same */
@@ -413,7 +412,7 @@
     (3, 6 + 1, 2, TRUE), /* From room 2 */
     (3, 6 + 2, 2, TRUE),  /* From room 2 */
 
-    /* Raport 3 */
+    /* Raport 4 */
     (4, 12 + 1, NULL, TRUE),
     (4, 12 + 2, NULL, TRUE),
     (4, 12 + 3, NULL, TRUE),
@@ -421,7 +420,7 @@
     (4, 12 + 5, NULL, TRUE),
     (4, 12 + 6, NULL, TRUE),
 
-    /* Raport 2 po 1 po 1 */
+    /* Raport 5 po 3 */
     (5, 0 + 1, 1, TRUE), /* The same */
     (5, 0 + 2, 1, TRUE), /* The same */
     (5, 0 + 3, 1, FALSE), /* Deleted */
@@ -431,7 +430,7 @@
     (5, 12 + 1, 3, TRUE), /* From room 3 */
     (5, 12 + 2, 3, TRUE), /* From room 3 */
 
-    /* Raport 4 */
+    /* Raport 6 */
     (6, 18 + 1, NULL, TRUE),
     (6, 18 + 2, NULL, TRUE),
     (6, 18 + 3, NULL, TRUE),
