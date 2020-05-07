@@ -16,21 +16,21 @@
   DROP TABLE IF EXISTS users;
 
   CREATE TABLE users (
-    id TINYINT NOT NULL AUTO_INCREMENT,
+    id INT NOT NULL AUTO_INCREMENT,
     login VARCHAR(20) NOT NULL UNIQUE,
     hash VARCHAR(64) NOT NULL,
     PRIMARY KEY(id)
   );
 
   CREATE TABLE asset_types (
-    id TINYINT NOT NULL AUTO_INCREMENT,
+    id INT NOT NULL AUTO_INCREMENT,
     letter CHAR(1) NOT NULL UNIQUE,
     name VARCHAR(20) NOT NULL UNIQUE,
     PRIMARY KEY(id)
   );
 
   CREATE TABLE buildings (
-    id TINYINT NOT NULL AUTO_INCREMENT,
+    id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL UNIQUE,
     PRIMARY KEY(id)
   );
@@ -38,7 +38,7 @@
   CREATE TABLE rooms (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(30) NOT NULL,
-    building TINYINT NOT NULL,
+    building INT NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(building)
       REFERENCES buildings(id)
@@ -47,7 +47,7 @@
 
   CREATE TABLE assets (
     id INT NOT NULL AUTO_INCREMENT,
-    type TINYINT NOT NULL,
+    type INT NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(type)
       REFERENCES asset_types(id)
@@ -59,7 +59,7 @@
     name VARCHAR(50),
     room INT NOT NULL,
     create_date DATETIME NOT NULL,
-    owner TINYINT NOT NULL,
+    owner INT NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(room)
       REFERENCES rooms(id)
@@ -87,7 +87,7 @@
 
   CREATE TABLE login_sessions (
     id INT NOT NULL AUTO_INCREMENT,
-    user_id TINYINT NOT NULL,
+    user_id INT NOT NULL,
     token VARCHAR(64) NOT NULL UNIQUE,
     expiration_date DATETIME NOT NULL,
     create_date DATETIME NOT NULL,
@@ -222,6 +222,31 @@
       ;
     END $$ DELIMITER ;
 
+  /* Pobranie informacji o przedmiocie nie należącym do spodziewanej sali */
+    DROP PROCEDURE IF EXISTS getAssetInfo;
+
+    DELIMITER $$
+    CREATE PROCEDURE getAssetInfo(IN AssetId INT)
+    BEGIN
+      SELECT
+        assets.id, assets.type,
+        asset_types.name AS asset_type_name,
+        RIdWA.room_id AS room_id,
+        rooms.name AS room_name,
+        buildings.name AS building_name
+      FROM
+        (SELECT getRoomIdWithAsset(AssetId) AS room_id) AS RIdWA
+      JOIN
+        assets ON assets.id = AssetId
+      JOIN
+        asset_types ON assets.type = asset_types.id
+      JOIN
+        rooms ON RIdWA.room_id = rooms.id
+      JOIN
+        buildings ON rooms.building = buildings.id
+      ;
+    END $$ DELIMITER ;
+
   /* Pobranie danych uzytkownika */
 
     DROP PROCEDURE IF EXISTS getUser;
@@ -260,7 +285,7 @@
     DROP PROCEDURE IF EXISTS addLoginSession;
 
     DELIMITER $$
-    CREATE PROCEDURE addLoginSession(IN user_id INT, INT expiration_date DATETIME, IN user_token VARCHAR(64))
+    CREATE PROCEDURE addLoginSession(IN user_id INT, IN expiration_date DATETIME, IN user_token VARCHAR(64))
     BEGIN
       INSERT INTO
         login_sessions (user_id, token, expiration_date, create_date)

@@ -1,3 +1,71 @@
+# Opis procedur
+
+<pre>
+getReportsHeaders(): {
+  id INT
+  name VARCHAR
+  create_date DATETIME
+  owner_id INT
+  owner_name VARCHAR
+  room_name VARCHAR
+  building_name VARCHAR 
+}
+</pre>
+
+<pre>
+getAssetsInReport(ReportId INT): {
+  asset_id INT
+  previous_room INT
+  present BOOLEAN
+  asset_type INT
+  asset_type_name VARCHAR
+}
+</pre>
+
+<pre>
+getAssetsInRoom(RoomId INT): {
+  id INT
+  type INT
+  asset_type_name VARCHAR
+  new_asset BOOLEAN
+  moved BOOLEAN
+  moved_from_id INT|NULL
+  moved_from_name VARCHAR|NULL
+}
+</pre>
+
+<pre>
+getAssetInfo(AssetID INT): {
+  id INT
+  type INT
+  asset_type_name VARCHAR
+  room_id INT
+  room_name VARCHAR
+  building_name VARCHAR
+}
+</pre>
+
+<pre>
+getUser(UserId INT): {
+  id INT
+  login VARCHAR
+  hash VARCHAR
+}
+</pre>
+
+<pre>
+getLoginSession(user_token VARCHAR)
+  id INT
+  user_id INT
+  expiration_date DATETIME
+  token VARCHAR
+  expired BOOLEAN
+</pre>
+
+<pre>
+addLoginSession(user_id INT, expiration_date DATETIME, user_token VARCHAR): VOID
+</pre>
+
 # Opis zawartości batel w fake bazie
 
 ## Typy środków trwałych
