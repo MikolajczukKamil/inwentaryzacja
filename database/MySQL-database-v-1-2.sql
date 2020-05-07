@@ -292,6 +292,10 @@
       VALUES 
         (user_id, user_token, expiration_date, NOW())
       ;
+
+      SELECT
+        LAST_INSERT_ID() AS id
+      ;
     END $$ DELIMITER ;
 
   /* Usunięcie sesji logowania */
@@ -343,6 +347,10 @@
 
         SET i = i + 1;
       END WHILE;
+
+      SELECT
+        new_report_id AS id
+      ;
       
     END $$ DELIMITER ;
 

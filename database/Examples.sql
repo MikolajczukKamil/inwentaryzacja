@@ -90,10 +90,14 @@
       expiration_date 
       DATETIME, 
       user_token VARCHAR
-    ): VOID 
+    ): { id INT } 
   */
 
   CALL addLoginSession(1, NOW(), 'fake-token-2');
+  
+  /* deleteLoginSession(user_token VARCHAR): VOID */
+
+  CALL deleteLoginSession('fake-token-2');
 
   /* 
     addNewReport(
@@ -101,7 +105,11 @@
       report_room INT,
       report_owner INT,
       report_positions VARCHAR( JSON( { id INT, previous: INT|NULL, present: BOOLEAN } ) )
-    ): VOID 
+    ): { id INT }  
   */
 
   call addNewReport('nowy', 3, 1, '[{"id":25,"previous":null,"present":1}]');
+
+  /* addRoom(room_name VARCHAR, building_id INT): { id INT } */
+
+  CALL addRoom('3/1', 1);
