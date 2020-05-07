@@ -72,7 +72,7 @@
   CREATE TABLE reports_assets (
     report_id INT NOT NULL,
     asset_id INT NOT NULL,
-    previous_room INT,
+    previous_room INT NULL,
     present BOOLEAN NOT NULL DEFAULT TRUE,
     PRIMARY KEY(report_id, asset_id),
     FOREIGN KEY(report_id)
@@ -294,7 +294,7 @@
       ;
     END $$ DELIMITER ;
 
-    /* Usunięcie sesji logowania */
+  /* Usunięcie sesji logowania */
 
     DROP PROCEDURE IF EXISTS deleteLoginSession;
 
@@ -307,6 +307,43 @@
       WHERE 
         login_sessions.token = user_token
       ;
+    END $$ DELIMITER ;
+  /* Utworzenie nowego raportu */
+
+    DROP PROCEDURE IF EXISTS addNewReport;
+
+    DELIMITER $$
+    CREATE PROCEDURE addNewReport(IN report_name VARCHAR(64), IN report_room INT, IN report_owner INT, IN report_positions VARCHAR(1024))
+    BEGIN
+      DECLARE new_report_id INT;
+      DECLARE position_id INT;
+      DECLARE position_previous INT;
+      DECLARE position_present BOOLEAN;
+      DECLARE i INT DEFAULT 0;
+
+      INSERT INTO
+        reports (name, room, create_date, owner)
+      VALUES
+        (report_name, report_room, NOW(), report_owner);
+
+      SET new_report_id = LAST_INSERT_ID();
+
+      WHILE i < JSON_LENGTH(report_positions)
+      DO
+        /* [ { "id": 25, "previous": 1, "present": 1 } ] */
+        SET position_id = JSON_VALUE(report_positions, CONCAT('$[', i ,'].id'));
+        SET position_previous = JSON_VALUE(report_positions, CONCAT('$[', i ,'].previous'));
+        SET position_present = JSON_VALUE(report_positions, CONCAT('$[', i ,'].present'));
+
+        INSERT INTO
+          reports_assets (report_id, asset_id, previous_room, present)
+        VALUES
+          (new_report_id, position_id, previous_room, position_present)
+        ;
+
+        SET i = i + 1;
+      END WHILE;
+      
     END $$ DELIMITER ;
 
 /* Fake data */

@@ -54,16 +54,27 @@ getUser(UserId INT): {
 </pre>
 
 <pre>
-getLoginSession(user_token VARCHAR)
+getLoginSession(user_token VARCHAR): {
   id INT
   user_id INT
   expiration_date DATETIME
   token VARCHAR
   expired BOOLEAN
+}
 </pre>
 
 <pre>
 addLoginSession(user_id INT, expiration_date DATETIME, user_token VARCHAR): VOID
+</pre>
+
+<pre>
+-- report_positions - json string of array of { id INT, previous: INT|NULL, present: BOOLEAN }
+addNewReport(
+  report_name VARCHAR,
+  report_room INT,
+  report_owner INT,
+  report_positions VARCHAR( JSON( { id INT, previous: INT|NULL, present: BOOLEAN } ) )
+): VOID
 </pre>
 
 # Opis zawartości batel w fake bazie
