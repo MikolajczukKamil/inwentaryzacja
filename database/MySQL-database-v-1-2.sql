@@ -351,12 +351,16 @@
     DROP PROCEDURE IF EXISTS addRoom;
 
     DELIMITER $$
-    CREATE PROCEDURE addRoom(IN name VARCHAR(64), IN expiration_date DATETIME, IN user_token VARCHAR(64))
+    CREATE PROCEDURE addRoom(IN room_name VARCHAR(64), IN building_id INT)
     BEGIN
       INSERT INTO
-        login_sessions (user_id, token, expiration_date, create_date)
+        rooms (name, building)
       VALUES 
-        (user_id, user_token, expiration_date, NOW())
+        (room_name, building_id)
+      ;
+
+      SELECT
+        LAST_INSERT_ID() AS id
       ;
     END $$ DELIMITER ;
 
