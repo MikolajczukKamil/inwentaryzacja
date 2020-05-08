@@ -13,7 +13,19 @@ getReportsHeaders(): {
 </pre>
 
 <pre>
-getAssetsInReport(ReportId INT): {
+getReportHeader(report_id INT): {
+  id INT
+  name VARCHAR
+  create_date DATETIME
+  owner_id INT
+  owner_name VARCHAR
+  room_name VARCHAR
+  building_name VARCHAR 
+}
+</pre>
+
+<pre>
+getAssetsInReport(report_id INT): {
   asset_id INT
   previous_room INT
   present BOOLEAN
@@ -23,7 +35,7 @@ getAssetsInReport(ReportId INT): {
 </pre>
 
 <pre>
-getAssetsInRoom(RoomId INT): {
+getAssetsInRoom(room_id INT): {
   id INT
   type INT
   asset_type_name VARCHAR
@@ -35,7 +47,7 @@ getAssetsInRoom(RoomId INT): {
 </pre>
 
 <pre>
-getAssetInfo(AssetID INT): {
+getAssetInfo(asset_id INT): {
   id INT
   type INT
   asset_type_name VARCHAR
@@ -46,7 +58,7 @@ getAssetInfo(AssetID INT): {
 </pre>
 
 <pre>
-getUser(UserId INT): {
+getUser(usser_id INT): {
   id INT
   login VARCHAR
   hash VARCHAR
@@ -89,14 +101,13 @@ addRoom(room_name VARCHAR, building_id INT): { id INT }
 getRooms(building_id INT): {
   id INT
   name VARCHAR
+  building_id INT
+  building_name VARCHAR
 }
 </pre>
 
 <pre>
-getBuildings(): {
-  id INT
-  name VARCHAR
-}
+getBuildings(): { id INT, name VARCHAR }
 </pre>
 
 # Opis zawartości batel w fake bazie

@@ -160,6 +160,30 @@
       ;
     END $$ DELIMITER ;
 
+  /* Pobranie nagłówka raportu */
+    DROP PROCEDURE IF EXISTS getReportHeader;
+
+    DELIMITER $$
+    CREATE PROCEDURE getReportHeader(IN report_id INT)
+    BEGIN
+      SELECT
+        reports.id, reports.name, reports.create_date, reports.owner AS owner_id,
+        users.login AS owner_name,
+        rooms.name AS room_name,
+        buildings.name AS building_name
+      FROM
+        reports
+      JOIN
+        users ON reports.owner = users.id
+      JOIN
+        rooms ON reports.room = rooms.id
+      JOIN
+        buildings ON rooms.building = buildings.id
+      WHERE
+        reports.id = report_id
+      ;
+    END $$ DELIMITER ;
+
   /* Pobranie zawartości raportu - assety w danym raporcie */
     DROP PROCEDURE IF EXISTS getAssetsInReport;
 
@@ -377,14 +401,17 @@
     DROP PROCEDURE IF EXISTS getRooms;
 
     DELIMITER $$
-    CREATE PROCEDURE getRooms(IN building_id INT)
+    CREATE PROCEDURE getRooms(IN id_building INT)
     BEGIN
       SELECT
-        rooms.id, rooms.name
+        rooms.id, rooms.name,
+        buildings.id AS building_id, buildings.name AS building_name
       FROM
         rooms
+      JOIN
+        buildings ON rooms.building = buildings.id
       WHERE
-        rooms.building = building_id
+        rooms.building = id_building
       ;
     END $$ DELIMITER ;
 

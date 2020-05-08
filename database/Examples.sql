@@ -21,9 +21,23 @@
   */
 
   CALL getReportsHeaders();
+  
+  /* 
+    getReportHeader(report_id INT): {
+      id INT
+      name VARCHAR
+      create_date DATETIME
+      owner_id INT
+      owner_name VARCHAR
+      room_name VARCHAR
+      building_name VARCHAR 
+    }
+  */
+
+  CALL getReportHeader(1);
 
   /* 
-    getAssetsInReport(ReportId INT): {
+    getAssetsInReport(report_id INT): {
       asset_id INT
       previous_room INT
       present BOOLEAN
@@ -36,7 +50,7 @@
   CALL getAssetsInReport(2);
 
   /* 
-    getAssetsInRoom(RoomId INT): {
+    getAssetsInRoom(room_id INT): {
       id INT
       type INT
       asset_type_name VARCHAR
@@ -51,7 +65,7 @@
   CALL getAssetsInRoom(2);
 
   /* 
-    getAssetInfo(AssetID INT): {
+    getAssetInfo(asset_id INT): {
       id INT
       type INT
       asset_type_name VARCHAR
@@ -64,7 +78,7 @@
   CALL getAssetInfo(1);
   
   /* 
-  getUser(UserId INT): {
+  getUser(user_id INT): {
     id INT
     login VARCHAR
     hash VARCHAR
@@ -87,8 +101,7 @@
   /* 
     addLoginSession(
       user_id INT, 
-      expiration_date 
-      DATETIME, 
+      expiration_date DATETIME, 
       user_token VARCHAR
     ): { id INT } 
   */
@@ -114,18 +127,17 @@
 
   CALL addRoom('3/1', 1);
 
-  /* getRooms(building_id INT): {
+  /* 
+    getRooms(building_id INT): {
       id INT
       name VARCHAR
+      building_id INT
+      building_name VARCHAR
     }
   */
 
   CALL getRooms(1);
 
-  /* getBuildings(): {
-      id INT
-      name VARCHAR
-    }
-  */
+  /* getBuildings(): { id INT, name VARCHAR } */
 
   CALL getBuildings();
