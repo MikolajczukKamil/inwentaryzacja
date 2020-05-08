@@ -56,7 +56,7 @@
 
   CREATE TABLE reports (
     id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(50),
+    name VARCHAR(64),
     room INT NOT NULL,
     create_date DATETIME NOT NULL,
     owner INT NOT NULL,
