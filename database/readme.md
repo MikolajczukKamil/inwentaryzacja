@@ -66,6 +66,14 @@ getUser(usser_id INT): {
 </pre>
 
 <pre>
+getUserByLogin(login VARCHAR): {
+  id INT
+  login VARCHAR
+  hash VARCHAR
+}
+</pre>
+
+<pre>
 getLoginSession(user_token VARCHAR): {
   id INT
   user_id INT

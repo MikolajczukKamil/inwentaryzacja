@@ -85,6 +85,15 @@
   } */
 
   CALL getUser(1);
+  
+  /* 
+  getUserByLogin(login VARCHAR): {
+    id INT
+    login VARCHAR
+    hash VARCHAR
+  } */
+
+  CALL getUser('user1');
 
   /* 
   getLoginSession(user_token VARCHAR): {
