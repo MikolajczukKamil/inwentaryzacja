@@ -139,7 +139,7 @@
     DROP PROCEDURE IF EXISTS getReportsHeaders;
 
     DELIMITER $$
-    CREATE PROCEDURE getReportsHeaders()
+    CREATE PROCEDURE getReportsHeaders(IN user_id INT)
     BEGIN
       SELECT
         reports.id, reports.name, reports.create_date, reports.owner AS owner_id,
@@ -154,6 +154,8 @@
         rooms ON reports.room = rooms.id
       JOIN
         buildings ON rooms.building = buildings.id
+      WHERE
+        users.id = user_id
       ORDER BY
         reports.create_date DESC,
         reports.id DESC
