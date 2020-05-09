@@ -159,7 +159,7 @@ getBuildings(): { id INT, name VARCHAR }
 - Raport nr 2 z sali 2 zawiera assety 7-12
 - Raport nr 3 z sali 1 dodaje assety 7-8 z sali 2, usuwa 5-6
 - Raport nr 4 z sali 3 zawiera assety 13-18
-- Raport nr 5 z sali 1 dodaje assety 13-14 z sali 3, usuwa 3-4
+- Raport nr 5 z sali 1 dodaje assety 13-14 z sali 3, usuwa 3-4 oraz zawiera assety 9, 10 ale nie zapisuje ich, zawiera wszystkie możliwe opcje
 
 ### Stan końcowy
 - W sali 1 assety id: 1, 2, 7, 8, 13, 14

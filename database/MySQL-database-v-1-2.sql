@@ -101,24 +101,25 @@
 
   DROP FUNCTION IF EXISTS getRoomIdWithAsset;
 
-  /*  If the asset is not allocated function returns -1 */
+  /*  If the asset is not allocated function returns NULL */
 
   DELIMITER $$
-  CREATE FUNCTION getRoomIdWithAsset(asset_id INT) RETURNS INT
+  CREATE FUNCTION getRoomIdWithAsset(id_asset INT) RETURNS INT
   BEGIN
-    DECLARE room_id INT DEFAULT -1;
-    DECLARE present BOOLEAN DEFAULT FALSE;
+    DECLARE Room_id INT DEFAULT NULL;
+    DECLARE Deleted BOOLEAN DEFAULT TRUE;
 
     SELECT
-      reports.room, reports_assets.present
+      reports.room, NOT reports_assets.present
     INTO 
-      room_id, present
+      Room_id, Deleted
     FROM
-      reports
+      reports_assets
     JOIN
-      reports_assets ON reports.id = reports_assets.report_id
+      reports ON reports_assets.report_id = reports.id
     WHERE
-      reports_assets.asset_id = asset_id
+      reports_assets.asset_id = id_asset AND
+      NOT (reports_assets.previous_room != reports.room AND NOT reports_assets.present) /* skip 'do nothing' positions */
     ORDER BY
       reports.create_date DESC,
       reports.id DESC
@@ -126,11 +127,11 @@
       1
     ;
 
-    IF NOT present THEN
-      SET room_id = -1;
+    IF Deleted THEN
+      SET Room_id = NULL;
     END IF;
 
-    RETURN room_id;
+    RETURN Room_id;
   END $$ DELIMITER ;
 
 /* Procedures */
@@ -252,24 +253,25 @@
     DROP PROCEDURE IF EXISTS getAssetInfo;
 
     DELIMITER $$
-    CREATE PROCEDURE getAssetInfo(IN AssetId INT)
+    CREATE PROCEDURE getAssetInfo(IN asset_id INT)
     BEGIN
+      DECLARE Asset_room_id INT DEFAULT getRoomIdWithAsset(asset_id);
+
       SELECT
         assets.id, assets.type,
         asset_types.name AS asset_type_name,
-        RIdWA.room_id AS room_id,
+        Asset_room_id AS room_id,
         rooms.name AS room_name,
         buildings.name AS building_name
       FROM
-        (SELECT getRoomIdWithAsset(AssetId) AS room_id) AS RIdWA
-      JOIN
-        assets ON assets.id = AssetId
+        assets, rooms
       JOIN
         asset_types ON assets.type = asset_types.id
       JOIN
-        rooms ON RIdWA.room_id = rooms.id
-      JOIN
         buildings ON rooms.building = buildings.id
+      WHERE
+        assets.id = asset_id AND
+        rooms.id = Asset_room_id
       ;
     END $$ DELIMITER ;
 
@@ -379,37 +381,37 @@
     DELIMITER $$
     CREATE PROCEDURE addNewReport(IN report_name VARCHAR(64), IN report_room INT, IN report_owner INT, IN report_positions VARCHAR(4096))
     BEGIN
-      DECLARE new_report_id INT;
-      DECLARE position_id INT;
-      DECLARE position_previous INT;
-      DECLARE position_present BOOLEAN;
-      DECLARE i INT DEFAULT 0;
+      DECLARE New_report_id INT;
+      DECLARE Position_id INT;
+      DECLARE Position_previous INT;
+      DECLARE Position_present BOOLEAN;
+      DECLARE Position INT DEFAULT 0;
 
       INSERT INTO
         reports (name, room, create_date, owner)
       VALUES
         (report_name, report_room, NOW(), report_owner);
 
-      SET new_report_id = LAST_INSERT_ID();
+      SET New_report_id = LAST_INSERT_ID();
 
-      WHILE i < JSON_LENGTH(report_positions)
+      WHILE Position < JSON_LENGTH(report_positions)
       DO
-        /* [ { "id": 25, "previous": 1, "present": 1 } ] */
-        SET position_id = JSON_VALUE(report_positions, CONCAT('$[', i ,'].id'));
-        SET position_previous = JSON_VALUE(report_positions, CONCAT('$[', i ,'].previous'));
-        SET position_present = JSON_VALUE(report_positions, CONCAT('$[', i ,'].present'));
+        /* Example [ { "id": 25, "previous": 1, "present": 1 } ] */
+        SET Position_id = JSON_VALUE(report_positions, CONCAT('$[', Position ,'].id'));
+        SET Position_previous = JSON_VALUE(report_positions, CONCAT('$[', Position ,'].previous'));
+        SET Position_present = JSON_VALUE(report_positions, CONCAT('$[', Position ,'].present'));
 
         INSERT INTO
           reports_assets (report_id, asset_id, previous_room, present)
         VALUES
-          (new_report_id, position_id, position_previous, position_present)
+          (New_report_id, Position_id, Position_previous, Position_present)
         ;
 
-        SET i = i + 1;
+        SET Position = Position + 1;
       END WHILE;
 
       SELECT
-        new_report_id AS id
+        New_report_id AS id
       ;
       
     END $$ DELIMITER ;
@@ -619,6 +621,8 @@
     (5, 6 + 2, 1, TRUE), /* The same */
     (5, 12 + 1, 3, TRUE), /* From room 3 */
     (5, 12 + 2, 3, TRUE), /* From room 3 */
+    (5, 6 + 3, 2, FALSE), /* From room 2 but not move */
+    (5, 6 + 4, 2, FALSE), /* From room 2 but not move */
 
     /* Raport 6 */
     (6, 18 + 1, NULL, TRUE),
