@@ -273,7 +273,7 @@
       ;
     END $$ DELIMITER ;
 
-  /* Dodanie nowego assetu */
+  /* Utworzenie nowego assetu */
     DROP PROCEDURE IF EXISTS addNewAsset;
 
     DELIMITER $$
@@ -425,6 +425,24 @@
         rooms (name, building)
       VALUES 
         (room_name, building_id)
+      ;
+
+      SELECT
+        LAST_INSERT_ID() AS id
+      ;
+    END $$ DELIMITER ;
+
+  /* Utworzenie nowego budynku */
+
+    DROP PROCEDURE IF EXISTS addBuilding;
+
+    DELIMITER $$
+    CREATE PROCEDURE addBuilding(IN building_name VARCHAR(64))
+    BEGIN
+      INSERT INTO
+        buildings (name)
+      VALUES 
+        (building_name)
       ;
 
       SELECT
