@@ -366,7 +366,7 @@
         INSERT INTO
           reports_assets (report_id, asset_id, previous_room, present)
         VALUES
-          (new_report_id, position_id, previous_room, position_present)
+          (new_report_id, position_id, position_previous, position_present)
         ;
 
         SET i = i + 1;
