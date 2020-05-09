@@ -87,7 +87,7 @@
   CALL getUser(1);
   
   /* 
-  getUserByLogin(login VARCHAR): {
+  getUserByLogin(user_login VARCHAR): {
     id INT
     login VARCHAR
     hash VARCHAR

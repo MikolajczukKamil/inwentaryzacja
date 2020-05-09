@@ -66,7 +66,7 @@ getUser(usser_id INT): {
 </pre>
 
 <pre>
-getUserByLogin(login VARCHAR): {
+getUserByLogin(user_login VARCHAR): {
   id INT
   login VARCHAR
   hash VARCHAR
