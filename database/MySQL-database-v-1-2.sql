@@ -273,6 +273,24 @@
       ;
     END $$ DELIMITER ;
 
+  /* Dodanie nowego assetu */
+    DROP PROCEDURE IF EXISTS addNewAsset;
+
+    DELIMITER $$
+    CREATE PROCEDURE addNewAsset(IN type_id INT)
+    BEGIN
+      INSERT INTO
+        assets (type)
+      VALUES
+        (type_id)
+      ;
+
+      SELECT
+        LAST_INSERT_ID() AS id
+      ;
+
+    END $$ DELIMITER ;
+
   /* Pobranie danych uzytkownika */
 
     DROP PROCEDURE IF EXISTS getUser;
