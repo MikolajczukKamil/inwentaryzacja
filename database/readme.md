@@ -35,6 +35,10 @@ getAssetsInReport(report_id INT): {
 </pre>
 
 <pre>
+addNewAsset(type_id INT): { id INT }
+</pre>
+
+<pre>
 getAssetsInRoom(room_id INT): {
   id INT
   type INT
@@ -103,6 +107,10 @@ addNewReport(
 
 <pre>
 addRoom(room_name VARCHAR, building_id INT): { id INT }
+</pre>
+
+<pre>
+addBuilding(building_name VARCHAR): { id INT }
 </pre>
 
 <pre>

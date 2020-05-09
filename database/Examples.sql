@@ -76,6 +76,10 @@
   */
 
   CALL getAssetInfo(1);
+
+  /* addNewAsset(type_id INT): { id INT } */
+
+  CALL addNewAsset(1);
   
   /* 
   getUser(user_id INT): {
@@ -135,6 +139,10 @@
   /* addRoom(room_name VARCHAR, building_id INT): { id INT } */
 
   CALL addRoom('3/1', 1);
+
+  /* addBuilding(building_name VARCHAR): { id INT } */
+
+  CALL addBuilding("b 101");
 
   /* 
     getRooms(building_id INT): {
