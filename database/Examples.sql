@@ -9,7 +9,7 @@
     ;
   
   /* 
-    getReportsHeaders(): {
+    getReportsHeaders(user_id INT): {
       id INT
       name VARCHAR
       create_date DATETIME
@@ -20,7 +20,7 @@
     }
   */
 
-  CALL getReportsHeaders();
+  CALL getReportsHeaders(1);
   
   /* 
     getReportHeader(report_id INT): {

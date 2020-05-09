@@ -1,7 +1,7 @@
 # Opis procedur
 
 <pre>
-getReportsHeaders(): {
+getReportsHeaders(user_id INT): {
   id INT
   name VARCHAR
   create_date DATETIME
