@@ -16,17 +16,19 @@ namespace Inwentaryzacja.models
 			this.assets = new List<ReportAssetsPrototype>();
 			foreach (var item in assets)
 			{
-				this.assets.Add(new ReportAssetsPrototype(item.AssetId));
+				this.assets.Add(new ReportAssetsPrototype(item.AssetId, null));
 			}
 		}
 
 		public class ReportAssetsPrototype
 		{
-			public int asset_id { get; set; }
+			public int id { get; set; }
+			public bool? present { get; set; }
 
-			public ReportAssetsPrototype(int asset_id)
+			public ReportAssetsPrototype(int id, bool? present)
 			{
-				this.asset_id = asset_id;
+				this.id = id;
+				this.present = present;
 			}
 		}
 	}

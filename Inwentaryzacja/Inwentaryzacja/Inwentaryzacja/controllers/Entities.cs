@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Inwentaryzacja.controllers
 {
-    public class AssetEntity
+    public class AssetInfoEntity
     {
         public int id { get; set; }
-        public string name { get; set; }
-        public int assetType { get; set; }
+        public AssetTypeEntity type;
+        public RoomEntity room;
     }
     public class AssetTypeEntity
     {
@@ -22,46 +22,42 @@ namespace Inwentaryzacja.controllers
         public int id { get; set; }
         public string name { get; set; }
     }
-    public class ReportEntity
-    {
-        public int id { get; set; }
-        public string name { get; set; }
-        public int room { get; set; }
-        public DateTime create_date { get; set; }
-        public int owner { get; set; }
-    }
-    public class ReportWithAssetEntity
-    {
-        public int id { get; set; }
-        public string name { get; set; }
-        public int room { get; set; }
-        public DateTime create_date { get; set; }
-        public int owner { get; set; }
-        public List<ReportAssetsEntity> assets;
-
-        public class ReportAssetsEntity
-        {
-            public int report_id { get; set; }
-            public int asset_id { get; set; }
-            public int previous_room { get; set; }
-        }
-    }
     public class RoomEntity
     {
         public int id { get; set; }
         public string name { get; set; }
-        public int building { get; set; }
+        public BuildingEntity building;
     }
-    public class ReportAssetsEntity
-    {
-        public int count { get; set; }
-        public List<ReportAssetEntity> report_assets;
+    
+    public class AssetInRoom
+    { 
+        public int id { get; set; }
+        public int type { get; set; }
+        public string asset_type_name { get; set; }
+        public bool? new_asset { get; set; }
+        public bool? moved { get; set; }
+        public int? moved_from_id { get; set; }
+        public string moved_from_name { get; set; }
+        public int? previous_room { get; set; }
+        public bool? present { get; set; }
 
-        public class ReportAssetEntity
+    }
+
+    public class ReportHeaderEntity
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public DateTimeWithZone create_date { get; set; }
+        public int owner_id { get; set; }
+        public string owner_name { get; set; }
+        public string room_name { get; set; }
+        public string building_name { get; set; }
+
+        public class DateTimeWithZone
         {
-            public int report_id { get; set; }
-            public int asset_id { get; set; }
-            public int previous_room { get; set; }
+            public DateTime date { get; set; }
+            public int timezone_type { get; set; }
+            public string timezone { get; set; }
         }
     }
 }

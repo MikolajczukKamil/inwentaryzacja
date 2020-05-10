@@ -1,4 +1,5 @@
-﻿using Inwentaryzacja.models;
+﻿using Inwentaryzacja.controllers;
+using Inwentaryzacja.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

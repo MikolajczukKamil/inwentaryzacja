@@ -4,7 +4,7 @@ namespace Inwentaryzacja.models
 {
 	public class Room
 	{
-		private RoomService _roomService;
+		//private RoomService _roomService;
 		private Report _report;
 		private ReportPosition _reportPosition;
 		private ReportPrototype _reportPrototype;
