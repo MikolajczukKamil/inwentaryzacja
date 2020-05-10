@@ -5,7 +5,7 @@
       *,
       getRoomIdWithAsset(assets.id) AS IamInRoomId
     FROM
-      asset
+      assets
     ;
   
   /* 
@@ -99,7 +99,7 @@
     hash VARCHAR
   } */
 
-  CALL getUser('user1');
+  CALL getUserByLogin('user1');
 
   /* 
   getLoginSession(user_token VARCHAR): {
@@ -133,7 +133,7 @@
       report_room INT,
       report_owner INT,
       report_positions VARCHAR( JSON( { id INT, previous: INT|NULL, present: BOOLEAN } ) )
-    ): { id INT }  
+    ): { id INT }
   */
 
   call addNewReport('nowy', 3, 1, '[{"id":25,"previous":null,"present":1}]');

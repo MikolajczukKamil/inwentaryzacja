@@ -80,9 +80,9 @@
       ON DELETE CASCADE,
     CONSTRAINT fk_reportasset_asset FOREIGN KEY(asset_id)
       REFERENCES assets(id)
-      ON DELETE CASCADE,
-    CONSTRAINT fk_reportasset_room FOREIGN KEY(previous_room)
-      REFERENCES rooms(id)
+      ON DELETE CASCADE
+    -- ,CONSTRAINT fk_reportasset_room FOREIGN KEY(previous_room)
+    --   REFERENCES rooms(id)
   );
 
   CREATE TABLE login_sessions (
