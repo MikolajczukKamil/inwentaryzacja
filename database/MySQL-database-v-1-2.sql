@@ -264,7 +264,7 @@
         rooms.name AS room_name,
         buildings.name AS building_name
       FROM
-        assets, rooms
+        (assets, rooms)
       JOIN
         asset_types ON assets.type = asset_types.id
       JOIN
