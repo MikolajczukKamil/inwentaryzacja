@@ -66,13 +66,15 @@
 
   /* 
     getAssetInfo(asset_id INT): {
-      id INT
-      type INT
-      asset_type_name VARCHAR
-      room_id INT
-      room_name VARCHAR
-      building_name VARCHAR
-    }
+    id INT
+    type INT
+    letter CHAR
+    asset_type_name VARCHAR
+    room_id INT
+    room_name VARCHAR
+    building_id INT
+    building_name VARCHAR
+  }
   */
 
   CALL getAssetInfo(1);
