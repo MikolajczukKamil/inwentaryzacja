@@ -382,9 +382,6 @@
     CREATE PROCEDURE addNewReport(IN report_name VARCHAR(64), IN report_room INT, IN report_owner INT, IN report_positions VARCHAR(4096))
     BEGIN
       DECLARE New_report_id INT;
-      DECLARE Position_id INT;
-      DECLARE Position_previous INT;
-      DECLARE Position_present BOOLEAN;
       DECLARE Position INT DEFAULT 0;
 
       INSERT INTO
@@ -397,14 +394,15 @@
       WHILE Position < JSON_LENGTH(report_positions)
       DO
         /* Example [ { "id": 25, "previous": 1, "present": 1 } ] */
-        SET Position_id = JSON_VALUE(report_positions, CONCAT('$[', Position ,'].id'));
-        SET Position_previous = JSON_VALUE(report_positions, CONCAT('$[', Position ,'].previous'));
-        SET Position_present = JSON_VALUE(report_positions, CONCAT('$[', Position ,'].present'));
-
         INSERT INTO
           reports_assets (report_id, asset_id, previous_room, present)
         VALUES
-          (New_report_id, Position_id, Position_previous, Position_present)
+          (
+            New_report_id,
+            JSON_VALUE(report_positions, CONCAT('$[', Position ,'].id')),
+            NULLIF(JSON_UNQUOTE(JSON_EXTRACT(report_positions, CONCAT('$[', Position ,'].previous'))), 'null'),
+            JSON_VALUE(report_positions, CONCAT('$[', Position ,'].present'))
+          )
         ;
 
         SET Position = Position + 1;
