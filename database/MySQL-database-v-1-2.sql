@@ -258,11 +258,11 @@
       DECLARE Asset_room_id INT DEFAULT getRoomIdWithAsset(asset_id);
 
       SELECT
-        assets.id, assets.type,
+        assets.id, assets.type, asset.letter,
         asset_types.name AS asset_type_name,
         Asset_room_id AS room_id,
         rooms.name AS room_name,
-        buildings.name AS building_name
+        buildings.id AS building_id, buildings.name AS building_name
       FROM
         (assets, rooms)
       JOIN
