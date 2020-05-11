@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inwentaryzacja.Android", "I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inwentaryzacja", "Inwentaryzacja\Inwentaryzacja\Inwentaryzacja.csproj", "{C75793D8-D6E2-4B36-9B34-EFEFBCAA539F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{4C961609-2F4F-4421-949A-907AF58DD56D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{C75793D8-D6E2-4B36-9B34-EFEFBCAA539F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C75793D8-D6E2-4B36-9B34-EFEFBCAA539F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C75793D8-D6E2-4B36-9B34-EFEFBCAA539F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{4C961609-2F4F-4421-949A-907AF58DD56D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C961609-2F4F-4421-949A-907AF58DD56D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C961609-2F4F-4421-949A-907AF58DD56D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C961609-2F4F-4421-949A-907AF58DD56D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
