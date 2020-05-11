@@ -26,7 +26,7 @@ public class ReportService {
         ReportHeader[] reportHeader = new ReportHeader[size];
         for (int i = 0; i < reportHeader.Length; i++)
         {
-             reportHeader[i] = new ReportHeader(listreportEntity[i].id, listreportEntity[i].name, listreportEntity[i].room, listreportEntity[i].create_date);
+             reportHeader[i] = new ReportHeader(listreportEntity[i].id, listreportEntity[i].name);
         }
         return reportHeader;
     }

@@ -6,15 +6,11 @@ namespace Inwentaryzacja.models
 	{
 		public int ReportId;
 		public string ReportName;
-		public int RoomName;
-		public DateTime CreateDate;
 
-		public ReportHeader(int id, string name, int roomName, DateTime date)
+		public ReportHeader(int id, string name)
 		{
 			ReportId = id;
-			RoomName = roomName;
 			ReportName = name;
-			CreateDate = date;
 		}
 	}
 }
