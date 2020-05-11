@@ -2,19 +2,29 @@ using System;
 using Inwentaryzacja.controllers;
 using Inwentaryzacja.models;
 
-public class ScanningService {
-	private APIController api;
+namespace Inwentaryzacja.Services
+{
+	public class ScanningService
+	{
+		private APIController api;
 
-	public Scanning GetScanning(ref int id) {
-		throw new System.Exception("Not implemented");
-	}
-	public void UpdateScanning(ref ScanningPropotype scanningPropotype) {
-		throw new System.Exception("Not implemented");
-	}
-	public Scanning CreateScanning() {
-		throw new System.Exception("Not implemented");
-	}
+		public ScanningService(APIController apiController)
+		{
+			api = apiController;
+		}
 
-	private APIController aPIController;
+		public Scanning CreateScaning()
+		{
+			throw new System.Exception("Not implemented");
+		}
 
+		/// <summary>
+		/// Unused
+		/// </summary>
+		/// <param name="scanning"></param>
+		public void UpdateScanning(Scanning scanning)
+		{
+			throw new System.Exception("Not implemented");
+		}
+	} 
 }
