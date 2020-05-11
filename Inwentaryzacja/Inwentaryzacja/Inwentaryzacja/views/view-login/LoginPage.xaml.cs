@@ -25,15 +25,14 @@ namespace Inwentaryzacja
 
         private async void _loginButton_Clicked(object sender, EventArgs e)
         {
-            _login.Text = "test";
-            _password.Text = "password";
-
             var apiController = new APIController();
             apiController.ErrorEventHandler += LoginFail;
 
             if(await apiController.LoginUser(_login.Text, _password.Text))
             {
-                if(Navigation.NavigationStack.Count==0)
+                await DisplayAlert("Logowanie", "SUKCES!!", "OK");
+
+                if(Navigation.NavigationStack.Count == 0)
                 {
                     App.Current.MainPage = new NavigationPage(new WelcomeViewPage());
                 }

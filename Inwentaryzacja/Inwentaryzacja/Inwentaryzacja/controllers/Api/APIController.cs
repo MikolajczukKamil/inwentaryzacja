@@ -328,7 +328,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         public async Task<bool> LoginUser(string login, string password)
         {
-            var uri = "/login/login.php";
+            var uri = "/login/addLoginSession.php";
             var data = ConvertDataToJSON(new LoginUserPrototype(login, password));
             var content = PreperDataToSend(data);
 
