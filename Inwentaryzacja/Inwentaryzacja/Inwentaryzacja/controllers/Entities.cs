@@ -50,7 +50,7 @@ namespace Inwentaryzacja.controllers
     public class ReportPositionEntity
     {
         public AssetEntity asset;
-        public AssetInfoEntity previus;
+        public RoomEntity previus;
         public bool present;
     }
 }
