@@ -5,24 +5,24 @@ namespace Inwentaryzacja.view_models
 {
     public class ItemViewModel
     {
-        public List<RaportItem> ListItems { get; set; }
+        public List<ReportPositon> ListItems { get; set; }
         public ItemViewModel()
         {
             ListItems = createMockItems();
         }
 
-        private List<RaportItem> createMockItems()
+        private List<ReportPositon> createMockItems()
         {
-            List<RaportItem> items = new List<RaportItem>()
+            List<ReportPositon> items = new List<ReportPositon>()
             {
-                new RaportItem ("Krzesło",12334,12,"Yes.jpg"),
-                new RaportItem ("Krzesło",33334,3,"No.jpg"),
-                new RaportItem ("Krzesło",111334,2,"No.jpg"),
-                new RaportItem ("Stół",34134,41,"Yes.jpg"),
-                new RaportItem ("Tablica",997,12,"Yes.jpg"),
-                new RaportItem ("Stół",33334,121,"Yes.jpg"),
-                new RaportItem ("Krzesło",12334,1,"Yes.jpg"),
-                new RaportItem ("Stół",0700,16,"No.jpg")
+                new ReportPositon ("Krzesło",12334,12,"Yes.jpg"),
+                new ReportPositon ("Krzesło",33334,3,"No.jpg"),
+                new ReportPositon ("Krzesło",111334,2,"No.jpg"),
+                new ReportPositon ("Stół",34134,41,"Yes.jpg"),
+                new ReportPositon ("Tablica",997,12,"Yes.jpg"),
+                new ReportPositon ("Stół",33334,121,"Yes.jpg"),
+                new ReportPositon ("Krzesło",12334,1,"Yes.jpg"),
+                new ReportPositon ("Stół",0700,16,"No.jpg")
             };
             return items;
         }
