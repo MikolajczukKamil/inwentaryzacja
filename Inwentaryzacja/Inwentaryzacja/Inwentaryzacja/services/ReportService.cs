@@ -38,9 +38,9 @@ namespace Inwentaryzacja.Services
             throw new System.Exception("Not implemented");
         }
 
-        private ReportHeader GetReportPositions(int id)
+        private ReportPosition[] GetReportPositions(int reportId)
         {
-            // ReportPositionEntity[] reportPositionEntity = api.getReportPositions(id).Result; // Map to ReportPosition[]
+            // ReportPositionEntity[] reportPositionEntity = api.getReportPositions(reportId).Result; // Map to ReportPosition[]
 
             throw new System.Exception("Not implemented");
         }
