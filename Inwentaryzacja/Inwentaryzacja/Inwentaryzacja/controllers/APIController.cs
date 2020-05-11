@@ -326,7 +326,7 @@ namespace Inwentaryzacja.controllers
 
 
         //Report
-        public async Task<ReportHeaderEntity> getReportByID(int id)
+        public async Task<ReportHeaderEntity> getReportHeaderByID(int id)
         {
             var uri = "/report/getReportHeader.php?id=" + id.ToString();
             var content = await sendRequest(uri);
