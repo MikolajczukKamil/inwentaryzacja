@@ -5,10 +5,14 @@ using System.Text;
 
 namespace Inwentaryzacja.controllers
 {
-    public class AssetInfoEntity
+    public class AssetEntity
     {
         public int id;
         public AssetTypeEntity type;
+    }
+
+    public class AssetInfoEntity : AssetEntity
+    {
         public RoomEntity room;
     }
 
@@ -45,14 +49,8 @@ namespace Inwentaryzacja.controllers
 
     public class ReportPositionEntity
     {
-        public int id;
-        public int type;
-        public string asset_type_name;
-        public bool new_asset;
-        public bool moved;
-        public int moved_from_id;
-        public string moved_from_name;
-        public int previous_room;
+        public AssetEntity asset;
+        public AssetInfoEntity previus;
         public bool present;
     }
 }
