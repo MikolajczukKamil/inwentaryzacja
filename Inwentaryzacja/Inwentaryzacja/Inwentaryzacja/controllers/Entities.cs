@@ -5,51 +5,52 @@ using System.Text;
 
 namespace Inwentaryzacja.controllers
 {
-    class AssetEntity
+    public class AssetEntity
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public int assetType { get; set; }
+        public int id;
+        public AssetTypeEntity type;
     }
-    class AssetTypeEntity
-    {
-        public int id { get; set; }
-        public string letter { get; set; }
-        public string name { get; set; }
-    }
-    class BuildingEntity
-    {
-        public int id { get; set; }
-        public string name { get; set; }
-    }
-    class ReportEntity
-    {
-        public int id { get; set; }
-        public string name { get; set; }
-        public int room { get; set; }
-        public DateTime create_date { get; set; }
-        public int owner { get; set; }
-    }
-    class ReportWithAssetEntity
-    {
-        public int id { get; set; }
-        public string name { get; set; }
-        public int room { get; set; }
-        public DateTime create_date { get; set; }
-        public int owner { get; set; }
-        public List<ReportAssetsEntity> assets;
 
-        public class ReportAssetsEntity
-        {
-            public int report_id { get; set; }
-            public int asset_id { get; set; }
-            public int previous_room { get; set; }
-        }
-    }
-    class RoomEntity
+    public class AssetInfoEntity : AssetEntity
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public int building { get; set; }
+        public RoomEntity room;
+    }
+
+    public class AssetTypeEntity
+    {
+        public int id;
+        public string letter;
+        public string name;
+    }
+
+    public class RoomEntity
+    {
+        public int id;
+        public string name;
+        public RoomEntity building;
+    }
+
+    public class BuildingEntity
+    {
+        public int id;
+        public string name;
+    }
+
+    public class ReportHeaderEntity
+    {
+        public int id;
+        public string name;
+        public DateTime create_date;
+        public int owner_id;
+        public string owner_name;
+        public string room_name;
+        public string building_name;
+    }
+
+    public class ReportPositionEntity
+    {
+        public AssetEntity asset;
+        public RoomEntity previus;
+        public bool present;
     }
 }

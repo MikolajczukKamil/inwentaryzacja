@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Inwentaryzacja.models
 {
-    class BuildingPrototype
+    public class BuildingPrototype
     {
         public string name;
 

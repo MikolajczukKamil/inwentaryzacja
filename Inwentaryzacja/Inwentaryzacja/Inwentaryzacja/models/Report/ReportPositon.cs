@@ -11,7 +11,7 @@ namespace Inwentaryzacja.models
         public Room PreviusRoom { get; private set; }
         public string Label
         {
-            get { return $"{Asset.Name} (id:{Asset.Id})"; }
+            get { return $"{Asset.Type.Name} (id: {Asset.Id})"; }
         }
 
         public ReportPosition(Asset asset, Room previusRoom, bool present)
