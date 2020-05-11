@@ -1,7 +1,7 @@
 using System;
-using Inwentaryzacja.models;
+using Inwentaryzacja.Models;
 
-namespace Inwentaryzacja.models
+namespace Inwentaryzacja.Models
 { 
 	public class AssetType
 	{

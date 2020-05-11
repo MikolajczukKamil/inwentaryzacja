@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Inwentaryzacja.models
+namespace Inwentaryzacja.Models
 {
 	public class Building
 	{

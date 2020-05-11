@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Inwentaryzacja.models
+namespace Inwentaryzacja.Models
 {
     public class AssetInfo
     {

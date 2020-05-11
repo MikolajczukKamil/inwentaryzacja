@@ -1,4 +1,4 @@
-﻿using Inwentaryzacja.models;
+﻿using Inwentaryzacja.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

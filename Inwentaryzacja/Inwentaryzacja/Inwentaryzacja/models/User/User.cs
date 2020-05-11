@@ -1,8 +1,8 @@
 using System;
 using System.Data;
-using Inwentaryzacja.controllers;
+using Inwentaryzacja.Controllers;
 
-namespace Inwentaryzacja.models
+namespace Inwentaryzacja.Models
 {
 	public class User
 	{

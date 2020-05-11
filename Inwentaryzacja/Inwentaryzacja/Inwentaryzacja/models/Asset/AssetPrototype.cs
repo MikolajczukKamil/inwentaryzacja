@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace Inwentaryzacja.models
+namespace Inwentaryzacja.Models
 {
 	public class AssetPrototype
 	{

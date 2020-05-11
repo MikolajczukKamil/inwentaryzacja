@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Inwentaryzacja.controllers;
-using Inwentaryzacja.models;
+using Inwentaryzacja.Controllers.Api;
+using Inwentaryzacja.Models;
 
 namespace Inwentaryzacja.Services
 {
@@ -47,7 +47,7 @@ namespace Inwentaryzacja.Services
 
         public bool AddNewReport(ReportPrototype newReport)
         {
-            return api.createReportWithAssets(newReport).Result;
+            return api.createReport(newReport).Result;
         }
 
 #if false // Old

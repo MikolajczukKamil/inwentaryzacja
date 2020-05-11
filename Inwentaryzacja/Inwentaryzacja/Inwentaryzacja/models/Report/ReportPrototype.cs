@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Inwentaryzacja.models
+namespace Inwentaryzacja.Models
 {
 	public class ReportPrototype
 	{

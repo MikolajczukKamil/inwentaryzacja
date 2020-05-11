@@ -11,7 +11,7 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Text.RegularExpressions;
-using Inwentaryzacja.controllers;
+using Inwentaryzacja.Controllers.Api;
 
 namespace Inwentaryzacja
 {
@@ -31,7 +31,7 @@ namespace Inwentaryzacja
             var apiController = new APIController();
             apiController.ErrorEventHandler += LoginFail;
 
-            if(await apiController.loginUser(_login.Text, _password.Text))
+            if(await apiController.LoginUser(_login.Text, _password.Text))
             {
                 if(Navigation.NavigationStack.Count==0)
                 {
@@ -46,7 +46,7 @@ namespace Inwentaryzacja
 
         private async void LoginFail(object sender, ErrorEventArgs e)
         {
-            await DisplayAlert("Błąd logowania", e.messageForUser, "OK");
+            await DisplayAlert("Błąd logowania", e.MessageForUser, "OK");
         }
     }
 }

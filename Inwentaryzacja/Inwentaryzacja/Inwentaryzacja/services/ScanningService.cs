@@ -1,6 +1,6 @@
 using System;
-using Inwentaryzacja.controllers;
-using Inwentaryzacja.models;
+using Inwentaryzacja.Controllers.Api;
+using Inwentaryzacja.Models;
 
 namespace Inwentaryzacja.Services
 {
