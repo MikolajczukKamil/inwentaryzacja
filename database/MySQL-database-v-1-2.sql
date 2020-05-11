@@ -188,21 +188,26 @@
     END $$ DELIMITER ;
 
   /* Pobranie zawartości raportu - assety w danym raporcie */
-    DROP PROCEDURE IF EXISTS getAssetsInReport;
+    DROP PROCEDURE IF EXISTS getPositionsInReport;
 
     DELIMITER $$
-    CREATE PROCEDURE getAssetsInReport(IN ReportId INT)
+    CREATE PROCEDURE getPositionsInReport(IN ReportId INT)
     BEGIN
       SELECT
-        reports_assets.asset_id, reports_assets.previous_room, reports_assets.present,
-        assets.type AS asset_type,
-        asset_types.name AS asset_type_name
+        reports_assets.asset_id, reports_assets.present,
+        assets.type AS type_id, asset_types.letter AS type_letter, asset_types.name AS type_name,
+        rooms.id AS previous_id, rooms.name AS previous_name,
+        buildings.id AS previous_building_id, buildings.name AS previous_building_name
       FROM
         reports_assets
       JOIN
         assets ON reports_assets.asset_id = assets.id
       JOIN
         asset_types ON assets.type = asset_types.id
+      LEFT JOIN
+        rooms ON reports_assets.previous_room = rooms.id
+      LEFT JOIN
+        buildings ON rooms.building = buildings.id
       WHERE
         reports_assets.report_id = ReportId
       ;

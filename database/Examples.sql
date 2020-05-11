@@ -37,12 +37,16 @@
   CALL getReportHeader(1);
 
   /* 
-    getAssetsInReport(report_id INT): {
+    getPositionsInReport(report_id INT): {
       asset_id INT
-      previous_room INT
       present BOOLEAN
-      asset_type INT
-      asset_type_name VARCHAR
+      type_id INT
+      type_letter CHAR
+      type_name VARCHAR
+      previous_id INT|null
+      previous_name VARCHAR|null
+      previous_building_id INT|null
+      previous_building_name VARCHAR|null
     }
   */
 
