@@ -14,5 +14,10 @@ namespace Inwentaryzacja.models
 			Name = name;
 			Building = building;
 		}
+
+		public bool SameAs(Room other)
+		{
+			return Id == other.Id;
+		}
 	}
 }
