@@ -18,6 +18,7 @@ namespace Inwentaryzacja.Controllers.Api
 
 
         #region Private
+
         private async Task<string> SendRequest(string address)
         {
             string result;
@@ -246,10 +247,7 @@ namespace Inwentaryzacja.Controllers.Api
             var uri = "/report/addNewBuilding.php";
             string data = ConvertDataToJSON(building);
 
-            if (data == null)
-            {
-                return false;
-            }
+            if (data == null) return false;
 
             var content = PreperDataToSend(data);
 
@@ -261,10 +259,7 @@ namespace Inwentaryzacja.Controllers.Api
             var uri = "/report/addNewRoom.php";
             string data = ConvertDataToJSON(room);
 
-            if (data == null)
-            {
-                return false;
-            }
+            if (data == null) return false;
 
             var content = PreperDataToSend(data);
 
@@ -293,17 +288,12 @@ namespace Inwentaryzacja.Controllers.Api
             return ConvertJSONToObject<ReportHeaderEntity>(response);
         }
 
-        
         public async Task<ReportPosition[]> getReportPositions(int reportId)
         {
-#if false // TODO
-            var uri = $"/report/getReportPositions.phpid={reportId}";
+            var uri = $"/report/getReportPositions.php?id={reportId}";
             var response = await SendRequest(uri);
 
             return ConvertJSONToObject<ReportPosition[]>(response);
-#else
-            throw new System.Exception("Dokończyć API - ReportPosition");
-#endif
         }
 
 
@@ -312,10 +302,7 @@ namespace Inwentaryzacja.Controllers.Api
             var uri = "/report/addNewReport.php";
             string data = ConvertDataToJSON(report);
 
-            if (data == null)
-            {
-                return false;
-            }
+            if (data == null) return false;
 
             var content = PreperDataToSend(data);
 
