@@ -24,7 +24,7 @@ namespace Inwentaryzacja.Models
 		{
 			Id = header.Id;
 			Name = header.Name;
-			//Room = header.Room;
+			Room = header.Room;
 			Postions = postions;
 			CreateDate = header.CreateDate;
 		}
