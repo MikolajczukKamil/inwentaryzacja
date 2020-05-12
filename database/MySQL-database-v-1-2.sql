@@ -269,14 +269,15 @@
         rooms.name AS room_name,
         buildings.id AS building_id, buildings.name AS building_name
       FROM
-        (assets, rooms)
+        assets
       JOIN
         asset_types ON assets.type = asset_types.id
-      JOIN
+      LEFT JOIN
+        rooms ON Asset_room_id = rooms.id
+      LEFT JOIN
         buildings ON rooms.building = buildings.id
       WHERE
-        assets.id = asset_id AND
-        rooms.id = Asset_room_id
+        assets.id = asset_id
       ;
     END $$ DELIMITER ;
 
