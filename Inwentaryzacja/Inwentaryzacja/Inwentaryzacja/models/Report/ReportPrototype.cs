@@ -5,9 +5,9 @@ namespace Inwentaryzacja.Models
 {
 	public class ReportPrototype
 	{
+		public string name;
 		public int room;
 		public ReportPositionPrototype[] assets;
-		public string name;
 
 		public ReportPrototype(string name, Room room, ReportPositionPrototype[] postions)
 		{

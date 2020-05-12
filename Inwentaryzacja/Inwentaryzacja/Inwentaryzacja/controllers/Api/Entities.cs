@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Inwentaryzacja.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,7 +20,7 @@ namespace Inwentaryzacja.Controllers.Api
     public class AssetTypeEntity
     {
         public int id;
-        public string letter;
+        public char letter;
         public string name;
     }
 
@@ -27,7 +28,7 @@ namespace Inwentaryzacja.Controllers.Api
     {
         public int id;
         public string name;
-        public RoomEntity building;
+        public BuildingEntity building;
     }
 
     public class BuildingEntity
@@ -41,16 +42,14 @@ namespace Inwentaryzacja.Controllers.Api
         public int id;
         public string name;
         public DateTime create_date;
-        public int owner_id;
-        public string owner_name;
-        public string room_name;
-        public string building_name;
+        public User owner;
+        public RoomPropotype room;
     }
 
     public class ReportPositionEntity
     {
         public AssetEntity asset;
-        public RoomEntity previus;
+        public RoomEntity previous_room;
         public bool present;
     }
 }

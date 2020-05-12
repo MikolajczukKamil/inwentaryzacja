@@ -198,9 +198,9 @@ namespace Inwentaryzacja.Controllers.Api
 
         #region Assets
 
-        public async Task<AssetInfoEntity> getAssetInfo(int id)
+        public async Task<AssetInfoEntity> getAssetInfo(int assetId)
         {
-            var uri = $"/asset/getAssetInfo.php?id={id}";
+            var uri = $"/asset/getAssetInfo.php?id={assetId}";
             var response = await SendRequestWithResponse(uri);
 
             return ConvertJSONToObject<AssetInfoEntity>(response);
@@ -238,7 +238,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         public async Task<RoomEntity[]> getRooms(int buildingId)
         {
-            var uri = $"/room/getRooms.php?id={buildingId}";
+            var uri = $"/building/getRooms.php?id={buildingId}";
             var response = await SendRequestWithResponse(uri);
 
             return ConvertJSONToObject<RoomEntity[]>(response);
@@ -246,11 +246,8 @@ namespace Inwentaryzacja.Controllers.Api
 
         public async Task<bool> createBuilding(BuildingPrototype building)
         {
-            var uri = "/report/addNewBuilding.php";
+            var uri = "/building/addNewBuilding.php";
             string data = ConvertDataToJSON(building);
-
-            if (data == null) return false;
-
             var content = PreperDataToSend(data);
 
             return await SendRequest(uri, content);
@@ -258,11 +255,8 @@ namespace Inwentaryzacja.Controllers.Api
 
         public async Task<bool> createRoom(RoomPropotype room)
         {
-            var uri = "/report/addNewRoom.php";
+            var uri = "/room/addNewRoom.php";
             string data = ConvertDataToJSON(room);
-
-            if (data == null) return false;
-
             var content = PreperDataToSend(data);
 
             return await SendRequest(uri, content);
@@ -292,7 +286,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         public async Task<ReportPosition[]> getReportPositions(int reportId)
         {
-            var uri = $"/report/getReportPositions.php?id={reportId}";
+            var uri = $"/report/getPositionsInReport.php?id={reportId}";
             var response = await SendRequestWithResponse(uri);
 
             return ConvertJSONToObject<ReportPosition[]>(response);
