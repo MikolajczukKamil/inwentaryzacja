@@ -143,10 +143,10 @@
     CREATE PROCEDURE getReportsHeaders(IN user_id INT)
     BEGIN
       SELECT
-        reports.id, reports.name, reports.create_date, reports.owner AS owner_id,
-        users.login AS owner_name,
-        rooms.name AS room_name,
-        buildings.name AS building_name
+        reports.id, reports.name, reports.create_date,
+        users.login AS owner_login, users.id AS owner_id, users.login AS owner_name
+        rooms.id AS room_id, rooms.name AS room_name,
+        buildings.id AS building_id, buildings.name AS building_name
       FROM
         reports
       JOIN
