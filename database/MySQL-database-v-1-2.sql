@@ -472,6 +472,8 @@
         buildings ON rooms.building = buildings.id
       WHERE
         rooms.building = id_building
+      ORDER BY
+        rooms.id ASC
       ;
     END $$ DELIMITER ;
 
@@ -486,6 +488,8 @@
         buildings.id, buildings.name
       FROM
         buildings
+      ORDER BY
+        buildings.id ASC
       ;
     END $$ DELIMITER ;
 
