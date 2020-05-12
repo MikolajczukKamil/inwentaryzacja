@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using Inwentaryzacja.controllers;
-using Inwentaryzacja.models;
+using Inwentaryzacja.Controllers.Api;
+using Inwentaryzacja.Models;
 
 namespace Inwentaryzacja.Services
 {
@@ -24,7 +24,7 @@ namespace Inwentaryzacja.Services
 
 		public bool AddAsset(AssetPrototype newAsset)
 		{
-			return api.createAsset(newAsset).Result;
+			return api.CreateAsset(newAsset).Result;
 		}
 	}
 }

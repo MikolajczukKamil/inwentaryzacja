@@ -1,15 +1,17 @@
 using System;
-using Inwentaryzacja.models;
+using Inwentaryzacja.Models;
 
-namespace Inwentaryzacja.models
+namespace Inwentaryzacja.Models
 { 
 	public class AssetType
 	{
+		public int Id { get; private set; }
 		public char Letter { get; private set; }
 		public string Name { get; private set; }
 
-		public AssetType(string name, char letter)
+		public AssetType(int id, string name, char letter)
 		{
+			Id = id;
 			Name = name;
 			Letter = letter;
 		}

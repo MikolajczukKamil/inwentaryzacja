@@ -11,7 +11,7 @@ using ZXing;
 using System.Threading;
 using Inwentaryzacja.views.view_scannedItem;
 using Inwentaryzacja.views;
-using Inwentaryzacja.models;
+using Inwentaryzacja.Models;
 
 namespace Inwentaryzacja
 {

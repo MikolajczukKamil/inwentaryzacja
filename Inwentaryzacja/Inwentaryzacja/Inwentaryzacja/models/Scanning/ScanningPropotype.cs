@@ -1,18 +1,18 @@
 using System;
 
-namespace Inwentaryzacja.models
+namespace Inwentaryzacja.Models
 {
 	public class ScanningPropotype
 	{
-		public int Id;
-		public Room Room;
-		public ScanningPosition[] Positions;
+		public int id;
+		public int room;
+		public ScanningPositionPropotype[] assets;
 
-		public ScanningPropotype(int id, Room room, ScanningPosition[] positions)
+		public ScanningPropotype(Room room, ScanningPositionPropotype[] positions, int id = -1)
 		{
-			Id = id;
-			Room = room;
-			Positions = positions;
+			this.id = id;
+			this.room = room.Id;
+			this.assets = positions;
 		}
 	}
 }

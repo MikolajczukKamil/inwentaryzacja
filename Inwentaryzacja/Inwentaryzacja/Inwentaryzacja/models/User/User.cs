@@ -1,23 +1,18 @@
 using System;
 using System.Data;
-using Inwentaryzacja.controllers;
+using Inwentaryzacja.Controllers;
 
-namespace Inwentaryzacja.models
+namespace Inwentaryzacja.Models
 {
 	public class User
 	{
+		public int Id { get; private set; }
 		public string Login { get; private set; }
-		public string Token { get; private set; }
 
-		public User(string login, string token)
+		public User(int id, string login)
 		{
+			Id = id;
 			Login = login;
-			Token = token;
-		}
-
-		public bool _LogIn()
-		{
-			return true;
 		}
 	}
 }

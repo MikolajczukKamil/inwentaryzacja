@@ -1,6 +1,6 @@
 using System;
 
-namespace Inwentaryzacja.models
+namespace Inwentaryzacja.Models
 {
 	public class Report 
 	{
@@ -18,6 +18,15 @@ namespace Inwentaryzacja.models
 			Room = room;
 			Postions = postions;
 			CreateDate = date;
+		}
+
+		public Report(ReportHeader header, ReportPosition[] postions)
+		{
+			Id = header.Id;
+			Name = header.Name;
+			Room = header.Room;
+			Postions = postions;
+			CreateDate = header.CreateDate;
 		}
 
 		public bool ExportToPDF() {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Inwentaryzacja.controllers;
-using Inwentaryzacja.models;
+using Inwentaryzacja.Controllers.Api;
+using Inwentaryzacja.Models;
 
 namespace Inwentaryzacja.Services
 {
@@ -21,9 +21,9 @@ namespace Inwentaryzacja.Services
             throw new System.Exception("Not implemented");
         }
 
-        public ReportHeader GetReportHeader(int id)
+        public ReportHeader GetReportHeader(int reportId)
         {
-            // ReportHeaderEntity raportHeaderEntity = api.getReportHeader(id).Result; // To ReportHeader
+            // ReportHeaderEntity raportHeaderEntity = api.getReportHeader(reportId).Result; // To ReportHeader
 
             throw new System.Exception("Not implemented");
         }
@@ -33,7 +33,7 @@ namespace Inwentaryzacja.Services
             throw new System.Exception("Not implemented");
         }
 
-        public Report GetFullReport(int id)
+        public Report GetFullReport(int reportId)
         {
             throw new System.Exception("Not implemented");
         }
@@ -47,7 +47,12 @@ namespace Inwentaryzacja.Services
 
         public bool AddNewReport(ReportPrototype newReport)
         {
-            return api.createReportWithAssets(newReport).Result;
+            return api.createReport(newReport).Result;
+        }
+        
+        public bool ExportReportToPDF(int reportId)
+        {
+            throw new System.Exception("Not implemented");
         }
 
 #if false // Old
@@ -69,10 +74,6 @@ namespace Inwentaryzacja.Services
             reportHeader[i] = new ReportHeader(listreportEntity[i].id, listreportEntity[i].name, listreportEntity[i].room, listreportEntity[i].create_date);
         }
         return reportHeader;
-    }
-    public bool ExportReportToPDF(int id)
-    {
-        throw new System.Exception("Not implemented");//Brak Danych
     }
     public bool DeleteReport(int id)
     {

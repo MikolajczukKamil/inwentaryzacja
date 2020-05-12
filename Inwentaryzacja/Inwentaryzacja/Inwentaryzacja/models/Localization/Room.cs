@@ -1,6 +1,6 @@
 using System;
 
-namespace Inwentaryzacja.models
+namespace Inwentaryzacja.Models
 {
 	public class Room
 	{
@@ -17,7 +17,7 @@ namespace Inwentaryzacja.models
 
 		public bool SameAs(Room other)
 		{
-			return Id == other.Id;
+			return other == null || Id == other.Id;
 		}
 	}
 }

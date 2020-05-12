@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Inwentaryzacja.controllers;
-using Inwentaryzacja.models;
+using Inwentaryzacja.Controllers.Api;
+using Inwentaryzacja.Models;
 
 namespace Inwentaryzacja.Services
 {
