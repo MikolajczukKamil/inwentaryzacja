@@ -12,16 +12,16 @@ namespace Inwentaryzacja.Controllers.Api
 {
     public class APIController
     {
-        static private HttpClient ClientHttp = new HttpClient();
+        static private readonly HttpClient ClientHttp = new HttpClient();
 
-        private string BaseUrl = "https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI";
+        static private readonly string BaseUrl = "https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI";
 
         public event EventHandler<ErrorEventArgs> ErrorEventHandler;
 
 
         #region Private
 
-        private async Task<string> SendRequest(string address)
+        private async Task<string> SendRequestWithResponse(string address)
         {
             string result;
             int statusCode = 200;
@@ -201,7 +201,7 @@ namespace Inwentaryzacja.Controllers.Api
         public async Task<AssetInfoEntity> getAssetInfo(int id)
         {
             var uri = $"/asset/getAssetInfo.php?id={id}";
-            var response = await SendRequest(uri);
+            var response = await SendRequestWithResponse(uri);
 
             return ConvertJSONToObject<AssetInfoEntity>(response);
         }
@@ -231,7 +231,7 @@ namespace Inwentaryzacja.Controllers.Api
         public async Task<BuildingEntity[]> getBuildings()
         {
             var uri = "/building/getBuildings.php";
-            var response = await SendRequest(uri);
+            var response = await SendRequestWithResponse(uri);
 
             return ConvertJSONToObject<BuildingEntity[]>(response);
         }
@@ -239,7 +239,7 @@ namespace Inwentaryzacja.Controllers.Api
         public async Task<RoomEntity[]> getRooms(int buildingId)
         {
             var uri = $"/room/getRooms.php?id={buildingId}";
-            var response = await SendRequest(uri);
+            var response = await SendRequestWithResponse(uri);
 
             return ConvertJSONToObject<RoomEntity[]>(response);
         }
@@ -277,7 +277,7 @@ namespace Inwentaryzacja.Controllers.Api
         public async Task<ReportHeaderEntity[]> getReportHeaders()
         {
             var uri = "/report/getReportsHeaders.php";
-            var response = await SendRequest(uri);
+            var response = await SendRequestWithResponse(uri);
 
             return ConvertJSONToObject<ReportHeaderEntity[]>(response);
         }
@@ -285,7 +285,7 @@ namespace Inwentaryzacja.Controllers.Api
         public async Task<ReportHeaderEntity> getReportHeader(int reportId)
         {
             var uri = $"/report/getReportHeader.php?id={reportId}";
-            var response = await SendRequest(uri);
+            var response = await SendRequestWithResponse(uri);
 
             return ConvertJSONToObject<ReportHeaderEntity>(response);
         }
@@ -293,7 +293,7 @@ namespace Inwentaryzacja.Controllers.Api
         public async Task<ReportPosition[]> getReportPositions(int reportId)
         {
             var uri = $"/report/getReportPositions.php?id={reportId}";
-            var response = await SendRequest(uri);
+            var response = await SendRequestWithResponse(uri);
 
             return ConvertJSONToObject<ReportPosition[]>(response);
         }
