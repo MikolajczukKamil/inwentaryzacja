@@ -221,7 +221,7 @@
     BEGIN
       SELECT
         assets.id, assets.type,
-        asset_types.name AS asset_type_name,
+        asset_types.name AS asset_type_name, asset_types.letter AS asset_type_letter,
         IFNULL(reports_assets.previous_room, 0) = 0 AS new_asset,
         IFNULL(reports_assets.previous_room, reports.room) != reports.room AS moved,
         reports_assets.previous_room AS moved_from_id,
