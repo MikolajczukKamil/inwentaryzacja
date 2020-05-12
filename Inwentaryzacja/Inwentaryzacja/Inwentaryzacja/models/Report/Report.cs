@@ -20,6 +20,15 @@ namespace Inwentaryzacja.Models
 			CreateDate = date;
 		}
 
+		public Report(ReportHeader header, ReportPosition[] postions)
+		{
+			Id = header.Id;
+			Name = header.Name;
+			//Room = header.Room;
+			Postions = postions;
+			CreateDate = header.CreateDate;
+		}
+
 		public bool ExportToPDF() {
 			throw new System.Exception("Not implemented");
 		}

@@ -12,12 +12,13 @@ namespace Inwentaryzacja.Models
 		public DateTime CreateDate { get; private set; }
 		public int OwnerId { get; private set; }
 
-		public ReportHeader(int id, string name, string roomName, string buildingName, DateTime date, int ownerId)
+		public ReportHeader(int id, string name, string roomName, string buildingName, DateTime date, int ownerId, string ownerName)
 		{
 			Id = id;
+			Name = name;
 			RoomName = roomName;
 			BuildingName = buildingName;
-			Name = name;
+			OwnerName = ownerName;
 			OwnerId = ownerId;
 			CreateDate = date;
 		}
