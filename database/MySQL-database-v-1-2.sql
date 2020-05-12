@@ -144,7 +144,7 @@
     BEGIN
       SELECT
         reports.id, reports.name, reports.create_date,
-        users.login AS owner_login, users.id AS owner_id, users.login AS owner_name
+        users.login AS owner_login, users.id AS owner_id, users.login AS owner_name,
         rooms.id AS room_id, rooms.name AS room_name,
         buildings.id AS building_id, buildings.name AS building_name
       FROM
