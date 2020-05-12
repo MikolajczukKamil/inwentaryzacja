@@ -13,7 +13,7 @@ namespace Inwentaryzacja.Models
         public ReportPositionPrototype(Asset asset, Room previous, bool present)
         {
             this.id = asset.Id;
-            this.previous = previous.Id;
+            this.previous = previous == null ? -1 : previous.Id;
             this.present = present;
         }
     }

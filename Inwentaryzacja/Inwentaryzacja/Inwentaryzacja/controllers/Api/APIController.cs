@@ -12,6 +12,8 @@ namespace Inwentaryzacja.Controllers.Api
 {
     public class APIController
     {
+        static private HttpClient ClientHttp = new HttpClient();
+
         private string BaseUrl = "https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI";
 
         public event EventHandler<ErrorEventArgs> ErrorEventHandler;
@@ -29,7 +31,7 @@ namespace Inwentaryzacja.Controllers.Api
                 try
                 {
                     var uri = new Uri(BaseUrl + address);
-                    var response = await App.clientHttp.GetAsync(uri);
+                    var response = await ClientHttp.GetAsync(uri);
                     result = await response.Content.ReadAsStringAsync();
                     statusCode = (int)response.StatusCode;
 
@@ -65,7 +67,7 @@ namespace Inwentaryzacja.Controllers.Api
                 try
                 {
                     var uri = new Uri(BaseUrl + address);
-                    var response = await App.clientHttp.PostAsync(uri, content);
+                    var response = await ClientHttp.PostAsync(uri, content);
                     result = await response.Content.ReadAsStringAsync();
                     statusCode = (int)response.StatusCode;
 
@@ -100,7 +102,7 @@ namespace Inwentaryzacja.Controllers.Api
                 try
                 {
                     var uri = new Uri(BaseUrl + address);
-                    var response = await App.clientHttp.PostAsync(uri, content);
+                    var response = await ClientHttp.PostAsync(uri, content);
                     result = await response.Content.ReadAsStringAsync();
                     statusCode = (int)response.StatusCode;
 
@@ -108,7 +110,7 @@ namespace Inwentaryzacja.Controllers.Api
                     {
                         var header = response.Headers.GetValues("Authorization").First().ToString();
                         header = header.Remove(0, 7);
-                        App.clientHttp.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", header);
+                        ClientHttp.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", header);
 
                         return true;
                     }
