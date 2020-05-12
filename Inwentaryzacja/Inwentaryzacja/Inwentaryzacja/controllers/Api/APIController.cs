@@ -284,12 +284,12 @@ namespace Inwentaryzacja.Controllers.Api
             return ConvertJSONToObject<ReportHeaderEntity>(response);
         }
 
-        public async Task<ReportPosition[]> getReportPositions(int reportId)
+        public async Task<ReportPositionEntity[]> getReportPositions(int reportId)
         {
             var uri = $"/report/getPositionsInReport.php?id={reportId}";
             var response = await SendRequestWithResponse(uri);
 
-            return ConvertJSONToObject<ReportPosition[]>(response);
+            return ConvertJSONToObject<ReportPositionEntity[]>(response);
         }
 
 

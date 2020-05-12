@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Inwentaryzacja;
@@ -53,22 +51,22 @@ namespace Inwentaryzacja
 
         async void Example()
         {
-#if false // Testy manualne api, "user1", "111"
+#if true // Testy manualne api, "user1", "111"
             //var getBuildings = await api.getBuildings();
             //var getRooms = await api.getRooms(1);
             //var getAssetInfo = await api.getAssetInfo(1);
-            var getAssetInfo2 = await api.getAssetInfo(3);
+            //var getAssetInfo2 = await api.getAssetInfo(3);
             //var CreateAsset = await api.CreateAsset(new Models.AssetPrototype(new Models.AssetType(1, "", 'c')));
             //var createBuilding = await api.createBuilding(new Models.BuildingPrototype("nowy"));
             //var createRoom = await api.createRoom(new Models.RoomPropotype("nowy", new Models.Building(1, "")));
             //var getReportHeaders = await api.getReportHeaders(); // Date
             //var getReportHeader = await api.getReportHeader(5); // Date
-            var getReportPositions = await api.getReportPositions(5);
-            var createReport = await api.createReport(new Models.ReportPrototype(
-                "nowy",
-                new Models.Room(1, "", null),
-                (new ReportPositionPrototype[] { new Models.ReportPositionPrototype(new Asset(1, null), null, true) })
-                )); 
+            //var getReportPositions = await api.getReportPositions(9);
+            //var createReport = await api.createReport(new ReportPrototype(
+            //    "nowy raport createReport",
+            //    new Room(1, "", null),
+            //    (new ReportPositionPrototype[] { new ReportPositionPrototype(new Asset(50, null), null, true) })
+            //    ));
 #endif
         }
     }
