@@ -17,7 +17,7 @@ namespace Inwentaryzacja.Models
 
 		public bool SameAs(Room other)
 		{
-			return Id == other.Id;
+			return other == null || Id == other.Id;
 		}
 	}
 }

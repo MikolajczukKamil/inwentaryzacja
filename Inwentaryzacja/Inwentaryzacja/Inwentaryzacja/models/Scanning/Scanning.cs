@@ -5,19 +5,24 @@ namespace Inwentaryzacja.Models
 {
 	public class Scanning
 	{
-		private int _Id = -1;
+		private int Id = -1;
 		public Room Room { get; private set; }
 		public List<ScanningPosition> Positions { get; private set; }
 
 		/// <param name="id">Unused, if scanning is not save in database</param>
 		public Scanning(Room room, ScanningPosition[] InitialPositions, int id = -1)
 		{
-			_Id = id;
+			Id = id;
 			Room = room;
 			Positions = new List<ScanningPosition>(InitialPositions);
 		}
 
 		public void AddNewPosition()
+		{
+			throw new System.Exception("Not implemented");
+		}
+
+		public ScanningPropotype GeneratePrototype()
 		{
 			throw new System.Exception("Not implemented");
 		}

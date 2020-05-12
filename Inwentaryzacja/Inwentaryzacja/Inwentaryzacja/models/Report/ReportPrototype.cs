@@ -5,15 +5,15 @@ namespace Inwentaryzacja.Models
 {
 	public class ReportPrototype
 	{
-		public string Name;
-		public Room Room;
-		public ReportPosition[] Postions;
+		public int room;
+		public ReportPositionPrototype[] assets;
+		public string name;
 
-		public ReportPrototype(string name, Room room, ReportPosition[] postions)
+		public ReportPrototype(string name, Room room, ReportPositionPrototype[] postions)
 		{
-			Name = name;
-			Room = room;
-			Postions = postions; // todo: clone positions
+			this.name = name;
+			this.room = room.Id;
+			this.assets = postions;
 		}
 	}
 }
