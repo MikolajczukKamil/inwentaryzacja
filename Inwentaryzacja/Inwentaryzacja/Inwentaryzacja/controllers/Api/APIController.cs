@@ -14,7 +14,7 @@ namespace Inwentaryzacja.Controllers.Api
     {
         static private readonly HttpClient ClientHttp = new HttpClient();
 
-        static private readonly string BaseUrl = "https://aplikacja-do-inwentaryzacji.000webhostapp.com/InwentaryzacjaAPI";
+        static private readonly string BaseUrl = "https://aplikacja-do-inwentaryzacji.000webhostapp.com/api";
 
         public event EventHandler<ErrorEventArgs> ErrorEventHandler;
 
@@ -200,7 +200,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         public async Task<AssetInfoEntity> getAssetInfo(int assetId)
         {
-            var uri = $"/asset/getAssetInfo.php?id={assetId}";
+            var uri = $"/getAssetInfo/{assetId}";
             var response = await SendRequestWithResponse(uri);
 
             return ConvertJSONToObject<AssetInfoEntity>(response);
@@ -215,7 +215,7 @@ namespace Inwentaryzacja.Controllers.Api
                 return false;
             }
 
-            var uri = "/asset/addNewAsset.php";
+            var uri = "/addNewAsset";
             var content = PreperDataToSend(data);
             var response = await SendRequest(uri, content);
 
@@ -230,7 +230,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         public async Task<BuildingEntity[]> getBuildings()
         {
-            var uri = "/building/getBuildings.php";
+            var uri = "/getBuildings";
             var response = await SendRequestWithResponse(uri);
 
             return ConvertJSONToObject<BuildingEntity[]>(response);
@@ -238,7 +238,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         public async Task<RoomEntity[]> getRooms(int buildingId)
         {
-            var uri = $"/building/getRooms.php?id={buildingId}";
+            var uri = $"/getRooms/{buildingId}";
             var response = await SendRequestWithResponse(uri);
 
             return ConvertJSONToObject<RoomEntity[]>(response);
@@ -246,7 +246,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         public async Task<bool> createBuilding(BuildingPrototype building)
         {
-            var uri = "/building/addNewBuilding.php";
+            var uri = "/addNewBuilding";
             string data = ConvertDataToJSON(building);
             var content = PreperDataToSend(data);
 
@@ -255,7 +255,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         public async Task<bool> createRoom(RoomPropotype room)
         {
-            var uri = "/room/addNewRoom.php";
+            var uri = "/addNewRoom";
             string data = ConvertDataToJSON(room);
             var content = PreperDataToSend(data);
 
@@ -270,7 +270,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         public async Task<ReportHeaderEntity[]> getReportHeaders()
         {
-            var uri = "/report/getReportsHeaders.php";
+            var uri = "/getReportsHeaders";
             var response = await SendRequestWithResponse(uri);
 
             return ConvertJSONToObject<ReportHeaderEntity[]>(response);
@@ -278,7 +278,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         public async Task<ReportHeaderEntity> getReportHeader(int reportId)
         {
-            var uri = $"/report/getReportHeader.php?id={reportId}";
+            var uri = $"/getReportHeader/{reportId}";
             var response = await SendRequestWithResponse(uri);
 
             return ConvertJSONToObject<ReportHeaderEntity>(response);
@@ -286,7 +286,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         public async Task<ReportPositionEntity[]> getReportPositions(int reportId)
         {
-            var uri = $"/report/getPositionsInReport.php?id={reportId}";
+            var uri = $"/getReportPositions/{reportId}";
             var response = await SendRequestWithResponse(uri);
 
             return ConvertJSONToObject<ReportPositionEntity[]>(response);
@@ -295,7 +295,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         public async Task<bool> createReport(ReportPrototype report)
         {
-            var uri = "/report/addNewReport.php";
+            var uri = "/addNewReport";
             string data = ConvertDataToJSON(report);
 
             if (data == null) return false;
@@ -306,6 +306,19 @@ namespace Inwentaryzacja.Controllers.Api
         }
 
         #endregion Report
+
+
+        #region Scanning
+
+        public async Task<AssetEntity[]> getAssetsInRoom(int room_id)
+        {
+            var uri = $"/getAssetsInRoom/{room_id}";
+            var response = await SendRequestWithResponse(uri);
+
+            return ConvertJSONToObject<AssetEntity[]>(response);
+        }
+
+        #endregion Scanning
 
 
         #region User
@@ -324,7 +337,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         public async Task<bool> LoginUser(string login, string password)
         {
-            var uri = "/login/addLoginSession.php";
+            var uri = "/loginUser";
             var data = ConvertDataToJSON(new LoginUserPrototype(login, password));
             var content = PreperDataToSend(data);
 
