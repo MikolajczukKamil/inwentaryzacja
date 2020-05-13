@@ -11,7 +11,7 @@ getReportsHeaders(user_id INT): {
   room_name VARCHAR
   building_id INT 
   building_name VARCHAR 
-}
+}[]
 </pre>
 
 <pre>
@@ -39,7 +39,7 @@ getPositionsInReport(report_id INT): {
   previous_name VARCHAR|null
   previous_building_id INT|null
   previous_building_name VARCHAR|null
-}
+}[]
 </pre>
 
 <pre>
