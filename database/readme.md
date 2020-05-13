@@ -7,7 +7,9 @@ getReportsHeaders(user_id INT): {
   create_date DATETIME
   owner_id INT
   owner_name VARCHAR
+  room_id INT
   room_name VARCHAR
+  building_id INT 
   building_name VARCHAR 
 }
 </pre>
@@ -19,15 +21,17 @@ getReportHeader(report_id INT): {
   create_date DATETIME
   owner_id INT
   owner_name VARCHAR
+  room_id INT
   room_name VARCHAR
+  building_id INT
   building_name VARCHAR 
 }
 </pre>
 
 <pre>
 getPositionsInReport(report_id INT): {
-  asset_id INT
   present BOOLEAN
+  asset_id INT
   type_id INT
   type_letter CHAR
   type_name VARCHAR
@@ -39,19 +43,12 @@ getPositionsInReport(report_id INT): {
 </pre>
 
 <pre>
-addNewAsset(type_id INT): { id INT }
-</pre>
-
-<pre>
 getAssetsInRoom(room_id INT): {
   id INT
   type INT
+  asset_type_letter CHAR
   asset_type_name VARCHAR
-  new_asset BOOLEAN
-  moved BOOLEAN
-  moved_from_id INT|NULL
-  moved_from_name VARCHAR|NULL
-}
+}[]
 </pre>
 
 <pre>
@@ -65,6 +62,10 @@ getAssetInfo(asset_id INT): {
   building_id INT
   building_name VARCHAR
 }
+</pre>
+
+<pre>
+addNewAsset(type_id INT): { id INT }
 </pre>
 
 <pre>

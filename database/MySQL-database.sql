@@ -144,7 +144,7 @@
     BEGIN
       SELECT
         reports.id, reports.name, reports.create_date,
-        users.login AS owner_login, users.id AS owner_id, users.login AS owner_name,
+        users.id AS owner_id, users.login AS owner_name,
         rooms.id AS room_id, rooms.name AS room_name,
         buildings.id AS building_id, buildings.name AS building_name
       FROM
@@ -171,7 +171,7 @@
     BEGIN
       SELECT
         reports.id, reports.name, reports.create_date,
-        users.login AS owner_login, users.id AS owner_id, users.login AS owner_name,
+        users.id AS owner_id, users.login AS owner_name,
         rooms.id AS room_id, rooms.name AS room_name,
         buildings.id AS building_id, buildings.name AS building_name
       FROM
@@ -191,7 +191,7 @@
     DROP PROCEDURE IF EXISTS getPositionsInReport;
 
     DELIMITER $$
-    CREATE PROCEDURE getPositionsInReport(IN ReportId INT)
+    CREATE PROCEDURE getPositionsInReport(IN id_report INT)
     BEGIN
       SELECT
         reports_assets.asset_id, reports_assets.present,
@@ -209,7 +209,7 @@
       LEFT JOIN
         buildings ON rooms.building = buildings.id
       WHERE
-        reports_assets.report_id = ReportId
+        reports_assets.report_id = id_report
       ;
     END $$ DELIMITER ;
 
@@ -217,15 +217,11 @@
     DROP PROCEDURE IF EXISTS getAssetsInRoom;
 
     DELIMITER $$
-    CREATE PROCEDURE getAssetsInRoom(IN RoomId INT)
+    CREATE PROCEDURE getAssetsInRoom(IN room_id INT)
     BEGIN
       SELECT
         assets.id, assets.type,
-        asset_types.name AS asset_type_name, asset_types.letter AS asset_type_letter,
-        IFNULL(reports_assets.previous_room, 0) = 0 AS new_asset,
-        IFNULL(reports_assets.previous_room, reports.room) != reports.room AS moved,
-        reports_assets.previous_room AS moved_from_id,
-        rooms.name AS moved_from_name
+        asset_types.name AS asset_type_name, asset_types.letter AS asset_type_letter
       FROM
         reports_assets
       JOIN
@@ -234,23 +230,23 @@
         assets ON reports_assets.asset_id = assets.id
       JOIN
         asset_types ON assets.type = asset_types.id
-      LEFT JOIN
-        rooms ON reports_assets.previous_room = rooms.id
       WHERE
         reports_assets.report_id = (
           SELECT
-            reports.id
+            r.id
           FROM
-            reports
+            reports AS r
           WHERE
-            reports.room = RoomId
+            r.room = room_id
           ORDER BY
-            reports.create_date DESC,
-            reports.id DESC
+            r.create_date DESC,
+            r.id DESC
           LIMIT 1
         ) AND 
         reports_assets.present AND
         reports.room = getRoomIdWithAsset(reports_assets.asset_id)
+      ORDER BY
+        assets.id ASC
       ;
     END $$ DELIMITER ;
 
@@ -304,14 +300,14 @@
     DROP PROCEDURE IF EXISTS getUser;
 
     DELIMITER $$
-    CREATE PROCEDURE getUser(IN UserId INT)
+    CREATE PROCEDURE getUser(IN user_id INT)
     BEGIN
       SELECT
         users.id, users.login, users.hash
       FROM
         users
       WHERE
-        users.id = UserId
+        users.id = user_id
       ;
     END $$ DELIMITER ;
 
