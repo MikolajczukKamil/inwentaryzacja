@@ -449,7 +449,7 @@
 
     DELIMITER $$
     CREATE PROCEDURE addNewReport(IN report_name VARCHAR(64), IN report_room INT, IN report_owner INT, IN report_positions JSON)
-    BEGIN
+    addNewReportProcedure:BEGIN
       /* DECLARE */
         DECLARE is_room_correct BOOLEAN;
         DECLARE is_owner_correct BOOLEAN;
@@ -461,57 +461,75 @@
         DECLARE New_report_id INT;
       /* END DECLARE */
 
-      SELECT
-        (
-          SELECT
-            COUNT(*)
-          FROM
-            reports 
-          WHERE
-            reports.id = report_room
-        ) = 1
-      INTO
-        is_room_correct
+      /* Check report_room and report_owner correct */
+
+        SELECT
+          (
+            SELECT
+              COUNT(*)
+            FROM
+              rooms
+            WHERE
+              rooms.id = report_room
+          ) = 1
+        INTO
+          is_room_correct
+        ;
+
+        SELECT
+          (
+            SELECT
+              COUNT(*)
+            FROM
+              users 
+            WHERE
+              users.id = report_owner
+          ) = 1
+        INTO
+          is_owner_correct
+        ;
+
+      /* END Check report_room and report_owner correct */
+
+      IF NOT is_room_correct OR NOT is_owner_correct THEN
+        SELECT
+          -1 AS id,
+          NOT is_room_correct OR NOT is_owner_correct as a1,
+          is_room_correct ,
+          is_owner_correct,
+          CONCAT_WS(
+            " AND ",
+            idsNotFound("Room", IF(is_room_correct, report_room, NULL)),
+            idsNotFound("User", IF(is_owner_correct, report_owner, NULL))
+          ) AS message
+        ;
+        LEAVE addNewReportProcedure;
+      END IF;
+
+      SET positions_last_index = JSON_LENGTH(report_positions) - 1;
+      CREATE TEMPORARY TABLE positions(id INT, previous INT, present BOOLEAN);
+
+      /*
+        Parsing JSON array to table `positions`
+        { "id": INT, "previous": INT|NULL, "present": BOOLEAN }[]
+      */
+      WITH RECURSIVE cte (i) AS
+      (
+        SELECT 0 AS i
+        UNION ALL
+        SELECT i + 1 FROM cte WHERE i < positions_last_index
+      )
+
+      INSERT INTO positions(id INT, previous INT, present BOOLEAN)
+        SELECT
+          JSON_VALUE(report_positions, CONCAT('$[', i ,'].id')) AS id,
+          NULLIF(JSON_VALUE(report_positions, CONCAT('$[', i ,'].previous')), 'null') AS previous,
+          JSON_VALUE(report_positions, CONCAT('$[', i ,'].present')) AS present
+        FROM
+          cte
       ;
 
-      SELECT
-        (
-          SELECT
-            COUNT(*)
-          FROM
-            users 
-          WHERE
-            users.id = report_owner
-        ) = 1
-      INTO
-        is_owner_correct
-      ;
-
-      IF is_room_correct AND is_owner_correct THEN
-        SET positions_last_index = JSON_LENGTH(report_positions) - 1;
-
-        /*
-          Parsing JSON array to table `positions`
-          Example [ { "id": 25, "previous": 1, "present": 1 } ]
-        */
-        WITH RECURSIVE positions (i, id, previous, present) AS
-        (
-          SELECT
-            0 AS i,
-            JSON_VALUE(report_positions, '$[0].id') AS id,
-            NULLIF(JSON_VALUE(report_positions, '$[0].previous'), 'null') AS previous,
-            JSON_VALUE(report_positions, '$[0].present') AS present
-          UNION ALL
-          SELECT
-            positions.i + 1 AS i,
-            JSON_VALUE(report_positions, CONCAT('$[', positions.i + 1 ,'].id')) AS id,
-            NULLIF(JSON_VALUE(report_positions, CONCAT('$[', positions.i + 1 ,'].previous')), 'null') AS previous,
-            JSON_VALUE(report_positions, CONCAT('$[', positions.i + 1 ,'].present')) AS present
-          FROM
-            positions
-          WHERE
-            i < positions_last_index
-        )
+      /* Check report_positions.asset_id and report_positions.previus correct */
 
         SELECT
           COUNT(*) = 0,
@@ -542,49 +560,45 @@
           rooms.id IS NULL
         ;
 
-        If are_assets_exists AND are_rooms_exists THEN
-          /* Adding new report */
+      /* END Check report_positions.asset_id and report_positions.previus correct */
 
-          INSERT INTO
-            reports (name, room, create_date, owner)
-          VALUES
-            (report_name, report_room, NOW(), report_owner)
-          ;
-
-          SET New_report_id = LAST_INSERT_ID();
-
-          INSERT INTO
-            reports_assets (report_id, asset_id, previous_room, present)
-          SELECT
-            New_report_id, positions.id, positions.previous, positions.present
-          FROM
-            positions
-          ;
-
-          SELECT
-            New_report_id AS id,
-            NULL AS message
-          ;
-        ELSE
-          SELECT
-            NULL AS id,
-            CONCAT_WS(
-              " AND ",
-              idsNotFound("Asset", assets_dont_exists),
-              idsNotFound("Room", rooms_dont_exists)
-            ) AS message
-          ;
-        END IF;
-      ELSE
+      If NOT are_assets_exists OR NOT are_rooms_exists THEN
         SELECT
           NULL AS id,
           CONCAT_WS(
             " AND ",
-            idsNotFound("Room", IF(is_room_correct, report_room, NULL)),
-            idsNotFound("User", IF(is_owner_correct, report_owner, NULL))
+            idsNotFound("Asset", assets_dont_exists),
+            idsNotFound("Room", rooms_dont_exists)
           ) AS message
         ;
-      END IF;    
+        LEAVE addNewReportProcedure;
+      END IF;
+
+      /* Adding new report */
+
+        INSERT INTO
+          reports (name, room, create_date, owner)
+        VALUES
+          (report_name, report_room, NOW(), report_owner)
+        ;
+
+        SET New_report_id = LAST_INSERT_ID();
+
+        INSERT INTO
+          reports_assets (report_id, asset_id, previous_room, present)
+        SELECT
+          New_report_id, positions.id, positions.previous, positions.present
+        FROM
+          positions
+        ;
+
+        SELECT
+          New_report_id AS id,
+          NULL AS message
+        ;
+
+       /* END Adding new report */
+
     END $$ DELIMITER ;
 
   /* Utworzenie nowej sali */
