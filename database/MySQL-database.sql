@@ -283,15 +283,42 @@
     DELIMITER $$
     CREATE PROCEDURE addNewAsset(IN type_id INT)
     BEGIN
-      INSERT INTO
-        assets (type)
-      VALUES
-        (type_id)
-      ;
+      DECLARE is_type_correct BOOLEAN;
 
       SELECT
-        LAST_INSERT_ID() AS id
+        (
+          SELECT
+            COUNT(*)
+          FROM
+            asset_types 
+          WHERE
+            asset_types.id = type_id
+        ) = 1
+      INTO
+        is_type_correct
       ;
+
+      IF NOT is_type_correct THEN
+
+        SELECT
+          NULL AS id,
+          CONCAT("AssetType(id=", type_id, ") does not exist") AS message
+        ;
+
+      ELSE
+
+        INSERT INTO
+          assets (type)
+        VALUES
+          (type_id)
+        ;
+
+        SELECT
+          LAST_INSERT_ID() AS id,
+          NULL AS message
+        ;
+
+      END IF;
 
     END $$ DELIMITER ;
 
