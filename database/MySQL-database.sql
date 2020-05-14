@@ -87,52 +87,64 @@
 
   CREATE TABLE login_sessions (
     id INT NOT NULL AUTO_INCREMENT,
-    user_id INT NOT NULL,
+    user INT NOT NULL,
     token VARCHAR(64) NOT NULL UNIQUE,
     expiration_date DATETIME NOT NULL,
     create_date DATETIME NOT NULL,
     PRIMARY KEY(id),
-    CONSTRAINT fk_login_user FOREIGN KEY(user_id)
+    CONSTRAINT fk_login_user FOREIGN KEY(user)
       REFERENCES users(id)
       ON DELETE CASCADE
   );
 
 /* Functions */
 
-  DROP FUNCTION IF EXISTS getRoomIdWithAsset;
+  /* getRoomIdWithAsset */
 
-  /*  If the asset is not allocated function returns NULL */
+    DROP FUNCTION IF EXISTS getRoomIdWithAsset;
 
-  DELIMITER $$
-  CREATE FUNCTION getRoomIdWithAsset(id_asset INT) RETURNS INT
-  BEGIN
-    DECLARE Room_id INT DEFAULT NULL;
-    DECLARE Deleted BOOLEAN DEFAULT TRUE;
+    /*  If the asset is not allocated function returns NULL */
 
-    SELECT
-      reports.room, NOT reports_assets.present
-    INTO 
-      Room_id, Deleted
-    FROM
-      reports_assets
-    JOIN
-      reports ON reports_assets.report_id = reports.id
-    WHERE
-      reports_assets.asset_id = id_asset AND
-      NOT (reports_assets.previous_room != reports.room AND NOT reports_assets.present) /* skip 'do nothing' positions */
-    ORDER BY
-      reports.create_date DESC,
-      reports.id DESC
-    LIMIT
-      1
-    ;
+    DELIMITER $$
+    CREATE FUNCTION getRoomIdWithAsset(id_asset INT) RETURNS INT
+    BEGIN
+      DECLARE Room_id INT DEFAULT NULL;
+      DECLARE Deleted BOOLEAN DEFAULT TRUE;
 
-    IF Deleted THEN
-      SET Room_id = NULL;
-    END IF;
+      SELECT
+        reports.room, NOT reports_assets.present
+      INTO 
+        Room_id, Deleted
+      FROM
+        reports_assets
+      JOIN
+        reports ON reports_assets.report_id = reports.id
+      WHERE
+        reports_assets.asset_id = id_asset AND
+        NOT (reports_assets.previous_room != reports.room AND NOT reports_assets.present) /* skip 'do nothing' positions */
+      ORDER BY
+        reports.create_date DESC,
+        reports.id DESC
+      LIMIT
+        1
+      ;
 
-    RETURN Room_id;
-  END $$ DELIMITER ;
+      IF Deleted THEN
+        SET Room_id = NULL;
+      END IF;
+
+      RETURN Room_id;
+    END $$ DELIMITER ;
+
+  /* idNotFound */
+
+    DROP FUNCTION IF EXISTS idNotFound;
+
+    DELIMITER $$
+    CREATE FUNCTION idNotFound(table_name VARCHAR(32), id INT) RETURNS VARCHAR(64)
+    BEGIN
+      RETURN CONCAT(table_name, " id=", id, " does not exist");
+    END $$ DELIMITER ;
 
 /* Procedures */
 
@@ -362,7 +374,7 @@
     CREATE PROCEDURE getLoginSession(IN user_token VARCHAR(64))
     BEGIN
       SELECT
-        login_sessions.id, login_sessions.user_id, login_sessions.expiration_date, login_sessions.token,
+        login_sessions.id, login_sessions.user AS user_id, login_sessions.expiration_date, login_sessions.token,
         login_sessions.expiration_date <= NOW() AS expired
       FROM
         login_sessions
@@ -376,17 +388,45 @@
     DROP PROCEDURE IF EXISTS addLoginSession;
 
     DELIMITER $$
-    CREATE PROCEDURE addLoginSession(IN user_id INT, IN expiration_date DATETIME, IN user_token VARCHAR(64))
+    CREATE PROCEDURE addLoginSession(IN user_id INT, IN date_expiration DATETIME, IN user_token VARCHAR(64))
     BEGIN
-      INSERT INTO
-        login_sessions (user_id, token, expiration_date, create_date)
-      VALUES 
-        (user_id, user_token, expiration_date, NOW())
-      ;
+      DECLARE is_type_correct BOOLEAN;
 
       SELECT
-        LAST_INSERT_ID() AS id
+        (
+          SELECT
+            COUNT(*)
+          FROM
+            users 
+          WHERE
+            users.id = user_id
+        ) = 1
+      INTO
+        is_type_correct
       ;
+
+      IF NOT is_type_correct THEN
+
+        SELECT
+          NULL AS id,
+          CONCAT("USER(id=", user_id, ") does not exist") AS message
+        ;
+
+      ELSE
+
+        INSERT INTO
+          login_sessions (user, token, expiration_date, create_date)
+        VALUES 
+          (user_id, user_token, date_expiration, NOW())
+        ;
+
+        SELECT
+          LAST_INSERT_ID() AS id,
+          NULL AS message
+        ;
+
+      END IF;
+
     END $$ DELIMITER ;
 
   /* Usunięcie sesji logowania */
@@ -408,8 +448,89 @@
     DROP PROCEDURE IF EXISTS addNewReport;
 
     DELIMITER $$
-    CREATE PROCEDURE addNewReport(IN report_name VARCHAR(64), IN report_room INT, IN report_owner INT, IN report_positions VARCHAR(4096))
+    CREATE PROCEDURE addNewReport(IN report_name VARCHAR(64), IN report_room INT, IN report_owner INT, IN report_positions JSON)
     BEGIN
+      DECLARE is_room_correct BOOLEAN;
+      DECLARE is_owner_correct BOOLEAN;
+      DECLARE are_positions_correct BOOLEAN;
+      DECLARE positions_length INT;
+
+      SELECT
+        (
+          SELECT
+            COUNT(*)
+          FROM
+            reports 
+          WHERE
+            reports.id = report_room
+        ) = 1,
+        (
+          SELECT
+            COUNT(*)
+          FROM
+            users 
+          WHERE
+            users.id = report_owner
+        ) = 1
+      INTO
+        is_type_correct,
+        is_owner_correct
+      ;
+
+      IF NOT is_room_correct OR NOT is_owner_correct THEN
+
+        SELECT
+          NULL AS id,
+          CONCAT(
+            IF(is_room_correct, "", idNotFound("Room", report_room)),
+            IF(is_room_correct AND is_owner_correct, " AND ", ""),
+            IF(is_owner_correct, "", idNotFound("User", report_owner))
+          ) AS message
+        ;
+
+      ELSE
+
+        SET positions_last_index = JSON_LENGTH(report_positions) - 1;
+
+        WITH RECURSIVE positions AS
+        (
+          SELECT
+            0 AS i,
+            JSON_VALUE(report_positions, '$[0].id') AS id,
+            NULLIF(JSON_VALUE(report_positions, '$[0].previous'), 'null') AS previous,
+            JSON_VALUE(report_positions, '$[0].present') AS present
+          UNION ALL
+          SELECT
+            positions.i + 1 AS i,
+            JSON_VALUE(report_positions, CONCAT('$[', positions.i + 1 ,'].id')) AS id,
+            NULLIF(JSON_VALUE(report_positions, CONCAT('$[', positions.i + 1 ,'].previous')), 'null') AS previous,
+            JSON_VALUE(report_positions, CONCAT('$[', positions.i + 1 ,'].present')) AS present
+          FROM
+            positions
+          WHERE
+            i < positions_last_index
+        )
+
+        SELECT
+          (
+            SELECT
+              *
+            FROM
+              positions 
+            WHERE
+              positions.id = report_room
+          ) = positions_length
+        INTO
+          are_positions_correct
+        ;
+
+      END IF;
+
+
+
+
+
+
       DECLARE New_report_id INT;
       DECLARE Position INT DEFAULT 0;
 
@@ -665,7 +786,7 @@
   ;
 
   INSERT INTO
-    login_sessions (user_id, token, expiration_date, create_date)
+    login_sessions (user, token, expiration_date, create_date)
   VALUES
     (1, 'fake-token', NOW() + INTERVAL 1 DAY, NOW() - INTERVAL 1 DAY)
   ;
