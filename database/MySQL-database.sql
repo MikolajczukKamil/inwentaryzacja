@@ -136,14 +136,14 @@
       RETURN Room_id;
     END $$ DELIMITER ;
 
-  /* idNotFound */
+  /* idsNotFound */
 
-    DROP FUNCTION IF EXISTS idNotFound;
+    DROP FUNCTION IF EXISTS idsNotFound;
 
     DELIMITER $$
-    CREATE FUNCTION idNotFound(table_name VARCHAR(32), id INT) RETURNS VARCHAR(64)
+    CREATE FUNCTION idsNotFound(table_name VARCHAR(32), ids VARCHAR(1024)) RETURNS VARCHAR(64)
     BEGIN
-      RETURN CONCAT(table_name, " id=", id, " does not exist");
+      RETURN CONCAT(table_name, " id=", ids, " does not exist");
     END $$ DELIMITER ;
 
 /* Procedures */
@@ -450,10 +450,16 @@
     DELIMITER $$
     CREATE PROCEDURE addNewReport(IN report_name VARCHAR(64), IN report_room INT, IN report_owner INT, IN report_positions JSON)
     BEGIN
-      DECLARE is_room_correct BOOLEAN;
-      DECLARE is_owner_correct BOOLEAN;
-      DECLARE are_positions_correct BOOLEAN;
-      DECLARE positions_length INT;
+      /* DECLARE */
+        DECLARE is_room_correct BOOLEAN;
+        DECLARE is_owner_correct BOOLEAN;
+        DECLARE positions_last_index INT;
+        DECLARE are_assets_exists BOOLEAN;
+        DECLARE assets_dont_exists VARCHAR(1024);
+        DECLARE are_rooms_exists BOOLEAN;
+        DECLARE rooms_dont_exists VARCHAR(1024);
+        DECLARE New_report_id INT;
+      /* END DECLARE */
 
       SELECT
         (
@@ -463,7 +469,12 @@
             reports 
           WHERE
             reports.id = report_room
-        ) = 1,
+        ) = 1
+      INTO
+        is_room_correct
+      ;
+
+      SELECT
         (
           SELECT
             COUNT(*)
@@ -473,26 +484,17 @@
             users.id = report_owner
         ) = 1
       INTO
-        is_type_correct,
         is_owner_correct
       ;
 
-      IF NOT is_room_correct OR NOT is_owner_correct THEN
-
-        SELECT
-          NULL AS id,
-          CONCAT(
-            IF(is_room_correct, "", idNotFound("Room", report_room)),
-            IF(is_room_correct AND is_owner_correct, " AND ", ""),
-            IF(is_owner_correct, "", idNotFound("User", report_owner))
-          ) AS message
-        ;
-
-      ELSE
-
+      IF is_room_correct AND is_owner_correct THEN
         SET positions_last_index = JSON_LENGTH(report_positions) - 1;
 
-        WITH RECURSIVE positions AS
+        /*
+          Parsing JSON array to table `positions`
+          Example [ { "id": 25, "previous": 1, "present": 1 } ]
+        */
+        WITH RECURSIVE positions (i, id, previous, present) AS
         (
           SELECT
             0 AS i,
@@ -512,56 +514,77 @@
         )
 
         SELECT
-          (
-            SELECT
-              *
-            FROM
-              positions 
-            WHERE
-              positions.id = report_room
-          ) = positions_length
+          COUNT(*) = 0,
+          GROUP_CONCAT(DISTINCT positions.id ORDER BY positions.id SEPARATOR ', ')
         INTO
-          are_positions_correct
+          are_assets_exists,
+          assets_dont_exists
+        FROM
+          positions
+        LEFT JOIN
+          assets ON positions.id = assets.id
+        WHERE
+          assets.id IS NULL
         ;
 
-      END IF;
-
-
-
-
-
-
-      DECLARE New_report_id INT;
-      DECLARE Position INT DEFAULT 0;
-
-      INSERT INTO
-        reports (name, room, create_date, owner)
-      VALUES
-        (report_name, report_room, NOW(), report_owner);
-
-      SET New_report_id = LAST_INSERT_ID();
-
-      WHILE Position < JSON_LENGTH(report_positions)
-      DO
-        /* Example [ { "id": 25, "previous": 1, "present": 1 } ] */
-        INSERT INTO
-          reports_assets (report_id, asset_id, previous_room, present)
-        VALUES
-          (
-            New_report_id,
-            JSON_VALUE(report_positions, CONCAT('$[', Position ,'].id')),
-            NULLIF(JSON_UNQUOTE(JSON_EXTRACT(report_positions, CONCAT('$[', Position ,'].previous'))), 'null'),
-            JSON_VALUE(report_positions, CONCAT('$[', Position ,'].present'))
-          )
+        SELECT
+          COUNT(*) = 0,
+          GROUP_CONCAT(DISTINCT positions.previous ORDER BY positions.previous SEPARATOR ', ')
+        INTO
+          are_rooms_exists,
+          rooms_dont_exists
+        FROM
+          positions
+        LEFT JOIN
+          rooms ON positions.previous = rooms.id
+        WHERE
+          positions.previous IS NOT NULL AND
+          rooms.id IS NULL
         ;
 
-        SET Position = Position + 1;
-      END WHILE;
+        If are_assets_exists AND are_rooms_exists THEN
+          /* Adding new report */
 
-      SELECT
-        New_report_id AS id
-      ;
-      
+          INSERT INTO
+            reports (name, room, create_date, owner)
+          VALUES
+            (report_name, report_room, NOW(), report_owner)
+          ;
+
+          SET New_report_id = LAST_INSERT_ID();
+
+          INSERT INTO
+            reports_assets (report_id, asset_id, previous_room, present)
+          SELECT
+            New_report_id, positions.id, positions.previous, positions.present
+          FROM
+            positions
+          ;
+
+          SELECT
+            New_report_id AS id,
+            NULL AS message
+          ;
+        ELSE
+          SELECT
+            NULL AS id,
+            CONCAT_WS(
+              " AND ",
+              idsNotFound("Asset", assets_dont_exists),
+              idsNotFound("Room", rooms_dont_exists)
+            ) AS message
+          ;
+        END IF;
+      ELSE
+        SELECT
+          NULL AS id,
+          CONCAT_WS(
+            " AND ",
+            idsNotFound("Room", IF(is_room_correct, report_room, NULL)),
+            idsNotFound("User", IF(is_owner_correct, report_owner, NULL))
+          ) AS message
+        ;
+      END IF;    
     END $$ DELIMITER ;
 
   /* Utworzenie nowej sali */
