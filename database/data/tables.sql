@@ -12,20 +12,20 @@ CREATE TABLE users (
   login VARCHAR(64) NOT NULL UNIQUE,
   hash VARCHAR(64) NOT NULL,
   PRIMARY KEY(id)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE asset_types (
   id INT NOT NULL AUTO_INCREMENT,
   letter CHAR(1) NOT NULL UNIQUE,
   name VARCHAR(64) NOT NULL UNIQUE,
   PRIMARY KEY(id)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE buildings (
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(64) NOT NULL UNIQUE,
   PRIMARY KEY(id)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE rooms (
   id INT NOT NULL AUTO_INCREMENT,
@@ -35,7 +35,7 @@ CREATE TABLE rooms (
   CONSTRAINT fk_room_building FOREIGN KEY(building)
     REFERENCES buildings(id)
     ON DELETE CASCADE
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE assets (
   id INT NOT NULL AUTO_INCREMENT,
@@ -44,7 +44,7 @@ CREATE TABLE assets (
   CONSTRAINT fk_asset_assettype FOREIGN KEY(type)
     REFERENCES asset_types(id)
     ON DELETE CASCADE
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE reports (
   id INT NOT NULL AUTO_INCREMENT,
@@ -59,7 +59,7 @@ CREATE TABLE reports (
   CONSTRAINT fk_report_user FOREIGN KEY(owner)
     REFERENCES users(id)
     ON DELETE CASCADE
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE reports_assets (
   report_id INT NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE reports_assets (
   CONSTRAINT fk_reportasset_asset FOREIGN KEY(asset_id)
     REFERENCES assets(id)
     ON DELETE CASCADE
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE login_sessions (
   id INT NOT NULL AUTO_INCREMENT,
@@ -85,4 +85,4 @@ CREATE TABLE login_sessions (
   CONSTRAINT fk_login_user FOREIGN KEY(user)
     REFERENCES users(id)
     ON DELETE CASCADE
-);
+) ENGINE=InnoDB;
