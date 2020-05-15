@@ -459,6 +459,8 @@
         DECLARE Assets_does_not_exists VARCHAR(1024);
         DECLARE Are_rooms_exists BOOLEAN;
         DECLARE Rooms_does_not_exists VARCHAR(1024);
+        DECLARE Are_assets_duplicated BOOLEAN;
+        DECLARE Assets_duplicated VARCHAR(1024);
         DECLARE New_report_id INT;
       /* END DECLARE */
 
@@ -518,8 +520,7 @@
         INTO
           Are_assets_exists,
           Assets_does_not_exists
-        FROM
-          Positions
+        FROM Positions
         LEFT JOIN
           assets ON Positions.id = assets.id
         WHERE
@@ -532,8 +533,7 @@
         INTO
           Are_rooms_exists,
           Rooms_does_not_exists
-        FROM
-          Positions
+        FROM Positions
         LEFT JOIN
           rooms ON Positions.previous = rooms.id
         WHERE
@@ -541,15 +541,31 @@
           rooms.id IS NULL
         ;
 
+        SELECT
+          COUNT(*) = 0,
+          GROUP_CONCAT(DISTINCT duplicates.id ORDER BY duplicates.id SEPARATOR ', ')
+        INTO
+          Are_assets_duplicated,
+          Assets_duplicated
+        FROM
+          (
+            SELECT Positions.id
+            FROM Positions
+            GROUP BY Positions.id
+            HAVING COUNT(Positions.id) > 1
+          ) AS duplicates
+        ;
+
       /* END Check report_positions.asset_id and report_positions.previus correct */
 
-      If NOT Are_assets_exists OR NOT Are_rooms_exists THEN
+      If NOT Are_assets_exists OR NOT Are_rooms_exists OR NOT Are_assets_duplicated THEN
         SELECT
           -4 AS id,
           CONCAT_WS(
             " AND ",
             idsNotFound("Asset", Assets_does_not_exists),
-            idsNotFound("Room", Rooms_does_not_exists)
+            idsNotFound("Room", Rooms_does_not_exists),
+            CONCAT("Asset id=", Assets_duplicated, " have duplicates")
           ) AS message
         ;
 
