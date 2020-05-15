@@ -5,7 +5,7 @@ CREATE PROCEDURE addBuilding(IN building_name VARCHAR(64))
 BEGIN
   DECLARE is_name_unique BOOLEAN;
 
-  SELECT (SELECT COUNT(*) FROM buildings WHERE building.name = building_name ) = 0
+  SELECT (SELECT COUNT(*) FROM buildings WHERE buildings.name = building_name ) = 0
   INTO is_name_unique;
 
   IF NOT is_name_unique THEN
