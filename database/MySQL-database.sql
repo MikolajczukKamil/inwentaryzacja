@@ -313,7 +313,7 @@
       IF NOT is_type_correct THEN
 
         SELECT
-          NULL AS id,
+          -1 AS id,
           CONCAT("AssetType(id=", type_id, ") does not exist") AS message
         ;
 
@@ -408,7 +408,7 @@
       IF NOT is_type_correct THEN
 
         SELECT
-          NULL AS id,
+          -2 AS id,
           CONCAT("USER(id=", user_id, ") does not exist") AS message
         ;
 
@@ -451,126 +451,109 @@
     CREATE PROCEDURE addNewReport(IN report_name VARCHAR(64), IN report_room INT, IN report_owner INT, IN report_positions JSON)
     addNewReportProcedure:BEGIN
       /* DECLARE */
-        DECLARE is_room_correct BOOLEAN;
-        DECLARE is_owner_correct BOOLEAN;
-        DECLARE positions_last_index INT;
-        DECLARE are_assets_exists BOOLEAN;
-        DECLARE assets_dont_exists VARCHAR(1024);
-        DECLARE are_rooms_exists BOOLEAN;
-        DECLARE rooms_dont_exists VARCHAR(1024);
+        DECLARE I INT;
+        DECLARE Is_room_correct BOOLEAN;
+        DECLARE Is_owner_correct BOOLEAN;
+        DECLARE Positions_length INT;
+        DECLARE Are_assets_exists BOOLEAN;
+        DECLARE Assets_does_not_exists VARCHAR(1024);
+        DECLARE Are_rooms_exists BOOLEAN;
+        DECLARE Rooms_does_not_exists VARCHAR(1024);
         DECLARE New_report_id INT;
       /* END DECLARE */
 
       /* Check report_room and report_owner correct */
 
         SELECT
-          (
-            SELECT
-              COUNT(*)
-            FROM
-              rooms
-            WHERE
-              rooms.id = report_room
-          ) = 1
+          (SELECT COUNT(*) FROM rooms WHERE rooms.id = report_room) = 1
         INTO
-          is_room_correct
+          Is_room_correct
         ;
 
         SELECT
-          (
-            SELECT
-              COUNT(*)
-            FROM
-              users 
-            WHERE
-              users.id = report_owner
-          ) = 1
+          (SELECT COUNT(*) FROM users WHERE users.id = report_owner) = 1
         INTO
-          is_owner_correct
+          Is_owner_correct
         ;
 
       /* END Check report_room and report_owner correct */
 
-      IF NOT is_room_correct OR NOT is_owner_correct THEN
+      IF NOT Is_room_correct OR NOT Is_owner_correct THEN
         SELECT
-          -1 AS id,
-          NOT is_room_correct OR NOT is_owner_correct as a1,
-          is_room_correct ,
-          is_owner_correct,
+          -3 AS id,
           CONCAT_WS(
             " AND ",
-            idsNotFound("Room", IF(is_room_correct, report_room, NULL)),
-            idsNotFound("User", IF(is_owner_correct, report_owner, NULL))
+            idsNotFound("Room", IF(NOT Is_room_correct, report_room, NULL)),
+            idsNotFound("User", IF(NOT Is_owner_correct, report_owner, NULL))
           ) AS message
         ;
         LEAVE addNewReportProcedure;
       END IF;
 
-      SET positions_last_index = JSON_LENGTH(report_positions) - 1;
-      CREATE TEMPORARY TABLE positions(id INT, previous INT, present BOOLEAN);
-
       /*
-        Parsing JSON array to table `positions`
+        Parsing JSON array to table `Positions`
         { "id": INT, "previous": INT|NULL, "present": BOOLEAN }[]
       */
-      WITH RECURSIVE cte (i) AS
-      (
-        SELECT 0 AS i
-        UNION ALL
-        SELECT i + 1 FROM cte WHERE i < positions_last_index
-      )
+      CREATE TEMPORARY TABLE Positions(id INT, previous INT, present BOOLEAN);
 
-      INSERT INTO positions(id INT, previous INT, present BOOLEAN)
+      SET I = 0;
+      SET Positions_length = JSON_LENGTH(report_positions);
+
+      WHILE (I < Positions_length) DO
+        INSERT INTO Positions
         SELECT
-          JSON_VALUE(report_positions, CONCAT('$[', i ,'].id')) AS id,
-          NULLIF(JSON_VALUE(report_positions, CONCAT('$[', i ,'].previous')), 'null') AS previous,
-          JSON_VALUE(report_positions, CONCAT('$[', i ,'].present')) AS present
-        FROM
-          cte
-      ;
+          JSON_VALUE(report_positions, CONCAT('$[',i,'].id')) AS id,
+          NULLIF(JSON_VALUE(report_positions, CONCAT('$[',i,'].previous')), 'null') AS previous,
+          JSON_VALUE(report_positions, CONCAT('$[',i,'].present')) AS present
+        ;
+
+        SET I = I + 1;
+      END WHILE;     
 
       /* Check report_positions.asset_id and report_positions.previus correct */
 
         SELECT
           COUNT(*) = 0,
-          GROUP_CONCAT(DISTINCT positions.id ORDER BY positions.id SEPARATOR ', ')
+          GROUP_CONCAT(DISTINCT Positions.id ORDER BY Positions.id SEPARATOR ', ')
         INTO
-          are_assets_exists,
-          assets_dont_exists
+          Are_assets_exists,
+          Assets_does_not_exists
         FROM
-          positions
+          Positions
         LEFT JOIN
-          assets ON positions.id = assets.id
+          assets ON Positions.id = assets.id
         WHERE
           assets.id IS NULL
         ;
 
         SELECT
           COUNT(*) = 0,
-          GROUP_CONCAT(DISTINCT positions.previous ORDER BY positions.previous SEPARATOR ', ')
+          GROUP_CONCAT(DISTINCT Positions.previous ORDER BY Positions.previous SEPARATOR ', ')
         INTO
-          are_rooms_exists,
-          rooms_dont_exists
+          Are_rooms_exists,
+          Rooms_does_not_exists
         FROM
-          positions
+          Positions
         LEFT JOIN
-          rooms ON positions.previous = rooms.id
+          rooms ON Positions.previous = rooms.id
         WHERE
-          positions.previous IS NOT NULL AND
+          Positions.previous IS NOT NULL AND
           rooms.id IS NULL
         ;
 
       /* END Check report_positions.asset_id and report_positions.previus correct */
 
-      If NOT are_assets_exists OR NOT are_rooms_exists THEN
+      If NOT Are_assets_exists OR NOT Are_rooms_exists THEN
         SELECT
-          NULL AS id,
+          -4 AS id,
           CONCAT_WS(
             " AND ",
-            idsNotFound("Asset", assets_dont_exists),
-            idsNotFound("Room", rooms_dont_exists)
+            idsNotFound("Asset", Assets_does_not_exists),
+            idsNotFound("Room", Rooms_does_not_exists)
           ) AS message
         ;
+
+        DROP TEMPORARY TABLE Positions;
         LEAVE addNewReportProcedure;
       END IF;
 
@@ -587,10 +570,12 @@
         INSERT INTO
           reports_assets (report_id, asset_id, previous_room, present)
         SELECT
-          New_report_id, positions.id, positions.previous, positions.present
+          New_report_id, Positions.id, Positions.previous, Positions.present
         FROM
-          positions
+          Positions
         ;
+
+        DROP TEMPORARY TABLE Positions;
 
         SELECT
           New_report_id AS id,
