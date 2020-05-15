@@ -297,39 +297,19 @@
     BEGIN
       DECLARE is_type_correct BOOLEAN;
 
-      SELECT
-        (
-          SELECT
-            COUNT(*)
-          FROM
-            asset_types 
-          WHERE
-            asset_types.id = type_id
-        ) = 1
-      INTO
-        is_type_correct
-      ;
+      SELECT (SELECT COUNT(*) FROM asset_types WHERE asset_types.id = type_id) = 1
+      INTO is_type_correct;
 
       IF NOT is_type_correct THEN
-
         SELECT
-          -1 AS id,
-          CONCAT("AssetType(id=", type_id, ") does not exist") AS message
+          NULL AS id,
+          idsNotFound("AssetType", type_id) AS message
         ;
-
       ELSE
+        INSERT INTO assets (type)
+        VALUES (type_id);
 
-        INSERT INTO
-          assets (type)
-        VALUES
-          (type_id)
-        ;
-
-        SELECT
-          LAST_INSERT_ID() AS id,
-          NULL AS message
-        ;
-
+        SELECT LAST_INSERT_ID() AS id, NULL AS message;
       END IF;
 
     END $$ DELIMITER ;
@@ -392,41 +372,20 @@
     BEGIN
       DECLARE is_type_correct BOOLEAN;
 
-      SELECT
-        (
-          SELECT
-            COUNT(*)
-          FROM
-            users 
-          WHERE
-            users.id = user_id
-        ) = 1
-      INTO
-        is_type_correct
-      ;
+      SELECT (SELECT COUNT(*) FROM users WHERE users.id = user_id) = 1
+      INTO is_type_correct;
 
       IF NOT is_type_correct THEN
-
         SELECT
-          -2 AS id,
-          CONCAT("USER(id=", user_id, ") does not exist") AS message
+          NULL AS id,
+          idsNotFound("User", user_id) AS message
         ;
-
       ELSE
+        INSERT INTO login_sessions (user, token, expiration_date, create_date)
+        VALUES (user_id, user_token, date_expiration, NOW());
 
-        INSERT INTO
-          login_sessions (user, token, expiration_date, create_date)
-        VALUES 
-          (user_id, user_token, date_expiration, NOW())
-        ;
-
-        SELECT
-          LAST_INSERT_ID() AS id,
-          NULL AS message
-        ;
-
+        SELECT LAST_INSERT_ID() AS id, NULL AS message;
       END IF;
-
     END $$ DELIMITER ;
 
   /* Usunięcie sesji logowania */
@@ -466,23 +425,17 @@
 
       /* Check report_room and report_owner correct */
 
-        SELECT
-          (SELECT COUNT(*) FROM rooms WHERE rooms.id = report_room) = 1
-        INTO
-          Is_room_correct
-        ;
+        SELECT (SELECT COUNT(*) FROM rooms WHERE rooms.id = report_room) = 1
+        INTO Is_room_correct;
 
-        SELECT
-          (SELECT COUNT(*) FROM users WHERE users.id = report_owner) = 1
-        INTO
-          Is_owner_correct
-        ;
+        SELECT (SELECT COUNT(*) FROM users WHERE users.id = report_owner) = 1
+        INTO Is_owner_correct;
 
       /* END Check report_room and report_owner correct */
 
       IF NOT Is_room_correct OR NOT Is_owner_correct THEN
         SELECT
-          -3 AS id,
+          NULL AS id,
           CONCAT_WS(
             " AND ",
             idsNotFound("Room", IF(NOT Is_room_correct, report_room, NULL)),
@@ -560,7 +513,7 @@
 
       If NOT Are_assets_exists OR NOT Are_rooms_exists OR NOT Are_assets_duplicated THEN
         SELECT
-          -4 AS id,
+          NULL AS id,
           CONCAT_WS(
             " AND ",
             idsNotFound("Asset", Assets_does_not_exists),
@@ -609,15 +562,30 @@
     DELIMITER $$
     CREATE PROCEDURE addRoom(IN room_name VARCHAR(64), IN building_id INT)
     BEGIN
-      INSERT INTO
-        rooms (name, building)
-      VALUES 
-        (room_name, building_id)
-      ;
+      DECLARE is_building_correct BOOLEAN;
+      DECLARE is_name_unique BOOLEAN;
 
-      SELECT
-        LAST_INSERT_ID() AS id
-      ;
+      SELECT (SELECT COUNT(*) FROM buildings WHERE buildings.id = building_id) = 1
+      INTO is_building_correct;
+
+      SELECT (SELECT COUNT(*) FROM rooms WHERE rooms.building = building_id AND rooms.name = room_name) = 0
+      INTO is_name_unique;
+
+      IF NOT is_building_correct OR NOT is_name_unique THEN
+        SELECT
+          NULL AS id,
+           CONCAT_WS(
+            " AND ",
+            idsNotFound("Building", IF(NOT is_building_correct, building_id, NULL)),
+            CONCAT("Room name=", IF(NOT is_name_unique, room_name, NULL), " is not unique in Building id=", building_id)
+          ) AS message
+        ;
+      ELSE
+        INSERT INTO rooms (name, building)
+        VALUES (room_name, building_id);
+
+        SELECT LAST_INSERT_ID() AS id, NULL AS message;
+      END IF;
     END $$ DELIMITER ;
 
   /* Utworzenie nowego budynku */
@@ -627,15 +595,22 @@
     DELIMITER $$
     CREATE PROCEDURE addBuilding(IN building_name VARCHAR(64))
     BEGIN
-      INSERT INTO
-        buildings (name)
-      VALUES 
-        (building_name)
-      ;
+      DECLARE is_name_unique BOOLEAN;
 
-      SELECT
-        LAST_INSERT_ID() AS id
-      ;
+      SELECT (SELECT COUNT(*) FROM buildings WHERE building.name = building_name ) = 0
+      INTO is_name_unique;
+
+      IF NOT is_name_unique THEN
+        SELECT
+          NULL AS id,
+          CONCAT("Building name=", building_name, " is not unique") AS message
+        ;
+      ELSE
+        INSERT INTO buildings (name)
+        VALUES (building_name);
+
+        SELECT LAST_INSERT_ID() AS id, NULL AS message;
+      END IF;
     END $$ DELIMITER ;
 
   /* Pobranie sal z budynku */
