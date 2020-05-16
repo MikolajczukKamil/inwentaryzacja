@@ -22,8 +22,8 @@ BEGIN
     JOIN rooms ON reports.room = rooms.id
     JOIN buildings ON rooms.building = buildings.id
   WHERE
-    (user_id IS NULL OR users.id = user_id) AND
-    (report_id IS NULL OR reports.id = report_id)
+    (user_id IS NULL OR users.id = user_id)
+    AND (report_id IS NULL OR reports.id = report_id)
   ORDER BY
     reports.create_date DESC,
     reports.id DESC;

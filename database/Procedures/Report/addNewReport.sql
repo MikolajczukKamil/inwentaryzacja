@@ -5,8 +5,8 @@ CREATE PROCEDURE addNewReport(IN report_name VARCHAR(64), IN report_room INT, IN
 addNewReportProcedure:BEGIN
   /* DECLARE */
     DECLARE I INT;
-    DECLARE Is_room_correct BOOLEAN;
-    DECLARE Is_owner_correct BOOLEAN;
+    DECLARE Is_room_correct BOOLEAN DEFAULT roomExists(room_id);
+    DECLARE Is_owner_correct BOOLEAN DEFAULT userExists(owner_id);
     DECLARE Positions_length INT;
     DECLARE Are_assets_exists BOOLEAN;
     DECLARE Assets_does_not_exists VARCHAR(1024);
@@ -16,16 +16,6 @@ addNewReportProcedure:BEGIN
     DECLARE Assets_duplicated VARCHAR(1024);
     DECLARE New_report_id INT;
   /* END DECLARE */
-
-  /* Check report_room and report_owner correct */
-
-    SELECT (SELECT COUNT(*) FROM rooms WHERE rooms.id = report_room) = 1
-    INTO Is_room_correct;
-
-    SELECT (SELECT COUNT(*) FROM users WHERE users.id = report_owner) = 1
-    INTO Is_owner_correct;
-
-  /* END Check report_room and report_owner correct */
 
   IF NOT Is_room_correct OR NOT Is_owner_correct THEN
     SELECT
@@ -68,11 +58,7 @@ addNewReportProcedure:BEGIN
       Are_assets_exists,
       Assets_does_not_exists
     FROM Positions
-    LEFT JOIN
-      assets ON Positions.id = assets.id
-    WHERE
-      assets.id IS NULL
-    ;
+    WHERE NOT assetExists(assets);
 
     SELECT
       COUNT(*) = 0,
@@ -81,11 +67,9 @@ addNewReportProcedure:BEGIN
       Are_rooms_exists,
       Rooms_does_not_exists
     FROM Positions
-    LEFT JOIN
-      rooms ON Positions.previous = rooms.id
     WHERE
-      Positions.previous IS NOT NULL AND
-      rooms.id IS NULL
+      Positions.previous IS NOT NULL
+      AND NOT roomExists(Positions.previous)
     ;
 
     SELECT
