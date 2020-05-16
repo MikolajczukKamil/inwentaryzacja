@@ -1,6 +1,32 @@
 const { writeFileSync, readdirSync, readFileSync, appendFileSync, watch } = require('fs')
 const path = require('path')
 
+function From(relativePath) {
+  return path.resolve(__dirname, relativePath)
+}
+
+function Combinates(param) {
+  return [
+    param.charAt(0),
+    `-${param.charAt(0)}`,
+    `--${param.charAt(0)}`,
+    param,
+    `-${param}`,
+    `--${param}`,
+  ]
+}
+
+const dataFile = From('./dist/db-data.sql')
+const proceduresFile = From('./dist/db-procedures.sql')
+const functionsFile = From('./dist/db-functions.sql')
+const allFile = From('./dist/db-full.sql')
+
+const minModeValues = Combinates('min')
+const watchModeValues = Combinates('watch')
+
+const minMode = process.argv.some((r) => minModeValues.includes(r))
+const watchMode = process.argv.some((r) => watchModeValues.includes(r))
+
 function PrepereData(data) {
   if (minMode) {
     return data
@@ -11,15 +37,6 @@ function PrepereData(data) {
 
   return data
 }
-
-function From(relativePath) {
-  return path.resolve(__dirname, relativePath)
-}
-
-const dataFile = From('./dist/db-data.sql')
-const proceduresFile = From('./dist/db-procedures.sql')
-const functionsFile = From('./dist/db-functions.sql')
-const allFile = From('./dist/db-full.sql')
 
 function BuildData(message = true, time = true) {
   let timeStart = Date.now()
@@ -77,24 +94,6 @@ function BuildFull(message = true, time = true) {
   appendFileSync(allFile, readFileSync(functionsFile))
   appendFileSync(allFile, readFileSync(proceduresFile))
 }
-
-function Combinates(param) {
-  return [
-    param.charAt(0),
-    `-${param.charAt(0)}`,
-    `--${param.charAt(0)}`,
-    param,
-    `-${param}`,
-    `--${param}`,
-  ]
-}
-
-const minModeValues = Combinates('min')
-
-const watchModeValues = Combinates('watch')
-
-const minMode = process.argv.some((r) => minModeValues.includes(r))
-const watchMode = process.argv.some((r) => watchModeValues.includes(r))
 
 console.log('')
 
