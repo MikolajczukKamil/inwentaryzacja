@@ -1,4 +1,4 @@
-const { writeFileSync, readdirSync, readFileSync, appendFileSync } = require('fs')
+const { writeFileSync, readdirSync, readFileSync, appendFileSync, watch } = require('fs')
 const path = require('path')
 
 function PrepereData(data) {
@@ -12,63 +12,139 @@ function PrepereData(data) {
   return data
 }
 
-function From(p) {
-  return path.resolve(__dirname, p)
+function From(relativePath) {
+  return path.resolve(__dirname, relativePath)
 }
 
-console.log('')
+const dataFile = From('./dist/db-data.sql')
+const proceduresFile = From('./dist/db-procedures.sql')
+const functionsFile = From('./dist/db-functions.sql')
+const allFile = From('./dist/db-full.sql')
 
-const minMode = process.argv.includes('-min') || process.argv.includes('min') || process.argv.includes('--min')
+function BuildData(message = true, time = true) {
+  let timeStart = Date.now()
+
+  writeFileSync(dataFile, '')
+
+  appendFileSync(dataFile, PrepereData(readFileSync(From('./data/tables.sql'))))
+  appendFileSync(dataFile, PrepereData(readFileSync(From('./data/fake-content.sql'))))
+
+  if (message) {
+    console.log(`Data files${time ? ` completed in ${(Date.now() - timeStart) / 1000}s` : ''}`)
+  }
+}
+
+function BuildProcedures(message = true, time = true) {
+  let timeStart = Date.now()
+
+  writeFileSync(proceduresFile, '')
+
+  readdirSync(From('./Procedures'))
+    .map((file) => From(`./Procedures/${file}`))
+    .forEach((file) => {
+      appendFileSync(proceduresFile, PrepereData(readFileSync(file)))
+    })
+
+  if (message) {
+    console.log(
+      `Procedures files${
+        time ? ` completed in ${(Date.now() - timeStart) / 1000}s` : ''
+      }`
+    )
+  }
+}
+
+function BuildFunctions(message = true, time = true) {
+  let timeStart = Date.now()
+
+  writeFileSync(functionsFile, '')
+
+  readdirSync(From('./Functions'))
+    .map((file) => From(`./Functions/${file}`))
+    .forEach((file) => {
+      appendFileSync(functionsFile, PrepereData(readFileSync(file)))
+    })
+
+  if (message) {
+    console.log(`Functions files${time ? ` completed in ${(Date.now() - timeStart) / 1000}s` : ''}`)
+  }
+}
+
+function BuildFull(message = true, time = true) {
+  writeFileSync(allFile, '')
+
+  appendFileSync(allFile, readFileSync(dataFile))
+  appendFileSync(allFile, readFileSync(functionsFile))
+  appendFileSync(allFile, readFileSync(proceduresFile))
+}
+
+function Combinates(param) {
+  return [
+    param.charAt(0),
+    `-${param.charAt(0)}`,
+    `--${param.charAt(0)}`,
+    param,
+    `-${param}`,
+    `--${param}`,
+  ]
+}
+
+const minModeValues = Combinates('min')
+
+const watchModeValues = Combinates('watch')
+
+const minMode = process.argv.some((r) => minModeValues.includes(r))
+const watchMode = process.argv.some((r) => watchModeValues.includes(r))
+
+console.log('')
 
 if (minMode) {
   console.info('Min mode ON')
 }
 
-const startGlobal = Date.now()
-let timeStart = startGlobal
-let timeEnd = startGlobal
+if (!watchMode) {
+  const timeStart = Date.now()
 
-const dataFile = From('./dist/db-data.sql')
+  BuildData(true, true)
+  BuildProcedures(true, true)
+  BuildFunctions(true, true)
 
-writeFileSync(dataFile, '')
+  BuildFull(true, true)
 
-appendFileSync(dataFile, PrepereData(readFileSync(From('./data/tables.sql'))))
-appendFileSync(dataFile, PrepereData(readFileSync(From('./data/fake-content.sql'))))
+  console.log(`Finished in ${(Date.now() - timeStart) / 1000}s`)
+}
 
-timeEnd = Date.now()
+if (watchMode) {
+  console.info('Watch mode ON \n')
 
-console.log(`Data files completed in ${(timeEnd - timeStart) / 1000}s`)
+  const data = Symbol()
+  const procedurse = Symbol()
+  const functions = Symbol()
+  let rebuildParts = [data, procedurse, functions]
 
-timeStart = Date.now()
-
-const proceduresFile = From('./dist/db-procedures.sql')
-
-writeFileSync(proceduresFile, '')
-
-Array()
-  .concat(
-    readdirSync(From('./Functions')).map((file) => From(`./Functions/${file}`)),
-    readdirSync(From('./Procedures')).map((file) => From(`./Procedures/${file}`))
-  )
-  .forEach((file) => {
-    appendFileSync(proceduresFile, PrepereData(readFileSync(file)))
+  watch(From('./data'), (eventType, filename) => {
+    if (!rebuildParts.includes(data)) rebuildParts.push(data)
   })
 
-timeEnd = Date.now()
+  watch(From('./Procedures'), (eventType, filename) => {
+    if (!rebuildParts.includes(procedurse)) rebuildParts.push(procedurse)
+  })
 
-console.log(`Functions and Procedures files completed in ${(timeEnd - timeStart) / 1000}s`)
+  watch(From('./Functions'), (eventType, filename) => {
+    if (!rebuildParts.includes(functions)) rebuildParts.push(functions)
+  })
 
-timeStart = Date.now()
+  setInterval(() => {
+    if (rebuildParts.length !== 0) {
+      rebuildParts.forEach((type) => {
+        if (type === data) BuildData(true, false)
+        if (type === procedurse) BuildProcedures(true, false)
+        if (type === functions) BuildFunctions(true, false)
+      })
 
-const allFile = From('./dist/db-full.sql')
+      BuildFull(true, false)
 
-writeFileSync(allFile, '')
-
-appendFileSync(allFile, readFileSync(dataFile))
-appendFileSync(allFile, readFileSync(proceduresFile))
-
-timeEnd = Date.now()
-
-console.log(`Build db-full in ${(timeEnd - timeStart) / 1000}s\n`)
-
-console.log(`Finished in ${(timeEnd - startGlobal) / 1000}s`)
+      rebuildParts = []
+    }
+  }, 1000)
+}

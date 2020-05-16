@@ -2,8 +2,11 @@
 
 Do generowania plków wynikowych wymaga nodejs
 
-- `node build -min` - wersja z umiuniętymi komentarzami oraz wcięciami
-- `node build` - po prostu sklejone pliki
+- `node build -min -watch` - po prostu skleja pliki, można łączyć z dowolnymi przełącznikami
+
+Przełączniki
+- `-min` - wersja z umiuniętymi komentarzami oraz wcięciami
+- `-watch` - automatyczna przebudowa po zapisaniu pliku
 
 Po wygenerowaniu dostępne są nastepujące pliki
 - `dist/db-data.sql` - dane czyli tabele + zawartość

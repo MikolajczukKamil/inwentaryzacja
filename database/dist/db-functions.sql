@@ -1,0 +1,6 @@
+DROP FUNCTION IF EXISTS getRoomIdWithAsset;DELIMITER $ CREATE FUNCTION getRoomIdWithAsset(id_asset INT) RETURNS INT
+BEGINDECLARE Room_id INT DEFAULT NULL;DECLARE Deleted BOOLEAN DEFAULT TRUE;SELECTreports.room,NOT reports_positions.present INTORoom_id,DeletedFROMreports_positionsJOIN reports ON reports_positions.report_id = reports.idWHEREreports_positions.asset_id = id_assetAND NOT (reports_positions.previous_room != reports.roomAND NOT reports_positions.present) ORDER BYreports.create_date DESC,reports.id DESCLIMIT1;IF Deleted THENSET Room_id = NULL;END IF;RETURN Room_id;
+END $ DELIMITER ;
+DROP FUNCTION IF EXISTS idsNotFound;DELIMITER $ CREATE FUNCTION idsNotFound(table_name VARCHAR(32), ids VARCHAR(1024)) RETURNS VARCHAR(64)
+BEGINRETURN CONCAT(table_name, " id=", ids, " does not exist");
+END $ DELIMITER ;
