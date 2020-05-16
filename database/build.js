@@ -135,6 +135,8 @@ if (watchMode) {
 
   setInterval(() => {
     if (rebuildParts.length !== 0) {
+      console.log(new Date().toLocaleString())
+
       rebuildParts.forEach((type) => {
         if (type === data) BuildData(true, false)
         if (type === procedurse) BuildProcedures(true, false)
@@ -142,6 +144,8 @@ if (watchMode) {
       })
 
       BuildFull(true, false)
+
+      console.log('')
 
       rebuildParts = []
     }

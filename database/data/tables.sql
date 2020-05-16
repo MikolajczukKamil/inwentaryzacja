@@ -67,10 +67,10 @@ CREATE TABLE reports_positions (
   previous_room INT NULL,
   present BOOLEAN NOT NULL DEFAULT TRUE,
   PRIMARY KEY(report_id, asset_id),
-  CONSTRAINT fk_reportasset_report FOREIGN KEY(report_id)
+  CONSTRAINT fk_reportPosition_report FOREIGN KEY(report_id)
     REFERENCES reports(id)
     ON DELETE CASCADE,
-  CONSTRAINT fk_reportasset_asset FOREIGN KEY(asset_id)
+  CONSTRAINT fk_reportPosition_asset FOREIGN KEY(asset_id)
     REFERENCES assets(id)
     ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -84,5 +84,30 @@ CREATE TABLE login_sessions (
   PRIMARY KEY(id),
   CONSTRAINT fk_login_user FOREIGN KEY(user)
     REFERENCES users(id)
+    ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE scannings (
+  id INT NOT NULL AUTO_INCREMENT,
+  room INT NOT NULL,
+  owner INT NOT NULL,
+  PRIMARY KEY(id),
+  CONSTRAINT fk_scanning_room FOREIGN KEY(room)
+    REFERENCES rooms(id)
+    ON DELETE CASCADE,
+  CONSTRAINT fk_scanning_user FOREIGN KEY(owner)
+    REFERENCES users(id)
+    ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE scannings_positions (
+  scanning INT NOT NULL,
+  asset INT NOT NULL,
+  PRIMARY KEY(scanning, asset),
+  CONSTRAINT fk_scanningPosition_report FOREIGN KEY(scanning)
+    REFERENCES scannings(id)
+    ON DELETE CASCADE,
+  CONSTRAINT fk_scanningPosition_asset FOREIGN KEY(asset)
+    REFERENCES assets(id)
     ON DELETE CASCADE
 ) ENGINE=InnoDB;
