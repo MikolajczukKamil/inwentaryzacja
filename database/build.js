@@ -1,4 +1,10 @@
-const { writeFileSync, readdirSync, readFileSync, appendFileSync, watch } = require('fs')
+const {
+  writeFileSync,
+  readdirSync,
+  readFileSync,
+  appendFileSync,
+  watch,
+} = require('fs')
 const path = require('path')
 
 function From(relativePath) {
@@ -44,10 +50,17 @@ function BuildData(message = true, time = true) {
   writeFileSync(dataFile, '')
 
   appendFileSync(dataFile, PrepereData(readFileSync(From('./data/tables.sql'))))
-  appendFileSync(dataFile, PrepereData(readFileSync(From('./data/fake-content.sql'))))
+  appendFileSync(
+    dataFile,
+    PrepereData(readFileSync(From('./data/fake-content.sql')))
+  )
 
   if (message) {
-    console.log(`Data files${time ? ` completed in ${(Date.now() - timeStart) / 1000}s` : ''}`)
+    console.log(
+      `Data files${
+        time ? ` completed in ${(Date.now() - timeStart) / 1000}s` : ''
+      }`
+    )
   }
 }
 
@@ -83,7 +96,11 @@ function BuildFunctions(message = true, time = true) {
     })
 
   if (message) {
-    console.log(`Functions files${time ? ` completed in ${(Date.now() - timeStart) / 1000}s` : ''}`)
+    console.log(
+      `Functions files${
+        time ? ` completed in ${(Date.now() - timeStart) / 1000}s` : ''
+      }`
+    )
   }
 }
 
