@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS login_sessions;
-DROP TABLE IF EXISTS reports_assets;
+DROP TABLE IF EXISTS reports_positions;
 DROP TABLE IF EXISTS reports;
 DROP TABLE IF EXISTS assets;
 DROP TABLE IF EXISTS rooms;
@@ -61,7 +61,7 @@ CREATE TABLE reports (
     ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-CREATE TABLE reports_assets (
+CREATE TABLE reports_positions (
   report_id INT NOT NULL,
   asset_id INT NOT NULL,
   previous_room INT NULL,

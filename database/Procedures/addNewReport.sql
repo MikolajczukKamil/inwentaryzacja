@@ -131,7 +131,7 @@ addNewReportProcedure:BEGIN
     SET New_report_id = LAST_INSERT_ID();
 
     INSERT INTO
-      reports_assets (report_id, asset_id, previous_room, present)
+      reports_positions (report_id, asset_id, previous_room, present)
     SELECT
       New_report_id, Positions.id, Positions.previous, Positions.present
     FROM

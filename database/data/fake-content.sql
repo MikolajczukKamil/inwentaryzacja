@@ -80,7 +80,7 @@ VALUES
 ;
 
 /* asset_id - 30 zestawów 6 elementowych */
-INSERT INTO reports_assets (report_id, asset_id, previous_room, present)
+INSERT INTO reports_positions (report_id, asset_id, previous_room, present)
 VALUES
   /* Raport 1 */
   (1, 0 + 1, NULL, TRUE),

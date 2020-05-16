@@ -9,18 +9,18 @@ BEGIN
 
   SELECT
     reports.room,
-    NOT reports_assets.present 
+    NOT reports_positions.present 
   INTO
     Room_id,
     Deleted
   FROM
-    reports_assets
-    JOIN reports ON reports_assets.report_id = reports.id
+    reports_positions
+    JOIN reports ON reports_positions.report_id = reports.id
   WHERE
-    reports_assets.asset_id = id_asset
+    reports_positions.asset_id = id_asset
     AND NOT (
-      reports_assets.previous_room != reports.room
-      AND NOT reports_assets.present
+      reports_positions.previous_room != reports.room
+      AND NOT reports_positions.present
     ) /* skip 'do nothing' positions */
   ORDER BY
     reports.create_date DESC,

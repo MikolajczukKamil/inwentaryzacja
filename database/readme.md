@@ -1,13 +1,13 @@
 # Generowanie importu do bazy
 
-Wymaga nodejs
+Do generowania plków wynikowych wymaga nodejs
 
 - `node build -min` - wersja z umiuniętymi komentarzami oraz wcięciami
 - `node build` - po prostu sklejone pliki
 
 Po wygenerowaniu dostępne są nastepujące pliki
-- `dist/db-data.sql` - dane tabele + zawartość
-- `dist/db-procedures.sql` - dane procedury + funkcje pomocnicze
+- `dist/db-data.sql` - dane czyli tabele + zawartość
+- `dist/db-procedures.sql` - procedury + funkcje pomocnicze
 - `dist/db-all.sql` - wszystko razem
 
 # Opis procedur
