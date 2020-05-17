@@ -67,6 +67,15 @@ function PrepereData(data) {
       .toString()
       .replace(/\/\*[\s\S]*?\*\//g, '')
       .replace(/^\s{2,}/gm, '')
+
+    // .replace(/\/\*[\s\S]*?\*\//g, '')
+    // .replace(/(\r\n|\n|\r)/gm, ' ')
+    // .replace(/\s{2,}/gm, ' ')
+    // .replace(/END\s\$\sDELIMITER\s;/g, '\r\nEND $ DELIMITER ;\r\n')
+    // .replace(/DELIMITER\s\$\s?/g, '\r\nDELIMITER $\r\n')
+    // .replace(/\s=\s/g, '=')
+    // .replace(/,\s/g, ',')
+    // .replace(/;\s/g, ';')
   }
 
   return data

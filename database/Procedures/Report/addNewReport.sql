@@ -5,8 +5,8 @@ CREATE PROCEDURE addNewReport(IN report_name VARCHAR(64), IN report_room INT, IN
 addNewReportProcedure:BEGIN
   /* DECLARE */
     DECLARE I INT;
-    DECLARE Is_room_correct BOOLEAN DEFAULT roomExists(room_id);
-    DECLARE Is_owner_correct BOOLEAN DEFAULT userExists(owner_id);
+    DECLARE Is_room_correct BOOLEAN DEFAULT roomExists(report_room);
+    DECLARE Is_owner_correct BOOLEAN DEFAULT userExists(report_owner);
     DECLARE Positions_length INT;
     DECLARE Are_assets_exists BOOLEAN;
     DECLARE Assets_does_not_exists VARCHAR(1024);
