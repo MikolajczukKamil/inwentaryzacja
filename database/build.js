@@ -48,6 +48,19 @@ function FilesIn(dir, filelist = []) {
   return filelist
 }
 
+function FoldersIn(dir, filelist = [dir]) {
+  readdirSync(dir).forEach((el) => {
+    const file = resolvePath(dir, el)
+
+    if (statSync(file).isDirectory()) {
+      filelist = FoldersIn(file, filelist)
+      filelist.push(file)
+    }
+  })
+
+  return filelist
+}
+
 function PrepereData(data) {
   if (minMode) {
     return data
@@ -154,13 +167,17 @@ if (watchMode) {
     if (!rebuildParts.includes(data)) rebuildParts.push(data)
   })
 
-  watch(From('./Procedures'), (eventType, filename) => {
-    if (!rebuildParts.includes(procedurse)) rebuildParts.push(procedurse)
-  })
+  FoldersIn(From('./Procedures')).forEach((folder) =>
+    watch(folder, (eventType, filename) => {
+      if (!rebuildParts.includes(procedurse)) rebuildParts.push(procedurse)
+    })
+  )
 
-  watch(From('./Functions'), (eventType, filename) => {
-    if (!rebuildParts.includes(functions)) rebuildParts.push(functions)
-  })
+  FoldersIn(From('./Functions')).forEach((folder) =>
+    watch(folder, (eventType, filename) => {
+      if (!rebuildParts.includes(functions)) rebuildParts.push(functions)
+    })
+  )
 
   setInterval(() => {
     if (rebuildParts.length !== 0) {
