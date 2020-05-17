@@ -1,10 +1,12 @@
-DROP TABLE IF EXISTS login_sessions;
+DROP TABLE IF EXISTS scannings_positions;
+DROP TABLE IF EXISTS scannings;
 DROP TABLE IF EXISTS reports_positions;
 DROP TABLE IF EXISTS reports;
 DROP TABLE IF EXISTS assets;
 DROP TABLE IF EXISTS rooms;
 DROP TABLE IF EXISTS buildings;
 DROP TABLE IF EXISTS asset_types;
+DROP TABLE IF EXISTS login_sessions;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
@@ -12,6 +14,18 @@ CREATE TABLE users (
   login VARCHAR(64) NOT NULL UNIQUE,
   hash VARCHAR(64) NOT NULL,
   PRIMARY KEY(id)
+) ENGINE=InnoDB;
+
+CREATE TABLE login_sessions (
+  id INT NOT NULL AUTO_INCREMENT,
+  user INT NOT NULL,
+  token VARCHAR(64) NOT NULL UNIQUE,
+  expiration_date DATETIME NOT NULL,
+  create_date DATETIME NOT NULL,
+  PRIMARY KEY(id),
+  CONSTRAINT fk_login_user FOREIGN KEY(user)
+    REFERENCES users(id)
+    ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE asset_types (
@@ -50,8 +64,8 @@ CREATE TABLE reports (
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(64),
   room INT NOT NULL,
-  create_date DATETIME NOT NULL,
   owner INT NOT NULL,
+  create_date DATETIME NOT NULL,
   PRIMARY KEY(id),
   CONSTRAINT fk_report_room FOREIGN KEY(room)
     REFERENCES rooms(id)
@@ -75,22 +89,11 @@ CREATE TABLE reports_positions (
     ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-CREATE TABLE login_sessions (
-  id INT NOT NULL AUTO_INCREMENT,
-  user INT NOT NULL,
-  token VARCHAR(64) NOT NULL UNIQUE,
-  expiration_date DATETIME NOT NULL,
-  create_date DATETIME NOT NULL,
-  PRIMARY KEY(id),
-  CONSTRAINT fk_login_user FOREIGN KEY(user)
-    REFERENCES users(id)
-    ON DELETE CASCADE
-) ENGINE=InnoDB;
-
 CREATE TABLE scannings (
   id INT NOT NULL AUTO_INCREMENT,
   room INT NOT NULL,
   owner INT NOT NULL,
+  create_date DATETIME NOT NULL,
   PRIMARY KEY(id),
   CONSTRAINT fk_scanning_room FOREIGN KEY(room)
     REFERENCES rooms(id)

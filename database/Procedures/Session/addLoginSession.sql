@@ -11,7 +11,7 @@ BEGIN
   IF NOT is_type_correct THEN
     SELECT
       NULL AS id,
-      idsNotFound("User", user_id) AS message
+      idsNotFound("User", user_id, is_type_correct) AS message
     ;
   ELSE
     INSERT INTO login_sessions (user, token, expiration_date, create_date)

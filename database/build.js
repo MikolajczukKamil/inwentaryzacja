@@ -1,14 +1,15 @@
 const {
-  writeFileSync,
+  watch,
+  statSync,
   readdirSync,
   readFileSync,
+  writeFileSync,
   appendFileSync,
-  watch,
 } = require('fs')
-const path = require('path')
+const { resolve: resolvePath } = require('path')
 
 function From(relativePath) {
-  return path.resolve(__dirname, relativePath)
+  return resolvePath(__dirname, relativePath)
 }
 
 function Combinates(param) {
@@ -32,6 +33,20 @@ const watchModeValues = Combinates('watch')
 
 const minMode = process.argv.some((r) => minModeValues.includes(r))
 const watchMode = process.argv.some((r) => watchModeValues.includes(r))
+
+function FilesIn(dir, filelist = []) {
+  readdirSync(dir).forEach((el) => {
+    const file = resolvePath(dir, el)
+
+    if (statSync(file).isDirectory()) {
+      filelist = FilesIn(file, filelist)
+    } else {
+      filelist.push(file)
+    }
+  })
+
+  return filelist
+}
 
 function PrepereData(data) {
   if (minMode) {
@@ -69,11 +84,9 @@ function BuildProcedures(message = true, time = true) {
 
   writeFileSync(proceduresFile, '')
 
-  readdirSync(From('./Procedures'))
-    .map((file) => From(`./Procedures/${file}`))
-    .forEach((file) => {
-      appendFileSync(proceduresFile, PrepereData(readFileSync(file)))
-    })
+  FilesIn(From('./Procedures')).forEach((file) => {
+    appendFileSync(proceduresFile, PrepereData(readFileSync(file)))
+  })
 
   if (message) {
     console.log(
@@ -89,11 +102,9 @@ function BuildFunctions(message = true, time = true) {
 
   writeFileSync(functionsFile, '')
 
-  readdirSync(From('./Functions'))
-    .map((file) => From(`./Functions/${file}`))
-    .forEach((file) => {
-      appendFileSync(functionsFile, PrepereData(readFileSync(file)))
-    })
+  FilesIn(From('./Functions')).forEach((file) => {
+    appendFileSync(functionsFile, PrepereData(readFileSync(file)))
+  })
 
   if (message) {
     console.log(
@@ -128,6 +139,7 @@ if (!watchMode) {
   BuildFull(true, true)
 
   console.log(`Finished in ${(Date.now() - timeStart) / 1000}s`)
+  console.log('')
 }
 
 if (watchMode) {

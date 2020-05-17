@@ -11,8 +11,8 @@ addScanningProcedure:BEGIN
       NULL AS id,
       CONCAT_WS(
         " AND ",
-        idsNotFound("Room", IF(NOT Is_room_correct, report_room, NULL)),
-        idsNotFound("User", IF(NOT Is_owner_correct, report_owner, NULL))
+        idsNotFound("Room", report_room, Is_room_correct),
+        idsNotFound("User", report_owner, Is_owner_correct)
       ) AS message
     ;
     LEAVE addScanningProcedure;

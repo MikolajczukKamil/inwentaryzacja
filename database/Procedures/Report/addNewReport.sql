@@ -22,8 +22,8 @@ addNewReportProcedure:BEGIN
       NULL AS id,
       CONCAT_WS(
         " AND ",
-        idsNotFound("Room", IF(NOT Is_room_correct, report_room, NULL)),
-        idsNotFound("User", IF(NOT Is_owner_correct, report_owner, NULL))
+        idsNotFound("Room", report_room, Is_room_correct),
+        idsNotFound("User", report_owner, Is_owner_correct)
       ) AS message
     ;
     LEAVE addNewReportProcedure;
@@ -94,9 +94,9 @@ addNewReportProcedure:BEGIN
       NULL AS id,
       CONCAT_WS(
         " AND ",
-        idsNotFound("Asset", Assets_does_not_exists),
-        idsNotFound("Room", Rooms_does_not_exists),
-        CONCAT("Asset id=", Assets_duplicated, " have duplicates")
+        idsNotFound("Asset", Assets_does_not_exists, Are_assets_exists),
+        idsNotFound("Room", Rooms_does_not_exists, Are_rooms_exists),
+        haveDublicates("Asset", Assets_duplicated, Are_assets_duplicated)
       ) AS message
     ;
 
@@ -106,21 +106,15 @@ addNewReportProcedure:BEGIN
 
   /* Adding new report */
 
-    INSERT INTO
-      reports (name, room, create_date, owner)
-    VALUES
-      (report_name, report_room, NOW(), report_owner)
-    ;
+    INSERT INTO reports (name, room, owner, create_date)
+    VALUES (report_name, report_room, report_owner, NOW());
 
     SET New_report_id = LAST_INSERT_ID();
 
-    INSERT INTO
-      reports_positions (report_id, asset_id, previous_room, present)
+    INSERT INTO reports_positions (report_id, asset_id, previous_room, present)
     SELECT
       New_report_id, Positions.id, Positions.previous, Positions.present
-    FROM
-      Positions
-    ;
+    FROM Positions;
 
     DROP TEMPORARY TABLE Positions;
 
@@ -129,6 +123,6 @@ addNewReportProcedure:BEGIN
       NULL AS message
     ;
 
-    /* END Adding new report */
+  /* END Adding new report */
 
 END $ DELIMITER ;

@@ -64,19 +64,19 @@ VALUES
   ('user5', '$2y$10$ZM4NpuGcj.Wb0EAqRpA6JuFNw.oxJCExZdcR3uEiDEp7wYwBxJVEm')
 ;
 
-INSERT INTO reports (name, room, create_date, owner)
+INSERT INTO reports (name, room, owner, create_date)
 VALUES
-  ('Raport 1', 1, NOW() - INTERVAL 10 DAY, 1), /* new Room 21 report 1 */
+  ('Raport 1', 1, 1, NOW() - INTERVAL 10 DAY), /* new Room 21 report 1 */
 
-  ('Raport 2', 2, NOW() - INTERVAL 9 DAY, 1), /* new */
+  ('Raport 2', 2, 1, NOW() - INTERVAL 9 DAY), /* new */
   
-  ('Raport 3 po 1', 1, NOW() - INTERVAL 8 DAY, 1), /* Room 21 report 2 */
+  ('Raport 3 po 1', 1, 1, NOW() - INTERVAL 8 DAY), /* Room 21 report 2 */
 
-  ('Raport 4', 3, NOW() - INTERVAL 7 DAY, 1), /* new */
+  ('Raport 4', 3, 1, NOW() - INTERVAL 7 DAY), /* new */
   
-  ('Raport 5 po 3', 1, NOW() - INTERVAL 6 DAY, 1), /* Room 21 report 3 */
+  ('Raport 5 po 3', 1, 1, NOW() - INTERVAL 6 DAY), /* Room 21 report 3 */
 
-  ('Raport 6', 4, NOW() - INTERVAL 5 DAY, 1) /* new b. 4 */
+  ('Raport 6', 4, 1, NOW() - INTERVAL 5 DAY) /* new b. 4 */
 ;
 
 /* asset_id - 30 zestawów 6 elementowych */
@@ -140,4 +140,19 @@ VALUES
 INSERT INTO login_sessions (user, token, expiration_date, create_date)
 VALUES
   (1, 'fake-token', NOW() + INTERVAL 1 DAY, NOW() - INTERVAL 1 DAY)
+;
+
+INSERT INTO scannings (room, owner, create_date)
+VALUES (1, 1, NOW());
+
+INSERT INTO scannings_positions (scanning, asset)
+VALUES
+  (1, 1),
+  (1, 2),
+  (1, 3),
+  (1, 4),
+  (1, 5),
+  (1, 6),
+  (1, 7),
+  (1, 15)
 ;

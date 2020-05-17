@@ -17,7 +17,7 @@ BEGIN
       NULL AS id,
         CONCAT_WS(
         " AND ",
-        idsNotFound("Building", IF(NOT is_building_correct, building_id, NULL)),
+        idsNotFound("Building", building_id, is_building_correct),
         CONCAT("Room name=", IF(NOT is_name_unique, room_name, NULL), " is not unique in Building id=", building_id)
       ) AS message
     ;

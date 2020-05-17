@@ -10,7 +10,7 @@ BEGIN
   IF NOT is_type_correct THEN
     SELECT
       NULL AS id,
-      idsNotFound("AssetType", type_id) AS message
+      idsNotFound("AssetType", type_id, is_type_correct) AS message
     ;
   ELSE
     INSERT INTO assets (type)
