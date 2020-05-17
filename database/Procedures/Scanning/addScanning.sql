@@ -2,7 +2,7 @@ DROP PROCEDURE IF EXISTS addScanning;
 
 DELIMITER $
 CREATE PROCEDURE addScanning(IN room_id INT, IN owner_id INT)
-addScanningProcedure:BEGIN
+BEGIN
   DECLARE Is_room_correct BOOLEAN DEFAULT roomExists(room_id);
   DECLARE Is_owner_correct BOOLEAN DEFAULT userExists(owner_id);
 
@@ -15,9 +15,13 @@ addScanningProcedure:BEGIN
         idsNotFound("User", report_owner, Is_owner_correct)
       ) AS message
     ;
-    LEAVE addScanningProcedure;
+  ELSE
+
+    INSERT INTO scannings (room, owner, create_date)
+    VALUES (room_id, owner_id, NOW());
+
+    SELECT LAST_INSERT_ID() AS id, NULL AS message;
+
   END IF;
-
-
 
 END $ DELIMITER ;

@@ -118,10 +118,7 @@ addNewReportProcedure:BEGIN
 
     DROP TEMPORARY TABLE Positions;
 
-    SELECT
-      New_report_id AS id,
-      NULL AS message
-    ;
+    SELECT New_report_id AS id, NULL AS message;
 
   /* END Adding new report */
 

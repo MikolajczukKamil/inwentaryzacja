@@ -1,0 +1,6 @@
+DROP FUNCTION IF EXISTS scanningExists;
+
+DELIMITER $ CREATE FUNCTION scanningExists(_id INT) RETURNS BOOLEAN
+BEGIN
+  RETURN (SELECT COUNT(*) FROM scannings WHERE scannings.id = _id) = 1;
+END $ DELIMITER ;
