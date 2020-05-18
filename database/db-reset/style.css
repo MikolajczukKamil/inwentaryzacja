@@ -1,0 +1,75 @@
+h1
+{
+	font-family:Helvetica;
+    font-weight: 500;
+    line-height: 1.1;
+	font-size: 36px;
+	margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+#kontener
+{
+	display: flex;
+	flex-direction: column;
+	width: 500px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+#logowanie
+{
+}
+
+#password
+{
+	text-align: center;
+	width:250px;
+	height:50px;
+	border-radius: 5px;
+	font-size: 20px;
+}
+
+.komunikatBad
+{
+	font-family:Helvetica;
+	font-size: 36px;
+	color:red;
+}
+
+.komunikatGood
+{
+	font-family:Helvetica;
+	font-size: 36px;
+	color: green;
+}
+
+
+.przycisk
+{
+	width:200px;
+	height:50px;
+	border-radius: 5px;
+	background:#0366d6;
+	margin-top: 20px;
+	color:white;
+	border: 0px solid black;
+	font-size: 17px;
+	
+	-webkit-box-shadow: 0px 0px 10px -3px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 0px 10px -3px rgba(0,0,0,0.75);
+	box-shadow: 0px 0px 10px -3px rgba(0,0,0,0.75);
+}
+
+.przycisk:active
+{
+	-webkit-box-shadow: inset 0px 0px 10px -3px rgba(0,0,0,0.75);
+	-moz-box-shadow: inset 0px 0px 10px -3px rgba(0,0,0,0.75);
+	box-shadow: inset 0px 0px 10px -3px rgba(0,0,0,0.75);
+}
+
+.przycisk:focus
+{
+	background:#0255c5;
+	outline:0;
+}
