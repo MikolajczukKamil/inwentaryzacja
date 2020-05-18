@@ -136,10 +136,10 @@ INSERT INTO login_sessions (user, token, expiration_date, create_date)
 VALUES (1, 'fake-token', NOW() + INTERVAL 1 DAY, NOW() - INTERVAL 1 DAY)
 ;
 
-INSERT INTO scannings (room, owner, create_date)
+INSERT INTO scans (room, owner, create_date)
 VALUES (1, 1, NOW());
 
-INSERT INTO scannings_positions (scanning, asset)
+INSERT INTO scans_positions (scanning, asset)
 VALUES (1, 1),
        (1, 2),
        (1, 3),

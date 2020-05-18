@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS scannings_positions;
-DROP TABLE IF EXISTS scannings;
+DROP TABLE IF EXISTS scans_positions;
+DROP TABLE IF EXISTS scans;
 DROP TABLE IF EXISTS reports_positions;
 DROP TABLE IF EXISTS reports;
 DROP TABLE IF EXISTS assets;
@@ -97,7 +97,7 @@ CREATE TABLE reports_positions
         ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
-CREATE TABLE scannings
+CREATE TABLE scans
 (
     id          INT      NOT NULL AUTO_INCREMENT,
     room        INT      NOT NULL,
@@ -112,15 +112,16 @@ CREATE TABLE scannings
         ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
-CREATE TABLE scannings_positions
+CREATE TABLE scans_positions
 (
-    scanning INT NOT NULL,
-    asset    INT NOT NULL,
-    PRIMARY KEY (scanning, asset),
-    CONSTRAINT fk_scanningPosition_report FOREIGN KEY (scanning)
-        REFERENCES scannings (id)
+    scan  INT NOT NULL,
+    asset INT NOT NULL,
+    state INT NOT NULL,
+    PRIMARY KEY (scan, asset),
+    CONSTRAINT fk_scansPosition_report FOREIGN KEY (scan)
+        REFERENCES scans (id)
         ON DELETE CASCADE,
-    CONSTRAINT fk_scanningPosition_asset FOREIGN KEY (asset)
+    CONSTRAINT fk_scans_asset FOREIGN KEY (asset)
         REFERENCES assets (id)
         ON DELETE CASCADE
 ) ENGINE = InnoDB;

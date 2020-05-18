@@ -5,11 +5,10 @@ CREATE PROCEDURE addNewReport(IN report_name VARCHAR(64), IN report_room INT, IN
                               IN report_positions JSON)
 addNewReportProcedure:
 BEGIN
-    /* DECLARE */
     DECLARE I INT;
     DECLARE Is_room_correct BOOLEAN DEFAULT roomExists(report_room);
     DECLARE Is_owner_correct BOOLEAN DEFAULT userExists(report_owner);
-    DECLARE Positions_length INT;
+    DECLARE ReportPositions_length INT;
     DECLARE Are_assets_exists BOOLEAN;
     DECLARE Assets_does_not_exists VARCHAR(1024);
     DECLARE Are_rooms_exists BOOLEAN;
@@ -17,7 +16,6 @@ BEGIN
     DECLARE Are_assets_duplicated BOOLEAN;
     DECLARE Assets_duplicated VARCHAR(1024);
     DECLARE New_report_id INT;
-    /* END DECLARE */
 
     IF NOT Is_room_correct OR NOT Is_owner_correct THEN
         SELECT NULL  AS id,
@@ -33,7 +31,7 @@ BEGIN
       Parsing JSON array to table `Positions`
       { "id": INT, "previous": INT|NULL, "present": BOOLEAN }[]
     */
-    CREATE TEMPORARY TABLE Positions
+    CREATE TEMPORARY TABLE ReportPositions
     (
         id       INT,
         previous INT,
@@ -41,11 +39,11 @@ BEGIN
     );
 
     SET I = 0;
-    SET Positions_length = JSON_LENGTH(report_positions);
+    SET ReportPositions_length = JSON_LENGTH(report_positions);
 
-    WHILE (I < Positions_length)
+    WHILE (I < ReportPositions_length)
         DO
-            INSERT INTO Positions
+            INSERT INTO ReportPositions
             SELECT JSON_VALUE(report_positions, CONCAT(' $[', i, '].id'))                      AS id,
                    NULLIF(JSON_VALUE(report_positions, CONCAT('$[', i, '].previous')), 'null') AS previous,
                    JSON_VALUE(report_positions, CONCAT('$[', i, '].present'))                  AS present;
@@ -56,21 +54,21 @@ BEGIN
     /* Check report_positions.asset_id and report_positions.previus correct */
 
     SELECT COUNT(*) = 0,
-           GROUP_CONCAT(DISTINCT Positions.id ORDER BY Positions.id SEPARATOR ', ')
+           GROUP_CONCAT(DISTINCT ReportPositions.id ORDER BY ReportPositions.id SEPARATOR ', ')
     INTO
         Are_assets_exists,
         Assets_does_not_exists
-    FROM Positions
-    WHERE NOT assetExists(Positions.id);
+    FROM ReportPositions
+    WHERE NOT assetExists(ReportPositions.id);
 
     SELECT COUNT(*) = 0,
-           GROUP_CONCAT(DISTINCT Positions.previous ORDER BY Positions.previous SEPARATOR ', ')
+           GROUP_CONCAT(DISTINCT ReportPositions.previous ORDER BY ReportPositions.previous SEPARATOR ', ')
     INTO
         Are_rooms_exists,
         Rooms_does_not_exists
-    FROM Positions
-    WHERE Positions.previous IS NOT NULL
-      AND NOT roomExists(Positions.previous);
+    FROM ReportPositions
+    WHERE ReportPositions.previous IS NOT NULL
+      AND NOT roomExists(ReportPositions.previous);
 
     SELECT COUNT(*) = 0,
            GROUP_CONCAT(DISTINCT duplicates.id ORDER BY duplicates.id SEPARATOR ', ')
@@ -78,13 +76,11 @@ BEGIN
         Are_assets_duplicated,
         Assets_duplicated
     FROM (
-             SELECT Positions.id
-             FROM Positions
-             GROUP BY Positions.id
-             HAVING COUNT(Positions.id) > 1
+             SELECT ReportPositions.id
+             FROM ReportPositions
+             GROUP BY ReportPositions.id
+             HAVING COUNT(ReportPositions.id) > 1
          ) AS duplicates;
-
-    /* END Check report_positions.asset_id and report_positions.previus correct */
 
     If NOT Are_assets_exists OR NOT Are_rooms_exists OR NOT Are_assets_duplicated THEN
         SELECT NULL  AS id,
@@ -95,7 +91,7 @@ BEGIN
                        haveDuplicates('Asset', Assets_duplicated, Are_assets_duplicated)
                    ) AS message;
 
-        DROP TEMPORARY TABLE Positions;
+        DROP TEMPORARY TABLE ReportPositions;
         LEAVE addNewReportProcedure;
     END IF;
 
@@ -108,15 +104,13 @@ BEGIN
 
     INSERT INTO reports_positions (report_id, asset_id, previous_room, present)
     SELECT New_report_id,
-           Positions.id,
-           Positions.previous,
-           Positions.present
-    FROM Positions;
+           ReportPositions.id,
+           ReportPositions.previous,
+           ReportPositions.present
+    FROM ReportPositions;
 
-    DROP TEMPORARY TABLE Positions;
+    DROP TEMPORARY TABLE ReportPositions;
 
     SELECT New_report_id AS id, NULL AS message;
-
-    /* END Adding new report */
 
 END @ DELIMITER ;
