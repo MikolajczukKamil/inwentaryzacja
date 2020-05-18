@@ -139,7 +139,7 @@ VALUES (1, 'fake-token', NOW() + INTERVAL 1 DAY, NOW() - INTERVAL 1 DAY)
 INSERT INTO scans (room, owner, create_date)
 VALUES (1, 1, NOW());
 
-INSERT INTO scans_positions (scanning, asset)
+INSERT INTO scans_positions (scan, asset)
 VALUES (1, 1),
        (1, 2),
        (1, 3),

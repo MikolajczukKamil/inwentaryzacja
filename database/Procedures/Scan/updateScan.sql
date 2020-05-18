@@ -1,18 +1,18 @@
 DROP PROCEDURE IF EXISTS updateScan;
 
 DELIMITER @
-CREATE PROCEDURE updateScan(IN scanning_id INT, IN scanning_positions JSON)
+CREATE PROCEDURE updateScan(IN scan_id INT, IN scan_positions JSON)
 updateScanProcedure:
 BEGIN
     DECLARE I INT;
     DECLARE ScanPositions_length INT;
-    DECLARE Is_scanning_correct BOOLEAN DEFAULT scanningExists(scanning_id);
+    DECLARE Is_scan_correct BOOLEAN DEFAULT scanExists(scan_id);
     DECLARE Are_assets_exists BOOLEAN;
     DECLARE Assets_does_not_exists VARCHAR(1024);
 
-    IF NOT Is_scanning_correct THEN
-        SELECT NULL                                                      AS id,
-               idsNotFound('Scan', scanning_id, Is_scanning_correct) AS message;
+    IF NOT Is_scan_correct THEN
+        SELECT NULL                                                  AS id,
+               idsNotFound('Scan', scan_id, Is_scan_correct) AS message;
         LEAVE updateScanProcedure;
     END IF;
 
@@ -26,12 +26,12 @@ BEGIN
     );
 
     SET I = 0;
-    SET ScanPositions_length = JSON_LENGTH(scanning_positions);
+    SET ScanPositions_length = JSON_LENGTH(scan_positions);
 
     WHILE (I < ScanPositions_length)
         DO
             INSERT INTO ScanPositions
-            SELECT JSON_VALUE(scanning_positions, CONCAT(' $[', i, ']')) AS asset;
+            SELECT JSON_VALUE(scan_positions, CONCAT(' $[', i, ']')) AS asset;
 
             SET I = I + 1;
         END WHILE;
@@ -52,18 +52,18 @@ BEGIN
         LEAVE updateScanProcedure;
     END IF;
 
-    INSERT INTO scans_positions (scanning, asset)
-    SELECT scanning_id, ScanPositions.asset
+    INSERT INTO scans_positions (scan, asset)
+    SELECT scan_id, ScanPositions.asset
     FROM ScanPositions
     WHERE ScanPositions.asset NOT IN (
         SELECT sp.asset
         FROM scans_positions AS sp
-        WHERE sp.scanning = scanning_id
+        WHERE sp.scan = scan_id
     );
 
     DELETE
     FROM scans_positions
-    WHERE scans_positions.scanning = scanning_id
+    WHERE scans_positions.scan = scan_id
       AND scans_positions.asset NOT IN (
         SELECT ScanPositions.asset
         FROM ScanPositions

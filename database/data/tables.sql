@@ -104,10 +104,10 @@ CREATE TABLE scans
     owner       INT      NOT NULL,
     create_date DATETIME NOT NULL,
     PRIMARY KEY (id),
-    CONSTRAINT fk_scanning_room FOREIGN KEY (room)
+    CONSTRAINT fk_scan_room FOREIGN KEY (room)
         REFERENCES rooms (id)
         ON DELETE CASCADE,
-    CONSTRAINT fk_scanning_user FOREIGN KEY (owner)
+    CONSTRAINT fk_scan_user FOREIGN KEY (owner)
         REFERENCES users (id)
         ON DELETE CASCADE
 ) ENGINE = InnoDB;
