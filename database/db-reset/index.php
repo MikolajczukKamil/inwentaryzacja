@@ -15,6 +15,8 @@
 				<p><button class="przycisk" type="submit" name="akcja" value="p3">Resetuj bazę danych oraz procedury</button></p>
 			</form>
 			<?php
+				require_once './connection.php';
+
 				error_reporting(0);
 			
 				if(isset($_POST['akcja']) && isset($_POST['password']))
@@ -24,8 +26,7 @@
 					
 					if($_POST['password']===$password)
 					{
-						//$conn = new mysqli("localhost","root","", "aplikacja_do_inwentaryzacji");
-						$conn = new mysqli("localhost","id13387499_aplikacjabaza","pX1gmNVxAe]D=!oN", "id13387499_aplikacja_do_inwentaryzacji");
+						$conn = getConnection();
 
 						if($conn->connect_error)
 						{
