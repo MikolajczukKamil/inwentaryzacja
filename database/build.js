@@ -67,6 +67,7 @@ function PrepereData(data) {
       .toString()
       .replace(/\/\*[\s\S]*?\*\//g, '')
       .replace(/^\s{2,}/gm, '')
+      .replace(/\s{2,}/gm, ' ')
 
     // .replace(/\/\*[\s\S]*?\*\//g, '')
     // .replace(/(\r\n|\n|\r)/gm, ' ')
