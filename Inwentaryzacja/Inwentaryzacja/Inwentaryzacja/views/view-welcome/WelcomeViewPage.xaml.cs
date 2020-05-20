@@ -20,7 +20,11 @@ namespace Inwentaryzacja
 
         private async void scanButtonClicked(object sender, EventArgs e)
         {
-
+           
+        }
+        private async void _AllReportsButton_Clicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new AllReportsPage());
         }
     }
 }

@@ -61,9 +61,9 @@
                   Style="{StaticResource Reportstyle}" />
                  </StackLayout>
             </ScrollView>
-                 <local:ImageButton ButtonText="Powrót" Source="arrow.png" 
-                  HorizontalOptions="CenterAndExpand" WidthRequest="130"
-                  VerticalOptions="Start" HeightRequest="110" Margin="15,26,215,9.57" />
+                 <Button Text="Powrót" Clicked="back_Clicked"
+                  HorizontalOptions="CenterAndExpand" WidthRequest="150" BackgroundColor="White" CornerRadius="10"
+                  VerticalOptions="Start"  Margin="15,26,215,9.57" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
