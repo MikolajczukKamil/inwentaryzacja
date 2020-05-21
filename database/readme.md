@@ -1,91 +1,110 @@
 # Generowanie importu do bazy
 
-Wymaga nodejs
+Do generowania plków wynikowych wymaga nodejs
 
-- `node build -min` - wersja z umiuniętymi komentarzami oraz wcięciami
-- `node build` - po prostu sklejone pliki
+- `node build -min -watch` - po prostu skleja pliki, można łączyć z dowolnymi przełącznikami
+
+Przełączniki
+- `-min` - wersja z umiuniętymi komentarzami oraz wcięciami
+- `-watch` - automatyczna przebudowa po zapisaniu pliku
 
 Po wygenerowaniu dostępne są nastepujące pliki
-- `dist/db-data.sql` - dane tabele + zawartość
-- `dist/db-procedures.sql` - dane procedury + funkcje pomocnicze
+- `dist/db-data.sql` - dane czyli tabele + zawartość
+- `dist/db-procedures.sql` - procedury
+- `dist/db-functions.sql` - funkcje pomocnicze
 - `dist/db-all.sql` - wszystko razem
 
 # Opis procedur
-
+Błąd podczas pobierania danych np brak budynku w którym szukamy pomieszczeń
 <pre>
-getReportsHeaders(user_id INT): {
-  id INT
-  name VARCHAR
-  create_date DATETIME
-  owner_id INT
-  owner_name VARCHAR
-  room_id INT
-  room_name VARCHAR
-  building_id INT 
-  building_name VARCHAR 
-}[]
+  Type OPTIONAL[T] = { ...T, message NULL } | {...T NULL, message VARCHAR }
 </pre>
 
 <pre>
-getReportHeader(report_id INT): {
-  id INT
-  name VARCHAR
-  create_date DATETIME
-  owner_id INT
-  owner_name VARCHAR
-  room_id INT
-  room_name VARCHAR
-  building_id INT
-  building_name VARCHAR 
-}
+getReportsHeaders(user_id INT): OPTIONAL[
+  {
+    id INT
+    name VARCHAR
+    create_date DATETIME
+    owner_id INT
+    owner_name VARCHAR
+    room_id INT
+    room_name VARCHAR
+    building_id INT 
+    building_name VARCHAR 
+  }[]
+]
 </pre>
 
 <pre>
-getPositionsInReport(report_id INT): {
-  present BOOLEAN
-  asset_id INT
-  type_id INT
-  type_letter CHAR
-  type_name VARCHAR
-  previous_id INT|null
-  previous_name VARCHAR|null
-  previous_building_id INT|null
-  previous_building_name VARCHAR|null
-}[]
+getReportHeader(report_id INT): OPTIONAL[
+  {
+    id INT
+    name VARCHAR
+    create_date DATETIME
+    owner_id INT
+    owner_name VARCHAR
+    room_id INT
+    room_name VARCHAR
+    building_id INT
+    building_name VARCHAR 
+  }
+]
 </pre>
 
 <pre>
-getAssetsInRoom(room_id INT): {
-  id INT
-  type INT
-  asset_type_letter CHAR
-  asset_type_name VARCHAR
-}[]
+getPositionsInReport(report_id INT): OPTIONAL[
+  {
+    present BOOLEAN
+    asset_id INT
+    type_id INT
+    type_letter CHAR
+    type_name VARCHAR
+    previous_id INT|null
+    previous_name VARCHAR|null
+    previous_building_id INT|null
+    previous_building_name VARCHAR|null
+  }[]
+]
 </pre>
 
 <pre>
-getAssetInfo(asset_id INT): {
-  id INT
-  type INT
-  letter CHAR
-  asset_type_name VARCHAR
-  room_id INT
-  room_name VARCHAR
-  building_id INT
-  building_name VARCHAR
-}
+getAssetsInRoom(room_id INT): OPTIONAL[
+  {
+    id INT
+    type INT
+    asset_type_letter CHAR
+    asset_type_name VARCHAR
+  }[]
+]
 </pre>
 
 <pre>
-addNewAsset(type_id INT): { id INT }
+getAssetInfo(asset_id INT): OPTIONAL[
+  {
+    id INT
+    type INT
+    letter CHAR
+    asset_type_name VARCHAR
+    room_id INT
+    room_name VARCHAR
+    building_id INT
+    building_name VARCHAR
+  }
+]
 </pre>
 
 <pre>
-getUser(usser_id INT): {
+addNewAsset(type_id INT): OPTIONAL[{ id INT }]
+</pre>
+
+<pre>
+getUser(user_id INT): {
   id INT
   login VARCHAR
   hash VARCHAR
-}
+} | EMPTY
+
 </pre>
 
 <pre>
@@ -93,7 +112,7 @@ getUserByLogin(user_login VARCHAR): {
   id INT
   login VARCHAR
   hash VARCHAR
-}
+} | EMPTY
 </pre>
 
 <pre>
@@ -107,7 +126,7 @@ getLoginSession(user_token VARCHAR): {
 </pre>
 
 <pre>
-addLoginSession(user_id INT, expiration_date DATETIME, user_token VARCHAR): { id INT } 
+addLoginSession(user_id INT, expiration_date DATETIME, user_token VARCHAR): OPTIONAL[{ id INT }]
 </pre>
 
 <pre>
@@ -115,21 +134,22 @@ deleteLoginSession(user_token VARCHAR): VOID
 </pre>
 
 <pre>
--- report_positions - json string of array of { id INT, previous: INT|NULL, present: BOOLEAN }
+-- report_positions - json string of array of obiects { id INT, previous: INT|NULL, present: BOOLEAN }
+
 addNewReport(
   report_name VARCHAR,
   report_room INT,
   report_owner INT,
   report_positions VARCHAR( JSON( { id INT, previous: INT|NULL, present: BOOLEAN } ) )
-): { id INT } 
+): OPTIONAL[{ id INT }]
 </pre>
 
 <pre>
-addRoom(room_name VARCHAR, building_id INT): { id INT }
+addRoom(room_name VARCHAR, building_id INT): OPTIONAL[{ id INT }]
 </pre>
 
 <pre>
-addBuilding(building_name VARCHAR): { id INT }
+addBuilding(building_name VARCHAR): OPTIONAL[{ id INT }]
 </pre>
 
 <pre>
@@ -142,10 +162,33 @@ getRooms(building_id INT): {
 </pre>
 
 <pre>
-getBuildings(): { id INT, name VARCHAR }
+getBuildings(): { id INT, name VARCHAR }[]
 </pre>
 
-# Opis zawartości batel w fake bazie
+<pre>
+addScan(room_id INT, owner_id INT): OPTIONAL[{ id INT }]
+</pre>
+
+<pre>
+deleteScan(scan_id INT): VOID
+</pre>
+
+<pre>
+getScans(user_id INT): OPTIONAL[
+  {
+    id INT
+    create_date DATETIME
+    owner_id INT
+    owner_name VARCHAR
+    room_id INT
+    room_name VARCHAR
+    building_id INT
+    building_name VARCHAR
+  }[]
+]
+</pre>
+
+# Opis zawartości tabel w fake bazie
 
 ## Typy środków trwałych
 - 1 c komputer
@@ -192,3 +235,7 @@ getBuildings(): { id INT, name VARCHAR }
 ### Stan końcowy
 - W sali 1/2 b. 2: 19, 20, 21, 22, 23, 24
 - Bez sali: 25-180
+
+## Skanowania
+- W sali 1 dla user1
+- Zawiera zeskanowane elementy: 1-7, 15

@@ -1,6 +1,7 @@
 DROP FUNCTION IF EXISTS idsNotFound;
 
-DELIMITER $ CREATE FUNCTION idsNotFound(table_name VARCHAR(32), ids VARCHAR(1024)) RETURNS VARCHAR(64)
+DELIMITER $
+CREATE FUNCTION idsNotFound(Table_name VARCHAR(32), Ids VARCHAR(1024), Is_found BOOLEAN) RETURNS VARCHAR(64)
 BEGIN
-  RETURN CONCAT(table_name, " id=", ids, " does not exist");
+    RETURN IF(Is_found, NULL, CONCAT(Table_name, ' id=', Ids, ' does not exist'));
 END $ DELIMITER ;
