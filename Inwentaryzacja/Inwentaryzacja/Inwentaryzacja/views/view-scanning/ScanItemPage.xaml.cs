@@ -12,6 +12,7 @@ using System.Threading;
 using Inwentaryzacja.views.view_scannedItem;
 using Inwentaryzacja.views;
 using Inwentaryzacja.Models;
+using Xamarin.Essentials;
 
 namespace Inwentaryzacja
 {
@@ -122,6 +123,7 @@ namespace Inwentaryzacja
                     {
                         prev = result;
                         _infoLabel.Text = "Liczba zeskanowanych przedmiotów: " + scannedItem.Count;
+                        Vibration.Vibrate(TimeSpan.FromMilliseconds(100));
                         await ShowPopup();
                         
                         //await DisplayAlert("Wynik skanowania", result.Text, "OK");
@@ -155,6 +157,11 @@ namespace Inwentaryzacja
             }
 
             return false;
+        }
+
+        private void TurnLight(object sender, EventArgs e)
+        {
+            _scanner.ToggleTorch();
         }
     }
 }
