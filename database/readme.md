@@ -99,13 +99,12 @@ addNewAsset(type_id INT): OPTIONAL[{ id INT }]
 </pre>
 
 <pre>
-getUser(user_id INT): OPTIONAL[
-  {
-    id INT
-    login VARCHAR
-    hash VARCHAR
-  }
-]
+getUser(user_id INT): {
+  id INT
+  login VARCHAR
+  hash VARCHAR
+} | EMPTY
+
 </pre>
 
 <pre>
@@ -113,7 +112,7 @@ getUserByLogin(user_login VARCHAR): {
   id INT
   login VARCHAR
   hash VARCHAR
-}
+} | EMPTY
 </pre>
 
 <pre>
