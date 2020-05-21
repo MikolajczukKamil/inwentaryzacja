@@ -11,18 +11,18 @@ BEGIN
     DECLARE Assets_does_not_exists VARCHAR(1024);
 
     IF NOT Is_scan_exits THEN
-        SELECT NULL                                        AS id,
-               idsNotFound('Scan', Scan_id, Is_scan_exits) AS message;
+        SELECT idsNotFound('Scan', Scan_id, Is_scan_exits) AS message;
         LEAVE updateScanProcedure;
     END IF;
 
     /*
       Parsing JSON array to table `ScanPositions`
-      int[]
+      { asset: INT, state: INT }[]
     */
     CREATE TEMPORARY TABLE ScanPositions
     (
-        asset INT
+        asset INT,
+        state INT
     );
 
     SET I = 0;
@@ -31,7 +31,8 @@ BEGIN
     WHILE (I < ScanPositions_length)
         DO
             INSERT INTO ScanPositions
-            SELECT JSON_VALUE(Scan_positions, CONCAT(' $[', i, ']')) AS asset;
+            SELECT JSON_VALUE(Scan_positions, CONCAT(' $[', i, '].asset')) AS asset,
+                   JSON_VALUE(Scan_positions, CONCAT(' $[', i, '].state')) AS state;
 
             SET I = I + 1;
         END WHILE;
@@ -45,21 +46,11 @@ BEGIN
     WHERE NOT assetExists(ScanPositions.asset);
 
     If NOT Are_assets_exists THEN
-        SELECT NULL                                                            AS id,
-               idsNotFound('Asset', Assets_does_not_exists, Are_assets_exists) AS message;
+        SELECT idsNotFound('Asset', Assets_does_not_exists, Are_assets_exists) AS message;
 
         DROP TEMPORARY TABLE ScanPositions;
         LEAVE updateScanProcedure;
     END IF;
-
-    INSERT INTO scans_positions (scan, asset)
-    SELECT Scan_id, ScanPositions.asset
-    FROM ScanPositions
-    WHERE ScanPositions.asset NOT IN (
-        SELECT sp.asset
-        FROM scans_positions AS sp
-        WHERE sp.scan = Scan_id
-    );
 
     DELETE
     FROM scans_positions
@@ -68,5 +59,24 @@ BEGIN
         SELECT ScanPositions.asset
         FROM ScanPositions
     );
+
+    UPDATE scans_positions
+    SET scans_positions.state = (
+        SELECT ScanPositions.state
+        FROM ScanPositions
+        WHERE ScanPositions.asset = scans_positions.asset
+    )
+    WHERE scans_positions.scan = Scan_id;
+
+    INSERT INTO scans_positions (scan, asset, state)
+    SELECT Scan_id, ScanPositions.asset, ScanPositions.state
+    FROM ScanPositions
+    WHERE ScanPositions.asset NOT IN (
+        SELECT sp.asset
+        FROM scans_positions AS sp
+        WHERE sp.scan = Scan_id
+    );
+
+    SELECT NULL AS message;
 
 END @ DELIMITER ;

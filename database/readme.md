@@ -188,6 +188,10 @@ getScans(user_id INT): OPTIONAL[
 ]
 </pre>
 
+<pre>
+updateScans(scan_id INT, scan_positions VARCHAR( JSON( { asset INT, state: INT } ) )): OPTIONAL[{}]
+</pre>
+
 # Opis zawartości tabel w fake bazie
 
 ## Typy środków trwałych
