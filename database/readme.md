@@ -188,7 +188,7 @@ getScans(user_id INT): OPTIONAL[
 ]
 </pre>
 
-# Opis zawartości batel w fake bazie
+# Opis zawartości tabel w fake bazie
 
 ## Typy środków trwałych
 - 1 c komputer
