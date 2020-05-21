@@ -1,28 +1,28 @@
 DROP PROCEDURE IF EXISTS addRoom;
 
 DELIMITER $
-CREATE PROCEDURE addRoom(IN room_name VARCHAR(64), IN building_id INT)
+CREATE PROCEDURE addRoom(IN Room_name VARCHAR(64), IN Building_id INT)
 BEGIN
-    DECLARE is_building_correct BOOLEAN;
-    DECLARE is_name_unique BOOLEAN;
+    DECLARE Building_exits BOOLEAN;
+    DECLARE Name_unique BOOLEAN;
 
-    SELECT (SELECT COUNT(*) FROM buildings WHERE buildings.id = building_id) = 1
-    INTO is_building_correct;
+    SELECT (SELECT COUNT(*) FROM buildings WHERE buildings.id = Building_id) = 1
+    INTO Building_exits;
 
-    SELECT (SELECT COUNT(*) FROM rooms WHERE rooms.building = building_id AND rooms.name = room_name) = 0
-    INTO is_name_unique;
+    SELECT (SELECT COUNT(*) FROM rooms WHERE rooms.building = Building_id AND rooms.name = Room_name) = 0
+    INTO Name_unique;
 
-    IF NOT is_building_correct OR NOT is_name_unique THEN
+    IF NOT Building_exits OR NOT Name_unique THEN
         SELECT NULL  AS id,
                CONCAT_WS(
                        ' AND ',
-                       idsNotFound('Building', building_id, is_building_correct),
-                       CONCAT('Room name=', IF(NOT is_name_unique, room_name, NULL), ' is not unique in Building id=',
-                              building_id)
+                       idsNotFound('Building', Building_id, Building_exits),
+                       CONCAT('Room name=', IF(NOT Name_unique, Room_name, NULL), ' is not unique in Building id=',
+                              Building_id)
                    ) AS message;
     ELSE
         INSERT INTO rooms (name, building)
-        VALUES (room_name, building_id);
+        VALUES (Room_name, Building_id);
 
         SELECT LAST_INSERT_ID() AS id, NULL AS message;
     END IF;

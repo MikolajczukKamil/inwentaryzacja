@@ -5,9 +5,10 @@ DROP PROCEDURE IF EXISTS getReportHeader;
 DROP PROCEDURE IF EXISTS _ReportsHeaders;
 
 DELIMITER $
-CREATE PROCEDURE _ReportsHeaders(IN user_id INT, IN report_id INT)
+CREATE PROCEDURE _ReportsHeaders(IN User_id INT, IN Report_id INT)
 BEGIN
-    SELECT reports.id,
+    SELECT NULL           AS message,
+           reports.id,
            reports.name,
            reports.create_date,
            users.id       AS owner_id,
@@ -20,8 +21,8 @@ BEGIN
              JOIN users ON reports.owner = users.id
              JOIN rooms ON reports.room = rooms.id
              JOIN buildings ON rooms.building = buildings.id
-    WHERE (user_id IS NULL OR users.id = user_id)
-      AND (report_id IS NULL OR reports.id = report_id)
+    WHERE (User_id IS NULL OR users.id = User_id)
+      AND (Report_id IS NULL OR reports.id = Report_id)
     ORDER BY reports.create_date DESC,
              reports.id DESC;
 
@@ -30,15 +31,46 @@ END $ DELIMITER ;
 /* Many */
 
 DELIMITER $
-CREATE PROCEDURE getReportsHeaders(IN user_id INT)
+CREATE PROCEDURE getReportsHeaders(IN User_id INT)
 BEGIN
-    CALL _ReportsHeaders(user_id, NULL);
+    DECLARE is_user_exits BOOLEAN DEFAULT userExists(User_id);
+
+    IF NOT is_user_exits THEN
+        SELECT idsNotFound('User', User_id, is_user_exits) AS message,
+               NULL                                          AS id,
+               NULL                                          AS name,
+               NULL                                          AS create_date,
+               NULL                                          AS owner_id,
+               NULL                                          AS owner_name,
+               NULL                                          AS room_id,
+               NULL                                          AS room_name,
+               NULL                                          AS building_id,
+               NULL                                          AS building_name;
+    ELSE
+        CALL _ReportsHeaders(User_id, NULL);
+    END IF;
+
 END $ DELIMITER ;
 
 /* Single */
 
 DELIMITER $
-CREATE PROCEDURE getReportHeader(IN report_id INT)
+CREATE PROCEDURE getReportHeader(IN Report_id INT)
 BEGIN
-    CALL _ReportsHeaders(NULL, report_id);
+    DECLARE is_report_exits BOOLEAN DEFAULT reportExists(Report_id);
+
+    IF NOT is_report_exits THEN
+        SELECT idsNotFound('Report', Report_id, is_report_exits) AS message,
+               NULL                                                AS id,
+               NULL                                                AS name,
+               NULL                                                AS create_date,
+               NULL                                                AS owner_id,
+               NULL                                                AS owner_name,
+               NULL                                                AS room_id,
+               NULL                                                AS room_name,
+               NULL                                                AS building_id,
+               NULL                                                AS building_name;
+    ELSE
+        CALL _ReportsHeaders(NULL, Report_id);
+    END IF;
 END $ DELIMITER ;

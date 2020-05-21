@@ -1,13 +1,13 @@
 DROP PROCEDURE IF EXISTS addNewReport;
 
 DELIMITER @
-CREATE PROCEDURE addNewReport(IN report_name VARCHAR(64), IN report_room INT, IN report_owner INT,
-                              IN report_positions JSON)
+CREATE PROCEDURE addNewReport(IN Report_name VARCHAR(64), IN Report_room INT, IN Report_owner INT,
+                              IN Report_positions JSON)
 addNewReportProcedure:
 BEGIN
     DECLARE I INT;
-    DECLARE Is_room_correct BOOLEAN DEFAULT roomExists(report_room);
-    DECLARE Is_owner_correct BOOLEAN DEFAULT userExists(report_owner);
+    DECLARE Room_exits BOOLEAN DEFAULT roomExists(Report_room);
+    DECLARE Owner_exits BOOLEAN DEFAULT userExists(Report_owner);
     DECLARE ReportPositions_length INT;
     DECLARE Are_assets_exists BOOLEAN;
     DECLARE Assets_does_not_exists VARCHAR(1024);
@@ -17,12 +17,12 @@ BEGIN
     DECLARE Assets_duplicated VARCHAR(1024);
     DECLARE New_report_id INT;
 
-    IF NOT Is_room_correct OR NOT Is_owner_correct THEN
+    IF NOT Room_exits OR NOT Owner_exits THEN
         SELECT NULL  AS id,
                CONCAT_WS(
                        ' AND ',
-                       idsNotFound('Room', report_room, Is_room_correct),
-                       idsNotFound('User', report_owner, Is_owner_correct)
+                       idsNotFound('Room', Report_room, Room_exits),
+                       idsNotFound('User', Report_owner, Owner_exits)
                    ) AS message;
         LEAVE addNewReportProcedure;
     END IF;
@@ -39,19 +39,19 @@ BEGIN
     );
 
     SET I = 0;
-    SET ReportPositions_length = JSON_LENGTH(report_positions);
+    SET ReportPositions_length = JSON_LENGTH(Report_positions);
 
     WHILE (I < ReportPositions_length)
         DO
             INSERT INTO ReportPositions
-            SELECT JSON_VALUE(report_positions, CONCAT(' $[', i, '].id'))                      AS id,
-                   NULLIF(JSON_VALUE(report_positions, CONCAT('$[', i, '].previous')), 'null') AS previous,
-                   JSON_VALUE(report_positions, CONCAT('$[', i, '].present'))                  AS present;
+            SELECT JSON_VALUE(Report_positions, CONCAT(' $[', i, '].id'))                      AS id,
+                   NULLIF(JSON_VALUE(Report_positions, CONCAT('$[', i, '].previous')), 'null') AS previous,
+                   JSON_VALUE(Report_positions, CONCAT('$[', i, '].present'))                  AS present;
 
             SET I = I + 1;
         END WHILE;
 
-    /* Check report_positions.asset_id and report_positions.previus correct */
+    /* Check Report_positions.asset_id and Report_positions.previus correct */
 
     SELECT COUNT(*) = 0,
            GROUP_CONCAT(DISTINCT ReportPositions.id ORDER BY ReportPositions.id SEPARATOR ', ')
@@ -98,7 +98,7 @@ BEGIN
     /* Adding new report */
 
     INSERT INTO reports (name, room, owner, create_date)
-    VALUES (report_name, report_room, report_owner, NOW());
+    VALUES (Report_name, Report_room, Report_owner, NOW());
 
     SET New_report_id = LAST_INSERT_ID();
 

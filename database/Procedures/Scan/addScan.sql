@@ -1,22 +1,22 @@
 DROP PROCEDURE IF EXISTS addScan;
 
 DELIMITER $
-CREATE PROCEDURE addScan(IN room_id INT, IN owner_id INT)
+CREATE PROCEDURE addScan(IN Room_id INT, IN Owner_id INT)
 BEGIN
-    DECLARE Is_room_correct BOOLEAN DEFAULT roomExists(room_id);
-    DECLARE Is_owner_correct BOOLEAN DEFAULT userExists(owner_id);
+    DECLARE Room_exits BOOLEAN DEFAULT roomExists(Room_id);
+    DECLARE Owner_exits BOOLEAN DEFAULT userExists(Owner_id);
 
-    IF NOT Is_room_correct OR NOT Is_owner_correct THEN
+    IF NOT Room_exits OR NOT Owner_exits THEN
         SELECT NULL  AS id,
                CONCAT_WS(
                        ' AND ',
-                       idsNotFound('Room', room_id, Is_room_correct),
-                       idsNotFound('User', owner_id, Is_owner_correct)
+                       idsNotFound('Room', Room_id, Room_exits),
+                       idsNotFound('User', Owner_id, Owner_exits)
                    ) AS message;
     ELSE
 
         INSERT INTO scans (room, owner, create_date)
-        VALUES (room_id, owner_id, NOW());
+        VALUES (Room_id, Owner_id, NOW());
 
         SELECT LAST_INSERT_ID() AS id, NULL AS message;
 

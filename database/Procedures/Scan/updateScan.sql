@@ -1,18 +1,18 @@
 DROP PROCEDURE IF EXISTS updateScan;
 
 DELIMITER @
-CREATE PROCEDURE updateScan(IN scan_id INT, IN scan_positions JSON)
+CREATE PROCEDURE updateScan(IN Scan_id INT, IN Scan_positions JSON)
 updateScanProcedure:
 BEGIN
     DECLARE I INT;
     DECLARE ScanPositions_length INT;
-    DECLARE Is_scan_correct BOOLEAN DEFAULT scanExists(scan_id);
+    DECLARE Is_scan_exits BOOLEAN DEFAULT scanExists(Scan_id);
     DECLARE Are_assets_exists BOOLEAN;
     DECLARE Assets_does_not_exists VARCHAR(1024);
 
-    IF NOT Is_scan_correct THEN
+    IF NOT Is_scan_exits THEN
         SELECT NULL                                                  AS id,
-               idsNotFound('Scan', scan_id, Is_scan_correct) AS message;
+               idsNotFound('Scan', Scan_id, Is_scan_exits) AS message;
         LEAVE updateScanProcedure;
     END IF;
 
@@ -26,12 +26,12 @@ BEGIN
     );
 
     SET I = 0;
-    SET ScanPositions_length = JSON_LENGTH(scan_positions);
+    SET ScanPositions_length = JSON_LENGTH(Scan_positions);
 
     WHILE (I < ScanPositions_length)
         DO
             INSERT INTO ScanPositions
-            SELECT JSON_VALUE(scan_positions, CONCAT(' $[', i, ']')) AS asset;
+            SELECT JSON_VALUE(Scan_positions, CONCAT(' $[', i, ']')) AS asset;
 
             SET I = I + 1;
         END WHILE;
@@ -53,17 +53,17 @@ BEGIN
     END IF;
 
     INSERT INTO scans_positions (scan, asset)
-    SELECT scan_id, ScanPositions.asset
+    SELECT Scan_id, ScanPositions.asset
     FROM ScanPositions
     WHERE ScanPositions.asset NOT IN (
         SELECT sp.asset
         FROM scans_positions AS sp
-        WHERE sp.scan = scan_id
+        WHERE sp.scan = Scan_id
     );
 
     DELETE
     FROM scans_positions
-    WHERE scans_positions.scan = scan_id
+    WHERE scans_positions.scan = Scan_id
       AND scans_positions.asset NOT IN (
         SELECT ScanPositions.asset
         FROM ScanPositions
