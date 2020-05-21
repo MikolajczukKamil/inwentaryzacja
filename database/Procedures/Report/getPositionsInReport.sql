@@ -7,15 +7,15 @@ BEGIN
 
     IF NOT is_report_exits THEN
         SELECT idsNotFound('Report', Id_report, is_report_exits) AS message,
-               NULL                                                AS asset_id,
-               NULL                                                AS present,
-               NULL                                                AS type_id,
-               NULL                                                AS type_letter,
-               NULL                                                AS type_name,
-               NULL                                                AS previous_id,
-               NULL                                                AS previous_name,
-               NULL                                                AS previous_building_id,
-               NULL                                                AS previous_building_name;
+               NULL                                              AS asset_id,
+               NULL                                              AS present,
+               NULL                                              AS type_id,
+               NULL                                              AS type_letter,
+               NULL                                              AS type_name,
+               NULL                                              AS previous_id,
+               NULL                                              AS previous_name,
+               NULL                                              AS previous_building_id,
+               NULL                                              AS previous_building_name;
     ELSE
 
         SELECT NULL               AS message,

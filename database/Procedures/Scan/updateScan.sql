@@ -11,7 +11,7 @@ BEGIN
     DECLARE Assets_does_not_exists VARCHAR(1024);
 
     IF NOT Is_scan_exits THEN
-        SELECT NULL                                                  AS id,
+        SELECT NULL                                        AS id,
                idsNotFound('Scan', Scan_id, Is_scan_exits) AS message;
         LEAVE updateScanProcedure;
     END IF;

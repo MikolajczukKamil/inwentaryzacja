@@ -7,10 +7,10 @@ BEGIN
 
     IF NOT Building_exits THEN
         SELECT idsNotFound('Building', Id_building, Building_exits) AS message,
-               NULL                                                      AS id,
-               NULL                                                      AS name,
-               NULL                                                      AS building_id,
-               NULL                                                      AS building_name;
+               NULL                                                 AS id,
+               NULL                                                 AS name,
+               NULL                                                 AS building_id,
+               NULL                                                 AS building_name;
     ELSE
 
         SELECT NULL           AS message,

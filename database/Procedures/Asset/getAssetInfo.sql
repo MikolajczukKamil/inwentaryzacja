@@ -8,14 +8,14 @@ BEGIN
 
     IF NOT is_asset_exits THEN
         SELECT idsNotFound('Asset', Asset_id, is_asset_exits) AS message,
-               NULL                                             AS id,
-               NULL                                             AS type,
-               NULL                                             AS letter,
-               NULL                                             AS asset_type_name,
-               NULL                                             AS room_id,
-               NULL                                             AS room_name,
-               NULL                                             AS building_id,
-               NULL                                             AS building_name;
+               NULL                                           AS id,
+               NULL                                           AS type,
+               NULL                                           AS letter,
+               NULL                                           AS asset_type_name,
+               NULL                                           AS room_id,
+               NULL                                           AS room_name,
+               NULL                                           AS building_id,
+               NULL                                           AS building_name;
     ELSE
 
         SELECT NULL             AS message,

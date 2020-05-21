@@ -7,10 +7,10 @@ BEGIN
 
     IF NOT Room_exits THEN
         SELECT idsNotFound('Room', Room_id, Room_exits) AS message,
-               NULL                                          AS id,
-               NULL                                          AS type,
-               NULL                                          AS asset_type_name,
-               NULL                                          AS asset_type_letter;
+               NULL                                     AS id,
+               NULL                                     AS type,
+               NULL                                     AS asset_type_name,
+               NULL                                     AS asset_type_letter;
     ELSE
 
         SELECT NULL               AS message,

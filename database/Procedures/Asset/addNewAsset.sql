@@ -6,7 +6,7 @@ BEGIN
     DECLARE is_type_exits BOOLEAN DEFAULT asset_typeExists(Type_id);
 
     IF NOT is_type_exits THEN
-        SELECT NULL                                               AS id,
+        SELECT NULL                                             AS id,
                idsNotFound('AssetType', Type_id, is_type_exits) AS message;
     ELSE
         INSERT INTO assets (type)

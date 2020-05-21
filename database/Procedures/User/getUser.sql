@@ -7,9 +7,9 @@ BEGIN
 
     IF NOT is_user_exits THEN
         SELECT idsNotFound('User', User_id, is_user_exits) AS message,
-               NULL                                          AS id,
-               NULL                                          AS login,
-               NULL                                          AS hash;
+               NULL                                        AS id,
+               NULL                                        AS login,
+               NULL                                        AS hash;
     ELSE
 
         SELECT NULL as message,

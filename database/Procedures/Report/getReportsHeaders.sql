@@ -37,15 +37,15 @@ BEGIN
 
     IF NOT is_user_exits THEN
         SELECT idsNotFound('User', User_id, is_user_exits) AS message,
-               NULL                                          AS id,
-               NULL                                          AS name,
-               NULL                                          AS create_date,
-               NULL                                          AS owner_id,
-               NULL                                          AS owner_name,
-               NULL                                          AS room_id,
-               NULL                                          AS room_name,
-               NULL                                          AS building_id,
-               NULL                                          AS building_name;
+               NULL                                        AS id,
+               NULL                                        AS name,
+               NULL                                        AS create_date,
+               NULL                                        AS owner_id,
+               NULL                                        AS owner_name,
+               NULL                                        AS room_id,
+               NULL                                        AS room_name,
+               NULL                                        AS building_id,
+               NULL                                        AS building_name;
     ELSE
         CALL _ReportsHeaders(User_id, NULL);
     END IF;
@@ -61,15 +61,15 @@ BEGIN
 
     IF NOT is_report_exits THEN
         SELECT idsNotFound('Report', Report_id, is_report_exits) AS message,
-               NULL                                                AS id,
-               NULL                                                AS name,
-               NULL                                                AS create_date,
-               NULL                                                AS owner_id,
-               NULL                                                AS owner_name,
-               NULL                                                AS room_id,
-               NULL                                                AS room_name,
-               NULL                                                AS building_id,
-               NULL                                                AS building_name;
+               NULL                                              AS id,
+               NULL                                              AS name,
+               NULL                                              AS create_date,
+               NULL                                              AS owner_id,
+               NULL                                              AS owner_name,
+               NULL                                              AS room_id,
+               NULL                                              AS room_name,
+               NULL                                              AS building_id,
+               NULL                                              AS building_name;
     ELSE
         CALL _ReportsHeaders(NULL, Report_id);
     END IF;
