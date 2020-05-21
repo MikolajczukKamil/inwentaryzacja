@@ -79,10 +79,9 @@
             VerticalTextAlignment="Center" 
             FontSize="Large" 
             TextColor="Black"
-            Margin="50, 0, 50, 0"
-            Grid.Column="0" 
-            Grid.Row="0" 
-            Grid.ColumnSpan="2" />
+            Margin="0, 0, 10, 0"
+            Grid.Column="1" 
+            Grid.Row="0" />
 
             <local:RoundedButton 
             ImageSource="light.png" 
