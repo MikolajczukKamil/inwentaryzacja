@@ -131,6 +131,15 @@ namespace Inwentaryzacja.Controllers.Api
             return false;
         }
 
+        public string GetToken
+        {
+            get
+            {
+                return ClientHttp.DefaultRequestHeaders.Authorization.Parameter; ;
+            }
+        }
+
+
         private T ConvertJSONToObject<T>(string json)
         {
             T entity;

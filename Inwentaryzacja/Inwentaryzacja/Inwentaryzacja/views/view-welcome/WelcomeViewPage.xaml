@@ -46,7 +46,7 @@
 
                      </local:RoundedButton>
 
-
+ 
                      <local:RoundedButton Text="Wyloguj"
                                           VerticalOptions="EndAndExpand"
                                           HorizontalOptions="Start"
