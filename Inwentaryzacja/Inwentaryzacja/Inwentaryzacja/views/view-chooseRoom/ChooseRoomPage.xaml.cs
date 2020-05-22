@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Inwentaryzacja.views.view_chooseRoom;
+using Rg.Plugins.Popup.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,6 +40,11 @@ namespace Inwentaryzacja
 			LoadPickerItems();
 			InitializeComponent();
 			InitializePicker();
+		}
+
+		public void AddBuildingClicked(object o, EventArgs e)
+		{
+			PopupNavigation.Instance.PushAsync(new AddBuildingView());
 		}
 
 	}

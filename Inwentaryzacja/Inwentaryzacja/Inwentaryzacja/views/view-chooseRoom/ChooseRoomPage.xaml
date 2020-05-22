@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:inwentaryzacja="clr-namespace:Inwentaryzacja;assembly=Inwentaryzacja"
+             xmlns:inwentaryzacja="clr-namespace:Inwentaryzacja;assembly=Inwentaryzacja" 
+             xmlns:local="clr-namespace:Inwentaryzacja"
              x:Class="Inwentaryzacja.ChooseRoomPage"
              BackgroundColor="#8EE3BA">
     <ContentPage.Content>
@@ -50,6 +51,16 @@
                     CornerRadius="12"
                     WidthRequest="300"
                     HeightRequest="50" />
+            <local:RoundedButton Text="Dodaj nowy budynek"
+                    FontSize="Large"
+                    Clicked="AddBuildingClicked"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    BackgroundColor="White"
+                    CornerRadius="12"
+                    WidthRequest="300"
+                    HeightRequest="50"
+                    Margin="0, 15, 0, 10"/>
             <Button Text="Powrót"
                     ImageSource="back_icon.png"
                     ContentLayout="Right, -40"

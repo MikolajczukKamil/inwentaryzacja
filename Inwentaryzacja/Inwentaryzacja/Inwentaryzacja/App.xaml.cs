@@ -13,8 +13,7 @@ namespace Inwentaryzacja
         public App()
         {
             InitializeComponent();
-            MainPage = new LoginPage();
-            
+            MainPage = new ChooseRoomPage();           
         }
 
         protected override void OnStart()
