@@ -31,8 +31,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
 
             bool isAdded = await api.createBuilding(buildingPrototype);
 
-
-            //PopupNavigation.Instance.PopAsync(true);
+            PopupNavigation.Instance.PopAsync(true);
 
             if (isAdded == true) DisplayAlert("Dodawanie budynku", "Pomyślnie dodano nowy budynek", "Wyjdź");
             else DisplayAlert("Dodawanie budynku", "Niepowodzenie podczas dodawania budynku", "Wyjdź");
