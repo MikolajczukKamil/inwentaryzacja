@@ -17,9 +17,10 @@ namespace Inwentaryzacja
             
         }
 
-        protected override void OnStart()
+        protected async override void OnStart()
         {
-            // Handle when your app starts
+            APIController api = new APIController();
+            await api.LoginUser("user1", "111");
         }
 
         protected override void OnSleep()
