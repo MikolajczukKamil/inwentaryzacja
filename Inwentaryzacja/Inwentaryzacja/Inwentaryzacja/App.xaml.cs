@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Inwentaryzacja.views.view_Loading;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Inwentaryzacja
@@ -13,14 +14,14 @@ namespace Inwentaryzacja
         public App()
         {
             InitializeComponent();
-            MainPage = new LoginPage();
-            
+            MainPage = new LoadingPage();
         }
 
         protected async override void OnStart()
         {
             APIController api = new APIController();
             await api.LoginUser("user1", "111");
+            MainPage = new WelcomeViewPage();
         }
 
         protected override void OnSleep()
@@ -30,7 +31,7 @@ namespace Inwentaryzacja
 
         protected override void OnResume()
         {
-            // Handle when your app resumes
+
         }
     }
 }
