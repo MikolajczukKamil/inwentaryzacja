@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inwentaryzacja.views.view_chooseRoom;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,6 +40,9 @@ namespace Inwentaryzacja
 			InitializeComponent();
 			InitializePicker();
 		}
-
+		public void AddRoom_clicked(object o, EventArgs args)
+		{
+			App.Current.MainPage = new NavigationPage(new AddRoom());
+		}
 	}
 }

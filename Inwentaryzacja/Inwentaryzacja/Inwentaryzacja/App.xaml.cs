@@ -14,7 +14,8 @@ namespace Inwentaryzacja
         public App()
         {
             InitializeComponent();
-            MainPage = new LoadingPage();
+            
+            MainPage = new ChooseRoomPage();
         }
 
         protected async override void OnStart()
