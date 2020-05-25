@@ -22,7 +22,7 @@ namespace Inwentaryzacja
         {
             APIController api = new APIController();
             await api.LoginUser("user1", "111");
-            MainPage = new WelcomeViewPage();
+            //MainPage = new WelcomeViewPage();
         }
 
         protected override void OnSleep()

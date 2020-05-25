@@ -1,3 +1,4 @@
+using Inwentaryzacja.Controllers.Api;
 using System;
 
 namespace Inwentaryzacja.Models
@@ -11,6 +12,12 @@ namespace Inwentaryzacja.Models
 		{
 			this.name = name;
 			this.building = building.Id;
+		}
+
+		public RoomPropotype(string name, BuildingEntity building)
+		{
+			this.name = name;
+			this.building = building.id;
 		}
 	}
 }
