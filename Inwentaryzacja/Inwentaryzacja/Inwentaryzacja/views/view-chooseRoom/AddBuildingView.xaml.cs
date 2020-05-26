@@ -17,51 +17,51 @@ namespace Inwentaryzacja.views.view_chooseRoom
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddBuildingView : PopupPage
     {
-        APIController api;
+        APIController api = new APIController();
 
         public AddBuildingView()
         {
             InitializeComponent();
-            api = new APIController();
+            api.ErrorEventHandler += onApiError;
         }
+
         public async void AddButtonClicked(object o, EventArgs e)
         {
             string name = BuildingName.Text;
             bool isAlreadyAdded = false;
             bool isCreated=false;
 
-            Task<BuildingEntity[]> building_task = api.getBuildings();
-            await building_task;
-            BuildingEntity[] buildings = building_task.Result;
+            BuildingEntity[] buildings = await api.getBuildings();
            
-
             foreach (BuildingEntity item in buildings)
             {
                 if (name == item.name)
                 {
                     await DisplayAlert("Dodawanie budynku", "Taki budynek już istnieje.", "Wyjdź");
                     isAlreadyAdded = true;
+
                     return;
                 }
             }
+
             if (!isAlreadyAdded)
             {
-                BuildingPrototype buildingPrototype = new BuildingPrototype(name);
-
-                Task<bool> createdTask = api.createBuilding(buildingPrototype);
-                await createdTask;
-                isCreated = createdTask.Result;
-
+                isCreated = await api.createBuilding(new BuildingPrototype(name));
             }
 
             await PopupNavigation.Instance.PopAsync(true);
 
-            if (isCreated){
+            if (isCreated) {
                 await DisplayAlert("Dodawanie budynku", "Pomyślnie dodano nowy budynek", "Wyjdź");
             }
-            else{
+            else {
                 await DisplayAlert("Dodawanie budynku", "Niepowodzenie podczas dodawania budynku", "Wyjdź");
             } 
+        }
+
+        private async void onApiError(object o, ErrorEventArgs error)
+        {
+            await DisplayAlert("Błąd", error.MessageForUser, "Wyjdz");
         }
     }
 }
