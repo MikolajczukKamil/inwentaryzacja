@@ -14,13 +14,12 @@ namespace Inwentaryzacja.views.view_chooseRoom
     public partial class AddRoom : ContentPage
     {
         APIController api = new APIController();
-       
         protected async override void OnAppearing()
         {
             
             base.OnAppearing();
             api = new APIController();
-            List<B> buildings_list = new List<B> { };
+            List<B> buildings_list = new List<B>();
             Task<BuildingEntity[]> buildings = api.getBuildings();
             await buildings;
             BuildingEntity[] build = buildings.Result;
@@ -28,7 +27,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
             {
                 buildings_list.Add(new B() {BuildingName= build[i].name });
             }
-            List_View.ItemsSource = buildings_list;
+            Building_List.ItemsSource = buildings_list;
         }
         public class B
         {
@@ -48,7 +47,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
         public async void Check_Room(object o, EventArgs args)
         {
             string number = room_number.Text;
-            B budynek=(B) List_View.SelectedItem;
+            B budynek=(B) Building_List.SelectedItem;
             BuildingEntity[] buildings = await api.getBuildings();
             BuildingEntity mybuilding = new BuildingEntity();
             foreach (var item in buildings)
