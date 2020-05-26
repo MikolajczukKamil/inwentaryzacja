@@ -1,17 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:inwentaryzacja="clr-namespace:Inwentaryzacja;assembly=Inwentaryzacja"
+             xmlns:inwentaryzacja="clr-namespace:Inwentaryzacja;assembly=Inwentaryzacja" 
+             xmlns:local="clr-namespace:Inwentaryzacja"
              x:Class="Inwentaryzacja.ChooseRoomPage"
              BackgroundColor="#8EE3BA">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Wybierz salę"
-                   FontSize="50"
+
+            <Label Text="Wybierz budynek"
+                   FontSize="30"
                    VerticalOptions="Start"
                    HorizontalOptions="CenterAndExpand"
                    HorizontalTextAlignment="Center"
-                   Margin="0, 70"
+                   Margin="0, 40"
                    TextColor="Black"
                    FontFamily=""/>
             <Frame
@@ -21,6 +23,31 @@
                 CornerRadius="40"
                 HeightRequest="44"
                 WidthRequest="20">
+                <inwentaryzacja:BorderlessPicker
+                                                 Placeholder="Budynek"
+                                                 HorizontalOptions="FillAndExpand" 
+                                                 VerticalOptions="Center"
+                                                 x:Name="BuildingPicker"
+                                                 SelectedIndexChanged="BuildingPicker_SelectedIndexChanged"/>
+            </Frame>
+
+            <Label Text="Wybierz salę"
+                   FontSize="30"
+                   VerticalOptions="Start"
+                   HorizontalOptions="CenterAndExpand"
+                   HorizontalTextAlignment="Center"
+                   Margin="0, 40"
+                   TextColor="Black"
+                   FontFamily=""
+                   x:Name="RoomPickerText"/>
+            <Frame
+                Margin="20, 0"
+                HorizontalOptions="Fill"
+                VerticalOptions="End"
+                CornerRadius="40"
+                HeightRequest="44"
+                WidthRequest="20"
+                x:Name="RoomPickerFrame">
                 <inwentaryzacja:BorderlessPicker
                                                  Placeholder="Sala"
                                                  HorizontalOptions="FillAndExpand" 
@@ -50,6 +77,16 @@
                     CornerRadius="12"
                     WidthRequest="300"
                     HeightRequest="50" />
+            <local:RoundedButton Text="Dodaj nowy budynek"
+                    FontSize="Large"
+                    Clicked="AddBuildingClicked"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    BackgroundColor="White"
+                    CornerRadius="12"
+                    WidthRequest="300"
+                    HeightRequest="50"
+                    Margin="0, 15, 0, 10"/>
             <Button Text="Powrót"
                     ImageSource="back_icon.png"
                     ContentLayout="Right, -40"
