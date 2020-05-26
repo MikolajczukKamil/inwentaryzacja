@@ -94,5 +94,10 @@ namespace Inwentaryzacja
 		{
 			await DisplayAlert("Błąd", error.MessageForUser, "Wyjdz");
 		}
+
+		private void Return_button_clicked(object o, EventArgs e)
+		{
+			App.Current.MainPage = new WelcomeViewPage();
+		}
 	}
 }
