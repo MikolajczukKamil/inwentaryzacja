@@ -20,25 +20,19 @@ namespace Inwentaryzacja
 		BuildingEntity[] buildings;
 
 		APIController api = new APIController();
-		
-		public ChooseRoomPage ()
+
+		public ChooseRoomPage()
 		{
 			InitializeComponent();
-
 			api.ErrorEventHandler += onApiError;
-
 			GetBuildings();
 		}
 
 		private void BuildingPicker_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			string choosenBuildingName = BuildingPicker.Items[BuildingPicker.SelectedIndex];
-
-			RoomPicker.Items.Clear();
-
 			GetBuildingRooms(choosenBuildingName);
 		}
-
 		public void AddBuildingClicked(object o, EventArgs e)
 		{
 			PopupNavigation.Instance.PushAsync(new AddBuildingView());
@@ -46,6 +40,7 @@ namespace Inwentaryzacja
 
 		private void GetBuildingRooms(string name)
 		{
+
 			BuildingEntity buildingItem = null;
 
 			foreach (BuildingEntity item in buildings)
@@ -57,30 +52,35 @@ namespace Inwentaryzacja
 				}
 			}
 
-			if (buildingItem != null)
-			{
-				GetRooms(buildingItem.id);
-			}
+			if (buildingItem != null) GetRooms(buildingItem.id);
 		}
 
 		private async void GetRooms(int buildingId)
 		{
-			rooms = await api.getRooms(buildingId);
+			int pickerCount = RoomPicker.Items.Count;
+
+			Task<RoomEntity[]> getRoomsTask = api.getRooms(buildingId);
+			await getRoomsTask;
+			rooms = getRoomsTask.Result;
+
+			if (pickerCount > 0) RoomPicker.Items.Clear();
 
 			foreach (RoomEntity item in rooms)
 			{
 				RoomPicker.Items.Add(item.name);
 			}
+
+			if (pickerCount > 0) RoomPicker.IsEnabled = true;
+			else RoomPicker.IsEnabled = false;
 		}
 
 		private async void GetBuildings()
 		{
-			buildings = await api.getBuildings();
+			Task<BuildingEntity[]> getBuildingsTask = api.getBuildings();
+			await getBuildingsTask;
+			buildings = getBuildingsTask.Result;
 
-			if (buildings == null)
-			{
-				return;
-			}
+			if (buildings == null) return;
 
 			foreach (BuildingEntity item in buildings)
 			{

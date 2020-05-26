@@ -13,7 +13,7 @@
                    VerticalOptions="Start"
                    HorizontalOptions="CenterAndExpand"
                    HorizontalTextAlignment="Center"
-                   Margin="0, 40"
+                   Margin="0, 10"
                    TextColor="Black"
                    FontFamily=""/>
             <Frame
@@ -21,7 +21,6 @@
                 HorizontalOptions="Fill"
                 VerticalOptions="End"
                 CornerRadius="40"
-                HeightRequest="44"
                 WidthRequest="20">
                 <inwentaryzacja:BorderlessPicker
                                                  Placeholder="Budynek"
@@ -36,7 +35,7 @@
                    VerticalOptions="Start"
                    HorizontalOptions="CenterAndExpand"
                    HorizontalTextAlignment="Center"
-                   Margin="0, 40"
+                   Margin="0, 10"
                    TextColor="Black"
                    FontFamily=""
                    x:Name="RoomPickerText"/>
@@ -45,7 +44,6 @@
                 HorizontalOptions="Fill"
                 VerticalOptions="End"
                 CornerRadius="40"
-                HeightRequest="44"
                 WidthRequest="20"
                 x:Name="RoomPickerFrame">
                 <inwentaryzacja:BorderlessPicker
@@ -54,21 +52,21 @@
                                                  VerticalOptions="Center"
                                                  x:Name="RoomPicker"/>
             </Frame>
-        
+
             <Button Text="Kontynuuj"
                     BackgroundColor="White"
                     FontSize="Large"
                     CornerRadius="12"
                     HeightRequest="50"
                     WidthRequest="180"
-                    Margin="0, 20, 0, 40"
+                    Margin="0, 10, 0, 20"
                     HorizontalOptions="Center"
                     VerticalOptions="End"/>
             <Label Text="lub"
                     FontSize="Medium"
                     HorizontalOptions="Center"
                     VerticalOptions="End"
-                    Margin="0,30,0,0"/>
+                    Margin="0,10,0,0"/>
             <Button Text="Dodaj nową salę"
                     FontSize="Large"
                     VerticalOptions="Center"
@@ -86,7 +84,7 @@
                     CornerRadius="12"
                     WidthRequest="300"
                     HeightRequest="50"
-                    Margin="0, 15, 0, 10"/>
+                    Margin="0, 10, 0, 5"/>
             <Button Text="Powrót"
                     ImageSource="back_icon.png"
                     ContentLayout="Right, -40"
