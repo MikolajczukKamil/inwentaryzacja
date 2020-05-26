@@ -14,49 +14,79 @@ namespace Inwentaryzacja.views.view_chooseRoom
     public partial class AddRoom : ContentPage
     {
         APIController api = new APIController();
-
-
+       
+        protected async override void OnAppearing()
+        {
+            
+            base.OnAppearing();
+            api = new APIController();
+            List<B> buildings_list = new List<B> { };
+            Task<BuildingEntity[]> buildings = api.getBuildings();
+            await buildings;
+            BuildingEntity[] build = buildings.Result;
+            for (int i = 0; i < build.Length; i++)
+            {
+                buildings_list.Add(new B() {BuildingName= build[i].name });
+            }
+            List_View.ItemsSource = buildings_list;
+        }
+        public class B
+        {
+            public string BuildingName { get; set; }
+        }
         public AddRoom()
         {
             InitializeComponent();
-        }
+         }
+     
 
         public void return_ChooseRoom(object o, EventArgs args)
         {
             Application.Current.MainPage = new NavigationPage(new ChooseRoomPage());
         }
-
+       
         public async void Check_Room(object o, EventArgs args)
         {
             string number = room_number.Text;
-            string nazwa = building_name.Text;
-            bool buildingexist = false;
-           
+            B budynek=(B) List_View.SelectedItem;
             BuildingEntity[] buildings = await api.getBuildings();
-
+            BuildingEntity mybuilding = new BuildingEntity();
             foreach (var item in buildings)
             {
-                if (item.name == nazwa)
+                if (item.name == budynek.BuildingName)
                 {
-                    buildingexist = true;
-                    RoomPropotype roomprop = new RoomPropotype(number, item);
-                    bool isAdded = await api.createRoom(roomprop);
-
-                    if (isAdded)
-                    {
-                        await DisplayAlert("Dodawanie pokoju", "Pomyślnie dodano nowy pokój", "Wyjdź");
-                    }
-                    else
-                    {
-                        await DisplayAlert("Dodawanie pokoju", "Niepowodzenie podczas dodawania pokoju", "Wyjdź");
-                    }
+                    mybuilding = item;
                 }
             }
-
-            if (!buildingexist)
+           
+            RoomEntity[] rooms = await api.getRooms(mybuilding.id);
+            bool roomexist = false;
+            foreach (var item in rooms)
             {
-                await DisplayAlert("Brak Budynku", "Nie istnieje taki budynek", "Wyjdź");
+                if (item.name == number)
+                {
+                    roomexist = true;
+                    await DisplayAlert("Błąd", "W tym budynku istnieje już taki pokój", "Wyjdź");
+                }
             }
+            if (!roomexist)
+            {
+                RoomPropotype roomprop = new RoomPropotype(number, mybuilding);
+                bool isAdded = await api.createRoom(roomprop);
+
+                if (isAdded)
+                {
+                    await DisplayAlert("Dodawanie pokoju", "Pomyślnie dodano nowy pokój", "Wyjdź");
+                }
+                else
+                {
+                    await DisplayAlert("Dodawanie pokoju", "Niepowodzenie podczas dodawania pokoju", "Wyjdź");
+                }
+
+            }
+            
+
+
         }
     }
 }

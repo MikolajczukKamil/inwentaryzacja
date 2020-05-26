@@ -23,13 +23,33 @@
                     VerticalOptions="Start"
                     Margin="50,5"
                     x:Name="room_number"/>
-            
-            <local:RoundedEntry Placeholder="nazwa budynku"
-                    HorizontalOptions="FillAndExpand" 
-                    VerticalOptions="Start"
-                    Margin="50,5"
-                    x:Name="building_name"/>
 
+            <Label Text="Budynek:"
+                   FontSize="Medium" 
+                   VerticalOptions="Start"
+                   HorizontalOptions="CenterAndExpand"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,10"
+                   TextColor="Black"
+                   />
+            <ListView x:Name="List_View" SelectionMode="Single"
+                  BackgroundColor="White" 
+                >
+                <ListView.ItemTemplate >
+                    <DataTemplate >
+                        <ViewCell >
+                            <Label Text="{Binding Buildingname}"
+                               FontSize="Medium"
+                               HorizontalTextAlignment="Center"    
+                               Margin="20,10"
+                               TextColor="Black"
+                                   
+                               />
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
             <Button Text="Kontynuuj"
                     BackgroundColor="White"
                     FontSize="Large"
