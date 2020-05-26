@@ -76,10 +76,10 @@ namespace Inwentaryzacja
 			if (buildings == null) await DisplayAlert("Zmiennna", "Buildings jest nullem", "Wyjdz");
 
 			//I przez to aplikacja wywala się gdy dochodzi do wykonania tego kodu
-			//foreach (BuildingEntity item in buildings)
-			//{
-			//	BuildingPicker.Items.Add(item.name);
-			//}
+			foreach (BuildingEntity item in buildings)
+			{
+				BuildingPicker.Items.Add(item.name);
+			}
 		}
 	}
 }
