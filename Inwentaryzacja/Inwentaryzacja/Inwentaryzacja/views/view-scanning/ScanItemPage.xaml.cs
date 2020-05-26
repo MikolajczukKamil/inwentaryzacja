@@ -161,7 +161,13 @@ namespace Inwentaryzacja
 
         private void TurnLight(object sender, EventArgs e)
         {
-            _scanner.ToggleTorch();
+            try
+            {
+                _scanner.ToggleTorch();
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }
