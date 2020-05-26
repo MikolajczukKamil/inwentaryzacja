@@ -67,6 +67,8 @@ namespace Inwentaryzacja
 		{
 			rooms = await api.getRooms(buildingId);
 
+			RoomPicker.Items.Clear();
+
 			foreach (RoomEntity item in rooms)
 			{
 				RoomPicker.Items.Add(item.name);
