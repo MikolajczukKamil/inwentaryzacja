@@ -75,10 +75,11 @@ namespace Inwentaryzacja
 			//Problem w tym, że wyświetla się alert niżej, jakbym dostał nulla z metody api.GetBuildings()
 			if (buildings == null) await DisplayAlert("Zmiennna", "Buildings jest nullem", "Wyjdz");
 
-			foreach (BuildingEntity item in buildings)
-			{
-				BuildingPicker.Items.Add(item.name);
-			}
+			//I przez to aplikacja wywala się gdy dochodzi do wykonania tego kodu
+			//foreach (BuildingEntity item in buildings)
+			//{
+			//	BuildingPicker.Items.Add(item.name);
+			//}
 		}
 	}
 }
