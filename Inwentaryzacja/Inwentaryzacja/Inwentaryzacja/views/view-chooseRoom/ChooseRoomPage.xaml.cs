@@ -35,7 +35,7 @@ namespace Inwentaryzacja
 		}
 		public void AddBuildingClicked(object o, EventArgs e)
 		{
-			PopupNavigation.Instance.PushAsync(new AddBuildingView());
+			App.Current.MainPage = new AddBuildingView();
 		}
 
 		private void GetBuildingRooms(string name)
@@ -86,6 +86,8 @@ namespace Inwentaryzacja
 			{
 				BuildingPicker.Items.Add(item.name);
 			}
+
+			if (BuildingPicker.Items.Count > 0) BuildingPicker.SelectedItem = BuildingPicker.Items[BuildingPicker.Items.Count - 1];
 		}
 
 		private async void onApiError(object o, ErrorEventArgs error)

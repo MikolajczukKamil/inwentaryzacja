@@ -18,14 +18,15 @@
                    FontFamily=""/>
             <Frame
                 Margin="20, 0"
+                Padding="20,5,20,5"               
                 HorizontalOptions="Fill"
-                VerticalOptions="End"
+                VerticalOptions="CenterAndExpand"
                 CornerRadius="40"
                 WidthRequest="20">
                 <inwentaryzacja:BorderlessPicker
                                                  Placeholder="Budynek"
                                                  HorizontalOptions="FillAndExpand" 
-                                                 VerticalOptions="Center"
+                                                 VerticalOptions="CenterAndExpand"
                                                  x:Name="BuildingPicker"
                                                  SelectedIndexChanged="BuildingPicker_SelectedIndexChanged"/>
             </Frame>
@@ -37,15 +38,14 @@
                    HorizontalTextAlignment="Center"
                    Margin="0, 10"
                    TextColor="Black"
-                   FontFamily=""
-                   x:Name="RoomPickerText"/>
+                   FontFamily=""/>
             <Frame
                 Margin="20, 0"
+                Padding="20,5,20,5"               
                 HorizontalOptions="Fill"
-                VerticalOptions="End"
+                VerticalOptions="CenterAndExpand"
                 CornerRadius="40"
-                WidthRequest="20"
-                x:Name="RoomPickerFrame">
+                WidthRequest="20">
                 <inwentaryzacja:BorderlessPicker
                                                  Placeholder="Sala"
                                                  HorizontalOptions="FillAndExpand" 

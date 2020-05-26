@@ -15,7 +15,7 @@ using Xamarin.Forms.Xaml;
 namespace Inwentaryzacja.views.view_chooseRoom
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddBuildingView : PopupPage
+    public partial class AddBuildingView : ContentPage
     {
         APIController api = new APIController();
 
@@ -54,21 +54,26 @@ namespace Inwentaryzacja.views.view_chooseRoom
 
             }
 
-            await PopupNavigation.Instance.PopAsync(true);
+            App.Current.MainPage = new ChooseRoomPage();
 
             if (isCreated)
             {
-                await DisplayAlert("Dodawanie budynku", "Pomyślnie dodano nowy budynek", "Wyjdź");
+                DisplayAlert("Dodawanie budynku", "Pomyślnie dodano nowy budynek", "Wyjdź");
             }
             else
             {
-                await DisplayAlert("Dodawanie budynku", "Niepowodzenie podczas dodawania budynku", "Wyjdź");
+                DisplayAlert("Dodawanie budynku", "Niepowodzenie podczas dodawania budynku", "Wyjdź");
             }
         }
 
         private async void onApiError(object o, ErrorEventArgs error)
         {
             await DisplayAlert("Błąd", error.MessageForUser, "Wyjdz");
+        }
+
+        private void return_ChooseRoom(object o, EventArgs e)
+        {
+            App.Current.MainPage = new ChooseRoomPage();
         }
     }
 }
