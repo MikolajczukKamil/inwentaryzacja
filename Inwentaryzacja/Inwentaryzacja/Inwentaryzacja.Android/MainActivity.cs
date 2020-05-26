@@ -18,6 +18,7 @@ namespace Inwentaryzacja.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
+            Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);

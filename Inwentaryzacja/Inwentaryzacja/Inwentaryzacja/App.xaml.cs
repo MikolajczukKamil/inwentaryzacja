@@ -14,14 +14,12 @@ namespace Inwentaryzacja
         public App()
         {
             InitializeComponent();
-            MainPage = new LoadingPage();
+            MainPage = new WelcomeViewPage();
         }
 
-        protected async override void OnStart()
+        protected override void OnStart()
         {
-            APIController api = new APIController();
-            await api.LoginUser("user1", "111");
-            MainPage = new WelcomeViewPage();
+            // Handle when your app starts
         }
 
         protected override void OnSleep()

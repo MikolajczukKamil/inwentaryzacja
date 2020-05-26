@@ -1,4 +1,5 @@
 ﻿using Inwentaryzacja.Models;
+using Inwentaryzacja.views.view_chooseRoom;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,9 @@ namespace Inwentaryzacja
             InitializeComponent();
         }
 
-        private async void scanButtonClicked(object sender, EventArgs e)
+        private void scanButtonClicked(object sender, EventArgs e)
         {
-
+            App.Current.MainPage = new ChooseRoomPage();
         }
         private async void _AllReportsButton_Clicked(object sender, EventArgs e)
         {
