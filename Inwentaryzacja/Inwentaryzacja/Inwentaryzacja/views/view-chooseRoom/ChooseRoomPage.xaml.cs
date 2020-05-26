@@ -60,6 +60,8 @@ namespace Inwentaryzacja
 			await getRoomsTask;
 			rooms = getRoomsTask.Result;
 
+			RoomPicker.Items.Clear();
+
 			foreach (RoomEntity item in rooms)
 			{
 				RoomPicker.Items.Add(item.name);
