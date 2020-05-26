@@ -24,14 +24,21 @@ namespace Inwentaryzacja
 		public ChooseRoomPage ()
 		{
 			InitializeComponent();
+
+			api.ErrorEventHandler += onApiError;
+
 			GetBuildings();
 		}
 
 		private void BuildingPicker_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			string choosenBuildingName = BuildingPicker.Items[BuildingPicker.SelectedIndex];
+
+			RoomPicker.Items.Clear();
+
 			GetBuildingRooms(choosenBuildingName);
 		}
+
 		public void AddBuildingClicked(object o, EventArgs e)
 		{
 			PopupNavigation.Instance.PushAsync(new AddBuildingView());
@@ -39,7 +46,6 @@ namespace Inwentaryzacja
 
 		private void GetBuildingRooms(string name)
 		{
-
 			BuildingEntity buildingItem = null;
 
 			foreach (BuildingEntity item in buildings)
@@ -51,14 +57,15 @@ namespace Inwentaryzacja
 				}
 			}
 
-			if (buildingItem != null) GetRooms(buildingItem.id);
+			if (buildingItem != null)
+			{
+				GetRooms(buildingItem.id);
+			}
 		}
 
 		private async void GetRooms(int buildingId)
 		{
-			Task<RoomEntity[]> getRoomsTask = api.getRooms(buildingId);
-			await getRoomsTask;
-			rooms = getRoomsTask.Result;
+			rooms = await api.getRooms(buildingId);
 
 			foreach (RoomEntity item in rooms)
 			{
@@ -68,18 +75,22 @@ namespace Inwentaryzacja
 
 		private async void GetBuildings()
 		{
-			Task<BuildingEntity[]> getBuildingsTask = api.getBuildings();
-			await getBuildingsTask;
-			buildings = getBuildingsTask.Result;
+			buildings = await api.getBuildings();
 
-			//Problem w tym, że wyświetla się alert niżej, jakbym dostał nulla z metody api.GetBuildings()
-			if (buildings == null) await DisplayAlert("Zmiennna", "Buildings jest nullem", "Wyjdz");
+			if (buildings == null)
+			{
+				return;
+			}
 
-			//I przez to aplikacja wywala się gdy dochodzi do wykonania tego kodu
-			//foreach (BuildingEntity item in buildings)
-			//{
-			//	BuildingPicker.Items.Add(item.name);
-			//}
+			foreach (BuildingEntity item in buildings)
+			{
+				BuildingPicker.Items.Add(item.name);
+			}
+		}
+
+		private async void onApiError(object o, ErrorEventArgs error)
+		{
+			await DisplayAlert("Błąd", error.MessageForUser, "Wyjdz");
 		}
 	}
 }
