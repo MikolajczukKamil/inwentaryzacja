@@ -90,7 +90,7 @@
                     BackgroundColor="White"
                     WidthRequest="150"
                     HeightRequest="45"
-                    Margin="20,10"
+                    Margin="20,20"
                     Padding="10,5,10,5"
                     VerticalOptions="EndAndExpand"
                     Clicked="Return_button_clicked"/>

@@ -26,7 +26,7 @@
                     Margin="20,5"
                     x:Name="BuildingName"/>
 
-            <Button Text="Dodaj"
+            <local:RoundedButton Text="Dodaj"
                     BackgroundColor="White"
                     FontSize="Large"
                     CornerRadius="12"
@@ -38,16 +38,16 @@
                     Clicked="AddButtonClicked"/>
 
 
-            <Button Text="Powrót"
+            <local:RoundedButton Text="Powrót"
                     ImageSource="back_icon.png"
                     ContentLayout="Right, -40"
                     HorizontalOptions="Start"
                     FontSize="20"
-                    CornerRadius="12"
                     BackgroundColor="White"
                     WidthRequest="150"
                     HeightRequest="45"
-                    Margin="20,10"
+                    Padding="10,5,10,5"
+                    Margin="20,20"
                     VerticalOptions="EndAndExpand"
                     Clicked="return_ChooseRoom"/>
         </StackLayout>
