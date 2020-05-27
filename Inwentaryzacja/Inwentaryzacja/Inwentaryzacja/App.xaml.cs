@@ -1,8 +1,4 @@
-﻿using Inwentaryzacja.Controllers.Api;
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
@@ -13,8 +9,7 @@ namespace Inwentaryzacja
         public App()
         {
             InitializeComponent();
-            MainPage = new LoginPage();
-            
+            MainPage = new WelcomeViewPage();
         }
 
         protected override void OnStart()
@@ -29,7 +24,7 @@ namespace Inwentaryzacja
 
         protected override void OnResume()
         {
-            // Handle when your app resumes
+
         }
     }
 }

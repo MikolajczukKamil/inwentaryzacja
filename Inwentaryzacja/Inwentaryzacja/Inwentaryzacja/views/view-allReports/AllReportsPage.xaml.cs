@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inwentaryzacja.Controllers.Api;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,46 @@ namespace Inwentaryzacja
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AllReportsPage : ContentPage
     {
+        APIController api = new APIController();
+
         public AllReportsPage()
         {
             InitializeComponent();
+            api.ErrorEventHandler += onApiError;
+        }
+
+        private async void back_Clicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new WelcomeViewPage());
+        }
+
+        protected async override void OnAppearing()
+        {
+            base.OnAppearing();
+            List<AllReport> rp = new List<AllReport>();
+
+            ReportHeaderEntity[] rep = await api.getReportHeaders();
+
+            if (rep == null) return;
+
+            for (int i = 0; i < rep.Length; i++)
+            {
+                rp.Add(new AllReport() { ReportName = rep[i].name, ReportRoom = rep[i].room.name, ReportDate = Convert.ToString(rep[i].create_date) });
+            }
+
+            ReportList.ItemsSource = rp;
+        }
+
+        private async void onApiError(object o, ErrorEventArgs error)
+        {
+            await DisplayAlert("Błąd", error.MessageForUser, "Wyjdz");
+        }
+
+        public class AllReport
+        {
+            public string ReportName { get; set; }
+            public string ReportRoom { get; set; }
+            public string ReportDate { get; set; }
         }
     }
 }

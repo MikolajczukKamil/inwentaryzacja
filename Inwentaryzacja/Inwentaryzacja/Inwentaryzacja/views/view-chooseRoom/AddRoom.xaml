@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:local="clr-namespace:Inwentaryzacja"
+             mc:Ignorable="d"
+             BackgroundColor="#8EE3BA"
+             x:Class="Inwentaryzacja.views.view_chooseRoom.AddRoom">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Dodaj salę"
+                   FontSize="50" 
+                   VerticalOptions="Start"
+                   HorizontalOptions="CenterAndExpand"
+                   HorizontalTextAlignment="Center"
+                   Margin="0, 70"
+                   TextColor="Black"
+                   FontFamily=""/>
+
+            <local:RoundedEntry Placeholder="nazwa sali"
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="Start"
+                    Margin="50,5"
+                    x:Name="room_number"/>
+
+            <Label Text="Budynek:"
+                   FontSize="Medium" 
+                   VerticalOptions="Start"
+                   HorizontalOptions="CenterAndExpand"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,10"
+                   TextColor="Black"
+                   />
+
+            <CollectionView x:Name="Building_List" SelectionMode="Single"
+                    BackgroundColor="White"            
+                >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding BuildingName}"
+                               FontSize="Medium"
+                               HorizontalTextAlignment="Center"    
+                               Margin="20,10"
+                               TextColor="Black"
+                               />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="Kontynuuj"
+                    BackgroundColor="White"
+                    FontSize="Large"
+                    CornerRadius="12"
+                    HeightRequest="50"
+                    WidthRequest="180"
+                    Margin="0, 20, 0, 40"
+                    HorizontalOptions="Center"
+                    VerticalOptions="End"
+                    Clicked="Check_Room"/>
+
+
+            <Button Text="Powrót"
+                    ImageSource="back_icon.png"
+                    ContentLayout="Right, -40"
+                    HorizontalOptions="Start"
+                    FontSize="20"
+                    CornerRadius="12"
+                    BackgroundColor="White"
+                    WidthRequest="150"
+                    HeightRequest="45"
+                    Margin="20,10"
+                    VerticalOptions="EndAndExpand"
+                    Clicked="return_ChooseRoom"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

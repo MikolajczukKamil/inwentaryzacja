@@ -39,8 +39,8 @@ namespace Inwentaryzacja.Controllers.Api
         public int id;
         public string name;
         public DateTime create_date;
-        public User owner;
-        public RoomPropotype room;
+        public UserEntity owner;
+        public RoomEntity room;
     }
 
     public class ReportPositionEntity
@@ -48,5 +48,11 @@ namespace Inwentaryzacja.Controllers.Api
         public AssetEntity asset;
         public RoomEntity previous_room;
         public bool present;
+    }
+
+    public class UserEntity
+    {
+        public int id;
+        public string login;
     }
 }
