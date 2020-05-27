@@ -72,7 +72,8 @@
                     HorizontalOptions="Center"
                     BackgroundColor="White"
                     WidthRequest="300"
-                    HeightRequest="50" />
+                    HeightRequest="50" 
+                    Clicked="AddRoom_clicked"/>
             <local:RoundedButton Text="Dodaj nowy budynek"
                     FontSize="Large"
                     Clicked="AddBuildingClicked"

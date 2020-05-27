@@ -66,6 +66,11 @@ namespace Inwentaryzacja
 			if (pickerCount > 0) RoomPicker.IsEnabled = true;
 			else RoomPicker.IsEnabled = false;
 		}
+		
+		public void AddRoom_clicked(object o, EventArgs args)
+		{
+			App.Current.MainPage = new NavigationPage(new AddRoom());
+		}
 
 		private async void GetBuildings()
 		{
@@ -79,7 +84,7 @@ namespace Inwentaryzacja
 			}
 
 			if (BuildingPicker.Items.Count > 0)
-            {
+      {
 				BuildingPicker.SelectedItem = BuildingPicker.Items[BuildingPicker.Items.Count - 1];
 			}
 		}
