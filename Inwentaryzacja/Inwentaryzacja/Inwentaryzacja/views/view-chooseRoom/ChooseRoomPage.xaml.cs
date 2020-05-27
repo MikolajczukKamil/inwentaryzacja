@@ -100,13 +100,13 @@ namespace Inwentaryzacja
 			string selectedName = RoomPicker.Items[RoomPicker.SelectedIndex];
 
 			foreach (var room in rooms)
-      {
+			{
 				if(room.name == selectedName)
-        {
+				{
 					selectedRoom = room;
 					break;
 				}
-      }
+			}
 
 			if(selectedRoom != null)
 			{
