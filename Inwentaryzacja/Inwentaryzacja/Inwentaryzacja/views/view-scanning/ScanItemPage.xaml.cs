@@ -12,6 +12,7 @@ using System.Threading;
 using Inwentaryzacja.views.view_scannedItem;
 using Inwentaryzacja.views;
 using Inwentaryzacja.Models;
+using Inwentaryzacja.Controllers.Api;
 
 namespace Inwentaryzacja
 {
@@ -20,6 +21,7 @@ namespace Inwentaryzacja
     {
         private ZXing.Result prev=null;
         private List<string> scannedItem = new List<string>();
+        private RoomEntity selectedRoom;
 
         public ScanItemPage()
         {
@@ -39,6 +41,27 @@ namespace Inwentaryzacja
                 TryHarder = false //Gets or sets a flag which cause a deeper look into the bitmap.
             };
             _scanner.Options = zXingOptions;
+        }
+        public ScanItemPage(RoomEntity selectedRoom)
+        {
+            InitializeComponent();
+
+            var zXingOptions = new MobileBarcodeScanningOptions()
+            {
+                DelayBetweenContinuousScans = 1800, // msec
+                UseFrontCameraIfAvailable = false,
+                PossibleFormats = new List<BarcodeFormat>(new[]
+                {
+                     BarcodeFormat.EAN_8,
+                     BarcodeFormat.EAN_13,
+                     BarcodeFormat.CODE_128,
+                     BarcodeFormat.QR_CODE
+                }),
+                TryHarder = false //Gets or sets a flag which cause a deeper look into the bitmap.
+            };
+            _scanner.Options = zXingOptions;
+
+            this.selectedRoom=selectedRoom;
         }
 
         protected override void OnAppearing()

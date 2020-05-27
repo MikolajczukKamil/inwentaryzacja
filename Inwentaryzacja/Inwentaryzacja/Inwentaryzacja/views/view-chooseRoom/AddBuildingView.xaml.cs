@@ -1,6 +1,7 @@
 ﻿using Inwentaryzacja.Controllers.Api;
 using Inwentaryzacja.Models;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,12 +16,17 @@ namespace Inwentaryzacja.views.view_chooseRoom
         {
             InitializeComponent();
             api.ErrorEventHandler += onApiError;
+            BindingContext = this;
         }
 
         public async void AddButtonClicked(object o, EventArgs e)
         {
             string name = BuildingName.Text;
-            BuildingEntity[] buildings = await api.getBuildings();
+            Task<BuildingEntity[]> buildingsTask = api.getBuildings();
+            EnableView(false);
+            await buildingsTask;
+            EnableView(true);
+            BuildingEntity[] buildings = buildingsTask.Result;
 
             foreach (BuildingEntity item in buildings)
             {
@@ -31,14 +37,25 @@ namespace Inwentaryzacja.views.view_chooseRoom
                 }
             }
 
-            bool isCreated = await api.createBuilding(new BuildingPrototype(name));
+            Task<bool> createTask = api.createBuilding(new BuildingPrototype(name));
+            EnableView(false);
+            await createTask;
+            EnableView(true);
+            bool isCreated = createTask.Result;
 
-            App.Current.MainPage = new ChooseRoomPage();
+            App.Current.MainPage = new ChooseRoomPage(true);
 
             if (isCreated)
             {
                 await DisplayAlert("Dodawanie budynku", "Pomyślnie dodano nowy budynek", "Wyjdź");
             }
+        }
+
+        private void EnableView(bool state)
+        {
+            IsBusy = !state;
+            AddBtn.IsEnabled = state;
+            BackBtn.IsEnabled = state;
         }
 
         private async void onApiError(object o, ErrorEventArgs error)

@@ -35,8 +35,14 @@
                     Margin="0, 40, 0, 40"
                     HorizontalOptions="Center"
                     VerticalOptions="End"
-                    Clicked="AddButtonClicked"/>
+                    Clicked="AddButtonClicked"
+                    x:Name="AddBtn"/>
 
+            <ActivityIndicator x:Name="activityIndicator" 
+                               IsRunning="{Binding IsBusy}"  
+                               VerticalOptions="CenterAndExpand" 
+                               HorizontalOptions="CenterAndExpand" 
+                               Color="Blue"/>
 
             <local:RoundedButton Text="Powrót"
                     ImageSource="back_icon.png"
@@ -49,7 +55,8 @@
                     Padding="10,5,10,5"
                     Margin="20,20"
                     VerticalOptions="EndAndExpand"
-                    Clicked="return_ChooseRoom"/>
+                    Clicked="return_ChooseRoom"
+                    x:Name="BackBtn"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
