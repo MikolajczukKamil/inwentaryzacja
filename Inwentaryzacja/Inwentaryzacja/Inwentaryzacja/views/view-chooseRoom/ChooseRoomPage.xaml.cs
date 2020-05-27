@@ -84,8 +84,37 @@ namespace Inwentaryzacja
 			}
 
 			if (BuildingPicker.Items.Count > 0)
-      {
+			{
 				BuildingPicker.SelectedItem = BuildingPicker.Items[BuildingPicker.Items.Count - 1];
+			}
+		}
+
+		private async void Contionue_Clicked(object o, EventArgs args) {
+			if(RoomPicker.SelectedIndex < 0)
+			{
+				await DisplayAlert("Pomieszczenie", "Wybierz pomieszczenie", "OK");
+				return;
+			}
+
+			RoomEntity selectedRoom = null;
+			string selectedName = RoomPicker.Items[RoomPicker.SelectedIndex];
+
+			foreach (var room in rooms)
+			{
+				if(room.name == selectedName)
+				{
+					selectedRoom = room;
+					break;
+				}
+			}
+
+			if(selectedRoom != null)
+			{
+				App.Current.MainPage = new NavigationPage(new ScanItemPage(selectedRoom));
+			}
+			else
+			{
+				await DisplayAlert("Błąd", "Błąd niespodzianka, nie znaleziono wybranego pomieszczenia", "OK");
 			}
 		}
 

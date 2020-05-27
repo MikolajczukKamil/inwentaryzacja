@@ -60,7 +60,8 @@
                     WidthRequest="180"
                     Margin="0, 10, 0, 20"
                     HorizontalOptions="Center"
-                    VerticalOptions="End"/>
+                    VerticalOptions="End"
+                    Clicked="Contionue_Clicked"/>
             <Label Text="lub"
                     FontSize="Medium"
                     HorizontalOptions="Center"
