@@ -12,6 +12,7 @@ using System.Threading;
 using Inwentaryzacja.views.view_scannedItem;
 using Inwentaryzacja.views;
 using Inwentaryzacja.Models;
+using Xamarin.Essentials;
 using Inwentaryzacja.Controllers.Api;
 
 namespace Inwentaryzacja
@@ -19,12 +20,15 @@ namespace Inwentaryzacja
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ScanItemPage : ContentPage
     {
+        private RoomEntity Room;
         private ZXing.Result prev=null;
         private List<string> scannedItem = new List<string>();
         private RoomEntity selectedRoom;
 
-        public ScanItemPage()
+        public ScanItemPage(RoomEntity room)
         {
+            Room = room;
+
             InitializeComponent();
 
             var zXingOptions = new MobileBarcodeScanningOptions()
@@ -41,29 +45,7 @@ namespace Inwentaryzacja
                 TryHarder = false //Gets or sets a flag which cause a deeper look into the bitmap.
             };
             _scanner.Options = zXingOptions;
-        }
-        public ScanItemPage(RoomEntity selectedRoom)
-        {
-            InitializeComponent();
-
-            var zXingOptions = new MobileBarcodeScanningOptions()
-            {
-                DelayBetweenContinuousScans = 1800, // msec
-                UseFrontCameraIfAvailable = false,
-                PossibleFormats = new List<BarcodeFormat>(new[]
-                {
-                     BarcodeFormat.EAN_8,
-                     BarcodeFormat.EAN_13,
-                     BarcodeFormat.CODE_128,
-                     BarcodeFormat.QR_CODE
-                }),
-                TryHarder = false //Gets or sets a flag which cause a deeper look into the bitmap.
-            };
-            _scanner.Options = zXingOptions;
-
-            this.selectedRoom=selectedRoom;
-        }
-
+        }       
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -145,6 +127,7 @@ namespace Inwentaryzacja
                     {
                         prev = result;
                         _infoLabel.Text = "Liczba zeskanowanych przedmiotów: " + scannedItem.Count;
+                        Vibration.Vibrate(TimeSpan.FromMilliseconds(100));
                         await ShowPopup();
                         
                         //await DisplayAlert("Wynik skanowania", result.Text, "OK");
@@ -178,6 +161,17 @@ namespace Inwentaryzacja
             }
 
             return false;
+        }
+
+        private void TurnLight(object sender, EventArgs e)
+        {
+            try
+            {
+                _scanner.ToggleTorch();
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }

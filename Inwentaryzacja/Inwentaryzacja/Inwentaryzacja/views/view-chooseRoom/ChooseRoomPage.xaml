@@ -69,7 +69,7 @@
                                VerticalOptions="CenterAndExpand" 
                                HorizontalOptions="CenterAndExpand" 
                                Color="Blue"/>
-
+          
             <Label Text="lub"
                     FontSize="Medium"
                     HorizontalOptions="Center"

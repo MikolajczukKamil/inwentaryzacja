@@ -119,6 +119,36 @@ namespace Inwentaryzacja
 			BackBtn.IsEnabled = state;
 			AddBuildingBtn.IsEnabled = state;
 			AddRoomBtn.IsEnabled = state;
+			}
+		}
+
+		private async void Continue_Button_Clicked(object o, EventArgs args) {
+			if(RoomPicker.SelectedIndex < 0)
+			{
+				await DisplayAlert("Pomieszczenie", "Wybierz pomieszczenie", "OK");
+				return;
+			}
+
+			RoomEntity selectedRoom = null;
+			string selectedName = RoomPicker.Items[RoomPicker.SelectedIndex];
+
+			foreach (var room in rooms)
+			{
+				if(room.name == selectedName)
+				{
+					selectedRoom = room;
+					break;
+				}
+			}
+
+			if(selectedRoom != null)
+			{
+				App.Current.MainPage = new NavigationPage(new ScanItemPage(selectedRoom));
+			}
+			else
+			{
+				await DisplayAlert("Błąd", "Błąd niespodzianka, nie znaleziono wybranego pomieszczenia", "OK");
+			}
 		}
 
 		private async void onApiError(object o, ErrorEventArgs error)
@@ -131,26 +161,7 @@ namespace Inwentaryzacja
 		{
 			App.Current.MainPage = new WelcomeViewPage();
 		}
-
-		private void Continue_Button_Clicked(object sender, EventArgs e)
-		{
-			string roomName = RoomPicker.Items[RoomPicker.SelectedIndex];
-
-			RoomEntity roomEntity = null;
-
-			foreach (RoomEntity item in rooms)
-			{
-				if (item.name == roomName)
-				{
-					roomEntity = item;
-				} 
-			}
-
-			if (roomEntity != null)
-			{
-				App.Current.MainPage = new ScanItemPage(roomEntity);
-			}
-		}
+		
 		public void AddRoom_clicked(object o, EventArgs args)
 		{
 			App.Current.MainPage = new AddRoom();
