@@ -13,17 +13,21 @@ using Inwentaryzacja.views.view_scannedItem;
 using Inwentaryzacja.views;
 using Inwentaryzacja.Models;
 using Xamarin.Essentials;
+using Inwentaryzacja.Controllers.Api;
 
 namespace Inwentaryzacja
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ScanItemPage : ContentPage
     {
+        private RoomEntity Room;
         private ZXing.Result prev=null;
         private List<string> scannedItem = new List<string>();
 
-        public ScanItemPage()
+        public ScanItemPage(RoomEntity room)
         {
+            Room = room;
+
             InitializeComponent();
 
             var zXingOptions = new MobileBarcodeScanningOptions()
