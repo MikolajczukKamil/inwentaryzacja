@@ -1,6 +1,9 @@
 ﻿using Inwentaryzacja.Controllers.Api;
+using Inwentaryzacja.Models;
 using Inwentaryzacja.views.view_chooseRoom;
 using System;
+using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -11,12 +14,21 @@ namespace Inwentaryzacja
 	{
 		RoomEntity[] rooms;
 		BuildingEntity[] buildings;
+		bool addedNewBuilding = false;
 
 		APIController api = new APIController();
-
 		public ChooseRoomPage()
 		{
 			InitializeComponent();
+			api.ErrorEventHandler += onApiError;
+			BindingContext = this;
+			GetBuildings();
+		}
+		public ChooseRoomPage(bool addedNewBuilding)
+		{
+			this.addedNewBuilding = addedNewBuilding;
+			InitializeComponent();
+			BindingContext = this;			
 			api.ErrorEventHandler += onApiError;
 			GetBuildings();
 		}
@@ -25,11 +37,6 @@ namespace Inwentaryzacja
 		{
 			string choosenBuildingName = BuildingPicker.Items[BuildingPicker.SelectedIndex];
 			GetBuildingRooms(choosenBuildingName);
-		}
-
-		public void AddBuildingClicked(object o, EventArgs e)
-		{
-			App.Current.MainPage = new AddBuildingView();
 		}
 
 		private void GetBuildingRooms(string name)
@@ -50,31 +57,37 @@ namespace Inwentaryzacja
 
 		private async void GetRooms(int buildingId)
 		{
-			int pickerCount = RoomPicker.Items.Count;
-
 			rooms = await api.getRooms(buildingId);
 
-			if (rooms == null) return;
+			Task<RoomEntity[]> roomsTask = api.getRooms(buildingId);
+			EnableView(false);
+			await roomsTask;
+			EnableView(true);
+			rooms = roomsTask.Result;
 
-			if (pickerCount > 0) RoomPicker.Items.Clear();
+			if (rooms == null)
+			{
+				return;
+			} 
+
+			if (RoomPicker.Items.Count > 0) RoomPicker.Items.Clear();
 
 			foreach (RoomEntity item in rooms)
 			{
 				RoomPicker.Items.Add(item.name);
 			}
 
-			if (pickerCount > 0) RoomPicker.IsEnabled = true;
+			if (RoomPicker.Items.Count > 0) RoomPicker.IsEnabled = true;
 			else RoomPicker.IsEnabled = false;
-		}
+		}		
 		
-		public void AddRoom_clicked(object o, EventArgs args)
-		{
-			App.Current.MainPage = new NavigationPage(new AddRoom());
-		}
-
 		private async void GetBuildings()
 		{
-			buildings = await api.getBuildings();
+			Task<BuildingEntity[]> buildingTask = api.getBuildings();
+			EnableView(false);
+			await buildingTask;
+			EnableView(true);
+			buildings = buildingTask.Result;
 
 			if (buildings == null) return;
 
@@ -85,11 +98,30 @@ namespace Inwentaryzacja
 
 			if (BuildingPicker.Items.Count > 0)
 			{
-				BuildingPicker.SelectedItem = BuildingPicker.Items[BuildingPicker.Items.Count - 1];
+				if (addedNewBuilding)
+				{
+					BuildingPicker.SelectedItem = BuildingPicker.Items[BuildingPicker.Items.Count - 1];
+				}
+				else
+				{
+					BuildingPicker.SelectedItem = BuildingPicker.Items[0];
+				}
+				
 			}
 		}
 
-		private async void Contionue_Clicked(object o, EventArgs args) {
+		private void EnableView(bool state)
+		{
+			IsBusy = !state;
+			RoomPicker.IsEnabled = state;
+			BuildingPicker.IsEnabled = state;
+			BackBtn.IsEnabled = state;
+			AddBuildingBtn.IsEnabled = state;
+			AddRoomBtn.IsEnabled = state;			
+		}
+
+		private async void Continue_Button_Clicked(object o, EventArgs args) 
+		{
 			if(RoomPicker.SelectedIndex < 0)
 			{
 				await DisplayAlert("Pomieszczenie", "Wybierz pomieszczenie", "OK");
@@ -120,12 +152,34 @@ namespace Inwentaryzacja
 
 		private async void onApiError(object o, ErrorEventArgs error)
 		{
-			await DisplayAlert("Błąd", error.MessageForUser, "Wyjdz");
+			await DisplayAlert("Błąd", error.MessageForUser, "OK");
 		}
+
 
 		private void Return_button_clicked(object o, EventArgs e)
 		{
 			App.Current.MainPage = new WelcomeViewPage();
+		}
+		
+		public void AddRoom_clicked(object o, EventArgs args)
+		{
+			App.Current.MainPage = new AddRoom();
+		}
+		public void AddBuildingClicked(object o, EventArgs e)
+		{
+			App.Current.MainPage = new AddBuildingView();
+		}
+
+		public void RoomPicker_SelectedIndexChanged(object o, EventArgs e)
+		{
+			if (RoomPicker.SelectedItem == null)
+			{
+				ContinueBtn.IsEnabled = false;
+			}
+			else
+			{
+				ContinueBtn.IsEnabled = true;
+			}
 		}
 	}
 }

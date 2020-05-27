@@ -23,6 +23,7 @@ namespace Inwentaryzacja
         private RoomEntity Room;
         private ZXing.Result prev=null;
         private List<string> scannedItem = new List<string>();
+        private RoomEntity selectedRoom;
 
         public ScanItemPage(RoomEntity room)
         {
@@ -44,8 +45,7 @@ namespace Inwentaryzacja
                 TryHarder = false //Gets or sets a flag which cause a deeper look into the bitmap.
             };
             _scanner.Options = zXingOptions;
-        }
-
+        }       
         protected override void OnAppearing()
         {
             base.OnAppearing();
