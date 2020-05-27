@@ -13,20 +13,20 @@
                    VerticalOptions="Start"
                    HorizontalOptions="CenterAndExpand"
                    HorizontalTextAlignment="Center"
-                   Margin="0, 40"
+                   Margin="0, 10"
                    TextColor="Black"
                    FontFamily=""/>
             <Frame
                 Margin="20, 0"
+                Padding="20,5,20,5"               
                 HorizontalOptions="Fill"
-                VerticalOptions="End"
+                VerticalOptions="CenterAndExpand"
                 CornerRadius="40"
-                HeightRequest="44"
                 WidthRequest="20">
                 <inwentaryzacja:BorderlessPicker
                                                  Placeholder="Budynek"
                                                  HorizontalOptions="FillAndExpand" 
-                                                 VerticalOptions="Center"
+                                                 VerticalOptions="CenterAndExpand"
                                                  x:Name="BuildingPicker"
                                                  SelectedIndexChanged="BuildingPicker_SelectedIndexChanged"/>
             </Frame>
@@ -36,45 +36,41 @@
                    VerticalOptions="Start"
                    HorizontalOptions="CenterAndExpand"
                    HorizontalTextAlignment="Center"
-                   Margin="0, 40"
+                   Margin="0, 10"
                    TextColor="Black"
-                   FontFamily=""
-                   x:Name="RoomPickerText"/>
+                   FontFamily=""/>
             <Frame
                 Margin="20, 0"
+                Padding="20,5,20,5"               
                 HorizontalOptions="Fill"
-                VerticalOptions="End"
+                VerticalOptions="CenterAndExpand"
                 CornerRadius="40"
-                HeightRequest="44"
-                WidthRequest="20"
-                x:Name="RoomPickerFrame">
+                WidthRequest="20">
                 <inwentaryzacja:BorderlessPicker
                                                  Placeholder="Sala"
                                                  HorizontalOptions="FillAndExpand" 
                                                  VerticalOptions="Center"
                                                  x:Name="RoomPicker"/>
             </Frame>
-        
-            <Button Text="Kontynuuj"
+
+            <local:RoundedButton Text="Kontynuuj"
                     BackgroundColor="White"
                     FontSize="Large"
-                    CornerRadius="12"
                     HeightRequest="50"
                     WidthRequest="180"
-                    Margin="0, 20, 0, 40"
+                    Margin="0, 10, 0, 20"
                     HorizontalOptions="Center"
                     VerticalOptions="End"/>
             <Label Text="lub"
                     FontSize="Medium"
                     HorizontalOptions="Center"
                     VerticalOptions="End"
-                    Margin="0,30,0,0"/>
-            <Button Text="Dodaj nową salę"
+                    Margin="0,10,0,0"/>
+            <local:RoundedButton Text="Dodaj nową salę"
                     FontSize="Large"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
                     BackgroundColor="White"
-                    CornerRadius="12"
                     WidthRequest="300"
                     HeightRequest="50" />
             <local:RoundedButton Text="Dodaj nowy budynek"
@@ -83,21 +79,21 @@
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
                     BackgroundColor="White"
-                    CornerRadius="12"
                     WidthRequest="300"
                     HeightRequest="50"
-                    Margin="0, 15, 0, 10"/>
-            <Button Text="Powrót"
+                    Margin="0, 10, 0, 5"/>
+            <local:RoundedButton Text="Powrót"
                     ImageSource="back_icon.png"
                     ContentLayout="Right, -40"
                     HorizontalOptions="Start"
                     FontSize="20"
-                    CornerRadius="12"
                     BackgroundColor="White"
                     WidthRequest="150"
                     HeightRequest="45"
-                    Margin="20,10"
-                    VerticalOptions="EndAndExpand"/>
+                    Margin="20,20"
+                    Padding="10,5,10,5"
+                    VerticalOptions="EndAndExpand"
+                    Clicked="Return_button_clicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
