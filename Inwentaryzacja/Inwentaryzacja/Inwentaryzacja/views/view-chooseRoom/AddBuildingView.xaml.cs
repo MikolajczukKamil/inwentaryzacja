@@ -32,7 +32,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
             {
                 if (name == item.name)
                 {
-                    await DisplayAlert("Dodawanie budynku", "Taki budynek już istnieje.", "Wyjdź");
+                    await DisplayAlert("Dodawanie budynku", "Taki budynek już istnieje.", "OK");
                     return;
                 }
             }
@@ -47,7 +47,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
 
             if (isCreated)
             {
-                await DisplayAlert("Dodawanie budynku", "Pomyślnie dodano nowy budynek", "Wyjdź");
+                await DisplayAlert("Dodawanie budynku", "Pomyślnie dodano nowy budynek", "OK");
             }
         }
 
@@ -60,7 +60,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
 
         private async void onApiError(object o, ErrorEventArgs error)
         {
-            await DisplayAlert("Dodawanie budynku", error.MessageForUser, "Wyjdz");
+            await DisplayAlert("Dodawanie budynku", error.MessageForUser, "OK");
         }
 
         private void return_ChooseRoom(object o, EventArgs e)

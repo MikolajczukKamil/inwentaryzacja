@@ -50,7 +50,8 @@
                                                  Placeholder="Sala"
                                                  HorizontalOptions="FillAndExpand" 
                                                  VerticalOptions="Center"
-                                                 x:Name="RoomPicker"/>
+                                                 x:Name="RoomPicker"
+                                                 SelectedIndexChanged="RoomPicker_SelectedIndexChanged"/>
             </Frame>
 
             <local:RoundedButton Text="Kontynuuj"
@@ -62,7 +63,8 @@
                     HorizontalOptions="Center"
                     VerticalOptions="End"
                     x:Name="ContinueBtn"
-                    Clicked="Continue_Button_Clicked"/>
+                    Clicked="Continue_Button_Clicked"
+                    IsEnabled="False"/>
 
             <ActivityIndicator x:Name="activityIndicator" 
                                IsRunning="{Binding IsBusy}"  

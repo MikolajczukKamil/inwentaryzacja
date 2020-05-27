@@ -28,7 +28,7 @@ namespace Inwentaryzacja
 		{
 			this.addedNewBuilding = addedNewBuilding;
 			InitializeComponent();
-			BindingContext = this;
+			BindingContext = this;			
 			api.ErrorEventHandler += onApiError;
 			GetBuildings();
 		}
@@ -115,14 +115,13 @@ namespace Inwentaryzacja
 			IsBusy = !state;
 			RoomPicker.IsEnabled = state;
 			BuildingPicker.IsEnabled = state;
-			ContinueBtn.IsEnabled = state;
 			BackBtn.IsEnabled = state;
 			AddBuildingBtn.IsEnabled = state;
-			AddRoomBtn.IsEnabled = state;
-			}
+			AddRoomBtn.IsEnabled = state;			
 		}
 
-		private async void Continue_Button_Clicked(object o, EventArgs args) {
+		private async void Continue_Button_Clicked(object o, EventArgs args) 
+		{
 			if(RoomPicker.SelectedIndex < 0)
 			{
 				await DisplayAlert("Pomieszczenie", "Wybierz pomieszczenie", "OK");
@@ -153,7 +152,7 @@ namespace Inwentaryzacja
 
 		private async void onApiError(object o, ErrorEventArgs error)
 		{
-			await DisplayAlert("Błąd", error.MessageForUser, "Wyjdz");
+			await DisplayAlert("Błąd", error.MessageForUser, "OK");
 		}
 
 
@@ -169,6 +168,18 @@ namespace Inwentaryzacja
 		public void AddBuildingClicked(object o, EventArgs e)
 		{
 			App.Current.MainPage = new AddBuildingView();
+		}
+
+		public void RoomPicker_SelectedIndexChanged(object o, EventArgs e)
+		{
+			if (RoomPicker.SelectedItem == null)
+			{
+				ContinueBtn.IsEnabled = false;
+			}
+			else
+			{
+				ContinueBtn.IsEnabled = true;
+			}
 		}
 	}
 }
