@@ -1,10 +1,5 @@
-﻿using Inwentaryzacja.Controllers.Api;
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Inwentaryzacja.views.view_Loading;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Inwentaryzacja
@@ -14,15 +9,12 @@ namespace Inwentaryzacja
         public App()
         {
             InitializeComponent();
-            
-            MainPage = new ChooseRoomPage();
+            MainPage = new WelcomeViewPage();
         }
 
-        protected async override void OnStart()
+        protected override void OnStart()
         {
-            APIController api = new APIController();
-            await api.LoginUser("user1", "111");
-            //MainPage = new WelcomeViewPage();
+            // Handle when your app starts
         }
 
         protected override void OnSleep()

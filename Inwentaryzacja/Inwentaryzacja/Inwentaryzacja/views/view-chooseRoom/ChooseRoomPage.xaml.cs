@@ -1,9 +1,6 @@
-﻿using Inwentaryzacja.views.view_chooseRoom;
+﻿using Inwentaryzacja.Controllers.Api;
+using Inwentaryzacja.views.view_chooseRoom;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -12,37 +9,94 @@ namespace Inwentaryzacja
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ChooseRoomPage : ContentPage
 	{
-		List<string> _pickerItems = new List<string>();
-		public List<string> PickerItems => _pickerItems;
+		RoomEntity[] rooms;
+		BuildingEntity[] buildings;
 
+		APIController api = new APIController();
 
-		//Method to be edited that is loading list of string for picker
-		private void LoadPickerItems()
+		public ChooseRoomPage()
 		{
-			_pickerItems.Add("Testowa Sala");
-			_pickerItems.Add("3/38");
-			_pickerItems.Add("Aula 1");
+			InitializeComponent();
+			api.ErrorEventHandler += onApiError;
+			GetBuildings();
 		}
 
-		//Method which initialized List of String for Picker - must be put after InitializeComponent()
-		private void InitializePicker()
+		private void BuildingPicker_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			foreach (string itemName in _pickerItems)
+			string choosenBuildingName = BuildingPicker.Items[BuildingPicker.SelectedIndex];
+			GetBuildingRooms(choosenBuildingName);
+		}
+
+		public void AddBuildingClicked(object o, EventArgs e)
+		{
+			App.Current.MainPage = new AddBuildingView();
+		}
+
+		private void GetBuildingRooms(string name)
+		{
+			BuildingEntity buildingItem = null;
+
+			foreach (BuildingEntity item in buildings)
 			{
-				RoomPicker.Items.Add(itemName);
+				if (name == item.name)
+				{
+					buildingItem = item;
+					break;
+				}
 			}
 
+			if (buildingItem != null) GetRooms(buildingItem.id);
 		}
 
-		public ChooseRoomPage ()
+		private async void GetRooms(int buildingId)
 		{
-			LoadPickerItems();
-			InitializeComponent();
-			InitializePicker();
+			int pickerCount = RoomPicker.Items.Count;
+
+			rooms = await api.getRooms(buildingId);
+
+			if (rooms == null) return;
+
+			if (pickerCount > 0) RoomPicker.Items.Clear();
+
+			foreach (RoomEntity item in rooms)
+			{
+				RoomPicker.Items.Add(item.name);
+			}
+
+			if (pickerCount > 0) RoomPicker.IsEnabled = true;
+			else RoomPicker.IsEnabled = false;
 		}
+		
 		public void AddRoom_clicked(object o, EventArgs args)
 		{
 			App.Current.MainPage = new NavigationPage(new AddRoom());
+		}
+
+		private async void GetBuildings()
+		{
+			buildings = await api.getBuildings();
+
+			if (buildings == null) return;
+
+			foreach (BuildingEntity item in buildings)
+			{
+				BuildingPicker.Items.Add(item.name);
+			}
+
+			if (BuildingPicker.Items.Count > 0)
+      {
+				BuildingPicker.SelectedItem = BuildingPicker.Items[BuildingPicker.Items.Count - 1];
+			}
+		}
+
+		private async void onApiError(object o, ErrorEventArgs error)
+		{
+			await DisplayAlert("Błąd", error.MessageForUser, "Wyjdz");
+		}
+
+		private void Return_button_clicked(object o, EventArgs e)
+		{
+			App.Current.MainPage = new WelcomeViewPage();
 		}
 	}
 }
