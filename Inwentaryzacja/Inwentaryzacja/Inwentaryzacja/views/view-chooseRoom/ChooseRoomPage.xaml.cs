@@ -84,9 +84,13 @@ namespace Inwentaryzacja
 			}
 
 			if (BuildingPicker.Items.Count > 0)
-      {
+			{
 				BuildingPicker.SelectedItem = BuildingPicker.Items[BuildingPicker.Items.Count - 1];
 			}
+		}
+
+		private void Contionue_Clicked(object o, EventArgs args) {
+			App.Current.MainPage = new NavigationPage(new ScanItemPage());
 		}
 
 		private async void onApiError(object o, ErrorEventArgs error)
