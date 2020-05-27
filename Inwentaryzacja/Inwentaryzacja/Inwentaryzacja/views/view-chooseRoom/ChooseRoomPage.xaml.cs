@@ -1,13 +1,6 @@
 ﻿using Inwentaryzacja.Controllers.Api;
-using Inwentaryzacja.Models;
 using Inwentaryzacja.views.view_chooseRoom;
-using Rg.Plugins.Popup.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -33,6 +26,7 @@ namespace Inwentaryzacja
 			string choosenBuildingName = BuildingPicker.Items[BuildingPicker.SelectedIndex];
 			GetBuildingRooms(choosenBuildingName);
 		}
+
 		public void AddBuildingClicked(object o, EventArgs e)
 		{
 			App.Current.MainPage = new AddBuildingView();
@@ -40,7 +34,6 @@ namespace Inwentaryzacja
 
 		private void GetBuildingRooms(string name)
 		{
-
 			BuildingEntity buildingItem = null;
 
 			foreach (BuildingEntity item in buildings)
@@ -59,9 +52,9 @@ namespace Inwentaryzacja
 		{
 			int pickerCount = RoomPicker.Items.Count;
 
-			Task<RoomEntity[]> getRoomsTask = api.getRooms(buildingId);
-			await getRoomsTask;
-			rooms = getRoomsTask.Result;
+			rooms = await api.getRooms(buildingId);
+
+			if (rooms == null) return;
 
 			if (pickerCount > 0) RoomPicker.Items.Clear();
 
@@ -76,9 +69,7 @@ namespace Inwentaryzacja
 
 		private async void GetBuildings()
 		{
-			Task<BuildingEntity[]> getBuildingsTask = api.getBuildings();
-			await getBuildingsTask;
-			buildings = getBuildingsTask.Result;
+			buildings = await api.getBuildings();
 
 			if (buildings == null) return;
 
@@ -87,7 +78,10 @@ namespace Inwentaryzacja
 				BuildingPicker.Items.Add(item.name);
 			}
 
-			if (BuildingPicker.Items.Count > 0) BuildingPicker.SelectedItem = BuildingPicker.Items[BuildingPicker.Items.Count - 1];
+			if (BuildingPicker.Items.Count > 0)
+            {
+				BuildingPicker.SelectedItem = BuildingPicker.Items[BuildingPicker.Items.Count - 1];
+			}
 		}
 
 		private async void onApiError(object o, ErrorEventArgs error)

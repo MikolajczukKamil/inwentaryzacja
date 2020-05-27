@@ -1,14 +1,6 @@
 ﻿using Inwentaryzacja.Controllers.Api;
 using Inwentaryzacja.Models;
-using Rg.Plugins.Popup.Pages;
-using Rg.Plugins.Popup.Services;
 using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -24,51 +16,34 @@ namespace Inwentaryzacja.views.view_chooseRoom
             InitializeComponent();
             api.ErrorEventHandler += onApiError;
         }
+
         public async void AddButtonClicked(object o, EventArgs e)
         {
             string name = BuildingName.Text;
-            bool isAlreadyAdded = false;
-            bool isCreated = false;
-
-            Task<BuildingEntity[]> building_task = api.getBuildings();
-            await building_task;
-            BuildingEntity[] buildings = building_task.Result;
-
+            BuildingEntity[] buildings = await api.getBuildings();
 
             foreach (BuildingEntity item in buildings)
             {
                 if (name == item.name)
                 {
                     await DisplayAlert("Dodawanie budynku", "Taki budynek już istnieje.", "Wyjdź");
-                    isAlreadyAdded = true;
                     return;
                 }
             }
-            if (!isAlreadyAdded)
-            {
-                BuildingPrototype buildingPrototype = new BuildingPrototype(name);
 
-                Task<bool> createdTask = api.createBuilding(buildingPrototype);
-                await createdTask;
-                isCreated = createdTask.Result;
-
-            }
+            bool isCreated = await api.createBuilding(new BuildingPrototype(name));
 
             App.Current.MainPage = new ChooseRoomPage();
 
             if (isCreated)
             {
-                DisplayAlert("Dodawanie budynku", "Pomyślnie dodano nowy budynek", "Wyjdź");
-            }
-            else
-            {
-                DisplayAlert("Dodawanie budynku", "Niepowodzenie podczas dodawania budynku", "Wyjdź");
+                await DisplayAlert("Dodawanie budynku", "Pomyślnie dodano nowy budynek", "Wyjdź");
             }
         }
 
         private async void onApiError(object o, ErrorEventArgs error)
         {
-            await DisplayAlert("Błąd", error.MessageForUser, "Wyjdz");
+            await DisplayAlert("Dodawanie budynku", error.MessageForUser, "Wyjdz");
         }
 
         private void return_ChooseRoom(object o, EventArgs e)
