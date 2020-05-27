@@ -2,9 +2,6 @@
 using Inwentaryzacja.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,30 +11,32 @@ namespace Inwentaryzacja.views.view_chooseRoom
     public partial class AddRoom : ContentPage
     {
         APIController api = new APIController();
+        
         protected async override void OnAppearing()
         {
             
             base.OnAppearing();
-            api = new APIController();
             List<B> buildings_list = new List<B>();
-            Task<BuildingEntity[]> buildings = api.getBuildings();
-            await buildings;
-            BuildingEntity[] build = buildings.Result;
+
+            BuildingEntity[] build = await api.getBuildings();
+
             for (int i = 0; i < build.Length; i++)
             {
                 buildings_list.Add(new B() {BuildingName= build[i].name });
             }
+
             Building_List.ItemsSource = buildings_list;
         }
+
         public class B
         {
             public string BuildingName { get; set; }
         }
+
         public AddRoom()
         {
             InitializeComponent();
-         }
-     
+        }
 
         public void return_ChooseRoom(object o, EventArgs args)
         {
@@ -47,9 +46,10 @@ namespace Inwentaryzacja.views.view_chooseRoom
         public async void Check_Room(object o, EventArgs args)
         {
             string number = room_number.Text;
-            B budynek=(B) Building_List.SelectedItem;
+            B budynek = (B) Building_List.SelectedItem;
             BuildingEntity[] buildings = await api.getBuildings();
             BuildingEntity mybuilding = new BuildingEntity();
+
             foreach (var item in buildings)
             {
                 if (item.name == budynek.BuildingName)
@@ -60,6 +60,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
            
             RoomEntity[] rooms = await api.getRooms(mybuilding.id);
             bool roomexist = false;
+
             foreach (var item in rooms)
             {
                 if (item.name == number)
@@ -68,6 +69,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
                     await DisplayAlert("Błąd", "W tym budynku istnieje już taki pokój", "Wyjdź");
                 }
             }
+
             if (!roomexist)
             {
                 RoomPropotype roomprop = new RoomPropotype(number, mybuilding);
@@ -81,11 +83,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
                 {
                     await DisplayAlert("Dodawanie pokoju", "Niepowodzenie podczas dodawania pokoju", "Wyjdź");
                 }
-
             }
-            
-
-
         }
     }
 }
