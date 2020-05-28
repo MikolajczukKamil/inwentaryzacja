@@ -30,10 +30,9 @@ namespace Inwentaryzacja
             await Navigation.PushAsync(new AllReportsPage());
         }
 
-        private async void LogoutClicked(object sender, EventArgs e)
+        private async void LogoutButtonClicked(object sender, EventArgs e)
         {
-            bool response = await DisplayAlert("Wylogowywanie", "Czy na pewno chcesz się wylogować?", "Tak", "Nie");
-            if(response)
+            if(await DisplayAlert("Wylogowywanie", "Czy na pewno chcesz się wylogować?", "Tak", "Nie"))
             {
                 var session = new SessionController(new APIController());
                 session.RemoveSession();
@@ -43,7 +42,7 @@ namespace Inwentaryzacja
 
         protected override bool OnBackButtonPressed()
         {
-            LogoutClicked(this, null);
+            LogoutButtonClicked(this, null);
 
             return true;
         }

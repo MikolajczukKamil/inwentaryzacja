@@ -54,7 +54,7 @@
                                           Margin="20,0,0,30"
                                           TextColor="Black"
                                           Padding="10,10,10,10"
-                                          Clicked="LogoutClicked">
+                                          Clicked="LogoutButtonClicked">
 
                          <local:RoundedButton.FontFamily>
                              <OnPlatform x:TypeArguments="x:String">

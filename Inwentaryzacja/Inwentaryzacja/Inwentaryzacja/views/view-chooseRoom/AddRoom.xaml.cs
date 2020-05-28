@@ -1,4 +1,5 @@
-﻿using Inwentaryzacja.Controllers.Api;
+﻿using Inwentaryzacja.controllers.session;
+using Inwentaryzacja.Controllers.Api;
 using Inwentaryzacja.Models;
 using System;
 using System.Collections.Generic;
@@ -83,6 +84,16 @@ namespace Inwentaryzacja.views.view_chooseRoom
                 {
                     await DisplayAlert("Dodawanie pokoju", "Niepowodzenie podczas dodawania pokoju", "Wyjdź");
                 }
+            }
+        }
+
+        private async void LogoutButtonClicked(object sender, EventArgs e)
+        {
+            if (await DisplayAlert("Wylogowywanie", "Czy na pewno chcesz się wylogować?", "Tak", "Nie"))
+            {
+                var session = new SessionController(new APIController());
+                session.RemoveSession();
+                App.Current.MainPage = new LoginPage();
             }
         }
     }

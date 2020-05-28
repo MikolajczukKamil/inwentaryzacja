@@ -1,4 +1,5 @@
-﻿using Inwentaryzacja.Controllers.Api;
+﻿using Inwentaryzacja.controllers.session;
+using Inwentaryzacja.Controllers.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,6 +54,16 @@ namespace Inwentaryzacja
             public string ReportName { get; set; }
             public string ReportRoom { get; set; }
             public string ReportDate { get; set; }
+        }
+
+        private async void LogoutButtonClicked(object sender, EventArgs e)
+        {
+            if (await DisplayAlert("Wylogowywanie", "Czy na pewno chcesz się wylogować?", "Tak", "Nie"))
+            {
+                var session = new SessionController(new APIController());
+                session.RemoveSession();
+                App.Current.MainPage = new LoginPage();
+            }
         }
     }
 }

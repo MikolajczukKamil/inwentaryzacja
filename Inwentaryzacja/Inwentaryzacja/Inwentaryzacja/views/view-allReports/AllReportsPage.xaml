@@ -100,9 +100,15 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Text="Powrót" Clicked="back_Clicked"
-                  HorizontalOptions="CenterAndExpand" WidthRequest="150" BackgroundColor="White" CornerRadius="10"
-                  VerticalOptions="Start"  Margin="15,26,215,9.57" />
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Powrót" Clicked="back_Clicked"
+                      HorizontalOptions="StartAndExpand" WidthRequest="150" BackgroundColor="White" CornerRadius="10"
+                      VerticalOptions="Start"  Margin="15" />
+
+                <Button Text="Wyloguj" Clicked="LogoutButtonClicked"
+                      HorizontalOptions="EndAndExpand" WidthRequest="150" BackgroundColor="White" CornerRadius="10"
+                      VerticalOptions="Start"  Margin="15"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -59,19 +59,31 @@
                     VerticalOptions="End"
                     Clicked="Check_Room"/>
 
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Powrót"
+                        ImageSource="back_icon.png"
+                        ContentLayout="Right, -40"
+                        HorizontalOptions="Start"
+                        FontSize="20"
+                        CornerRadius="12"
+                        BackgroundColor="White"
+                        WidthRequest="150"
+                        HeightRequest="45"
+                        Margin="20,10"
+                        VerticalOptions="EndAndExpand"
+                        Clicked="return_ChooseRoom"/>
 
-            <Button Text="Powrót"
-                    ImageSource="back_icon.png"
-                    ContentLayout="Right, -40"
-                    HorizontalOptions="Start"
-                    FontSize="20"
-                    CornerRadius="12"
-                    BackgroundColor="White"
-                    WidthRequest="150"
-                    HeightRequest="45"
-                    Margin="20,10"
-                    VerticalOptions="EndAndExpand"
-                    Clicked="return_ChooseRoom"/>
+                <Button Text="Wyloguj"
+                        HorizontalOptions="EndAndExpand"
+                        FontSize="20"
+                        CornerRadius="12"
+                        BackgroundColor="White"
+                        WidthRequest="150"
+                        HeightRequest="45"
+                        Margin="20,10"
+                        VerticalOptions="EndAndExpand"
+                        Clicked="LogoutButtonClicked"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

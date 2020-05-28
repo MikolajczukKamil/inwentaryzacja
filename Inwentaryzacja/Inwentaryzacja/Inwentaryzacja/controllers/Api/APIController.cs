@@ -19,7 +19,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         public event EventHandler<ErrorEventArgs> ErrorEventHandler;
 
-        private static bool TMPTOKEN = false;
+        private static bool TMPTOKEN = true;
 
         public APIController()
         {

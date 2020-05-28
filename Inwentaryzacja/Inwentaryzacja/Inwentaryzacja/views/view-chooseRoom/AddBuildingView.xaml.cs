@@ -1,4 +1,5 @@
-﻿using Inwentaryzacja.Controllers.Api;
+﻿using Inwentaryzacja.controllers.session;
+using Inwentaryzacja.Controllers.Api;
 using Inwentaryzacja.Models;
 using System;
 using System.Threading.Tasks;
@@ -66,6 +67,16 @@ namespace Inwentaryzacja.views.view_chooseRoom
         private void return_ChooseRoom(object o, EventArgs e)
         {
             Navigation.PopAsync();
+        }
+
+        private async void LogoutButtonClicked(object sender, EventArgs e)
+        {
+            if (await DisplayAlert("Wylogowywanie", "Czy na pewno chcesz się wylogować?", "Tak", "Nie"))
+            {
+                var session = new SessionController(new APIController());
+                session.RemoveSession();
+                App.Current.MainPage = new LoginPage();
+            }
         }
     }
 }
