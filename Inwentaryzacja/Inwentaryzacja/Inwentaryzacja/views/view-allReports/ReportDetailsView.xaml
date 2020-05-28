@@ -1,33 +1,109 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:Inwentaryzacja"
              mc:Ignorable="d"
-             x:Class="Inwentaryzacja.views.view_allReports.ReportDetailsView"
-             BackgroundColor="#8EE3BA">
+                 x:Class="Inwentaryzacja.views.view_allReports.ReportDetailsView"
+                 BackgroundColor="#8EE3BA">
 
-        <ScrollView Orientation="Both" HeightRequest="3000" > 
-            <StackLayout>
-                <Label Text=""
-                    FontSize="50" 
-                    VerticalOptions="Start"
-                    HorizontalOptions="CenterAndExpand"
-                    HorizontalTextAlignment="Center"
-                    Margin="10, 50"
-                    TextColor="Black"
-                    FontFamily=""
-                    x:Name="ReportHeader"/>
-                <Label Text=""
-                    FontSize="50" 
-                    VerticalOptions="Start"
-                    HorizontalOptions="CenterAndExpand"
-                    HorizontalTextAlignment="Center"
-                    Margin="10, 200"
-                    TextColor="Black"
-                    FontFamily=""
-                    />
-            </StackLayout>
-        </ScrollView>
+    <ScrollView Orientation="Both">
+        
+        <StackLayout>
+            <Frame
+                        Margin="0,10,0,20"
+                        Padding="10,5,10,5"               
+                        VerticalOptions="Center"
+                        CornerRadius="0"
+                        WidthRequest="20"
+                        HeightRequest="70"
+                        BackgroundColor="#a3ffe5">
+
+                <Label  FontSize="40" 
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Center"
+                            TextColor="Black"
+                            x:Name="HeaderText"/>
+            </Frame>
+
+            <Frame
+                        Margin="20,20,20,20"
+                        Padding="30,30,30,30"               
+                        VerticalOptions="Center"
+                        CornerRadius="40"
+                        WidthRequest="20"
+                        HeightRequest="130"
+                        BackgroundColor="#a3ffe5">
+                <StackLayout>
+
+                    <Label  FontSize="20" 
+                            VerticalOptions="Start"
+                            TextColor="Black"
+                            FontAttributes="Bold"                
+                            x:Name="RoomText"/>
+
+                    <Label  FontSize="20" 
+                            VerticalOptions="Start"
+                            TextColor="Black"
+                            FontAttributes="Bold"  
+                            x:Name="CreateDate"/>
+
+                    <Label  FontSize="20" 
+                            VerticalOptions="Start"
+                            TextColor="Black"
+                            FontAttributes="Bold"  
+                            x:Name="CreateTime"/>
+
+                    <Label  FontSize="20" 
+                            VerticalOptions="Start"
+                            TextColor="Black"
+                            FontAttributes="Bold"  
+                            x:Name="OwnerText"/>
+
+                </StackLayout>
+            </Frame>
+
+            <Frame
+                        Margin="20,5,20,5"
+                        Padding="30,30,30,30"               
+                        VerticalOptions="Center"
+                        CornerRadius="40"
+                        WidthRequest="20"
+                        HeightRequest="180"
+                        BackgroundColor="#a3ffe5">
+                <StackLayout>
+                    <Label  FontSize="25" 
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Center"
+                            TextColor="Black"
+                            FontAttributes="Bold"  
+                            Text="Zeskanowane przedmioty"/>
+                    <Label  FontSize="20" 
+                            Margin="0"
+                            VerticalOptions="Start"
+                            TextColor="Black"
+                            FontAttributes="Bold"
+                            x:Name="ListedItems"/>
+                </StackLayout>
+
+            </Frame>
+            
+            <local:RoundedButton Text="Powrót"
+                    ImageSource="back_icon.png"
+                    ContentLayout="Right, -40"
+                    HorizontalOptions="Start"
+                    FontSize="20"
+                    BackgroundColor="White"
+                    WidthRequest="150"
+                    HeightRequest="45"
+                    Padding="10,5,10,5"
+                    Margin="20,20"
+                    VerticalOptions="EndAndExpand"
+                    Clicked="return_ChooseRoom"
+                    x:Name="BackBtn"/>
+            
+        </StackLayout>
+        
+    </ScrollView>
 
 </ContentPage>

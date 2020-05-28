@@ -88,19 +88,82 @@ namespace Inwentaryzacja
             if (assetsInRoom == null) return;
 
             //--------------------------
+            string listedAssets = GetScannedItemsCount(reportPositionEntities, assetsInRoom, reportHeaderEntity.room.name);
+            string headerText = reportHeaderEntity.name;
+            string roomText = reportHeaderEntity.room.name;
+            DateTime date = reportHeaderEntity.create_date;
+            string editedDay = date.Day < 10 ? "0" + date.Day : "" + date.Day;
+            string editedMonth = date.Month < 10 ? "0" + date.Month : "" + date.Month;
+            string createDate = editedDay + "." + editedMonth + "." + date.Year + "r.";
+            string createTime = date.TimeOfDay.ToString();
+            string ownerText = reportHeaderEntity.owner.login;
 
-            Dictionary<string,string> countedItems = GetScannedItemsCount(reportPositionEntities, assetsInRoom);
-
-            string test = "";
-
-            foreach (KeyValuePair<string,string> item in countedItems)
-            {
-                test += Environment.NewLine + "-" + item.Key + "    " + item.Value;
-            }
-            App.Current.MainPage = new NavigationPage(new ReportDetailsView(test));
+            App.Current.MainPage = new ReportDetailsView(headerText, roomText, createDate, createTime, ownerText, listedAssets);
         }
 
-        private Dictionary<string,string> GetScannedItemsCount(ReportPositionEntity[] reportPositionEntities, AssetEntity[] assetsInRoom)
+        private string GetScannedItemsCount(ReportPositionEntity[] reportPositionEntities, AssetEntity[] assetsInRoom, string currentRoom)
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+
+            Dictionary<string, int> scannedAssetsCounts = new Dictionary<string, int>();
+            Dictionary<string, int> roomAssetsCounts = new Dictionary<string, int>();
+
+            foreach (ReportPositionEntity item in reportPositionEntities)
+            {
+                if (item.present == true)
+                {
+                    string typeName = item.asset.type.name;
+                    if (!scannedAssetsCounts.ContainsKey(typeName))
+                    {
+                        scannedAssetsCounts.Add(typeName, 1);
+                    }
+                    else
+                    {
+                        scannedAssetsCounts[typeName]++;
+                    }
+                }
+            }
+
+            foreach (AssetEntity item in assetsInRoom)
+            {
+
+                string typeName = item.type.name;
+                if (!roomAssetsCounts.ContainsKey(typeName))
+                {
+                    roomAssetsCounts.Add(typeName, 1);
+                }
+                else
+                {
+                    roomAssetsCounts[typeName]++;
+                }
+
+            }
+
+            foreach (ReportPositionEntity item in reportPositionEntities)
+            {
+                string typeName = item.asset.type.name;
+                if (scannedAssetsCounts.ContainsKey(typeName) && roomAssetsCounts.ContainsKey(typeName) && !result.ContainsKey(typeName))
+                {
+                    result.Add(typeName, scannedAssetsCounts[typeName] + "/" + roomAssetsCounts[typeName]);
+                }               
+            }
+
+            string listedAssets = "";
+            bool first = true;
+            foreach (KeyValuePair<string, string> item in result)
+            {
+                if (first)
+                {
+                    listedAssets = item.Key + "    " + item.Value;
+                    first = false;
+                }
+                listedAssets += Environment.NewLine + item.Key + "    " + item.Value;
+            }
+
+            return listedAssets;
+        }
+
+        private Dictionary<string, string> Get(ReportPositionEntity[] reportPositionEntities, AssetEntity[] assetsInRoom)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
 
@@ -143,7 +206,7 @@ namespace Inwentaryzacja
                 if (scannedAssetsCounts.ContainsKey(typeName) && roomAssetsCounts.ContainsKey(typeName) && !result.ContainsKey(typeName))
                 {
                     result.Add(typeName, scannedAssetsCounts[typeName] + "/" + roomAssetsCounts[typeName]);
-                }               
+                }
             }
 
             return result;
