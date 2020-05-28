@@ -16,17 +16,10 @@ namespace Inwentaryzacja
 	{
 		RoomEntity[] rooms;
 		BuildingEntity[] buildings;
-		bool addedNewBuilding = false;
+		public bool addedNewBuilding = false;
 
 		APIController api = new APIController();
 
-		public ChooseRoomPage(bool addedNewBuilding)
-		{
-			this.addedNewBuilding = addedNewBuilding;
-			InitializeComponent();
-			api.ErrorEventHandler += onApiError;
-			BindingContext = this;
-		}
 		public ChooseRoomPage()
 		{
 			InitializeComponent();
@@ -36,7 +29,7 @@ namespace Inwentaryzacja
 
 		protected override void OnAppearing()
 		{
-			if(BuildingPicker.Items.Count==0)
+			if(BuildingPicker.Items.Count==0 || addedNewBuilding)
 			{
 				GetBuildings();
 			}
@@ -118,6 +111,7 @@ namespace Inwentaryzacja
 				if (addedNewBuilding)
 				{
 					BuildingPicker.SelectedItem = BuildingPicker.Items[BuildingPicker.Items.Count - 1];
+					addedNewBuilding = false;
 				}
 				else
 				{

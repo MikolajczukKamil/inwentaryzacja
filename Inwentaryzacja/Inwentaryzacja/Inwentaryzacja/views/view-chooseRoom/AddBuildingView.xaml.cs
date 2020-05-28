@@ -43,8 +43,12 @@ namespace Inwentaryzacja.views.view_chooseRoom
             bool isCreated = await api.createBuilding(new BuildingPrototype(name));
             EnableView(true);
 
+
             if (isCreated)
             {
+                var stack = Navigation.NavigationStack;
+                var previousPage = (ChooseRoomPage)stack[stack.Count - 2];
+                previousPage.addedNewBuilding = true;
                 Navigation.PopAsync();
                 await DisplayAlert("Dodawanie budynku", "Pomyślnie dodano nowy budynek", "OK");
             }

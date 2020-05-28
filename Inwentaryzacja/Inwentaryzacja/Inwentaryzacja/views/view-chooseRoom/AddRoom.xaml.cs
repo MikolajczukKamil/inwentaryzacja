@@ -12,7 +12,13 @@ namespace Inwentaryzacja.views.view_chooseRoom
     public partial class AddRoom : ContentPage
     {
         APIController api = new APIController();
-        
+
+        public AddRoom()
+        {
+            InitializeComponent();
+            api.ErrorEventHandler += onApiError;
+        }
+
         protected async override void OnAppearing()
         {
             base.OnAppearing();
@@ -35,12 +41,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
         {
             public string BuildingName { get; set; }
         }
-
-        public AddRoom()
-        {
-            InitializeComponent();
-            api.ErrorEventHandler += onApiError;
-        }
+        
 
         private async void onApiError(object sender, ErrorEventArgs error)
         {
