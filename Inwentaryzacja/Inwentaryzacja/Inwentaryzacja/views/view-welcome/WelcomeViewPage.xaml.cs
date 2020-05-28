@@ -21,13 +21,13 @@ namespace Inwentaryzacja
             InitializeComponent();
         }
 
-        private void scanButtonClicked(object sender, EventArgs e)
+        private async void scanButtonClicked(object sender, EventArgs e)
         {
-            App.Current.MainPage = new ChooseRoomPage();
+            await Navigation.PushAsync(new ChooseRoomPage());
         }
         private async void _AllReportsButton_Clicked(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new AllReportsPage());
+            await Navigation.PushAsync(new AllReportsPage());
         }
 
         private async void LogoutClicked(object sender, EventArgs e)
@@ -39,6 +39,13 @@ namespace Inwentaryzacja
                 session.RemoveSession();
                 App.Current.MainPage = new LoginPage();
             }
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            LogoutClicked(this, null);
+
+            return true;
         }
     }
 }

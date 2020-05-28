@@ -33,6 +33,18 @@ namespace Inwentaryzacja
 			GetBuildings();
 		}
 
+		private async Task<PermissionStatus> CheckPermissions()
+		{
+			var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
+
+			if (status != PermissionStatus.Granted)
+			{
+				status = await Permissions.RequestAsync<Permissions.Camera>();
+			}
+
+			return status;
+		}
+
 		private void BuildingPicker_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			string choosenBuildingName = BuildingPicker.Items[BuildingPicker.SelectedIndex];
@@ -142,7 +154,16 @@ namespace Inwentaryzacja
 
 			if(selectedRoom != null)
 			{
-				App.Current.MainPage = new NavigationPage(new ScanItemPage(selectedRoom));
+				var status = await CheckPermissions();
+
+				if (status != PermissionStatus.Granted)
+				{
+					await DisplayAlert("Komunikat","Bez uprawnień do kamery aplikacja nie może działać poprawnie", "OK");
+				}
+				else
+				{
+					await Navigation.PushAsync(new ScanItemPage(selectedRoom));
+				}
 			}
 			else
 			{
@@ -156,18 +177,18 @@ namespace Inwentaryzacja
 		}
 
 
-		private void Return_button_clicked(object o, EventArgs e)
+		private async void Return_button_clicked(object o, EventArgs e)
 		{
-			App.Current.MainPage = new WelcomeViewPage();
+			await Navigation.PopAsync();
 		}
 		
-		public void AddRoom_clicked(object o, EventArgs args)
+		public async void AddRoom_clicked(object o, EventArgs args)
 		{
-			App.Current.MainPage = new AddRoom();
+			await Navigation.PushAsync(new AddRoom());
 		}
-		public void AddBuildingClicked(object o, EventArgs e)
+		public async void AddBuildingClicked(object o, EventArgs e)
 		{
-			App.Current.MainPage = new AddBuildingView();
+			await Navigation.PushAsync(new AddBuildingView());
 		}
 
 		public void RoomPicker_SelectedIndexChanged(object o, EventArgs e)

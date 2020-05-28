@@ -23,7 +23,7 @@ namespace Inwentaryzacja
 
         private async void back_Clicked(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new WelcomeViewPage());
+            await Navigation.PopAsync();
         }
 
         protected async override void OnAppearing()

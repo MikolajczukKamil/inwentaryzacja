@@ -8,6 +8,7 @@
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              x:Class="Inwentaryzacja.ScanItemPage">
 
+    <NavigationPage.HasBackButton>False</NavigationPage.HasBackButton>
     
     <Grid BackgroundColor="#8EE3BA">
         <Grid.RowDefinitions>

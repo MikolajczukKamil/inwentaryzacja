@@ -58,7 +58,7 @@ namespace Inwentaryzacja
             base.OnDisappearing();
         }
 
-        async private void Cancel(object sender, EventArgs e)
+        private async void Cancel(object sender, EventArgs e)
         {
             bool response = await DisplayAlert("Anulować skanowanie?", "Czy na pewno chcesz anulować skanowanie?", "Tak", "Nie");
 
@@ -172,6 +172,13 @@ namespace Inwentaryzacja
             catch (Exception)
             {
             }
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            Cancel(this,null);
+
+            return true;
         }
     }
 }
