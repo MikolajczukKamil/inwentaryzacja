@@ -12,10 +12,18 @@ namespace Inwentaryzacja
         {
             InitializeComponent();
 
-            var session = new SessionController(new APIController());
+            var api = new APIController();
+            var session = new SessionController(api);
             if(session.ResumeSession())
             {
-                MainPage = new NavigationPage(new WelcomeViewPage());
+                if(api.getAssetInfo(1)!=null)
+                {
+                    MainPage = new NavigationPage(new WelcomeViewPage());
+                }
+                else
+                {
+                    MainPage = new LoginPage();
+                } 
             }
             else
             {
