@@ -21,9 +21,9 @@ namespace Inwentaryzacja
             InitializeComponent();
         }
 
-        private void scanButtonClicked(object sender, EventArgs e)
+        private async void scanButtonClicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new ChooseRoomPage());
+            await Navigation.PushAsync(new ChooseRoomPage());
         }
         private async void _AllReportsButton_Clicked(object sender, EventArgs e)
         {

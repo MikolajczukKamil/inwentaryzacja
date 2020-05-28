@@ -33,6 +33,18 @@ namespace Inwentaryzacja
 			GetBuildings();
 		}
 
+		private async Task<PermissionStatus> CheckPermissions()
+		{
+			var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
+
+			if (status != PermissionStatus.Granted)
+			{
+				status = await Permissions.RequestAsync<Permissions.Camera>();
+			}
+
+			return status;
+		}
+
 		private void BuildingPicker_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			string choosenBuildingName = BuildingPicker.Items[BuildingPicker.SelectedIndex];
@@ -142,7 +154,16 @@ namespace Inwentaryzacja
 
 			if(selectedRoom != null)
 			{
-				await Navigation.PushAsync(new ScanItemPage(selectedRoom));
+				var status = await CheckPermissions();
+
+				if (status != PermissionStatus.Granted)
+				{
+					await DisplayAlert("Komunikat","Bez uprawnień do kamery aplikacja nie może działać poprawnie", "OK");
+				}
+				else
+				{
+					await Navigation.PushAsync(new ScanItemPage(selectedRoom));
+				}
 			}
 			else
 			{
