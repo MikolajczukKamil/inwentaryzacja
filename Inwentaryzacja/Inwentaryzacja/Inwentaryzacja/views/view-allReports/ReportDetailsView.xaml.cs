@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inwentaryzacja.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,13 @@ namespace Inwentaryzacja.views.view_allReports
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ReportDetailsView : ContentPage
     {
-        public ReportDetailsView()
+        string ReportName;
+        
+        public ReportDetailsView(string reportName)
         {
             InitializeComponent();
+            BindingContext = this;
+            ReportHeader.Text = reportName;
         }
     }
 }

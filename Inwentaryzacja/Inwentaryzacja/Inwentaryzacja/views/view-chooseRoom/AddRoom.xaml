@@ -33,14 +33,13 @@
                    TextColor="Black"
                    />
 
-            <CollectionView x:Name="Building_List" SelectionMode="Single"
+            <CollectionView x:Name="Building_List" SelectionMode="None"
                     BackgroundColor="White"            
                 >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Label Text="{Binding BuildingName}"
-                               FontSize="Medium"
-                               HorizontalTextAlignment="Center"    
+                               FontSize="Medium"  
                                Margin="20,10"
                                TextColor="Black"
                                />

@@ -4,19 +4,30 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Inwentaryzacja.views.view_allReports.ReportDetailsView">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Header"
-                   FontSize="50" 
-                   VerticalOptions="Start"
-                   HorizontalOptions="CenterAndExpand"
-                   HorizontalTextAlignment="Center"
-                   Margin="10, 50"
-                   TextColor="Black"
-                   FontFamily=""
-                   x:Name="ReportHeader"/>
-            
-        </StackLayout>
-    </ContentPage.Content>
+             x:Class="Inwentaryzacja.views.view_allReports.ReportDetailsView"
+             BackgroundColor="#8EE3BA">
+
+        <ScrollView Orientation="Both" HeightRequest="3000" > 
+            <StackLayout>
+                <Label Text=""
+                    FontSize="50" 
+                    VerticalOptions="Start"
+                    HorizontalOptions="CenterAndExpand"
+                    HorizontalTextAlignment="Center"
+                    Margin="10, 50"
+                    TextColor="Black"
+                    FontFamily=""
+                    x:Name="ReportHeader"/>
+                <Label Text=""
+                    FontSize="50" 
+                    VerticalOptions="Start"
+                    HorizontalOptions="CenterAndExpand"
+                    HorizontalTextAlignment="Center"
+                    Margin="10, 200"
+                    TextColor="Black"
+                    FontFamily=""
+                    />
+            </StackLayout>
+        </ScrollView>
+
 </ContentPage>
