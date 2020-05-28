@@ -65,7 +65,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
 
         private void return_ChooseRoom(object o, EventArgs e)
         {
-            App.Current.MainPage = new ChooseRoomPage();
+            Navigation.PopAsync();
         }
     }
 }

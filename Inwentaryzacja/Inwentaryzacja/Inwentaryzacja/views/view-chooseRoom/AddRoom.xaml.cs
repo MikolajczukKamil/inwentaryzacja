@@ -38,9 +38,9 @@ namespace Inwentaryzacja.views.view_chooseRoom
             InitializeComponent();
         }
 
-        public void return_ChooseRoom(object o, EventArgs args)
+        public async void return_ChooseRoom(object o, EventArgs args)
         {
-            Application.Current.MainPage = new NavigationPage(new ChooseRoomPage());
+            await Navigation.PopAsync();
         }
        
         public async void Check_Room(object o, EventArgs args)
