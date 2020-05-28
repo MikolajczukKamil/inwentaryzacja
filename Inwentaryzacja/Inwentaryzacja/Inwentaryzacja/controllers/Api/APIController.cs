@@ -18,6 +18,19 @@ namespace Inwentaryzacja.Controllers.Api
 
         public event EventHandler<ErrorEventArgs> ErrorEventHandler;
 
+        private static bool TMPTOKEN = true;
+
+        public APIController()
+        {
+            // TMP, ustawiam fake token na startcie
+
+            if(TMPTOKEN)
+            {
+                ClientHttp.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "fake-token");
+            }
+
+            TMPTOKEN = false;
+        }
 
         #region Private
 
@@ -232,7 +245,7 @@ namespace Inwentaryzacja.Controllers.Api
         {
             var uri = "/getBuildings";
             var response = await SendRequestWithResponse(uri);
-
+           
             return ConvertJSONToObject<BuildingEntity[]>(response);
         }
 

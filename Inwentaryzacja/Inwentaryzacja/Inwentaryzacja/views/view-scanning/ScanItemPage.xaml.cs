@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +12,7 @@ using System.Threading;
 using Inwentaryzacja.views.view_scannedItem;
 using Inwentaryzacja.views;
 using Inwentaryzacja.Models;
+using Xamarin.Essentials;
 using Inwentaryzacja.Controllers.Api;
 using static Inwentaryzacja.views.view_scannedItem.ScannedItem;
 
@@ -21,15 +22,16 @@ namespace Inwentaryzacja
     public partial class ScanItemPage : ContentPage
     {
         APIController api;
-        private int RoomID;
+        private RoomEntity Room;
         private ZXing.Result prev=null;
-        private List<string> ScannedItem = new List<string>();
+        private List<string> scannedItem = new List<string>();
         private List<AllScaning> AllItems = new List<AllScaning>();
 
-        public ScanItemPage(int roomID)
+        public ScanItemPage(RoomEntity room)
         {
+            Room = room;
+
             InitializeComponent();
-            RoomID = roomID;
             api = new APIController();
             GetAllAssets();
 
@@ -47,17 +49,17 @@ namespace Inwentaryzacja
                 TryHarder = false //Gets or sets a flag which cause a deeper look into the bitmap.
             };
             _scanner.Options = zXingOptions;
-        }
-
+        }  
+		
         async void GetAllAssets()
         {
-            AssetEntity[] assetEntity = await api.getAssetsInRoom(RoomID);
+            AssetEntity[] assetEntity = await api.getAssetsInRoom(Room.id);
             foreach (var item in assetEntity)
             {
-                AllItems.Add(new AllScaning() { ScaningName = item.type.name, ScaningID = item.type.id, ScaningRoom = RoomID, ThisRoom = true });
+                AllItems.Add(new AllScaning() { ScaningName = item.type.name, ScaningID = item.type.id, ScaningRoom = Room.id, ThisRoom = true });
             }
         }
-
+		
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -82,7 +84,8 @@ namespace Inwentaryzacja
 
         private async void ShowScanedItem(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new ScannedItem(AllItems), true);
+            //await Navigation.PushAsync(new ScannedItem(AllItems), true);
+            App.Current.MainPage = new NavigationPage(new ScannedItem(AllItems));
         }
 
         private async Task ShowPopup(string message = "Zeskanowano!")
@@ -133,11 +136,12 @@ namespace Inwentaryzacja
             {
                 if(!ListContainItem(result.Text))
                 {
+					
                     try
                     {
                         string[] positions = result.Text.Split('-');
                         AssetInfoEntity assetInfoEntity = api.getAssetInfo(Convert.ToInt32(positions[1])).Result;
-                        if (assetInfoEntity.room.id == RoomID)
+                        if (assetInfoEntity.room.id == Room.id)
                             AllItems.Find(x => x.ScaningID == assetInfoEntity.room.id).Zeskanowano = true;
                         else
                             AllItems.Add(new AllScaning()
@@ -151,12 +155,13 @@ namespace Inwentaryzacja
                         Device.BeginInvokeOnMainThread(async () =>
                         {
                             prev = result;
-                            _infoLabel.Text = "Liczba zeskanowanych przedmiotów: " + ScannedItem.Count;
+                            _infoLabel.Text = "Liczba zeskanowanych przedmiotów: " + scannedItem.Count;
+							Vibration.Vibrate(TimeSpan.FromMilliseconds(100));
                             await ShowPopup();
 
                             //await DisplayAlert("Wynik skanowania", result.Text, "OK");
                         });
-                        ScannedItem.Add(result.Text);
+                        scannedItem.Add(result.Text);
                     }
                     catch (Exception)
                     {
@@ -185,7 +190,7 @@ namespace Inwentaryzacja
 
         private bool ListContainItem(string text)
         {
-            foreach (var item in ScannedItem)
+            foreach (var item in scannedItem)
             {
                 if(item==text)
                 {
@@ -194,6 +199,17 @@ namespace Inwentaryzacja
             }
 
             return false;
+        }
+
+        private void TurnLight(object sender, EventArgs e)
+        {
+            try
+            {
+                _scanner.ToggleTorch();
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }
