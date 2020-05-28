@@ -84,7 +84,8 @@
                                                 CornerRadius="10" 
                                                 BorderWidth="2" 
                                                 FontSize="14"
-                                        android:Button.UseDefaultShadow="true" />
+                                                android:Button.UseDefaultShadow="true"
+                                                Clicked="View_report_clicked"/>
                                             <Label Text="{Binding ReportRoom,StringFormat='Sala: {0:F0}' }"   
                                                FontSize="14" 
                                                Grid.Column="1" 

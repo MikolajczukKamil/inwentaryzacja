@@ -13,6 +13,8 @@ namespace Inwentaryzacja
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AllReportsPage : ContentPage
     {
+        ReportHeaderEntity[] reportHeaders;
+
         APIController api = new APIController();
 
         public AllReportsPage()
@@ -21,26 +23,21 @@ namespace Inwentaryzacja
             api.ErrorEventHandler += onApiError;
         }
 
-        private async void back_Clicked(object sender, EventArgs e)
-        {
-            App.Current.MainPage = new NavigationPage(new WelcomeViewPage());
-        }
-
         protected async override void OnAppearing()
         {
             base.OnAppearing();
-            List<AllReport> rp = new List<AllReport>();
+            List<AllReport> allReportList = new List<AllReport>();
 
-            ReportHeaderEntity[] rep = await api.getReportHeaders();
+            reportHeaders = await api.getReportHeaders();
 
-            if (rep == null) return;
+            if (reportHeaders == null) return;
 
-            for (int i = 0; i < rep.Length; i++)
+            for (int i = 0; i < reportHeaders.Length; i++)
             {
-                rp.Add(new AllReport() { ReportName = rep[i].name, ReportRoom = rep[i].room.name, ReportDate = Convert.ToString(rep[i].create_date) });
+                allReportList.Add(new AllReport() { ReportName = reportHeaders[i].name, ReportRoom = reportHeaders[i].room.name, ReportDate = Convert.ToString(reportHeaders[i].create_date) });
             }
 
-            ReportList.ItemsSource = rp;
+            ReportList.ItemsSource = allReportList;
         }
 
         private async void onApiError(object o, ErrorEventArgs error)
@@ -53,6 +50,18 @@ namespace Inwentaryzacja
             public string ReportName { get; set; }
             public string ReportRoom { get; set; }
             public string ReportDate { get; set; }
+        }
+
+        private void View_report_clicked(object sender, EventArgs e)
+        {
+            AllReport selected = (AllReport)ReportList.SelectedItem;
+
+            DisplayAlert("a",selected.ReportName, "A");
+        }
+
+        private async void back_Clicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new WelcomeViewPage());
         }
     }
 }
