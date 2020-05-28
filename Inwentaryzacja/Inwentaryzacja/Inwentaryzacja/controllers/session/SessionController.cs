@@ -21,7 +21,16 @@ namespace Inwentaryzacja.controllers.session
 		public void SaveSessionToken()
         {
 			StreamWriter sw = new StreamWriter(TokenPath,false);
-			sw.WriteLine(api.GetToken());
+
+			try
+			{
+				sw.WriteLine(api.GetToken());
+			}
+			catch (Exception)
+			{
+				sw.Close();
+			}
+			
 			sw.Close();
 		}
 
@@ -44,7 +53,17 @@ namespace Inwentaryzacja.controllers.session
 			else if (File.Exists(TokenPath))
 			{
 				StreamReader sr = new StreamReader(TokenPath);
-				api.SetToken(sr.ReadLine());
+
+				try
+				{
+					api.SetToken(sr.ReadLine());
+				}
+				catch (Exception)
+				{
+					sr.Close();
+					return false;
+				}
+				
 				sr.Close();
 
 				return true;
