@@ -15,11 +15,13 @@ namespace Inwentaryzacja.views.view_chooseRoom
         
         protected async override void OnAppearing()
         {
-            
             base.OnAppearing();
             List<B> buildings_list = new List<B>();
 
             BuildingEntity[] build = await api.getBuildings();
+
+            if (build == null)
+                return;
 
             for (int i = 0; i < build.Length; i++)
             {
@@ -37,6 +39,17 @@ namespace Inwentaryzacja.views.view_chooseRoom
         public AddRoom()
         {
             InitializeComponent();
+            api.ErrorEventHandler += onApiError;
+        }
+
+        private async void onApiError(object sender, ErrorEventArgs error)
+        {
+            await DisplayAlert("Błąd", error.MessageForUser, "OK");
+
+            if (error.Auth == false)
+            {
+                await Navigation.PushAsync(new LoginPage());
+            }
         }
 
         public async void return_ChooseRoom(object o, EventArgs args)

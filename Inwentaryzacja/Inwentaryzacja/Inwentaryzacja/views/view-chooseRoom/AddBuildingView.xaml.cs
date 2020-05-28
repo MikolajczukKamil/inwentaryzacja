@@ -23,11 +23,12 @@ namespace Inwentaryzacja.views.view_chooseRoom
         public async void AddButtonClicked(object o, EventArgs e)
         {
             string name = BuildingName.Text;
-            Task<BuildingEntity[]> buildingsTask = api.getBuildings();
             EnableView(false);
-            await buildingsTask;
+            BuildingEntity[] buildings = await api.getBuildings();
             EnableView(true);
-            BuildingEntity[] buildings = buildingsTask.Result;
+
+            if (buildings == null)
+                return;
 
             foreach (BuildingEntity item in buildings)
             {
@@ -38,16 +39,13 @@ namespace Inwentaryzacja.views.view_chooseRoom
                 }
             }
 
-            Task<bool> createTask = api.createBuilding(new BuildingPrototype(name));
             EnableView(false);
-            await createTask;
+            bool isCreated = await api.createBuilding(new BuildingPrototype(name));
             EnableView(true);
-            bool isCreated = createTask.Result;
-
-            App.Current.MainPage = new ChooseRoomPage(true);
 
             if (isCreated)
             {
+                Navigation.PopAsync();
                 await DisplayAlert("Dodawanie budynku", "Pomyślnie dodano nowy budynek", "OK");
             }
         }
@@ -61,7 +59,12 @@ namespace Inwentaryzacja.views.view_chooseRoom
 
         private async void onApiError(object o, ErrorEventArgs error)
         {
-            await DisplayAlert("Dodawanie budynku", error.MessageForUser, "OK");
+            await DisplayAlert("Błąd", error.MessageForUser, "OK");
+
+            if (error.Auth == false)
+            {
+                await Navigation.PushAsync(new LoginPage());
+            }
         }
 
         private void return_ChooseRoom(object o, EventArgs e)

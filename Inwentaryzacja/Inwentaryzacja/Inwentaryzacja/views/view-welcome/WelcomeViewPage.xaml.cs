@@ -43,7 +43,7 @@ namespace Inwentaryzacja
         protected override bool OnBackButtonPressed()
         {
             LogoutButtonClicked(this, null);
-
+            
             return true;
         }
     }

@@ -7,6 +7,7 @@
              mc:Ignorable="d"
              x:Class="Inwentaryzacja.LoginPage">
 
+    <NavigationPage.HasBackButton>False</NavigationPage.HasBackButton>
     <ContentPage.Content>
         <StackLayout BackgroundColor="#8EE3BA">
             <Label Text="Aplikacja do inwentaryzacji"

@@ -3,6 +3,7 @@ using Inwentaryzacja.Controllers.Api;
 using Inwentaryzacja.Models;
 using Inwentaryzacja.views.view_chooseRoom;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -18,20 +19,29 @@ namespace Inwentaryzacja
 		bool addedNewBuilding = false;
 
 		APIController api = new APIController();
+
+		public ChooseRoomPage(bool addedNewBuilding)
+		{
+			this.addedNewBuilding = addedNewBuilding;
+			InitializeComponent();
+			api.ErrorEventHandler += onApiError;
+			BindingContext = this;
+		}
 		public ChooseRoomPage()
 		{
 			InitializeComponent();
 			api.ErrorEventHandler += onApiError;
 			BindingContext = this;
-			GetBuildings();
 		}
-		public ChooseRoomPage(bool addedNewBuilding)
+
+		protected override void OnAppearing()
 		{
-			this.addedNewBuilding = addedNewBuilding;
-			InitializeComponent();
-			BindingContext = this;			
-			api.ErrorEventHandler += onApiError;
-			GetBuildings();
+			if(BuildingPicker.Items.Count==0)
+			{
+				GetBuildings();
+			}
+			
+			base.OnAppearing();
 		}
 
 		private async Task<PermissionStatus> CheckPermissions()
@@ -70,13 +80,9 @@ namespace Inwentaryzacja
 
 		private async void GetRooms(int buildingId)
 		{
-			rooms = await api.getRooms(buildingId);
-
-			Task<RoomEntity[]> roomsTask = api.getRooms(buildingId);
 			EnableView(false);
-			await roomsTask;
+			rooms = await api.getRooms(buildingId);
 			EnableView(true);
-			rooms = roomsTask.Result;
 
 			if (rooms == null)
 			{
@@ -96,11 +102,9 @@ namespace Inwentaryzacja
 		
 		private async void GetBuildings()
 		{
-			Task<BuildingEntity[]> buildingTask = api.getBuildings();
 			EnableView(false);
-			await buildingTask;
+			buildings = await api.getBuildings();
 			EnableView(true);
-			buildings = buildingTask.Result;
 
 			if (buildings == null) return;
 
@@ -175,6 +179,11 @@ namespace Inwentaryzacja
 		private async void onApiError(object o, ErrorEventArgs error)
 		{
 			await DisplayAlert("Błąd", error.MessageForUser, "OK");
+
+			if(error.Auth==false)
+			{
+				await Navigation.PushAsync(new LoginPage());
+			}
 		}
 
 
