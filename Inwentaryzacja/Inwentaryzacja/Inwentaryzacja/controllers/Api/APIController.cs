@@ -40,8 +40,6 @@ namespace Inwentaryzacja.Controllers.Api
             string result;
             int statusCode = 200;
 
-            if (Xamarin.Essentials.Connectivity.NetworkAccess == NetworkAccess.Internet)
-            {
                 try
                 {
                     var uri = new Uri(BaseUrl + address);
@@ -60,12 +58,6 @@ namespace Inwentaryzacja.Controllers.Api
                     result = "{\"message\":\"" + failConnection.Message + "\"}";
                     statusCode = 502;
                 }
-            }
-            else
-            {
-                result = "{\"message\":\"No internet connection\"}";
-                statusCode = 402;
-            }
 
             ErrorInvoke(result, statusCode);
             return null;
@@ -76,8 +68,6 @@ namespace Inwentaryzacja.Controllers.Api
             string result;
             int statusCode = 200;
 
-            if (Xamarin.Essentials.Connectivity.NetworkAccess == NetworkAccess.Internet)
-            {
                 try
                 {
                     var uri = new Uri(BaseUrl + address);
@@ -95,12 +85,6 @@ namespace Inwentaryzacja.Controllers.Api
                     result = "{\"message\":\"" + failConnection.Message + "\"}";
                     statusCode = 502;
                 }
-            }
-            else
-            {
-                result = "{\"message\":\"No internet connection\"}";
-                statusCode = 402;
-            }
 
             ErrorInvoke(result, statusCode);
             return false;
@@ -111,8 +95,6 @@ namespace Inwentaryzacja.Controllers.Api
             string result;
             int statusCode = 200;
 
-            if (Xamarin.Essentials.Connectivity.NetworkAccess == NetworkAccess.Internet)
-            {
                 try
                 {
                     var uri = new Uri(BaseUrl + address);
@@ -134,12 +116,6 @@ namespace Inwentaryzacja.Controllers.Api
                     result = "{\"message\":\"" + failConnection.Message + "\"}";
                     statusCode = 502;
                 }
-            }
-            else
-            {
-                result = "{\"message\":\"No internet connection\"}";
-                statusCode = 402;
-            }
 
             ErrorInvoke(result, statusCode);
             return false;
