@@ -20,9 +20,9 @@ BEGIN
     IF NOT Room_exits OR NOT Owner_exits THEN
         SELECT NULL  AS id,
                CONCAT_WS(
-                       ' AND ',
-                       idsNotFound('Room', Report_room, Room_exits),
-                       idsNotFound('User', Report_owner, Owner_exits)
+                       ', ',
+                       idsNotFound('Pomieszczenie', Report_room, Room_exits),
+                       idsNotFound('Użytkownik', Report_owner, Owner_exits)
                    ) AS message;
         LEAVE addNewReportProcedure;
     END IF;
@@ -85,10 +85,10 @@ BEGIN
     If NOT Are_assets_exists OR NOT Are_rooms_exists OR NOT Are_assets_duplicated THEN
         SELECT NULL  AS id,
                CONCAT_WS(
-                       ' AND ',
-                       idsNotFound('Asset', Assets_does_not_exists, Are_assets_exists),
-                       idsNotFound('Room', Rooms_does_not_exists, Are_rooms_exists),
-                       haveDuplicates('Asset', Assets_duplicated, Are_assets_duplicated)
+                       ', ',
+                       idsNotFound('Środek', Assets_does_not_exists, Are_assets_exists),
+                       idsNotFound('Pomieszzenie', Rooms_does_not_exists, Are_rooms_exists),
+                       haveDuplicates('Środek', Assets_duplicated, Are_assets_duplicated)
                    ) AS message;
 
         DROP TEMPORARY TABLE ReportPositions;

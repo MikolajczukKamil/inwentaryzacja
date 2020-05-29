@@ -6,7 +6,7 @@ BEGIN
     DECLARE is_report_exits BOOLEAN DEFAULT reportExists(Id_report);
 
     IF NOT is_report_exits THEN
-        SELECT idsNotFound('Report', Id_report, is_report_exits) AS message,
+        SELECT idsNotFound('Raport', Id_report, is_report_exits) AS message,
                NULL                                              AS asset_id,
                NULL                                              AS present,
                NULL                                              AS type_id,

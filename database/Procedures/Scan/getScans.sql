@@ -6,7 +6,7 @@ BEGIN
     DECLARE Is_user_exits BOOLEAN DEFAULT userExists(User_id);
 
     IF NOT Is_user_exits THEN
-        SELECT idsNotFound('User', User_id, Is_user_exits) AS message,
+        SELECT idsNotFound('Użytkownik', User_id, Is_user_exits) AS message,
                NULL                                        AS id,
                NULL                                        AS create_date,
                NULL                                        AS owner_id,

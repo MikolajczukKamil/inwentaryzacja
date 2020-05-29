@@ -11,7 +11,7 @@ BEGIN
     DECLARE Assets_does_not_exists VARCHAR(1024);
 
     IF NOT Is_scan_exits THEN
-        SELECT idsNotFound('Scan', Scan_id, Is_scan_exits) AS message;
+        SELECT idsNotFound('Skanowanie', Scan_id, Is_scan_exits) AS message;
         LEAVE updateScanProcedure;
     END IF;
 
@@ -46,7 +46,7 @@ BEGIN
     WHERE NOT assetExists(ScanPositions.asset);
 
     If NOT Are_assets_exists THEN
-        SELECT idsNotFound('Asset', Assets_does_not_exists, Are_assets_exists) AS message;
+        SELECT idsNotFound('Środkek', Assets_does_not_exists, Are_assets_exists) AS message;
 
         DROP TEMPORARY TABLE ScanPositions;
         LEAVE updateScanProcedure;

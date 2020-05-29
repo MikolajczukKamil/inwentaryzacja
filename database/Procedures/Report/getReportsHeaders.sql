@@ -36,7 +36,7 @@ BEGIN
     DECLARE is_user_exits BOOLEAN DEFAULT userExists(User_id);
 
     IF NOT is_user_exits THEN
-        SELECT idsNotFound('User', User_id, is_user_exits) AS message,
+        SELECT idsNotFound('Użytkownik', User_id, is_user_exits) AS message,
                NULL                                        AS id,
                NULL                                        AS name,
                NULL                                        AS create_date,
@@ -60,7 +60,7 @@ BEGIN
     DECLARE is_report_exits BOOLEAN DEFAULT reportExists(Report_id);
 
     IF NOT is_report_exits THEN
-        SELECT idsNotFound('Report', Report_id, is_report_exits) AS message,
+        SELECT idsNotFound('Raport', Report_id, is_report_exits) AS message,
                NULL                                              AS id,
                NULL                                              AS name,
                NULL                                              AS create_date,

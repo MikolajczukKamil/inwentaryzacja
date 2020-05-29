@@ -10,7 +10,7 @@ BEGIN
 
     IF NOT is_type_exits THEN
         SELECT NULL                                        AS id,
-               idsNotFound('User', User_id, is_type_exits) AS message;
+               idsNotFound('Użytkownik', User_id, is_type_exits) AS message;
     ELSE
         INSERT INTO login_sessions (user, token, expiration_date, create_date)
         VALUES (User_id, User_token, Date_expiration, NOW());

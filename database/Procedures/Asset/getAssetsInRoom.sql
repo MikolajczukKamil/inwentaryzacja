@@ -6,7 +6,7 @@ BEGIN
     DECLARE Room_exits BOOLEAN DEFAULT roomExists(Room_id);
 
     IF NOT Room_exits THEN
-        SELECT idsNotFound('Room', Room_id, Room_exits) AS message,
+        SELECT idsNotFound('Pomieszczenie', Room_id, Room_exits) AS message,
                NULL                                     AS id,
                NULL                                     AS type,
                NULL                                     AS asset_type_name,

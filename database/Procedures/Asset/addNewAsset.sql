@@ -7,7 +7,7 @@ BEGIN
 
     IF NOT is_type_exits THEN
         SELECT NULL                                             AS id,
-               idsNotFound('AssetType', Type_id, is_type_exits) AS message;
+               idsNotFound('Typ środka', Type_id, is_type_exits) AS message;
     ELSE
         INSERT INTO assets (type)
         VALUES (Type_id);
