@@ -15,16 +15,9 @@ namespace Inwentaryzacja
 
             var api = new APIController();
             var session = new SessionController(api);
-            if(session.ResumeSession())
+            if(session.ResumeSession() && Task.Run(() => api.getAssetInfo(1)).Result != null)
             {
-                if(Task.Run(() => api.getAssetInfo(1)).Result!=null)
-                {
-                    MainPage = new NavigationPage(new WelcomeViewPage());
-                }
-                else
-                {
-                    MainPage = new LoginPage();
-                } 
+                MainPage = new NavigationPage(new WelcomeViewPage());
             }
             else
             {
