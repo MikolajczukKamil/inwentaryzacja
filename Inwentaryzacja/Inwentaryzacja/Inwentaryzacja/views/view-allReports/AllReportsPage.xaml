@@ -28,6 +28,12 @@
                   HorizontalOptions="CenterAndExpand"
                   HorizontalTextAlignment="Center" 
                   FontSize="36"/>
+            <ActivityIndicator x:Name="activityIndicator" 
+                               IsRunning="{Binding IsBusy}"  
+                               IsVisible="{Binding IsBusy}" 
+                               VerticalOptions="CenterAndExpand" 
+                               HorizontalOptions="CenterAndExpand" 
+                               Color="Blue"/>
             <ListView  Margin="15" 
                        RowHeight="120" 
                        SeparatorVisibility="None" 

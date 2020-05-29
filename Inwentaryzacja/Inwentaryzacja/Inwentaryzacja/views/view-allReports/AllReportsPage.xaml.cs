@@ -3,6 +3,7 @@ using Inwentaryzacja.Models;
 using Inwentaryzacja.views.view_allReports;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,13 +24,15 @@ namespace Inwentaryzacja
         {
             InitializeComponent();
             api.ErrorEventHandler += onApiError;
+            BindingContext = this;
         }
 
         protected async override void OnAppearing()
         {
             base.OnAppearing();
-            List<AllReport> allReportList = new List<AllReport>();
+            EnableView(false);
 
+            List<AllReport> allReportList = new List<AllReport>();
             reportHeaders = await api.getReportHeaders();
 
             if (reportHeaders == null) return;
@@ -40,6 +43,8 @@ namespace Inwentaryzacja
             }
 
             ReportList.ItemsSource = allReportList;
+
+            EnableView(true);
         }
 
         private async void onApiError(object o, ErrorEventArgs error)
@@ -78,17 +83,25 @@ namespace Inwentaryzacja
             if (reportHeaderEntity == null) return;
 
             Task<ReportPositionEntity[]> reportPositionTask = api.getReportPositions(reportHeaderEntity.id);
+            EnableView(false);
             await reportPositionTask;
             reportPositionEntities = reportPositionTask.Result;
             if (reportPositionEntities == null) return;
 
             Task<AssetEntity[]> assetsTask = api.getAssetsInRoom(reportHeaderEntity.room.id);
             await assetsTask;
-            assetsInRoom = assetsTask.Result;
+            assetsInRoom = assetsTask.Result;            
             if (assetsInRoom == null) return;
+            EnableView(true);
 
-            //--------------------------
-            string listedAssets = GetScannedItemsCount(reportPositionEntities, assetsInRoom, reportHeaderEntity.room.name);
+            string[] counted = GetScannedItemsCount(reportPositionEntities, assetsInRoom, reportHeaderEntity.room);
+
+            string inThisRoom = counted[0];
+            string moveToRoom = counted[1];
+            string moveFromRoom = counted[2];
+            string inAnotherRoom = counted[3];
+            string scannedAll = counted[4];
+
             string headerText = reportHeaderEntity.name;
             string roomText = reportHeaderEntity.room.name;
             DateTime date = reportHeaderEntity.create_date;
@@ -98,118 +111,107 @@ namespace Inwentaryzacja
             string createTime = date.TimeOfDay.ToString();
             string ownerText = reportHeaderEntity.owner.login;
 
-            App.Current.MainPage = new ReportDetailsView(headerText, roomText, createDate, createTime, ownerText, listedAssets);
+            App.Current.MainPage = new ReportDetailsView(headerText, roomText, createDate, createTime, ownerText, inThisRoom, moveToRoom, moveFromRoom, inAnotherRoom, scannedAll);
         }
 
-        private string GetScannedItemsCount(ReportPositionEntity[] reportPositionEntities, AssetEntity[] assetsInRoom, string currentRoom)
+        private string[] GetScannedItemsCount(ReportPositionEntity[] reportPositionEntities, AssetEntity[] assetsInRoom, RoomEntity currentRoom)
         {
-            Dictionary<string, string> result = new Dictionary<string, string>();
+            string[] result = new string[5];
 
-            Dictionary<string, int> scannedAssetsCounts = new Dictionary<string, int>();
-            Dictionary<string, int> roomAssetsCounts = new Dictionary<string, int>();
+            Dictionary<string, int> inThisRoomCount = new Dictionary<string, int>();
+            Dictionary<string, int> movedToRoomCount = new Dictionary<string, int>();
+            Dictionary<string, int> movedFromRoomCount = new Dictionary<string, int>();
+            Dictionary<string, int> inAnotherRoomCount = new Dictionary<string, int>();
+            Dictionary<string, int> scannedAll = new Dictionary<string, int>();
 
             foreach (ReportPositionEntity item in reportPositionEntities)
             {
-                if (item.present == true)
+                
+                string typeName = item.asset.type.name;
+
+                if (!scannedAll.ContainsKey(typeName))
                 {
-                    string typeName = item.asset.type.name;
-                    if (!scannedAssetsCounts.ContainsKey(typeName))
+                    scannedAll.Add(typeName, 1);
+                }
+                else
+                {
+                    scannedAll[typeName]++;
+                }
+
+                if (item.present == true && item.previous_room == currentRoom)
+                {
+                    if (!inThisRoomCount.ContainsKey(typeName))
                     {
-                        scannedAssetsCounts.Add(typeName, 1);
+                        inThisRoomCount.Add(typeName, 1);
                     }
                     else
                     {
-                        scannedAssetsCounts[typeName]++;
+                        inThisRoomCount[typeName]++;
+                    }
+                }
+
+                else if (item.present == true && item.previous_room != currentRoom)
+                {
+                    if (!movedToRoomCount.ContainsKey(typeName))
+                    {
+                        movedToRoomCount.Add(typeName, 1);
+                    }
+                    else
+                    {
+                        movedToRoomCount[typeName]++;
+                    }
+                }
+                else if (item.present == false && item.previous_room == currentRoom)
+                {
+                    if (!movedFromRoomCount.ContainsKey(typeName))
+                    {
+                        movedFromRoomCount.Add(typeName, 1);
+                    }
+                    else
+                    {
+                        movedFromRoomCount[typeName]++;
+                    }
+                }
+                else if (item.present == false && item.previous_room != currentRoom)
+                { 
+                    if (!inAnotherRoomCount.ContainsKey(typeName))
+                    {
+                        inAnotherRoomCount.Add(typeName, 1);
+                    }
+                    else
+                    {
+                        inAnotherRoomCount[typeName]++;
                     }
                 }
             }
 
-            foreach (AssetEntity item in assetsInRoom)
-            {
+            result[0] = GenerateString(inThisRoomCount);
+            result[1] = GenerateString(movedToRoomCount);
+            result[2] = GenerateString(movedFromRoomCount);
+            result[3] = GenerateString(inAnotherRoomCount);
+            result[4] = GenerateString(scannedAll);
 
-                string typeName = item.type.name;
-                if (!roomAssetsCounts.ContainsKey(typeName))
-                {
-                    roomAssetsCounts.Add(typeName, 1);
-                }
-                else
-                {
-                    roomAssetsCounts[typeName]++;
-                }
-
-            }
-
-            foreach (ReportPositionEntity item in reportPositionEntities)
-            {
-                string typeName = item.asset.type.name;
-                if (scannedAssetsCounts.ContainsKey(typeName) && roomAssetsCounts.ContainsKey(typeName) && !result.ContainsKey(typeName))
-                {
-                    result.Add(typeName, scannedAssetsCounts[typeName] + "/" + roomAssetsCounts[typeName]);
-                }               
-            }
-
-            string listedAssets = "";
-            bool first = true;
-            foreach (KeyValuePair<string, string> item in result)
-            {
-                if (first)
-                {
-                    listedAssets = item.Key + "    " + item.Value;
-                    first = false;
-                }
-                listedAssets += Environment.NewLine + item.Key + "    " + item.Value;
-            }
-
-            return listedAssets;
+            return result;
         }
 
-        private Dictionary<string, string> Get(ReportPositionEntity[] reportPositionEntities, AssetEntity[] assetsInRoom)
+        private string GenerateString(Dictionary<string, int> dict)
         {
-            Dictionary<string, string> result = new Dictionary<string, string>();
+            string result = "";
 
-            Dictionary<string, int> scannedAssetsCounts = new Dictionary<string, int>();
-            Dictionary<string, int> roomAssetsCounts = new Dictionary<string, int>();
+            if (dict.Count == 0 || dict == null) return result;
 
-            foreach (ReportPositionEntity item in reportPositionEntities)
+            foreach (KeyValuePair<string,int> item in dict)
             {
-
-                string typeName = item.asset.type.name;
-                if (!scannedAssetsCounts.ContainsKey(typeName))
-                {
-                    scannedAssetsCounts.Add(typeName, 1);
-                }
-                else
-                {
-                    scannedAssetsCounts[typeName]++;
-                }
-
-            }
-
-            foreach (AssetEntity item in assetsInRoom)
-            {
-
-                string typeName = item.type.name;
-                if (!roomAssetsCounts.ContainsKey(typeName))
-                {
-                    roomAssetsCounts.Add(typeName, 1);
-                }
-                else
-                {
-                    roomAssetsCounts[typeName]++;
-                }
-
-            }
-
-            foreach (ReportPositionEntity item in reportPositionEntities)
-            {
-                string typeName = item.asset.type.name;
-                if (scannedAssetsCounts.ContainsKey(typeName) && roomAssetsCounts.ContainsKey(typeName) && !result.ContainsKey(typeName))
-                {
-                    result.Add(typeName, scannedAssetsCounts[typeName] + "/" + roomAssetsCounts[typeName]);
-                }
+                result += item.Key + "    " + item.Value + Environment.NewLine;
             }
 
             return result;
+        }
+
+        private void EnableView(bool state)
+        {
+            IsBusy = !state;
+            ReportList.IsEnabled = state;
         }
     }
 }
