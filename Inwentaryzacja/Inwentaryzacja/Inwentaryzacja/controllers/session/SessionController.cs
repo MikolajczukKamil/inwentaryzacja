@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using ZXing.Aztec.Internal;
 
 namespace Inwentaryzacja.controllers.session
@@ -44,7 +45,7 @@ namespace Inwentaryzacja.controllers.session
 			api.DeleteToken();
 		}
 
-		public bool ResumeSession()
+		public bool IsLogin()
 		{
 			if (api.GetToken() != null)
 			{
@@ -66,7 +67,10 @@ namespace Inwentaryzacja.controllers.session
 				
 				sr.Close();
 
-				return true;
+				if(Task.Run(() => api.getAssetInfo(1)).Result != null)
+				{
+					return true;
+				}
 			}
 
 			return false;

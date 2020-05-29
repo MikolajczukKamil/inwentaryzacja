@@ -13,16 +13,7 @@ namespace Inwentaryzacja
         {
             InitializeComponent();
 
-            var api = new APIController();
-            var session = new SessionController(api);
-            if(session.ResumeSession() && Task.Run(() => api.getAssetInfo(1)).Result != null)
-            {
-                MainPage = new NavigationPage(new WelcomeViewPage());
-            }
-            else
-            {
-                MainPage = new LoginPage();
-            }
+            MainPage = new LoginPage();
         }
 
         protected override void OnStart()

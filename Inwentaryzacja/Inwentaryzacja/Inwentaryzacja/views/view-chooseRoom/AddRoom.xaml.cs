@@ -19,7 +19,12 @@ namespace Inwentaryzacja.views.view_chooseRoom
             InitializeComponent();
             api.ErrorEventHandler += onApiError;
             BindingContext = this;
+        }
+
+        protected override void OnAppearing()
+        {
             GetBuildings();
+            base.OnAppearing();
         }
 
         private async void GetBuildings()
@@ -50,7 +55,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
             }
         }
   
-        public void return_ChooseRoom(object o, EventArgs args)
+        public async void return_ChooseRoom(object o, EventArgs args)
         {
             await Navigation.PopAsync();
         }
@@ -76,10 +81,9 @@ namespace Inwentaryzacja.views.view_chooseRoom
 
             EnableView(true);
 
-            App.Current.MainPage = new ChooseRoomPage(true);
-
             if (isCreated)
             {
+                Navigation.PopAsync();
                 await DisplayAlert("Dodawanie pokoju", "Pomyślnie dodano nowy pokój", "OK");
             }
         }
@@ -93,7 +97,12 @@ namespace Inwentaryzacja.views.view_chooseRoom
       
         private async void onApiError(object o, ErrorEventArgs error)
         {
-            await DisplayAlert("Dodawanie pokoju", error.Message, "OK");
+            await DisplayAlert("Dodawanie pokoju", error.MessageForUser, "OK");
+
+            if (error.Auth == false)
+            {
+                await Navigation.PushAsync(new LoginPage());
+            }
         }
 
         private async void LogoutButtonClicked(object sender, EventArgs e)
