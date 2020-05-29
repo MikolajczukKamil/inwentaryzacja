@@ -6,7 +6,7 @@ BEGIN
     DECLARE Building_exits BOOLEAN DEFAULT buildingExists(Id_building);
 
     IF NOT Building_exits THEN
-        SELECT idsNotFound('Building', Id_building, Building_exits) AS message,
+        SELECT idsNotFound('Budynek', Id_building, Building_exits) AS message,
                NULL                                                 AS id,
                NULL                                                 AS name,
                NULL                                                 AS building_id,

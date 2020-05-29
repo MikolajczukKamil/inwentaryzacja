@@ -15,10 +15,9 @@ BEGIN
     IF NOT Building_exits OR NOT Name_unique THEN
         SELECT NULL  AS id,
                CONCAT_WS(
-                       ' AND ',
-                       idsNotFound('Building', Building_id, Building_exits),
-                       CONCAT('Room name=', IF(NOT Name_unique, Room_name, NULL), ' is not unique in Building id=',
-                              Building_id)
+                       ', ',
+                       idsNotFound('Budynek', Building_id, Building_exits),
+                       CONCAT('Pomieszczenie ', IF(NOT Name_unique, Room_name, NULL), ' już istnieje w budynku nr ', Building_id)
                    ) AS message;
     ELSE
         INSERT INTO rooms (name, building)

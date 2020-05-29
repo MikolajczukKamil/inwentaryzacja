@@ -7,7 +7,7 @@ BEGIN
     DECLARE Asset_room_id INT DEFAULT getRoomIdWithAsset(Asset_id);
 
     IF NOT is_asset_exits THEN
-        SELECT idsNotFound('Asset', Asset_id, is_asset_exits) AS message,
+        SELECT idsNotFound('Środki', Asset_id, is_asset_exits) AS message,
                NULL                                           AS id,
                NULL                                           AS type,
                NULL                                           AS letter,

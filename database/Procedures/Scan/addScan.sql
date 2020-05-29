@@ -9,9 +9,9 @@ BEGIN
     IF NOT Room_exits OR NOT Owner_exits THEN
         SELECT NULL  AS id,
                CONCAT_WS(
-                       ' AND ',
-                       idsNotFound('Room', Room_id, Room_exits),
-                       idsNotFound('User', Owner_id, Owner_exits)
+                       ', ',
+                       idsNotFound('Pomieszczenie', Room_id, Room_exits),
+                       idsNotFound('Użytkownik', Owner_id, Owner_exits)
                    ) AS message;
     ELSE
 
