@@ -66,11 +66,12 @@ namespace Inwentaryzacja
 
         private async void ReportList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
+            EnableView(false);
+
             AllReport selectedReport = (AllReport)ReportList.SelectedItem;
 
             ReportHeaderEntity reportHeaderEntity = null;
             ReportPositionEntity[] reportPositionEntities;
-            AssetEntity[] assetsInRoom;
 
             if (selectedReport == null) return;
             foreach (ReportHeaderEntity item in reportHeaders)
@@ -83,18 +84,12 @@ namespace Inwentaryzacja
             if (reportHeaderEntity == null) return;
 
             Task<ReportPositionEntity[]> reportPositionTask = api.getReportPositions(reportHeaderEntity.id);
-            EnableView(false);
+            
             await reportPositionTask;
             reportPositionEntities = reportPositionTask.Result;
             if (reportPositionEntities == null) return;
 
-            Task<AssetEntity[]> assetsTask = api.getAssetsInRoom(reportHeaderEntity.room.id);
-            await assetsTask;
-            assetsInRoom = assetsTask.Result;            
-            if (assetsInRoom == null) return;
-            EnableView(true);
-
-            string[] counted = GetScannedItemsCount(reportPositionEntities, assetsInRoom, reportHeaderEntity.room);
+            string[] counted = GetScannedItemsCount(reportPositionEntities, reportHeaderEntity.room);
 
             string inThisRoom = counted[0];
             string moveToRoom = counted[1];
@@ -111,10 +106,11 @@ namespace Inwentaryzacja
             string createTime = date.TimeOfDay.ToString();
             string ownerText = reportHeaderEntity.owner.login;
 
+            EnableView(true);
             App.Current.MainPage = new ReportDetailsView(headerText, roomText, createDate, createTime, ownerText, inThisRoom, moveToRoom, moveFromRoom, inAnotherRoom, scannedAll);
         }
 
-        private string[] GetScannedItemsCount(ReportPositionEntity[] reportPositionEntities, AssetEntity[] assetsInRoom, RoomEntity currentRoom)
+        private string[] GetScannedItemsCount(ReportPositionEntity[] reportPositionEntities, RoomEntity currentRoom)
         {
             string[] result = new string[5];
 
@@ -128,16 +124,17 @@ namespace Inwentaryzacja
             {
                 
                 string typeName = item.asset.type.name;
-
-                if (!scannedAll.ContainsKey(typeName))
+                if (item.present == true)
                 {
-                    scannedAll.Add(typeName, 1);
+                    if (!scannedAll.ContainsKey(typeName))
+                    {
+                        scannedAll.Add(typeName, 1);
+                    }
+                    else
+                    {
+                        scannedAll[typeName]++;
+                    }
                 }
-                else
-                {
-                    scannedAll[typeName]++;
-                }
-
                 if (item.present == true && item.previous_room == currentRoom)
                 {
                     if (!inThisRoomCount.ContainsKey(typeName))
@@ -202,7 +199,22 @@ namespace Inwentaryzacja
 
             foreach (KeyValuePair<string,int> item in dict)
             {
-                result += item.Key + "    " + item.Value + Environment.NewLine;
+                string dopisek = "sztuk";
+                string spacebars = "";
+                int spaceCounter = 12 - item.Key.Length;
+
+                if (item.Key == "krzesło") spaceCounter += 3;
+                if (item.Key == "monitor") spaceCounter += 3;
+                if (item.Key == "stół") spaceCounter += 7;
+                if (item.Key == "tablica") spaceCounter += 4;
+                if (item.Key == "projektor") spaceCounter += 3;
+
+                for (int i = 0; i < spaceCounter; i++) spacebars += " ";                
+
+                if (item.Value == 1) dopisek = "sztuka";
+                if (item.Value == 2|| item.Value == 3|| item.Value == 4) dopisek = "sztuki";
+
+                result += item.Key + spacebars + item.Value + " " + dopisek +Environment.NewLine;
             }
 
             return result;

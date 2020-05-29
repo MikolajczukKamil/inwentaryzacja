@@ -37,31 +37,36 @@ namespace Inwentaryzacja.views.view_allReports
             {
                 ScannedAllHeader.IsVisible = false;
                 ScannedAll.IsVisible = false;
-                FrameRequest.HeightRequest -= 100;
+                ScannedAllBtn.IsVisible = false;
+                FrameRequest.HeightRequest -= 65;
             }
             if (MoveToRoom.Text == "")
             {
                 MoveToRoomHeader.IsVisible = false;
                 MoveToRoom.IsVisible = false;
-                FrameRequest.HeightRequest -= 100;
+                MoveToRoomBtn.IsVisible = false;
+                FrameRequest.HeightRequest -= 65;
             }
             if (MoveFromRoom.Text == "")
             {
                 MoveFromRoomHeader.IsVisible = false;
                 MoveFromRoom.IsVisible = false;
-                FrameRequest.HeightRequest -= 100;
+                MoveFromRoomBtn.IsVisible = false;
+                FrameRequest.HeightRequest -= 65;
             }
             if (InAnotherRoom.Text == "")
             {
                 InAnotherRoomHeader.IsVisible = false;
                 InAnotherRoom.IsVisible = false;
-                FrameRequest.HeightRequest -= 100;
+                InAnotherRoomBtn.IsVisible = false;
+                FrameRequest.HeightRequest -= 65;
             }
             if (InThisRoom.Text == "")
             {
                 InThisRoomHeader.IsVisible = false;
                 InThisRoom.IsVisible = false;
-                FrameRequest.HeightRequest -= 100;
+                InThisRoomBtn.IsVisible = false;
+                FrameRequest.HeightRequest -= 60;
             }
         }
 
