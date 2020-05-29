@@ -1,8 +1,6 @@
 ﻿using Inwentaryzacja.Controllers.Api;
 using Inwentaryzacja.Models;
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -11,11 +9,9 @@ namespace Inwentaryzacja.views.view_chooseRoom
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddRoom : ContentPage
     {
-        
         BuildingEntity[] buildings;
         bool addedNewBuilding = false;
         APIController api = new APIController();
-        
 
         public AddRoom()
         {
@@ -24,13 +20,14 @@ namespace Inwentaryzacja.views.view_chooseRoom
             BindingContext = this;
             GetBuildings();
         }
+
         private async void GetBuildings()
         {
-            Task<BuildingEntity[]> buildingTask = api.getBuildings();
             EnableView(false);
-            await buildingTask;
+
+            buildings = await api.getBuildings();
+
             EnableView(true);
-            buildings = buildingTask.Result;
 
             if (buildings == null) return;
 
@@ -49,7 +46,6 @@ namespace Inwentaryzacja.views.view_chooseRoom
                 {
                     BuildingPicker.SelectedItem = BuildingPicker.Items[0];
                 }
-
             }
         }
   
@@ -61,10 +57,11 @@ namespace Inwentaryzacja.views.view_chooseRoom
         public async void Check_Room(object o, EventArgs args)
         {
             string number = room_number.Text;
-            BuildingEntity[] allbuildings = await api.getBuildings();
+
             BuildingEntity mybuilding = new BuildingEntity();
             string choosenBuildingName = BuildingPicker.Items[BuildingPicker.SelectedIndex];
-            foreach (var item in allbuildings)
+
+            foreach (var item in buildings)
             {
                 if (item.name == choosenBuildingName)
                 {
@@ -72,35 +69,20 @@ namespace Inwentaryzacja.views.view_chooseRoom
                 }
             }
 
-            RoomEntity[] rooms = await api.getRooms(mybuilding.id);
-            bool roomexist = false;
+            EnableView(false);
 
-            foreach (var item in rooms)
+            bool isCreated = await api.createRoom(new RoomPropotype(number, mybuilding));
+
+            EnableView(true);
+
+            App.Current.MainPage = new ChooseRoomPage(true);
+
+            if (isCreated)
             {
-                if (item.name == number)
-                {
-                    roomexist = true;
-                    await DisplayAlert("Błąd", "W tym budynku istnieje już taki pokój", "Wyjdź");
-                }
-            }
-
-            if (!roomexist)
-            {
-                Task<bool> createTask = api.createRoom(new RoomPropotype(number, mybuilding));
-                EnableView(false);
-                await createTask;
-                EnableView(true);
-                bool isCreated = createTask.Result;
-               
-                App.Current.MainPage = new ChooseRoomPage(true);
-
-                if (isCreated)
-                {
-                    await DisplayAlert("Dodawanie pokoju", "Pomyślnie dodano nowy pokój", "OK");
-                }
-              
+                await DisplayAlert("Dodawanie pokoju", "Pomyślnie dodano nowy pokój", "OK");
             }
         }
+        
         private void EnableView(bool state)
         {
             IsBusy = !state;
@@ -110,8 +92,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
       
         private async void onApiError(object o, ErrorEventArgs error)
         {
-            await DisplayAlert("Dodawanie pokoju", error.MessageForUser, "OK");
+            await DisplayAlert("Dodawanie pokoju", error.Message, "OK");
         }
-
     }
 }
