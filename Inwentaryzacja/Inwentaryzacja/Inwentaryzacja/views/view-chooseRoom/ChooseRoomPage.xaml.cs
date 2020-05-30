@@ -17,6 +17,7 @@ namespace Inwentaryzacja
 		RoomEntity[] rooms;
 		BuildingEntity[] buildings;
 		public bool addedNewBuilding = false;
+		public bool addedNewRoom = false;
 
 		APIController api = new APIController();
 
@@ -29,9 +30,10 @@ namespace Inwentaryzacja
 
 		protected override void OnAppearing()
 		{
-			if(BuildingPicker.Items.Count==0 || addedNewBuilding)
+			if(BuildingPicker.Items.Count==0 || addedNewBuilding || addedNewRoom)
 			{
 				GetBuildings();
+				addedNewRoom = false;
 			}
 			
 			base.OnAppearing();

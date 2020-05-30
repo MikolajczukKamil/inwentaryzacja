@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 using ZXing.Aztec.Internal;
 
 namespace Inwentaryzacja.controllers.session
@@ -47,11 +48,7 @@ namespace Inwentaryzacja.controllers.session
 
 		public bool IsLogin()
 		{
-			if (api.GetToken() != null)
-			{
-				return true;
-			}
-			else if (File.Exists(TokenPath))
+			if (File.Exists(TokenPath))
 			{
 				StreamReader sr = new StreamReader(TokenPath);
 
@@ -67,15 +64,7 @@ namespace Inwentaryzacja.controllers.session
 				
 				sr.Close();
 
-				var task = Task.Run(() => api.getAssetInfo(1));
-
-				if (task.Wait(5000))
-				{
-					if(task.Result != null)
-					{
-						return true;
-					}
-				}
+				return true;
 			}
 
 			return false;

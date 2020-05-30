@@ -19,22 +19,33 @@ namespace Inwentaryzacja
             InitializeComponent();
         }
 
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
-
-            Task.Run(() => 
+            
+            if(Navigation.NavigationStack.Count==0)
             {
-                var session = new SessionController(api);
-                if (session.IsLogin())
+                Task.Run(() =>
                 {
-                    NextPage();
-                }
-                else
-                {
-                    LoadingScreen.IsVisible = false;
-                }
-            }); 
+                    Device.BeginInvokeOnMainThread(async () =>
+                    {
+                        var session = new SessionController(api);
+                        if (session.IsLogin() && (await api.getAssetInfo(1)) != null)
+                        {
+                            NextPage();
+                        }
+                        else
+                        {
+                            LoadingScreen.IsVisible = false;
+                        }
+                    });
+                });
+            }
+            else
+            {
+                LoadingScreen.IsVisible = false;
+            }
         }
 
         private void NextPage()
