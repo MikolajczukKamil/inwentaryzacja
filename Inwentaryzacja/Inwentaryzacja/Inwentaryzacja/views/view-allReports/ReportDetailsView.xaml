@@ -73,7 +73,7 @@
                         HeightRequest="1000"
                         BackgroundColor="#bfffe1"
                         x:Name="FrameRequest">
-                
+
                 <StackLayout>
 
                     <Label  FontSize="25" 
@@ -84,12 +84,18 @@
                             FontAttributes="Bold"  
                             Text="Zawartość sali po skanowaniu"
                             x:Name="ScannedAllHeader"/>
+                    <Grid>
 
-                    <Label  FontSize="20" 
-                            VerticalOptions="Start"
+                        <Label  FontSize="20" Grid.Column="0"
+                            VerticalOptions="StartAndExpand"
+                            TextColor="Black"
+                            x:Name="ScannedAllLabel"/>
+                        <Label  FontSize="20" Grid.Column="1"
+                            VerticalOptions="StartAndExpand"
                             TextColor="Black"
                             x:Name="ScannedAll"/>
 
+                    </Grid>
                     <local:RoundedButton Text="Szczegóły"
                                         HorizontalOptions="Center"
                                         FontSize="20"
@@ -109,10 +115,18 @@
                             Text="Były i są w sali"
                             x:Name="InThisRoomHeader"/>
 
-                    <Label  FontSize="20" 
-                            VerticalOptions="Start"
+                    <Grid>
+
+                        <Label  FontSize="20" Grid.Column="0"
+                            VerticalOptions="StartAndExpand"
+                            TextColor="Black"
+                            x:Name="InThisRoomLabel"/>
+                        <Label  FontSize="20" Grid.Column="1"
+                            VerticalOptions="StartAndExpand"
                             TextColor="Black"
                             x:Name="InThisRoom"/>
+
+                    </Grid>
 
                     <local:RoundedButton Text="Szczegóły"
                                         HorizontalOptions="Center"
@@ -132,10 +146,18 @@
                             Text="Przeniesione z innej sali"
                             x:Name="MoveToRoomHeader"/>
 
-                    <Label  FontSize="20" 
-                            VerticalOptions="Start"
+                    <Grid>
+
+                        <Label  FontSize="20" Grid.Column="0"
+                            VerticalOptions="StartAndExpand"
+                            TextColor="Black"
+                            x:Name="MoveToRoomLabel"/>
+                        <Label  FontSize="20" Grid.Column="1"
+                            VerticalOptions="StartAndExpand"
                             TextColor="Black"
                             x:Name="MoveToRoom"/>
+
+                    </Grid>
 
                     <local:RoundedButton Text="Szczegóły"
                                         HorizontalOptions="Center"
@@ -155,10 +177,18 @@
                             Text="Usunięto"
                             x:Name="MoveFromRoomHeader"/>
 
-                    <Label  FontSize="20" 
-                            VerticalOptions="Start"
+                    <Grid>
+
+                        <Label  FontSize="20" Grid.Column="0"
+                            VerticalOptions="StartAndExpand"
+                            TextColor="Black"
+                            x:Name="MoveFromRoomLabel"/>
+                        <Label  FontSize="20" Grid.Column="1"
+                            VerticalOptions="StartAndExpand"
                             TextColor="Black"
                             x:Name="MoveFromRoom"/>
+
+                    </Grid>
 
                     <local:RoundedButton Text="Szczegóły"
                                         HorizontalOptions="Center"
@@ -178,11 +208,18 @@
                             Text="Zeskanowano bez przeniesienia"
                             x:Name="InAnotherRoomHeader"/>
 
-                    <Label  FontSize="20" 
-                            Margin="0"
-                            VerticalOptions="Start"
+                    <Grid>
+
+                        <Label  FontSize="20" Grid.Column="0"
+                            VerticalOptions="StartAndExpand"
+                            TextColor="Black"
+                            x:Name="InAnotherRoomLabel"/>
+                        <Label  FontSize="20" Grid.Column="1"
+                            VerticalOptions="StartAndExpand"
                             TextColor="Black"
                             x:Name="InAnotherRoom"/>
+
+                    </Grid>
 
                     <local:RoundedButton Text="Szczegóły"
                                         HorizontalOptions="Center"
@@ -192,25 +229,10 @@
                                         HeightRequest="35"
                                         Padding="3,3,3,3"
                                         x:Name="InAnotherRoomBtn"/>
-
                 </StackLayout>
 
             </Frame>
-            
-            <local:RoundedButton Text="Powrót"
-                    ImageSource="back_icon.png"
-                    ContentLayout="Right, -40"
-                    HorizontalOptions="Start"
-                    FontSize="20"
-                    BackgroundColor="White"
-                    WidthRequest="150"
-                    HeightRequest="45"
-                    Padding="10,5,10,5"
-                    Margin="20,20"
-                    VerticalOptions="EndAndExpand"
-                    Clicked="return_ChooseRoom"
-                    x:Name="BackBtn"/>
-            
+
         </StackLayout>
         
     </ScrollView>

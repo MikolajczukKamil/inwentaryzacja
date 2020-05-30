@@ -14,30 +14,36 @@ namespace Inwentaryzacja.views.view_allReports
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ReportDetailsView : ContentPage
     {
-        public ReportDetailsView(string headerText, string roomText, string createDate, string createTime, string ownerText, string inThisRoom, string moveToRoom, string moveFromRoom, string inAnotherRoom, string scannedAll, string scannedAllDetails, string inThisRoomDetails, string movedToRoomDetails, string movedFromRoomDetails, string inAnotherRoomDetails)
+        public ReportDetailsView(string headerText, string roomText, string createDate, string createTime, string ownerText, string inThisRoom, string moveToRoom, string moveFromRoom, string inAnotherRoom, string scannedAll, string scannedAllDetails, string inThisRoomDetails, string movedToRoomDetails, string movedFromRoomDetails, string inAnotherRoomDetails, string scannedAllLabel, string moveFromRoomLabel, string moveToRoomLabel, string inAnotherRoomLabel, string inThisRoomLabel)
         {
             InitializeComponent();
-            FillViewWithText(headerText, roomText, createDate, createTime, ownerText, inThisRoom, moveToRoom, moveFromRoom, inAnotherRoom, scannedAll);
+            FillViewWithText(headerText, roomText, createDate, createTime, ownerText, inThisRoom, moveToRoom, moveFromRoom, inAnotherRoom, scannedAll, scannedAllLabel, moveFromRoomLabel, moveToRoomLabel, inAnotherRoomLabel, inThisRoomLabel);
             DetailsButtonsImplementation(scannedAllDetails, inThisRoomDetails, movedToRoomDetails, movedFromRoomDetails, inAnotherRoomDetails);            
         }
 
-        private void FillViewWithText(string headerText, string roomText, string createDate, string createTime, string ownerText, string inThisRoom, string moveToRoom, string moveFromRoom, string inAnotherRoom, string scannedAll)
+        private void FillViewWithText(string headerText, string roomText, string createDate, string createTime, string ownerText, string inThisRoom, string moveToRoom, string moveFromRoom, string inAnotherRoom, string scannedAll, string scannedAllLabel, string moveFromRoomLabel, string moveToRoomLabel, string inAnotherRoomLabel, string inThisRoomLabel)
         {
             RoomText.Text = "Nazwa sali: " + roomText;
             CreateDate.Text = "Data utworzenia: " + createDate;
             CreateTime.Text = "Godzina utworzenia: " + createTime;
             OwnerText.Text = "Wykonał: " + ownerText;
             ScannedAll.Text = scannedAll;
+            ScannedAllLabel.Text = scannedAllLabel;
             HeaderText.Text = headerText;
             InThisRoom.Text = inThisRoom;
+            InThisRoomLabel.Text = inThisRoomLabel;
             MoveToRoom.Text = moveToRoom;
+            MoveToRoomLabel.Text = moveToRoomLabel;
             MoveFromRoom.Text = moveFromRoom;
+            MoveFromRoomLabel.Text = moveFromRoomLabel;
             InAnotherRoom.Text = inAnotherRoom;
+            InAnotherRoomLabel.Text = inAnotherRoomLabel;
 
             if (ScannedAll.Text == "")
             {
                 ScannedAllHeader.IsVisible = false;
                 ScannedAll.IsVisible = false;
+                ScannedAllLabel.IsVisible = false;
                 ScannedAllBtn.IsVisible = false;
                 FrameRequest.HeightRequest -= 50;
             }
@@ -45,6 +51,7 @@ namespace Inwentaryzacja.views.view_allReports
             {
                 MoveToRoomHeader.IsVisible = false;
                 MoveToRoom.IsVisible = false;
+                MoveToRoomLabel.IsVisible = false;
                 MoveToRoomBtn.IsVisible = false;
                 FrameRequest.HeightRequest -= 50;
             }
@@ -52,6 +59,7 @@ namespace Inwentaryzacja.views.view_allReports
             {
                 MoveFromRoomHeader.IsVisible = false;
                 MoveFromRoom.IsVisible = false;
+                MoveFromRoomLabel.IsVisible = false;
                 MoveFromRoomBtn.IsVisible = false;
                 FrameRequest.HeightRequest -= 50;
             }
@@ -59,6 +67,7 @@ namespace Inwentaryzacja.views.view_allReports
             {
                 InAnotherRoomHeader.IsVisible = false;
                 InAnotherRoom.IsVisible = false;
+                InAnotherRoomLabel.IsVisible = false;
                 InAnotherRoomBtn.IsVisible = false;
                 FrameRequest.HeightRequest -= 50;
             }
@@ -66,6 +75,7 @@ namespace Inwentaryzacja.views.view_allReports
             {
                 InThisRoomHeader.IsVisible = false;
                 InThisRoom.IsVisible = false;
+                InThisRoomLabel.IsVisible = false;
                 InThisRoomBtn.IsVisible = false;
                 FrameRequest.HeightRequest -= 50;
             }
@@ -85,6 +95,10 @@ namespace Inwentaryzacja.views.view_allReports
             App.Current.MainPage = new AllReportsPage();
         }
 
-
+        protected override bool OnBackButtonPressed()
+        {
+            App.Current.MainPage = new AllReportsPage();
+            return true;           
+        }
     }
 }

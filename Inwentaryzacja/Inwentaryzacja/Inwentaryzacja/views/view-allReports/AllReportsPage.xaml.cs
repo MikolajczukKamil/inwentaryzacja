@@ -95,11 +95,17 @@ namespace Inwentaryzacja
             string inAnotherRoom = counted[3];
             string scannedAll = counted[4];
 
+
             string scannedAllDetails = counted[5];
             string inThisRoomDetails = counted[6];
             string movedToRoomDetails = counted[7];
             string movedFromRoomDetails = counted[8];
             string inAnotherRoomDetails = counted[9];
+            string scannedAllLabel = counted[10];
+            string inThisRoomLabel = counted[11]; 
+            string movedToRoomLabel = counted[12];
+            string inAnotherRoomLabel = counted[13];
+            string movedFromRoomLabel = counted[14];
 
             string headerText = reportHeaderEntity.name;
             string roomText = reportHeaderEntity.room.name;
@@ -111,13 +117,13 @@ namespace Inwentaryzacja
             string ownerText = reportHeaderEntity.owner.login;
 
             EnableView(true);
-            App.Current.MainPage = new ReportDetailsView(headerText, roomText, createDate, createTime, ownerText, inThisRoom, moveToRoom, moveFromRoom, inAnotherRoom, scannedAll, scannedAllDetails, inThisRoomDetails, movedToRoomDetails, movedFromRoomDetails, inAnotherRoomDetails);
-        }
-
+            App.Current.MainPage = new ReportDetailsView(headerText, roomText, createDate, createTime, ownerText, inThisRoom, moveToRoom, moveFromRoom, inAnotherRoom, scannedAll, scannedAllDetails, inThisRoomDetails, movedToRoomDetails, movedFromRoomDetails, inAnotherRoomDetails, scannedAllLabel, movedFromRoomLabel, movedToRoomLabel, inAnotherRoomLabel, inThisRoomLabel);
+        }                                                                                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                                                                                          
         private void EnableView(bool state)
         {
             IsBusy = !state;
             ReportList.IsEnabled = state;
-        }
+        }                                                                                                                                                                                                                                                           
     }
 }

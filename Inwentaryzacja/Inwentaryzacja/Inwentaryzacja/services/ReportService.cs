@@ -56,7 +56,7 @@ namespace Inwentaryzacja.Services
 
         public string[] GetScannedItemsCount(ReportPositionEntity[] reportPositionEntities, RoomEntity currentRoom)
         {
-            string[] result = new string[10];
+            string[] result = new string[15];
 
             Dictionary<string, int> inThisRoomCount = new Dictionary<string, int>();
             Dictionary<string, int> movedToRoomCount = new Dictionary<string, int>();
@@ -166,6 +166,12 @@ namespace Inwentaryzacja.Services
             result[8] = GenerateString(movedFromRoomDetails);
             result[9] = GenerateString(inAnotherRoomDetails);
 
+            result[10] = GenerateStringLabel(scannedAll);
+            result[11] = GenerateStringLabel(inThisRoomCount);
+            result[12] = GenerateStringLabel(movedToRoomCount);
+            result[13] = GenerateStringLabel(inAnotherRoomCount);
+            result[14] = GenerateStringLabel(movedFromRoomCount);
+
             return result;
         }
         private string GenerateString(Dictionary<string, int> dict)
@@ -177,21 +183,24 @@ namespace Inwentaryzacja.Services
             foreach (KeyValuePair<string, int> item in dict)
             {
                 string piecesText = "sztuk";
-                string spacebars = "";
-                int spaceCounter = 12 - item.Key.Length;
-
-                if (item.Key == "krzes³o") spaceCounter += 3;
-                if (item.Key == "monitor") spaceCounter += 3;
-                if (item.Key == "stó³") spaceCounter += 7;
-                if (item.Key == "tablica") spaceCounter += 4;
-                if (item.Key == "projektor") spaceCounter += 3;
-
-                for (int i = 0; i < spaceCounter; i++) spacebars += " ";
 
                 if (item.Value == 1) piecesText = "sztuka";
                 if (item.Value == 2 || item.Value == 3 || item.Value == 4) piecesText = "sztuki";
 
-                result += item.Key + spacebars + item.Value + " " + piecesText + Environment.NewLine;
+                result += item.Value + " " + piecesText + Environment.NewLine;
+            }
+
+            return result;
+        }
+        private string GenerateStringLabel(Dictionary<string, int> dict)
+        {
+            string result = "";
+
+            if (dict.Count == 0 || dict == null) return result;
+
+            foreach (KeyValuePair<string, int> item in dict)
+            {
+                result += item.Key + Environment.NewLine;
             }
 
             return result;
