@@ -67,9 +67,14 @@ namespace Inwentaryzacja.controllers.session
 				
 				sr.Close();
 
-				if(Task.Run(() => api.getAssetInfo(1)).Result != null)
+				var task = Task.Run(() => api.getAssetInfo(1));
+
+				if (task.Wait(5000))
 				{
-					return true;
+					if(task.Result != null)
+					{
+						return true;
+					}
 				}
 			}
 

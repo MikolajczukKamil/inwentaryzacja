@@ -14,6 +14,7 @@ namespace Inwentaryzacja
         public LoginPage()
         {
             api = new APIController();
+            BindingContext = this;
             api.ErrorEventHandler += LoginFail;
             InitializeComponent();
         }
