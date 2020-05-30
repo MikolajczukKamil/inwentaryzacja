@@ -39,35 +39,35 @@ namespace Inwentaryzacja.views.view_allReports
                 ScannedAllHeader.IsVisible = false;
                 ScannedAll.IsVisible = false;
                 ScannedAllBtn.IsVisible = false;
-                FrameRequest.HeightRequest -= 65;
+                FrameRequest.HeightRequest -= 50;
             }
             if (MoveToRoom.Text == "")
             {
                 MoveToRoomHeader.IsVisible = false;
                 MoveToRoom.IsVisible = false;
                 MoveToRoomBtn.IsVisible = false;
-                FrameRequest.HeightRequest -= 65;
+                FrameRequest.HeightRequest -= 50;
             }
             if (MoveFromRoom.Text == "")
             {
                 MoveFromRoomHeader.IsVisible = false;
                 MoveFromRoom.IsVisible = false;
                 MoveFromRoomBtn.IsVisible = false;
-                FrameRequest.HeightRequest -= 65;
+                FrameRequest.HeightRequest -= 50;
             }
             if (InAnotherRoom.Text == "")
             {
                 InAnotherRoomHeader.IsVisible = false;
                 InAnotherRoom.IsVisible = false;
                 InAnotherRoomBtn.IsVisible = false;
-                FrameRequest.HeightRequest -= 65;
+                FrameRequest.HeightRequest -= 50;
             }
             if (InThisRoom.Text == "")
             {
                 InThisRoomHeader.IsVisible = false;
                 InThisRoom.IsVisible = false;
                 InThisRoomBtn.IsVisible = false;
-                FrameRequest.HeightRequest -= 60;
+                FrameRequest.HeightRequest -= 50;
             }
         }
 

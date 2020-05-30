@@ -70,9 +70,10 @@
                         VerticalOptions="Center"
                         CornerRadius="0"
                         WidthRequest="20"
-                        HeightRequest="750"
+                        HeightRequest="775"
                         BackgroundColor="#bfffe1"
                         x:Name="FrameRequest">
+                
                 <StackLayout>
 
                     <Label  FontSize="25" 
