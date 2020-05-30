@@ -50,7 +50,7 @@ namespace Inwentaryzacja
 
         private async void onApiError(object o, ErrorEventArgs error)
         {
-            await DisplayAlert("Błąd", error.MessageForUser, "Wyjdz");
+            await DisplayAlert("Błąd", error.MessageForUser, "OK");
         }
 
         public class AllReport
