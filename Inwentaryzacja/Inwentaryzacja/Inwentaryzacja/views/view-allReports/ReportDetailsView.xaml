@@ -70,7 +70,7 @@
                         VerticalOptions="Center"
                         CornerRadius="0"
                         WidthRequest="20"
-                        HeightRequest="775"
+                        HeightRequest="1000"
                         BackgroundColor="#bfffe1"
                         x:Name="FrameRequest">
                 
@@ -82,7 +82,7 @@
                             HorizontalTextAlignment="Center"
                             TextColor="Black"
                             FontAttributes="Bold"  
-                            Text="Zawartośc sali po skanowaniu"
+                            Text="Zawartość sali po skanowaniu"
                             x:Name="ScannedAllHeader"/>
 
                     <Label  FontSize="20" 
@@ -106,7 +106,7 @@
                             HorizontalTextAlignment="Center"
                             TextColor="Black"
                             FontAttributes="Bold"  
-                            Text="Pozostawione w sali"
+                            Text="Były i są w sali"
                             x:Name="InThisRoomHeader"/>
 
                     <Label  FontSize="20" 

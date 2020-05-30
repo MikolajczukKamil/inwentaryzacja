@@ -86,58 +86,71 @@ namespace Inwentaryzacja.Services
                         scannedAllDetails[typeName] += ", " + item.asset.id;
                     }
                 }
-                if (item.present == true && item.previous_room == currentRoom)
+                if (item.present == true)
                 {
-                    if (!inThisRoomCount.ContainsKey(typeName))
+                    if (item.previous_room == null || item.previous_room.id != currentRoom.id)
                     {
-                        inThisRoomCount.Add(typeName, 1);
-                        inThisRoomDetails.Add(typeName, item.asset.id + "");
-                    }
-                    else
-                    {
-                        inThisRoomCount[typeName]++;
-                        inThisRoomDetails[typeName] += ", " + item.asset.id;
-                    }
-                }
+                        if (!movedToRoomCount.ContainsKey(typeName))
+                        {
+                            movedToRoomCount.Add(typeName, 1);
+                            if(item.previous_room == null) movedToRoomDetails.Add(typeName, item.asset.id + " (z magazynu)");
+                            if(item.previous_room != null) movedToRoomDetails.Add(typeName, item.asset.id + " (z sali " + item.previous_room.name + ")");
 
-                else if (item.present == true && item.previous_room != currentRoom)
-                {
-                    if (!movedToRoomCount.ContainsKey(typeName))
-                    {
-                        movedToRoomCount.Add(typeName, 1);
-                        movedToRoomDetails.Add(typeName, item.asset.id + "");
+                        }
+                        else
+                        {
+                            movedToRoomCount[typeName]++;
+                            movedToRoomDetails[typeName] += ", " + item.asset.id;
+                        }
                     }
                     else
                     {
-                        movedToRoomCount[typeName]++;
-                        movedToRoomDetails[typeName] += ", " + item.asset.id;
+                        if (!inThisRoomCount.ContainsKey(typeName))
+                        {
+                            inThisRoomCount.Add(typeName, 1);
+                            inThisRoomDetails.Add(typeName, item.asset.id + "");
+                        }
+                        else
+                        {
+                            inThisRoomCount[typeName]++;
+                            inThisRoomDetails[typeName] += ", " + item.asset.id;
+                        }
                     }
+
                 }
-                else if (item.present == false && item.previous_room == currentRoom)
+                else if (item.present == false)
                 {
-                    if (!movedFromRoomCount.ContainsKey(typeName))
+                    if (item.previous_room == null || item.previous_room.id != currentRoom.id)
                     {
-                        movedFromRoomCount.Add(typeName, 1);
-                        movedFromRoomDetails.Add(typeName, item.asset.id + "");
+                        if (!inAnotherRoomCount.ContainsKey(typeName))
+                        {
+                            inAnotherRoomCount.Add(typeName, 1);
+                            if (item.previous_room == null) inAnotherRoomDetails.Add(typeName, item.asset.id + " (z magazynu)");
+                            if (item.previous_room != null) inAnotherRoomDetails.Add(typeName, item.asset.id + " (z sali " + item.previous_room.name + ")");
+
+                        }
+                        else
+                        {
+                            inAnotherRoomCount[typeName]++;
+                            if (item.previous_room == null) inAnotherRoomDetails[typeName] += ", " + item.asset.id + " (z magazynu)";
+                            if (item.previous_room != null) inAnotherRoomDetails[typeName] += ", " + item.asset.id + " (z sali " + item.previous_room.name + ")";
+                        }
                     }
                     else
                     {
-                        movedFromRoomCount[typeName]++;
-                        movedFromRoomDetails[typeName] += ", " + item.asset.id;
+                        if (!movedFromRoomCount.ContainsKey(typeName))
+                        {
+                            movedFromRoomCount.Add(typeName, 1);
+                            movedFromRoomDetails.Add(typeName, item.asset.id + "");
+                        }
+                        else
+                        {
+                            movedFromRoomCount[typeName]++;
+                            movedFromRoomDetails[typeName] += ", " + item.asset.id;
+                        }
                     }
-                }
-                else if (item.present == false && item.previous_room != currentRoom)
-                {
-                    if (!inAnotherRoomCount.ContainsKey(typeName))
-                    {
-                        inAnotherRoomCount.Add(typeName, 1);
-                        inAnotherRoomDetails.Add(typeName, item.asset.id + "");
-                    }
-                    else
-                    {
-                        inAnotherRoomCount[typeName]++;
-                        inAnotherRoomDetails[typeName] += ", " + item.asset.id;
-                    }
+
+                    
                 }
             }
 
