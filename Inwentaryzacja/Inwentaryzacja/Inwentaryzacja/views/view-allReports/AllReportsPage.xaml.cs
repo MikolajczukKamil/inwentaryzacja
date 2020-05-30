@@ -59,7 +59,7 @@ namespace Inwentaryzacja
             public string ReportDate { get; set; }
         }
 
-        private async void back_Clicked(object sender, EventArgs e)
+        private void back_Clicked(object sender, EventArgs e)
         {
             App.Current.MainPage = new NavigationPage(new WelcomeViewPage());
         }
@@ -97,6 +97,12 @@ namespace Inwentaryzacja
             string inAnotherRoom = counted[3];
             string scannedAll = counted[4];
 
+            string scannedAllDetails = counted[5];
+            string inThisRoomDetails = counted[6];
+            string movedToRoomDetails = counted[7];
+            string movedFromRoomDetails = counted[8];
+            string inAnotherRoomDetails = counted[9];
+
             string headerText = reportHeaderEntity.name;
             string roomText = reportHeaderEntity.room.name;
             DateTime date = reportHeaderEntity.create_date;
@@ -107,12 +113,12 @@ namespace Inwentaryzacja
             string ownerText = reportHeaderEntity.owner.login;
 
             EnableView(true);
-            App.Current.MainPage = new ReportDetailsView(headerText, roomText, createDate, createTime, ownerText, inThisRoom, moveToRoom, moveFromRoom, inAnotherRoom, scannedAll);
+            App.Current.MainPage = new ReportDetailsView(headerText, roomText, createDate, createTime, ownerText, inThisRoom, moveToRoom, moveFromRoom, inAnotherRoom, scannedAll, scannedAllDetails, inThisRoomDetails, movedToRoomDetails, movedFromRoomDetails, inAnotherRoomDetails);
         }
 
         private string[] GetScannedItemsCount(ReportPositionEntity[] reportPositionEntities, RoomEntity currentRoom)
         {
-            string[] result = new string[5];
+            string[] result = new string[10];
 
             Dictionary<string, int> inThisRoomCount = new Dictionary<string, int>();
             Dictionary<string, int> movedToRoomCount = new Dictionary<string, int>();
@@ -120,19 +126,26 @@ namespace Inwentaryzacja
             Dictionary<string, int> inAnotherRoomCount = new Dictionary<string, int>();
             Dictionary<string, int> scannedAll = new Dictionary<string, int>();
 
+            Dictionary<string, string> scannedAllDetails = new Dictionary<string, string>();
+            Dictionary<string, string> inThisRoomDetails = new Dictionary<string, string>();
+            Dictionary<string, string> movedToRoomDetails = new Dictionary<string, string>();
+            Dictionary<string, string> movedFromRoomDetails = new Dictionary<string, string>();
+            Dictionary<string, string> inAnotherRoomDetails = new Dictionary<string, string>();
+
             foreach (ReportPositionEntity item in reportPositionEntities)
             {
-                
                 string typeName = item.asset.type.name;
                 if (item.present == true)
                 {
                     if (!scannedAll.ContainsKey(typeName))
                     {
                         scannedAll.Add(typeName, 1);
+                        scannedAllDetails.Add(typeName, item.asset.id + "");
                     }
                     else
                     {
                         scannedAll[typeName]++;
+                        scannedAllDetails[typeName] += ", " + item.asset.id;
                     }
                 }
                 if (item.present == true && item.previous_room == currentRoom)
@@ -140,10 +153,12 @@ namespace Inwentaryzacja
                     if (!inThisRoomCount.ContainsKey(typeName))
                     {
                         inThisRoomCount.Add(typeName, 1);
+                        inThisRoomDetails.Add(typeName, item.asset.id + "");
                     }
                     else
                     {
                         inThisRoomCount[typeName]++;
+                        inThisRoomDetails[typeName] += ", " + item.asset.id;
                     }
                 }
 
@@ -152,10 +167,12 @@ namespace Inwentaryzacja
                     if (!movedToRoomCount.ContainsKey(typeName))
                     {
                         movedToRoomCount.Add(typeName, 1);
+                        movedToRoomDetails.Add(typeName, item.asset.id + "");
                     }
                     else
                     {
                         movedToRoomCount[typeName]++;
+                        movedToRoomDetails[typeName] += ", " + item.asset.id;
                     }
                 }
                 else if (item.present == false && item.previous_room == currentRoom)
@@ -163,10 +180,12 @@ namespace Inwentaryzacja
                     if (!movedFromRoomCount.ContainsKey(typeName))
                     {
                         movedFromRoomCount.Add(typeName, 1);
+                        movedFromRoomDetails.Add(typeName, item.asset.id + "");
                     }
                     else
                     {
                         movedFromRoomCount[typeName]++;
+                        movedFromRoomDetails[typeName] += ", " + item.asset.id;
                     }
                 }
                 else if (item.present == false && item.previous_room != currentRoom)
@@ -174,10 +193,12 @@ namespace Inwentaryzacja
                     if (!inAnotherRoomCount.ContainsKey(typeName))
                     {
                         inAnotherRoomCount.Add(typeName, 1);
+                        inAnotherRoomDetails.Add(typeName, item.asset.id + "");
                     }
                     else
                     {
                         inAnotherRoomCount[typeName]++;
+                        inAnotherRoomDetails[typeName] += ", " + item.asset.id;
                     }
                 }
             }
@@ -188,9 +209,15 @@ namespace Inwentaryzacja
             result[3] = GenerateString(inAnotherRoomCount);
             result[4] = GenerateString(scannedAll);
 
+            result[5] = GenerateString(scannedAllDetails);
+            result[6] = GenerateString(inThisRoomDetails);
+            result[7] = GenerateString(movedToRoomDetails);
+            result[8] = GenerateString(movedFromRoomDetails);
+            result[9] = GenerateString(inAnotherRoomDetails);
+
             return result;
         }
-
+        
         private string GenerateString(Dictionary<string, int> dict)
         {
             string result = "";
@@ -199,7 +226,7 @@ namespace Inwentaryzacja
 
             foreach (KeyValuePair<string,int> item in dict)
             {
-                string dopisek = "sztuk";
+                string piecesText = "sztuk";
                 string spacebars = "";
                 int spaceCounter = 12 - item.Key.Length;
 
@@ -211,12 +238,24 @@ namespace Inwentaryzacja
 
                 for (int i = 0; i < spaceCounter; i++) spacebars += " ";                
 
-                if (item.Value == 1) dopisek = "sztuka";
-                if (item.Value == 2|| item.Value == 3|| item.Value == 4) dopisek = "sztuki";
+                if (item.Value == 1) piecesText = "sztuka";
+                if (item.Value == 2|| item.Value == 3|| item.Value == 4) piecesText = "sztuki";
 
-                result += item.Key + spacebars + item.Value + " " + dopisek +Environment.NewLine;
+                result += item.Key + spacebars + item.Value + " " + piecesText + Environment.NewLine;
             }
 
+            return result;
+        }
+        private string GenerateString(Dictionary<string, string> dict)
+        {
+            string result = "";
+
+            if (dict.Count == 0 || dict == null) return result;
+
+            foreach (KeyValuePair<string, string> item in dict)
+            {
+                result += item.Key + " numer: " + item.Value + Environment.NewLine;
+            }
             return result;
         }
 

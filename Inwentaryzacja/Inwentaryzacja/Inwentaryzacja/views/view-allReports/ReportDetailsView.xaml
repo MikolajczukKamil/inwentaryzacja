@@ -76,7 +76,7 @@
                 <StackLayout>
 
                     <Label  FontSize="25" 
-                            Margin="0,5,0,5"
+                            Margin="0,20,0,5"
                             VerticalTextAlignment="Center"
                             HorizontalTextAlignment="Center"
                             TextColor="Black"
@@ -84,6 +84,11 @@
                             Text="Zawartośc sali po skanowaniu"
                             x:Name="ScannedAllHeader"/>
 
+                    <Label  FontSize="20" 
+                            VerticalOptions="Start"
+                            TextColor="Black"
+                            x:Name="ScannedAll"/>
+
                     <local:RoundedButton Text="Szczegóły"
                                         HorizontalOptions="Center"
                                         FontSize="20"
@@ -91,23 +96,23 @@
                                         WidthRequest="100"
                                         HeightRequest="35"
                                         Padding="3,3,3,3"
-                                        Margin="0,0,0,5"
                                         x:Name="ScannedAllBtn"/>
 
-                    <Label  FontSize="20" 
-                            VerticalOptions="Start"
-                            TextColor="Black"
-                            x:Name="ScannedAll"/>
-                    
+
                     <Label  FontSize="25" 
-                            Margin="0,5,0,5"
+                            Margin="0,20,0,5"
                             VerticalTextAlignment="Center"
                             HorizontalTextAlignment="Center"
                             TextColor="Black"
                             FontAttributes="Bold"  
                             Text="Pozostawione w sali"
                             x:Name="InThisRoomHeader"/>
-                    
+
+                    <Label  FontSize="20" 
+                            VerticalOptions="Start"
+                            TextColor="Black"
+                            x:Name="InThisRoom"/>
+
                     <local:RoundedButton Text="Szczegóły"
                                         HorizontalOptions="Center"
                                         FontSize="20"
@@ -115,17 +120,10 @@
                                         WidthRequest="100"
                                         HeightRequest="35"
                                         Padding="3,3,3,3"
-                                        Margin="0,0,0,5"
                                         x:Name="InThisRoomBtn"/>
-                    
-                    <Label  FontSize="20" 
-                            Margin="0"
-                            VerticalOptions="Start"
-                            TextColor="Black"
-                            x:Name="InThisRoom"/>
-                    
+
                     <Label  FontSize="25" 
-                            Margin="0,5,0,5"
+                            Margin="0,20,0,5"
                             VerticalTextAlignment="Center"
                             HorizontalTextAlignment="Center"
                             TextColor="Black"
@@ -133,6 +131,11 @@
                             Text="Przeniesione z innej sali"
                             x:Name="MoveToRoomHeader"/>
 
+                    <Label  FontSize="20" 
+                            VerticalOptions="Start"
+                            TextColor="Black"
+                            x:Name="MoveToRoom"/>
+
                     <local:RoundedButton Text="Szczegóły"
                                         HorizontalOptions="Center"
                                         FontSize="20"
@@ -140,17 +143,10 @@
                                         WidthRequest="100"
                                         HeightRequest="35"
                                         Padding="3,3,3,3"
-                                        Margin="0,0,0,5"
                                         x:Name="MoveToRoomBtn"/>
 
-                    <Label  FontSize="20" 
-                            Margin="0"
-                            VerticalOptions="Start"
-                            TextColor="Black"
-                            x:Name="MoveToRoom"/>
-
                     <Label  FontSize="25" 
-                            Margin="0,5,0,5"
+                            Margin="0,20,0,5"
                             VerticalTextAlignment="Center"
                             HorizontalTextAlignment="Center"
                             TextColor="Black"
@@ -158,6 +154,11 @@
                             Text="Usunięto"
                             x:Name="MoveFromRoomHeader"/>
 
+                    <Label  FontSize="20" 
+                            VerticalOptions="Start"
+                            TextColor="Black"
+                            x:Name="MoveFromRoom"/>
+
                     <local:RoundedButton Text="Szczegóły"
                                         HorizontalOptions="Center"
                                         FontSize="20"
@@ -165,17 +166,10 @@
                                         WidthRequest="100"
                                         HeightRequest="35"
                                         Padding="3,3,3,3"
-                                        Margin="0,0,0,5"
                                         x:Name="MoveFromRoomBtn"/>
 
-                    <Label  FontSize="20" 
-                            Margin="0"
-                            VerticalOptions="Start"
-                            TextColor="Black"
-                            x:Name="MoveFromRoom"/>
-
                     <Label  FontSize="25" 
-                            Margin="0,5,0,5"
+                            Margin="0,20,0,5"
                             VerticalTextAlignment="Center"
                             HorizontalTextAlignment="Center"
                             TextColor="Black"
@@ -183,6 +177,12 @@
                             Text="Zeskanowano bez przeniesienia"
                             x:Name="InAnotherRoomHeader"/>
 
+                    <Label  FontSize="20" 
+                            Margin="0"
+                            VerticalOptions="Start"
+                            TextColor="Black"
+                            x:Name="InAnotherRoom"/>
+
                     <local:RoundedButton Text="Szczegóły"
                                         HorizontalOptions="Center"
                                         FontSize="20"
@@ -190,14 +190,7 @@
                                         WidthRequest="100"
                                         HeightRequest="35"
                                         Padding="3,3,3,3"
-                                        Margin="0,0,0,5"
                                         x:Name="InAnotherRoomBtn"/>
-
-                    <Label  FontSize="20" 
-                            Margin="0"
-                            VerticalOptions="Start"
-                            TextColor="Black"
-                            x:Name="InAnotherRoom"/>
 
                 </StackLayout>
 

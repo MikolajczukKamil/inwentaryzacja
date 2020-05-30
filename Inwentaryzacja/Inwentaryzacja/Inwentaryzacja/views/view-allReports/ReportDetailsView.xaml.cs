@@ -14,10 +14,11 @@ namespace Inwentaryzacja.views.view_allReports
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ReportDetailsView : ContentPage
     {
-        public ReportDetailsView(string headerText, string roomText, string createDate, string createTime, string ownerText, string inThisRoom, string moveToRoom, string moveFromRoom, string inAnotherRoom, string scannedAll)
+        public ReportDetailsView(string headerText, string roomText, string createDate, string createTime, string ownerText, string inThisRoom, string moveToRoom, string moveFromRoom, string inAnotherRoom, string scannedAll, string scannedAllDetails, string inThisRoomDetails, string movedToRoomDetails, string movedFromRoomDetails, string inAnotherRoomDetails)
         {
             InitializeComponent();
             FillViewWithText(headerText, roomText, createDate, createTime, ownerText, inThisRoom, moveToRoom, moveFromRoom, inAnotherRoom, scannedAll);
+            DetailsButtonsImplementation(scannedAllDetails, inThisRoomDetails, movedToRoomDetails, movedFromRoomDetails, inAnotherRoomDetails);            
         }
 
         private void FillViewWithText(string headerText, string roomText, string createDate, string createTime, string ownerText, string inThisRoom, string moveToRoom, string moveFromRoom, string inAnotherRoom, string scannedAll)
@@ -70,9 +71,20 @@ namespace Inwentaryzacja.views.view_allReports
             }
         }
 
+        private void DetailsButtonsImplementation(string scannedAllDetails, string inThisRoomDetails, string movedToRoomDetails, string movedFromRoomDetails, string inAnotherRoomDetails)
+        {
+            ScannedAllBtn.Clicked += (object o, EventArgs e) => DisplayAlert("Szczegóły", scannedAllDetails, "OK");
+            MoveToRoomBtn.Clicked += (object o, EventArgs e) => DisplayAlert("Szczegóły", movedToRoomDetails, "OK");
+            MoveFromRoomBtn.Clicked += (object o, EventArgs e) => DisplayAlert("Szczegóły", movedFromRoomDetails, "OK");
+            InThisRoomBtn.Clicked += (object o, EventArgs e) => DisplayAlert("Szczegóły", inThisRoomDetails, "OK");
+            InAnotherRoomBtn.Clicked += (object o, EventArgs e) => DisplayAlert("Szczegóły", inAnotherRoomDetails, "OK");
+        }
+
         private void return_ChooseRoom(object o, EventArgs e)
         {
             App.Current.MainPage = new AllReportsPage();
         }
+
+
     }
 }
