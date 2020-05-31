@@ -81,6 +81,7 @@ namespace Inwentaryzacja
             ReportHeaderEntity reportHeaderEntity = null;
 
             if (selectedReport == null) return;
+
             foreach (ReportHeaderEntity item in reportHeaders)
             {
                 if (item.name == selectedReport.ReportName)
@@ -88,6 +89,7 @@ namespace Inwentaryzacja
                     reportHeaderEntity = item;
                 }
             }
+
             if (reportHeaderEntity == null) return;
 
             ReportPositionEntity[] reportPositionEntities = await reportService.GetReportPositions(reportHeaderEntity.id);
@@ -123,7 +125,8 @@ namespace Inwentaryzacja
             string ownerText = reportHeaderEntity.owner.login;
 
             EnableView(true);
-            App.Current.MainPage = new ReportDetailsView(headerText, roomText, createDate, createTime, ownerText, inThisRoom, moveToRoom, moveFromRoom, inAnotherRoom, scannedAll, scannedAllDetails, inThisRoomDetails, movedToRoomDetails, movedFromRoomDetails, inAnotherRoomDetails, scannedAllLabel, movedFromRoomLabel, movedToRoomLabel, inAnotherRoomLabel, inThisRoomLabel);
+
+            await Navigation.PushAsync(new ReportDetailsView(headerText, roomText, createDate, createTime, ownerText, inThisRoom, moveToRoom, moveFromRoom, inAnotherRoom, scannedAll, scannedAllDetails, inThisRoomDetails, movedToRoomDetails, movedFromRoomDetails, inAnotherRoomDetails, scannedAllLabel, movedFromRoomLabel, movedToRoomLabel, inAnotherRoomLabel, inThisRoomLabel));
         }                                                                                                                                                                                                                                                                                                 
                                                                                                                                                                                                                                                                                                           
         private void EnableView(bool state)

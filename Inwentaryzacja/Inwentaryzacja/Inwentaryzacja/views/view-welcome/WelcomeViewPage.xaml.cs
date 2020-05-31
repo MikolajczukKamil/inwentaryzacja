@@ -25,6 +25,7 @@ namespace Inwentaryzacja
         {
             await Navigation.PushAsync(new ChooseRoomPage());
         }
+        
         private async void _AllReportsButton_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new AllReportsPage());
