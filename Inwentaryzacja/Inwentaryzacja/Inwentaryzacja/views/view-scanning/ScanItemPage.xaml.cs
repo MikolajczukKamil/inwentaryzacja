@@ -78,14 +78,18 @@ namespace Inwentaryzacja
 
             if(response)
             {
-                await Navigation.PopAsync();
+                await Navigation.PopModalAsync();
             }
         }
 
         private async void ShowScanedItem(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new ScannedItem(AllItems), true);
+            PreviewButton.IsEnabled = false;
+
+            await Navigation.PushModalAsync(new ScannedItem(AllItems), true);
             //App.Current.MainPage = new NavigationPage(new ScannedItem(AllItems)); //Bez serc, bez ducha to szkieletów ludy. To nie będzie działać
+
+            PreviewButton.IsEnabled = true;
         }
 
         private async Task ShowPopup(string message = "Zeskanowano!")

@@ -168,7 +168,7 @@ namespace Inwentaryzacja
 				}
 				else
 				{
-					await Navigation.PushAsync(new ScanItemPage(selectedRoom));
+					await Navigation.PushModalAsync(new ScanItemPage(selectedRoom));
 				}
 			}
 			else
