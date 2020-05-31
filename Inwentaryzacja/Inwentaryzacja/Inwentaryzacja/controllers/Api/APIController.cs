@@ -145,16 +145,19 @@ namespace Inwentaryzacja.Controllers.Api
         /// <returns>Zdeserializowany obiekt</returns>
         private T ConvertJSONToObject<T>(string json)
         {
-            T entity;
+            T entity = default;
 
-            try
+            if(json!=null)
             {
-                entity = JsonConvert.DeserializeObject<T>(json);
-            }
-            catch (Exception)
-            {
-                entity = default;
-                ErrorInvoke("{\"message\":\"Cannot convert data.\"}", 404);
+                try
+                {
+                    entity = JsonConvert.DeserializeObject<T>(json);
+                }
+                catch (Exception)
+                {
+                    entity = default;
+                    ErrorInvoke("{\"message\":\"Cannot convert data.\"}", 410);
+                }
             }
 
             return entity;
@@ -177,7 +180,7 @@ namespace Inwentaryzacja.Controllers.Api
             catch (Exception)
             {
                 entity = default;
-                ErrorInvoke("{\"message\":\"Cannot convert data.\"}", 404);
+                ErrorInvoke("{\"message\":\"Cannot convert data.\"}", 411);
             }
 
             return entity;

@@ -23,10 +23,16 @@ namespace Inwentaryzacja
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            
-            if(Navigation.NavigationStack.Count==0)
+
+            OnstartPage();
+        }
+
+        private async void OnstartPage()
+        {
+
+            await Task.Run(() =>
             {
-                Task.Run(() =>
+                if (Navigation.NavigationStack.Count == 0)
                 {
                     Device.BeginInvokeOnMainThread(async () =>
                     {
@@ -37,15 +43,21 @@ namespace Inwentaryzacja
                         }
                         else
                         {
-                            LoadingScreen.IsVisible = false;
+                            PageIsBusy(false);
                         }
                     });
-                });
-            }
-            else
-            {
-                LoadingScreen.IsVisible = false;
-            }
+                }
+                else
+                {
+                    PageIsBusy(false);
+                }
+            });  
+        }
+
+        private void PageIsBusy(bool state)
+        {
+            LoadingScreen.IsVisible = state;
+            _login.IsEnabled = !state;
         }
 
         private void NextPage()
@@ -60,16 +72,12 @@ namespace Inwentaryzacja
                 {
                     await Navigation.PopAsync();
                 }
-
-                LoadingScreen.IsVisible = false;
-                _login.IsEnabled = true;
             });
         }
 
         private async void _loginButton_Clicked(object sender, EventArgs e)
         {
-            _login.IsEnabled = false;
-            LoadingScreen.IsVisible = true;
+            PageIsBusy(true);
 
             if (await api.LoginUser(_login.Text, _password.Text))
             {
@@ -84,8 +92,7 @@ namespace Inwentaryzacja
         {
             await DisplayAlert("Błąd logowania", e.MessageForUser, "OK");
 
-            LoadingScreen.IsVisible = false;
-            _login.IsEnabled = true;
+            PageIsBusy(false);
         }
     }
 }

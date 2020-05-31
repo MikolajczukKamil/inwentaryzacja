@@ -58,7 +58,8 @@ namespace Inwentaryzacja.views.view_scannedItem
 
         private async void RetPrevPage(object sender, EventArgs e)
         {
-            await Navigation.PopAsync();
+            RetButton.IsEnabled = false;
+            await Navigation.PopModalAsync();
         }
 
         private void _listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)

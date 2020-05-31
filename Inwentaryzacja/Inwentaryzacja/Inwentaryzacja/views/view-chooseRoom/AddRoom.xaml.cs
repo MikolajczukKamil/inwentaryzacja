@@ -65,15 +65,22 @@ namespace Inwentaryzacja.views.view_chooseRoom
             string number = room_number.Text;
 
             BuildingEntity mybuilding = new BuildingEntity();
-            string choosenBuildingName = BuildingPicker.Items[BuildingPicker.SelectedIndex];
 
-            foreach (var item in buildings)
+            string choosenBuildingName = "";
+            if (BuildingPicker.Items.Count>0)
+                choosenBuildingName = BuildingPicker.Items[BuildingPicker.SelectedIndex];
+
+            if(buildings!=null)
             {
-                if (item.name == choosenBuildingName)
+                foreach (var item in buildings)
                 {
-                    mybuilding = item;
+                    if (item.name == choosenBuildingName)
+                    {
+                        mybuilding = item;
+                    }
                 }
             }
+            
 
             EnableView(false);
 

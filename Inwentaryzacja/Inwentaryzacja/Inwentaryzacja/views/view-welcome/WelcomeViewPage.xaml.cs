@@ -40,12 +40,5 @@ namespace Inwentaryzacja
                 App.Current.MainPage = new LoginPage();
             }
         }
-
-        protected override bool OnBackButtonPressed()
-        {
-            LogoutButtonClicked(this, null);
-            
-            return true;
-        }
     }
 }
