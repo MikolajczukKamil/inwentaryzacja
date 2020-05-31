@@ -30,9 +30,13 @@ namespace Inwentaryzacja
 
 		protected override void OnAppearing()
 		{
-			if(BuildingPicker.Items.Count==0 || addedNewBuilding || addedNewRoom)
+			if(BuildingPicker.Items.Count==0 || addedNewBuilding)
 			{
 				GetBuildings();
+			}
+			if(addedNewRoom)
+			{
+				BuildingPicker_SelectedIndexChanged(this, null);
 				addedNewRoom = false;
 			}
 			
@@ -103,6 +107,7 @@ namespace Inwentaryzacja
 
 			if (buildings == null) return;
 
+			BuildingPicker.Items.Clear();
 			foreach (BuildingEntity item in buildings)
 			{
 				BuildingPicker.Items.Add(item.name);

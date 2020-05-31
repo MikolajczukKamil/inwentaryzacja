@@ -62,8 +62,8 @@ namespace Inwentaryzacja
 		
         protected override void OnAppearing()
         {
+            //_scanner.IsScanning = true;
             base.OnAppearing();
-            _scanner.IsScanning = true;
         }
 
         protected override void OnDisappearing()
