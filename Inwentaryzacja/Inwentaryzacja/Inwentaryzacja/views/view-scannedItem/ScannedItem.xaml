@@ -22,101 +22,171 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout BackgroundColor="#8EE3BA" >
+        <StackLayout BackgroundColor="#8EE3BA">
             <Label Text="Zeskanowane przedmioty" TextColor="Black"
-                  Margin="15,15, 15,0"
+                  Margin="15,0, 15,0"
                   VerticalOptions="Start" 
                   HorizontalOptions="CenterAndExpand"
                   HorizontalTextAlignment="Center" 
                   FontSize="30"/>
-                <ListView  Margin="15" 
+                <ListView  Margin="5" 
                        RowHeight="120" 
                        SeparatorVisibility="None" 
                        x:Name="ReportList">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <customControls:CustomViewCell SelectedBackgroundColor="#8EE3BA" xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core">
-                                <ViewCell.View>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <customControls:CustomViewCell SelectedBackgroundColor="#8EE3BA" xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core">
+                            <ViewCell.View>
 
-                                    <Frame CornerRadius="10" 
+                                <Frame CornerRadius="10" 
                                    Margin="10" 
                                    HasShadow="False">
-
-                                        <StackLayout  BackgroundColor="White"
+                                    <StackLayout BackgroundColor="White"
                                              HorizontalOptions="FillAndExpand" 
                                              VerticalOptions="FillAndExpand" 
-                                             Orientation="Vertical"
-                                                  >
-                                            <Grid Margin="0" 
-                                          Padding="0">
+                                             Orientation="Vertical">
+                                        <Grid Margin="0"
+                                                Padding="0" >
 
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="*"/>
-                                                </Grid.RowDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
 
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.3*"/>
+                                                <ColumnDefinition Width="0.1*"/>
+                                                <ColumnDefinition Width="0.1*"/>
+                                                <ColumnDefinition Width="0.25*"/>
+                                                <ColumnDefinition Width="0.25*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Text="{Binding ScaningText}"  
+                                                FontSize="Medium" 
+                                                Grid.Column="0" 
+                                                Grid.Row="0"
+                                                Grid.ColumnSpan="3" 
+                                                TextColor="Black" 
+                                                FontAttributes="Bold"/>
 
-                                                </Grid.ColumnDefinitions>
+                                            <Label Text="{Binding RoomText}"   
+                                                VerticalOptions="Center"
+                                                FontSize="Micro" 
+                                                Grid.Column="0" 
+                                                Grid.Row="1"  
+                                                TextColor="Gray"/>
 
-                                                <Label Text="{Binding ScaningText}"  
-                                               FontSize="18" 
-                                               Grid.Column="0" 
-                                               Grid.Row="0"
-                                               Grid.RowSpan="2" 
-                                               TextColor="Black" 
-                                               FontAttributes="Bold"/>
+                                            <Image Source="{Binding PictureUrl}" 
+                                                VerticalOptions="End"
+                                                Grid.Column="1" 
+                                                Grid.Row="1" 
+                                                Scale="0.7"/>
 
-                                                <Label Text="{Binding ScaningRoom,StringFormat='Sala: {0:F0}' }"   
-                                               FontSize="10" 
-                                               Grid.Column="0" 
-                                               Grid.Row="2"  
-                                               TextColor="Gray"/>
+                                            <Label Text="Zeskanowano" 
+                                                IsVisible="{Binding ScannedText}"  
+                                                FontSize="Medium" 
+                                                Grid.Column="3" 
+                                                Grid.Row="0" 
+                                                Grid.RowSpan="2"
+                                                Grid.ColumnSpan="2" 
+                                                TextColor="Green"/>
 
-                                                <Label Text="{Binding Info}"   
-                                               FontSize="14" 
-                                               Grid.Column="2" 
-                                               Grid.Row="0" 
-                                               Grid.RowSpan="3"
-                                               TextColor="{Binding TextColor}"/>
-                                            </Grid>
-                                        </StackLayout>
-                                    </Frame>
-                                </ViewCell.View>
-                            </customControls:CustomViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            <Grid MinimumHeightRequest="200">
+                                            <Button Text="Przenieś tutaj"
+                                                CommandParameter="{Binding ScannedId}"
+                                                IsVisible="{Binding ButtonsViews}"
+                                                Grid.Column="3" 
+                                                Grid.Row="0" 
+                                                Grid.RowSpan="2"
+                                                BackgroundColor="WhiteSmoke" 
+                                                BorderColor="Black" 
+                                                CornerRadius="10" 
+                                                BorderWidth="2" 
+                                                FontSize="Micro"
+                                                Clicked="ChangeRoom" 
+                                                android:Button.UseDefaultShadow="true" />
+
+                                            <Button Text="Nic nie zmieniaj" 
+                                                CommandParameter="{Binding ScannedId}"
+                                                IsVisible="{Binding ButtonsViews}"
+                                                Grid.Column="4" 
+                                                Grid.Row="0" 
+                                                Grid.RowSpan="2"
+                                                BackgroundColor="WhiteSmoke" 
+                                                BorderColor="Black" 
+                                                CornerRadius="10" 
+                                                BorderWidth="2"
+                                                FontSize="Micro"
+                                                Clicked="NoChange" 
+                                                android:Button.UseDefaultShadow="true"/>
+                                        </Grid>
+                                    </StackLayout>
+                                </Frame>
+                            </ViewCell.View>
+                        </customControls:CustomViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <ActivityIndicator x:Name="activityIndicator" 
+                               IsRunning="{Binding IsBusy}"  
+                               VerticalOptions="CenterAndExpand" 
+                               HorizontalOptions="CenterAndExpand" 
+                               Color="WhiteSmoke"/>
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="55"/>
+                    <RowDefinition Height="60"/>
+                </Grid.RowDefinitions>
+
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <local:RoundedButton 
-                    Text="Powrót" 
-                    ImageSource="back_icon.png" 
-                    ContentLayout="Right, -70" 
-                    Padding="0, 0, 10, 0" 
-                    TextColor="Blue" 
-                    FontSize="Large" 
-                    Margin="10, 0, 0, 20" 
-                    Clicked="RetPrevPage" 
-                    Grid.Column="0" />
 
                 <local:RoundedButton 
-                    Text="Zakończ" 
-                    ImageSource="fajka.png" 
-                    ContentLayout="Right, -50" 
-                    Padding="0, 0, 10, 0" 
+                    Text="Przenieś wszystkie tutaj" 
+                    x:Name="Button1"
+                    Clicked="moveAllItems" 
+                    BackgroundColor="White"  
+                    Grid.Column="0" 
+                    Grid.ColumnSpan="2" 
+                    Grid.Row="0" 
+                    Margin="15,0,15,5" 
+                    Padding="0, 0, 10,0" 
+                    FontSize="Large" />
+
+                <local:RoundedButton  
+                    Text="Powrót" 
+                    x:Name="Button2"
+                    ImageSource="back_icon.png"
+                    ContentLayout="Right,-10"
+                    BackgroundColor="White" 
+                    TextColor="Blue" 
+                    Grid.Column="0" 
+                    Grid.Row="1" 
+                    Margin="15,0,5,10" 
+                    Padding="0, 0, 10,0" 
+                    Clicked="RetPrevPage" 
+                    FontSize="Large"/>
+
+                <local:RoundedButton  
+                    Text="Zatwierdź"  
+                    x:Name="Button3"
+                    ImageSource="fajka.png"
+                    ContentLayout="Right,-10"
+                    BackgroundColor="White" 
                     TextColor="Green" 
-                    FontSize="Large" 
-                    Margin="0, 0, 10, 20" 
+                    Grid.Column="1" 
+                    Grid.Row="1" 
+                    Margin="5,0,15,10" 
+                    Padding="0, 0, 10,0" 
                     Clicked="EndScanning"  
-                    Grid.Column="1"/>
+                    FontSize="Large"/>
+
             </Grid>
+            
+            
+            
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

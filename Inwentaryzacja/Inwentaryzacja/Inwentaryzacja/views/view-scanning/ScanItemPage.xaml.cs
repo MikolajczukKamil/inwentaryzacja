@@ -49,14 +49,14 @@ namespace Inwentaryzacja
                 TryHarder = false //Gets or sets a flag which cause a deeper look into the bitmap.
             };
             _scanner.Options = zXingOptions;
-        }  
-		
+        }
+
         async void GetAllAssets()
         {
             AssetEntity[] assetEntity = await api.getAssetsInRoom(Room.id);
             foreach (var item in assetEntity)
             {
-                AllItems.Add(new AllScaning() { ScaningName = item.type.name, ScaningID = item.type.id, ScaningRoom = Room.id, ThisRoom = true });
+                AllItems.Add(new AllScaning(item, Room, Room, false));
             }
         }
 		
@@ -78,14 +78,14 @@ namespace Inwentaryzacja
 
             if(response)
             {
-                await Navigation.PopAsync();
+                App.Current.MainPage = new ChooseRoomPage();
             }
         }
 
         private async void ShowScanedItem(object sender, EventArgs e)
         {
-            //await Navigation.PushAsync(new ScannedItem(AllItems), true);
-            App.Current.MainPage = new NavigationPage(new ScannedItem(AllItems));
+            await Navigation.PushAsync(new ScannedItem(AllItems, Room), true);
+            //App.Current.MainPage = new NavigationPage(new ScannedItem(AllItems));
         }
 
         private async Task ShowPopup(string message = "Zeskanowano!")
@@ -142,16 +142,13 @@ namespace Inwentaryzacja
                         string[] positions = result.Text.Split('-');
                         AssetInfoEntity assetInfoEntity = api.getAssetInfo(Convert.ToInt32(positions[1])).Result;
                         if (assetInfoEntity.room.id == Room.id)
-                            AllItems.Find(x => x.ScaningID == assetInfoEntity.room.id).Zeskanowano = true;
+                        {
+                            AllItems.Find(x => x.ScannedId == assetInfoEntity.id).Scanned();
+                        }
                         else
-                            AllItems.Add(new AllScaning()
-                            {
-                                ScaningName = assetInfoEntity.type.name,
-                                ScaningID = assetInfoEntity.type.id,
-                                ScaningRoom = assetInfoEntity.room.id,
-                                ThisRoom = false,
-                                Zeskanowano = true
-                            });
+                        {
+                            AllItems.Add(new AllScaning(assetInfoEntity, assetInfoEntity.room, Room, true));
+                        }
                         Device.BeginInvokeOnMainThread(async () =>
                         {
                             prev = result;
