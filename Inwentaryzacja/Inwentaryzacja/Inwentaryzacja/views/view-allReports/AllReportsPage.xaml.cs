@@ -1,4 +1,5 @@
-﻿using Inwentaryzacja.Controllers.Api;
+using Inwentaryzacja.controllers.session;
+using Inwentaryzacja.Controllers.Api;
 using Inwentaryzacja.Models;
 using Inwentaryzacja.Services;
 using Inwentaryzacja.views.view_allReports;
@@ -51,6 +52,11 @@ namespace Inwentaryzacja
         private async void onApiError(object o, ErrorEventArgs error)
         {
             await DisplayAlert("Błąd", error.MessageForUser, "OK");
+
+            if (error.Auth == false)
+            {
+                await Navigation.PushAsync(new LoginPage());
+            }
         }
 
         public class AllReport
@@ -60,9 +66,9 @@ namespace Inwentaryzacja
             public string ReportDate { get; set; }
         }
 
-        private void back_Clicked(object sender, EventArgs e)
+        private async void back_Clicked(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new WelcomeViewPage());
+            await Navigation.PopAsync();
         }
 
         private async void ReportList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -75,6 +81,7 @@ namespace Inwentaryzacja
             ReportHeaderEntity reportHeaderEntity = null;
 
             if (selectedReport == null) return;
+
             foreach (ReportHeaderEntity item in reportHeaders)
             {
                 if (item.name == selectedReport.ReportName)
@@ -82,6 +89,7 @@ namespace Inwentaryzacja
                     reportHeaderEntity = item;
                 }
             }
+
             if (reportHeaderEntity == null) return;
 
             ReportPositionEntity[] reportPositionEntities = await reportService.GetReportPositions(reportHeaderEntity.id);
@@ -117,13 +125,24 @@ namespace Inwentaryzacja
             string ownerText = reportHeaderEntity.owner.login;
 
             EnableView(true);
-            App.Current.MainPage = new ReportDetailsView(headerText, roomText, createDate, createTime, ownerText, inThisRoom, moveToRoom, moveFromRoom, inAnotherRoom, scannedAll, scannedAllDetails, inThisRoomDetails, movedToRoomDetails, movedFromRoomDetails, inAnotherRoomDetails, scannedAllLabel, movedFromRoomLabel, movedToRoomLabel, inAnotherRoomLabel, inThisRoomLabel);
+
+            await Navigation.PushAsync(new ReportDetailsView(headerText, roomText, createDate, createTime, ownerText, inThisRoom, moveToRoom, moveFromRoom, inAnotherRoom, scannedAll, scannedAllDetails, inThisRoomDetails, movedToRoomDetails, movedFromRoomDetails, inAnotherRoomDetails, scannedAllLabel, movedFromRoomLabel, movedToRoomLabel, inAnotherRoomLabel, inThisRoomLabel));
         }                                                                                                                                                                                                                                                                                                 
                                                                                                                                                                                                                                                                                                           
         private void EnableView(bool state)
         {
             IsBusy = !state;
             ReportList.IsEnabled = state;
-        }                                                                                                                                                                                                                                                           
+        }
+
+        private async void LogoutButtonClicked(object sender, EventArgs e)
+        {
+            if (await DisplayAlert("Wylogowywanie", "Czy na pewno chcesz się wylogować?", "Tak", "Nie"))
+            {
+                var session = new SessionController(new APIController());
+                session.RemoveSession();
+                App.Current.MainPage = new LoginPage();
+            }
+        }                                                                                                                                                                                                                                                     
     }
 }

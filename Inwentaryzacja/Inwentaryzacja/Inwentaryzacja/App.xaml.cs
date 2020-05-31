@@ -1,4 +1,7 @@
-﻿using Xamarin.Forms;
+﻿using Inwentaryzacja.controllers.session;
+using Inwentaryzacja.Controllers.Api;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
@@ -9,7 +12,8 @@ namespace Inwentaryzacja
         public App()
         {
             InitializeComponent();
-            MainPage = new WelcomeViewPage();
+
+            MainPage = new LoginPage();
         }
 
         protected override void OnStart()

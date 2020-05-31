@@ -1,6 +1,7 @@
 ﻿using Inwentaryzacja.Models;
 using Newtonsoft.Json;
 using System;
+using System.Dynamic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -18,19 +19,6 @@ namespace Inwentaryzacja.Controllers.Api
 
         public event EventHandler<ErrorEventArgs> ErrorEventHandler;
 
-        private static bool TMPTOKEN = true;
-
-        public APIController()
-        {
-            // TMP, ustawiam fake token na startcie
-
-            if(TMPTOKEN)
-            {
-                ClientHttp.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "fake-token");
-            }
-
-            TMPTOKEN = false;
-        }
 
         #region Private
 
@@ -331,6 +319,29 @@ namespace Inwentaryzacja.Controllers.Api
             var content = PreperDataToSend(data);
 
             return await AuthorizationRequest(uri, content);
+        }
+
+        public string GetToken()
+        {
+            if (ClientHttp != null && ClientHttp.DefaultRequestHeaders != null && ClientHttp.DefaultRequestHeaders.Authorization!=null)
+            {
+                return ClientHttp.DefaultRequestHeaders.Authorization.Parameter;
+            }
+
+            return null;
+        }
+
+        public void SetToken(string token)
+        {
+            ClientHttp.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+
+        public void DeleteToken()
+        {
+            if(ClientHttp!=null && ClientHttp.DefaultRequestHeaders !=null)
+            {
+                ClientHttp.DefaultRequestHeaders.Authorization = null;
+            }
         }
 
         #endregion User

@@ -1,7 +1,9 @@
-﻿using Inwentaryzacja.Controllers.Api;
+﻿using Inwentaryzacja.controllers.session;
+using Inwentaryzacja.Controllers.Api;
 using Inwentaryzacja.Models;
 using Inwentaryzacja.views.view_chooseRoom;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -14,23 +16,39 @@ namespace Inwentaryzacja
 	{
 		RoomEntity[] rooms;
 		BuildingEntity[] buildings;
-		bool addedNewBuilding = false;
+		public bool addedNewBuilding = false;
+		public bool addedNewRoom = false;
 
 		APIController api = new APIController();
+
 		public ChooseRoomPage()
 		{
 			InitializeComponent();
 			api.ErrorEventHandler += onApiError;
 			BindingContext = this;
-			GetBuildings();
 		}
-		public ChooseRoomPage(bool addedNewBuilding)
+
+		protected override void OnAppearing()
 		{
-			this.addedNewBuilding = addedNewBuilding;
-			InitializeComponent();
-			BindingContext = this;			
-			api.ErrorEventHandler += onApiError;
-			GetBuildings();
+			if(BuildingPicker.Items.Count==0 || addedNewBuilding || addedNewRoom)
+			{
+				GetBuildings();
+				addedNewRoom = false;
+			}
+			
+			base.OnAppearing();
+		}
+
+		private async Task<PermissionStatus> CheckPermissions()
+		{
+			var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
+
+			if (status != PermissionStatus.Granted)
+			{
+				status = await Permissions.RequestAsync<Permissions.Camera>();
+			}
+
+			return status;
 		}
 
 		private void BuildingPicker_SelectedIndexChanged(object sender, EventArgs e)
@@ -57,14 +75,9 @@ namespace Inwentaryzacja
 
 		private async void GetRooms(int buildingId)
 		{
-			rooms = await api.getRooms(buildingId);
-
-			Task<RoomEntity[]> roomsTask = api.getRooms(buildingId);
 			EnableView(false);
-			await roomsTask;
+			rooms = await api.getRooms(buildingId);
 			EnableView(true);
-			rooms = roomsTask.Result;
-			
 
 			if (rooms == null)
 			{
@@ -84,11 +97,9 @@ namespace Inwentaryzacja
 		
 		private async void GetBuildings()
 		{
-			Task<BuildingEntity[]> buildingTask = api.getBuildings();
 			EnableView(false);
-			await buildingTask;
+			buildings = await api.getBuildings();
 			EnableView(true);
-			buildings = buildingTask.Result;
 
 			if (buildings == null) return;
 
@@ -102,6 +113,7 @@ namespace Inwentaryzacja
 				if (addedNewBuilding)
 				{
 					BuildingPicker.SelectedItem = BuildingPicker.Items[BuildingPicker.Items.Count - 1];
+					addedNewBuilding = false;
 				}
 				else
 				{
@@ -143,7 +155,16 @@ namespace Inwentaryzacja
 
 			if(selectedRoom != null)
 			{
-				App.Current.MainPage = new NavigationPage(new ScanItemPage(selectedRoom));
+				var status = await CheckPermissions();
+
+				if (status != PermissionStatus.Granted)
+				{
+					await DisplayAlert("Komunikat","Bez uprawnień do kamery aplikacja nie może działać poprawnie", "OK");
+				}
+				else
+				{
+					await Navigation.PushAsync(new ScanItemPage(selectedRoom));
+				}
 			}
 			else
 			{
@@ -154,21 +175,27 @@ namespace Inwentaryzacja
 		private async void onApiError(object o, ErrorEventArgs error)
 		{
 			await DisplayAlert("Błąd", error.MessageForUser, "OK");
+
+			if(!error.Auth)
+			{
+				await Navigation.PushAsync(new LoginPage());
+			}
 		}
 
 
-		private void Return_button_clicked(object o, EventArgs e)
+		private async void Return_button_clicked(object o, EventArgs e)
 		{
-			App.Current.MainPage = new WelcomeViewPage();
+			await Navigation.PopAsync();
 		}
 		
-		public void AddRoom_clicked(object o, EventArgs args)
+		public async void AddRoom_clicked(object o, EventArgs args)
 		{
-			App.Current.MainPage = new AddRoom();
+			await Navigation.PushAsync(new AddRoom());
 		}
-		public void AddBuildingClicked(object o, EventArgs e)
+
+		public async void AddBuildingClicked(object o, EventArgs e)
 		{
-			App.Current.MainPage = new AddBuildingView();
+			await Navigation.PushAsync(new AddBuildingView());
 		}
 
 		public void RoomPicker_SelectedIndexChanged(object o, EventArgs e)
@@ -180,6 +207,16 @@ namespace Inwentaryzacja
 			else
 			{
 				ContinueBtn.IsEnabled = true;
+			}
+		}
+
+		private async void LogoutButtonClicked(object sender, EventArgs e)
+		{
+			if (await DisplayAlert("Wylogowywanie", "Czy na pewno chcesz się wylogować?", "Tak", "Nie"))
+      {
+				var session = new SessionController(new APIController());
+				session.RemoveSession();
+				App.Current.MainPage = new LoginPage();
 			}
 		}
 	}

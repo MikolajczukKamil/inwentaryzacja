@@ -47,6 +47,7 @@ namespace Inwentaryzacja.views.view_allReports
                 ScannedAllBtn.IsVisible = false;
                 FrameRequest.HeightRequest -= 50;
             }
+
             if (MoveToRoom.Text == "")
             {
                 MoveToRoomHeader.IsVisible = false;
@@ -55,6 +56,7 @@ namespace Inwentaryzacja.views.view_allReports
                 MoveToRoomBtn.IsVisible = false;
                 FrameRequest.HeightRequest -= 50;
             }
+
             if (MoveFromRoom.Text == "")
             {
                 MoveFromRoomHeader.IsVisible = false;
@@ -63,6 +65,7 @@ namespace Inwentaryzacja.views.view_allReports
                 MoveFromRoomBtn.IsVisible = false;
                 FrameRequest.HeightRequest -= 50;
             }
+
             if (InAnotherRoom.Text == "")
             {
                 InAnotherRoomHeader.IsVisible = false;
@@ -71,6 +74,7 @@ namespace Inwentaryzacja.views.view_allReports
                 InAnotherRoomBtn.IsVisible = false;
                 FrameRequest.HeightRequest -= 50;
             }
+
             if (InThisRoom.Text == "")
             {
                 InThisRoomHeader.IsVisible = false;
@@ -90,14 +94,14 @@ namespace Inwentaryzacja.views.view_allReports
             InAnotherRoomBtn.Clicked += (object o, EventArgs e) => DisplayAlert("Szczegóły", inAnotherRoomDetails, "OK");
         }
 
-        private void return_ChooseRoom(object o, EventArgs e)
+        private async void return_ChooseRoom(object o, EventArgs e)
         {
-            App.Current.MainPage = new AllReportsPage();
+            await Navigation.PopAsync();
         }
 
         protected override bool OnBackButtonPressed()
         {
-            App.Current.MainPage = new AllReportsPage();
+            Navigation.PopAsync();
             return true;           
         }
     }

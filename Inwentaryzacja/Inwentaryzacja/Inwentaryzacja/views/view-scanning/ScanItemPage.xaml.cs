@@ -72,7 +72,7 @@ namespace Inwentaryzacja
             base.OnDisappearing();
         }
 
-        async private void Cancel(object sender, EventArgs e)
+        private async void Cancel(object sender, EventArgs e)
         {
             bool response = await DisplayAlert("Anulować skanowanie?", "Czy na pewno chcesz anulować skanowanie?", "Tak", "Nie");
 
@@ -84,8 +84,8 @@ namespace Inwentaryzacja
 
         private async void ShowScanedItem(object sender, EventArgs e)
         {
-            //await Navigation.PushAsync(new ScannedItem(AllItems), true);
-            App.Current.MainPage = new NavigationPage(new ScannedItem(AllItems));
+            await Navigation.PushAsync(new ScannedItem(AllItems), true);
+            //App.Current.MainPage = new NavigationPage(new ScannedItem(AllItems)); //Bez serc, bez ducha to szkieletów ludy. To nie będzie działać
         }
 
         private async Task ShowPopup(string message = "Zeskanowano!")
@@ -210,6 +210,13 @@ namespace Inwentaryzacja
             catch (Exception)
             {
             }
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            Cancel(this,null);
+
+            return true;
         }
     }
 }

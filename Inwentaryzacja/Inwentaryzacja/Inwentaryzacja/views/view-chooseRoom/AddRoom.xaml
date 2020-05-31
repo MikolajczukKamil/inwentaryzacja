@@ -8,6 +8,8 @@
              mc:Ignorable="d"
              BackgroundColor="#8EE3BA"
              x:Class="Inwentaryzacja.views.view_chooseRoom.AddRoom">
+
+
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Dodaj salę"
@@ -15,9 +17,10 @@
                    VerticalOptions="Start"
                    HorizontalOptions="CenterAndExpand"
                    HorizontalTextAlignment="Center"
-                   Margin="0, 70"
+                   Margin="0, 30"
                    TextColor="Black"
                    FontFamily=""/>
+
             <Label Text="Wybierz budynek:"
                    FontSize="Medium" 
                    VerticalOptions="Start"
@@ -26,6 +29,7 @@
                    Margin="0,10"
                    TextColor="Black"
                    />
+
             <Frame
                 Margin="20, 0"
                 Padding="20,5,20,5"               
@@ -49,6 +53,7 @@
                    TextColor="Black"
                    
                    />
+
             <local:RoundedEntry Placeholder="nazwa sali"
                     HorizontalOptions="FillAndExpand" 
                     VerticalOptions="Start"
@@ -63,20 +68,21 @@
                     CornerRadius="12"
                     HeightRequest="50"
                     WidthRequest="180"
-                    Margin="0, 20, 0, 30"
+                    Margin="0, 20, 0, 0"
                     HorizontalOptions="Center"
                     VerticalOptions="End"
                     x:Name="AddRoomBtn"
                     Clicked="Check_Room"
                   />
+
             <ActivityIndicator x:Name="activityIndicator" 
                                IsRunning="{Binding IsBusy}"  
                                VerticalOptions="CenterAndExpand" 
-                               HorizontalOptions="CenterAndExpand" 
+                               HorizontalOptions="CenterAndExpand"
                                Color="Blue"/>
 
-
-            <Button Text="Powrót"
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Powrót"
                     ImageSource="back_icon.png"
                     ContentLayout="Right, -40"
                     HorizontalOptions="Start"
@@ -89,6 +95,19 @@
                     VerticalOptions="EndAndExpand"
                      x:Name="BackBtn"
                     Clicked="return_ChooseRoom"/>
+
+                <Button Text="Wyloguj"
+                    HorizontalOptions="EndAndExpand"
+                    FontSize="20"
+                    CornerRadius="12"
+                    BackgroundColor="White"
+                    WidthRequest="150"
+                    HeightRequest="45"
+                    Margin="20,10"
+                    VerticalOptions="EndAndExpand"
+                    Clicked="LogoutButtonClicked"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
+    
 </ContentPage>
