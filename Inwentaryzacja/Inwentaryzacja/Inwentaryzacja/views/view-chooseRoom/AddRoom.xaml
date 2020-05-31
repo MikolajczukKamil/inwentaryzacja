@@ -20,6 +20,7 @@
                    Margin="0, 30"
                    TextColor="Black"
                    FontFamily=""/>
+
             <Label Text="Wybierz budynek:"
                    FontSize="Medium" 
                    VerticalOptions="Start"
@@ -28,6 +29,7 @@
                    Margin="0,10"
                    TextColor="Black"
                    />
+
             <Frame
                 Margin="20, 0"
                 Padding="20,5,20,5"               
@@ -51,6 +53,7 @@
                    TextColor="Black"
                    
                    />
+
             <local:RoundedEntry Placeholder="nazwa sali"
                     HorizontalOptions="FillAndExpand" 
                     VerticalOptions="Start"
@@ -58,8 +61,6 @@
                     WidthRequest="20"
                     HeightRequest="55"
                     x:Name="room_number"/>
-
-
 
             <Button Text="Dodaj"
                     BackgroundColor="White"
@@ -73,6 +74,7 @@
                     x:Name="AddRoomBtn"
                     Clicked="Check_Room"
                   />
+
             <ActivityIndicator x:Name="activityIndicator" 
                                IsRunning="{Binding IsBusy}"  
                                VerticalOptions="CenterAndExpand" 
@@ -104,7 +106,6 @@
                     Margin="20,10"
                     VerticalOptions="EndAndExpand"
                     Clicked="LogoutButtonClicked"/>
-
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>
