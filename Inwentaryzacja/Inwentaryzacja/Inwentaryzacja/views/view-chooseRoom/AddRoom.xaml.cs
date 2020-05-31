@@ -86,7 +86,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
                 var stack = Navigation.NavigationStack;
                 var previousPage = (ChooseRoomPage)stack[stack.Count - 2];
                 previousPage.addedNewRoom = true;
-                Navigation.PopAsync();
+                await Navigation.PopAsync();
                 await DisplayAlert("Dodawanie pokoju", "Pomyślnie dodano nowy pokój", "OK");
             }
         }
