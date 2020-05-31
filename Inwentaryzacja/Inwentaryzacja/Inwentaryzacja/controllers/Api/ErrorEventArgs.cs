@@ -28,9 +28,17 @@ namespace Inwentaryzacja.Controllers.Api
                 case 401:
                     MessageForUser = "Błędny login lub hasło, proszę spróbować jeszcze raz."; break;
                 case 402:
-                    MessageForUser = "Brak połączenia z Internetem, sprawdź swoje połączenie."; break;
+                    MessageForUser = "Brak połączenia z Internetem, sprawdź swoje połączenie wykonać zapytanie."; break;
                 case 404:
-                    MessageForUser = "Nie można odczytać danych."; break;
+                    if(!String.IsNullOrEmpty(Message) && Message[0]=='<')   //prototypowe zapytanie sprawdzające czy błąd pochodzi z serwera czy z odpowiedzi api
+                        MessageForUser = "Błąd połączenia z serwerem, proszę spróbować ponownie wykonać zapytanie.";
+                    else
+                        MessageForUser = "Niekompletne dane, sprawdź czy podałeś wszystkie niezbędne informacje."; 
+                    break;
+                case 410:
+                    MessageForUser = "Nie można zinterpretować odpowiedzi serwera."; break;
+                case 411:
+                    MessageForUser = "Nie można przetworzyć danych na zapytanie http."; break;
                 case 500:
                     MessageForUser = "Błąd przy tworzeniu sesji, proszę spróbować jeszcze raz."; break;
                 case 502:

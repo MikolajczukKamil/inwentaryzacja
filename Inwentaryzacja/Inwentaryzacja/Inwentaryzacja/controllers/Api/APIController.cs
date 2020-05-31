@@ -121,7 +121,7 @@ namespace Inwentaryzacja.Controllers.Api
                 catch (Exception)
                 {
                     entity = default;
-                    ErrorInvoke("{\"message\":\"Cannot convert data.\"}", 404);
+                    ErrorInvoke("{\"message\":\"Cannot convert data.\"}", 410);
                 }
             }
 
@@ -139,7 +139,7 @@ namespace Inwentaryzacja.Controllers.Api
             catch (Exception)
             {
                 entity = default;
-                ErrorInvoke("{\"message\":\"Cannot convert data.\"}", 404);
+                ErrorInvoke("{\"message\":\"Cannot convert data.\"}", 411);
             }
 
             return entity;
