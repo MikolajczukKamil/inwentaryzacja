@@ -23,7 +23,7 @@ namespace Inwentaryzacja
     {
         APIController api;
         private RoomEntity Room;
-        private ZXing.Result prev=null;
+        private ZXing.Result prev = null;
         private List<string> scannedItem = new List<string>();
         private List<AllScaning> AllItems = new List<AllScaning>();
 
@@ -59,7 +59,7 @@ namespace Inwentaryzacja
                 AllItems.Add(new AllScaning(item, Room, Room, false));
             }
         }
-		
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -76,55 +76,56 @@ namespace Inwentaryzacja
         {
             bool response = await DisplayAlert("Anulować skanowanie?", "Czy na pewno chcesz anulować skanowanie?", "Tak", "Nie");
 
-            if(response)
+            if (response)
             {
-                App.Current.MainPage = new ChooseRoomPage();
+                await Navigation.PopModalAsync();
             }
         }
 
         private async void ShowScanedItem(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new ScannedItem(AllItems, Room), true);
-            //App.Current.MainPage = new NavigationPage(new ScannedItem(AllItems));
+            PreviewButton.IsEnabled = false;
+            await Navigation.PushModalAsync(new ScannedItem(AllItems, Room), true);
+            PreviewButton.IsEnabled = true;
         }
 
         private async Task ShowPopup(string message = "Zeskanowano!")
         {
-            await Task.Run(() => 
-            { 
-                Device.BeginInvokeOnMainThread(() => 
-                { 
-                    _contentPopup.IsVisible = true; 
-                }); 
+            await Task.Run(() =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    _contentPopup.IsVisible = true;
+                });
             });
 
-            await Task.Run(() => 
-            { 
-                Device.BeginInvokeOnMainThread(() => 
-                { 
-                    _contentPopup.Text = message; 
-                }); 
+            await Task.Run(() =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    _contentPopup.Text = message;
+                });
             });
 
-            await Task.Run(() => 
-            { 
-                Device.BeginInvokeOnMainThread(() => 
-                { 
-                    _backColorPopup.WidthRequest = _contentPopup.Width; 
-                }); 
+            await Task.Run(() =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    _backColorPopup.WidthRequest = _contentPopup.Width;
+                });
             });
-            
+
             await _popup.FadeTo(1, 150);
             await Task.Delay(600);
             await _popup.FadeTo(0, 400);
 
 
-            await Task.Run(() => 
-            { 
-                Device.BeginInvokeOnMainThread(() => 
-                { 
-                    _contentPopup.IsVisible = false; 
-                }); 
+            await Task.Run(() =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    _contentPopup.IsVisible = false;
+                });
             });
 
         }
@@ -132,15 +133,27 @@ namespace Inwentaryzacja
 
         private void ZXingScannerView_OnScanResult(ZXing.Result result)
         {
-            if(prev == null || result.Text!=prev.Text)
+            if (prev == null || result.Text != prev.Text)
             {
-                if(!ListContainItem(result.Text))
+                if (!ListContainItem(result.Text))
                 {
-					
+                    string[] positions;
+                    AssetInfoEntity assetInfoEntity;
                     try
                     {
-                        string[] positions = result.Text.Split('-');
-                        AssetInfoEntity assetInfoEntity = api.getAssetInfo(Convert.ToInt32(positions[1])).Result;
+                        positions = result.Text.Split('-');
+                        assetInfoEntity = api.getAssetInfo(Convert.ToInt32(positions[1])).Result;
+                    }
+                    catch (Exception)
+                    {
+                        Device.BeginInvokeOnMainThread(async () =>
+                        {
+                            await ShowPopup("Zły format kodu"); ;
+                        });
+                        return;
+                    }
+                    try
+                    {
                         if (assetInfoEntity.room.id == Room.id)
                         {
                             AllItems.Find(x => x.ScannedId == assetInfoEntity.id).Scanned();
@@ -149,24 +162,25 @@ namespace Inwentaryzacja
                         {
                             AllItems.Add(new AllScaning(assetInfoEntity, assetInfoEntity.room, Room, true));
                         }
-                        Device.BeginInvokeOnMainThread(async () =>
-                        {
-                            prev = result;
-                            _infoLabel.Text = "Liczba zeskanowanych przedmiotów: " + scannedItem.Count;
-							Vibration.Vibrate(TimeSpan.FromMilliseconds(100));
-                            await ShowPopup();
-
-                            //await DisplayAlert("Wynik skanowania", result.Text, "OK");
-                        });
-                        scannedItem.Add(result.Text);
                     }
                     catch (Exception)
                     {
                         Device.BeginInvokeOnMainThread(async () =>
                         {
-                            await ShowPopup("Zły format kodu"); ;
+                            await ShowPopup("Nie udało się dodać przedmiotu"); ;
                         });
+                        return;
                     }
+                    Device.BeginInvokeOnMainThread(async () =>
+                    {
+                        prev = result;
+                        _infoLabel.Text = "Liczba zeskanowanych przedmiotów: " + scannedItem.Count;
+                        Vibration.Vibrate(TimeSpan.FromMilliseconds(100));
+                        await ShowPopup();
+
+                        //await DisplayAlert("Wynik skanowania", result.Text, "OK");
+                    });
+                    scannedItem.Add(result.Text);
                 }
                 else
                 {
@@ -189,7 +203,7 @@ namespace Inwentaryzacja
         {
             foreach (var item in scannedItem)
             {
-                if(item==text)
+                if (item == text)
                 {
                     return true;
                 }

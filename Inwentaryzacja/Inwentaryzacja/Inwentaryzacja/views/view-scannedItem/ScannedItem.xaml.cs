@@ -51,8 +51,6 @@ namespace Inwentaryzacja.views.view_scannedItem
                 AssetType assetType = new AssetType(assetEntity.type.id, assetEntity.type.name, assetEntity.type.letter);
                 Asset asset = new Asset(assetEntity.id, assetType);
                 Room room = null;
-                if (assetRoom.id == 0)//USUNĄĆ PO POPRAWCE W BAZIE DANYCH!!!
-                    assetRoom = null;//USUNĄĆ PO POPRAWCE W BAZIE DANYCH!!!
                 ButtonsViews = true;
                 if (assetRoom != null)
                 {
@@ -171,7 +169,6 @@ namespace Inwentaryzacja.views.view_scannedItem
 
         private async void GenerateRaport()
         {
-
             List<AllScaning> scanningCopy = new List<AllScaning>();
             foreach (AllScaning item in allScaning)
             {
@@ -212,7 +209,7 @@ namespace Inwentaryzacja.views.view_scannedItem
 
         private async void RetPrevPage(object sender, EventArgs e)
         {
-            await Navigation.PopAsync();
+            await Navigation.PopModalAsync();
         }
     }
 }

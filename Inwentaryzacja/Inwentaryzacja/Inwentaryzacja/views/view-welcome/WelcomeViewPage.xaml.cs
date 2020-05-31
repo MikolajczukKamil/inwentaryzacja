@@ -1,4 +1,6 @@
-﻿using Inwentaryzacja.Models;
+﻿using Inwentaryzacja.controllers.session;
+using Inwentaryzacja.Controllers.Api;
+using Inwentaryzacja.Models;
 using Inwentaryzacja.views.view_chooseRoom;
 using System;
 using System.Collections.Generic;
@@ -19,13 +21,24 @@ namespace Inwentaryzacja
             InitializeComponent();
         }
 
-        private void scanButtonClicked(object sender, EventArgs e)
+        private async void scanButtonClicked(object sender, EventArgs e)
         {
-            App.Current.MainPage = new ChooseRoomPage();
+            await Navigation.PushAsync(new ChooseRoomPage());
         }
+        
         private async void _AllReportsButton_Clicked(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new AllReportsPage());
+            await Navigation.PushAsync(new AllReportsPage());
+        }
+
+        private async void LogoutButtonClicked(object sender, EventArgs e)
+        {
+            if(await DisplayAlert("Wylogowywanie", "Czy na pewno chcesz się wylogować?", "Tak", "Nie"))
+            {
+                var session = new SessionController(new APIController());
+                session.RemoveSession();
+                App.Current.MainPage = new LoginPage();
+            }
         }
     }
 }

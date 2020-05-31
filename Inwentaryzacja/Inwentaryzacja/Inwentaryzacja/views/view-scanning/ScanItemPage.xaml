@@ -8,6 +8,7 @@
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              x:Class="Inwentaryzacja.ScanItemPage">
 
+    <NavigationPage.HasBackButton>False</NavigationPage.HasBackButton>
     
     <Grid BackgroundColor="#8EE3BA">
         <Grid.RowDefinitions>
@@ -113,7 +114,8 @@
             Margin="5, 0, 15, 10" 
             Clicked="ShowScanedItem"  
             Grid.Row="3" 
-            Grid.Column="1"/>
+            Grid.Column="1"
+            x:Name="PreviewButton"/>
     </Grid>
 
 </ContentPage>

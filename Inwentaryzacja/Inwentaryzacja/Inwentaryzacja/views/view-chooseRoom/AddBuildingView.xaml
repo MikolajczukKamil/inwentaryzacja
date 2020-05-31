@@ -8,7 +8,7 @@
              xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
              mc:Ignorable="d"
              x:Class="Inwentaryzacja.views.view_chooseRoom.AddBuildingView"
-                  BackgroundColor="#8EE3BA">
+             BackgroundColor="#8EE3BA">
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Dodaj budynek"
@@ -44,19 +44,32 @@
                                HorizontalOptions="CenterAndExpand" 
                                Color="Blue"/>
 
-            <local:RoundedButton Text="Powrót"
-                    ImageSource="back_icon.png"
-                    ContentLayout="Right, -40"
-                    HorizontalOptions="Start"
-                    FontSize="20"
-                    BackgroundColor="White"
-                    WidthRequest="150"
-                    HeightRequest="45"
-                    Padding="10,5,10,5"
-                    Margin="20,20"
-                    VerticalOptions="EndAndExpand"
-                    Clicked="return_ChooseRoom"
-                    x:Name="BackBtn"/>
+            <StackLayout Orientation="Horizontal">
+                <local:RoundedButton Text="Powrót"
+                        ImageSource="back_icon.png"
+                        ContentLayout="Right, -40"
+                        HorizontalOptions="Start"
+                        FontSize="20"
+                        BackgroundColor="White"
+                        WidthRequest="150"
+                        HeightRequest="45"
+                        Padding="10,5,10,5"
+                        Margin="20,20"
+                        VerticalOptions="EndAndExpand"
+                        Clicked="return_ChooseRoom"
+                        x:Name="BackBtn"/>
+
+                <local:RoundedButton Text="Wyloguj"
+                        HorizontalOptions="EndAndExpand"
+                        FontSize="20"
+                        BackgroundColor="White"
+                        WidthRequest="150"
+                        HeightRequest="45"
+                        Padding="10,5,10,5"
+                        Margin="20,20"
+                        VerticalOptions="EndAndExpand"
+                        Clicked="LogoutButtonClicked"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

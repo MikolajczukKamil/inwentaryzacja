@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Forms;
 
 namespace Inwentaryzacja.Controllers.Api
 {
@@ -27,9 +28,17 @@ namespace Inwentaryzacja.Controllers.Api
                 case 401:
                     MessageForUser = "Błędny login lub hasło, proszę spróbować jeszcze raz."; break;
                 case 402:
-                    MessageForUser = "Brak połączenia z Internetem, sprawdź swoje połączenie."; break;
+                    MessageForUser = "Błąd połączenia z Internetem, sprawdź swoje połączenie i spróbuj ponownie."; break;
                 case 404:
-                    MessageForUser = "Nie można odczytać danych."; break;
+                    if(!String.IsNullOrEmpty(Message) && Message[0]=='<')   //prototypowy warunek sprawdzający czy błąd pochodzi z serwera czy z odpowiedzi api
+                        MessageForUser = "Błąd połączenia z serwerem, proszę spróbować ponownie wykonać zapytanie.";
+                    else
+                        MessageForUser = "Niekompletne dane, sprawdź czy zostały podane wszystkie niezbędne informacje."; 
+                    break;
+                case 410:
+                    MessageForUser = "Nie udało się zinterpretować odpowiedzi serwera, proszę spróbować ponownie wykonać zapytanie."; break;
+                case 411:
+                    MessageForUser = "Nie udało się przetworzyć danych na zapytanie http."; break;
                 case 500:
                     MessageForUser = "Błąd przy tworzeniu sesji, proszę spróbować jeszcze raz."; break;
                 case 502:
@@ -41,7 +50,7 @@ namespace Inwentaryzacja.Controllers.Api
                         MessageForUser = "Błąd autoryzacji, wymagane ponowne logowanie.";
                     break;
                 default:
-                    MessageForUser = "Niezidentyfikowany błąd."; break;
+                    MessageForUser = "Niezidentyfikowany błąd. Kod błędu: "+code; break;
             }
         }
     }

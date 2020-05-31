@@ -1,4 +1,5 @@
-﻿using Inwentaryzacja.Controllers.Api;
+﻿using Inwentaryzacja.controllers.session;
+using Inwentaryzacja.Controllers.Api;
 using Inwentaryzacja.Models;
 using System;
 using Xamarin.Forms;
@@ -18,7 +19,12 @@ namespace Inwentaryzacja.views.view_chooseRoom
             InitializeComponent();
             api.ErrorEventHandler += onApiError;
             BindingContext = this;
+        }
+
+        protected override void OnAppearing()
+        {
             GetBuildings();
+            base.OnAppearing();
         }
 
         private async void GetBuildings()
@@ -49,9 +55,9 @@ namespace Inwentaryzacja.views.view_chooseRoom
             }
         }
   
-        public void return_ChooseRoom(object o, EventArgs args)
+        public async void return_ChooseRoom(object o, EventArgs args)
         {
-            Application.Current.MainPage = new NavigationPage(new ChooseRoomPage());
+            await Navigation.PopAsync();
         }
        
         public async void Check_Room(object o, EventArgs args)
@@ -59,15 +65,22 @@ namespace Inwentaryzacja.views.view_chooseRoom
             string number = room_number.Text;
 
             BuildingEntity mybuilding = new BuildingEntity();
-            string choosenBuildingName = BuildingPicker.Items[BuildingPicker.SelectedIndex];
 
-            foreach (var item in buildings)
+            string choosenBuildingName = "";
+            if (BuildingPicker.Items.Count>0)
+                choosenBuildingName = BuildingPicker.Items[BuildingPicker.SelectedIndex];
+
+            if(buildings!=null)
             {
-                if (item.name == choosenBuildingName)
+                foreach (var item in buildings)
                 {
-                    mybuilding = item;
+                    if (item.name == choosenBuildingName)
+                    {
+                        mybuilding = item;
+                    }
                 }
             }
+            
 
             EnableView(false);
 
@@ -75,10 +88,12 @@ namespace Inwentaryzacja.views.view_chooseRoom
 
             EnableView(true);
 
-            App.Current.MainPage = new ChooseRoomPage(true);
-
             if (isCreated)
             {
+                var stack = Navigation.NavigationStack;
+                var previousPage = (ChooseRoomPage)stack[stack.Count - 2];
+                previousPage.addedNewRoom = true;
+                await Navigation.PopAsync();
                 await DisplayAlert("Dodawanie pokoju", "Pomyślnie dodano nowy pokój", "OK");
             }
         }
@@ -92,7 +107,22 @@ namespace Inwentaryzacja.views.view_chooseRoom
       
         private async void onApiError(object o, ErrorEventArgs error)
         {
-            await DisplayAlert("Dodawanie pokoju", error.Message, "OK");
+            await DisplayAlert("Dodawanie pokoju", error.MessageForUser, "OK");
+
+            if (error.Auth == false)
+            {
+                await Navigation.PushAsync(new LoginPage());
+            }
+        }
+
+        private async void LogoutButtonClicked(object sender, EventArgs e)
+        {
+            if (await DisplayAlert("Wylogowywanie", "Czy na pewno chcesz się wylogować?", "Tak", "Nie"))
+            {
+                var session = new SessionController(new APIController());
+                session.RemoveSession();
+                App.Current.MainPage = new LoginPage();
+            }
         }
     }
 }
