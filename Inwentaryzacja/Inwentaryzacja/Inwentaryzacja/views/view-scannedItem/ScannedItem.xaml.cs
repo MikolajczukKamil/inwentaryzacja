@@ -201,7 +201,7 @@ namespace Inwentaryzacja.views.view_scannedItem
 
         private void EnableView(bool state)
         {
-            IsBusy = !state;
+            LoadingScreen.IsVisible = !state;
             Button1.IsEnabled = state;
             Button2.IsEnabled = state;
             Button3.IsEnabled = state;
