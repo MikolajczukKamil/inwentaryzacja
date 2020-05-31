@@ -57,8 +57,6 @@
                     HeightRequest="55"
                     x:Name="room_number"/>
 
-           
-
             <Button Text="Dodaj"
                     BackgroundColor="White"
                     FontSize="Large"

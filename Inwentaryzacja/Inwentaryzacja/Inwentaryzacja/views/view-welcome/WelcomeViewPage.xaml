@@ -36,7 +36,11 @@
                     </local:RoundedButton>
 
 
-            <local:RoundedButton Text="Przeglądaj raporty" FontSize="25" Margin="40,25,40,50" Padding="10,10,10,10" TextColor="Black" Clicked="_AllReportsButton_Clicked">
+            <local:RoundedButton Text="Przeglądaj raporty" 
+                                 FontSize="25" Margin="40,25,40,50" 
+                                 Padding="10,10,10,10" 
+                                 TextColor="Black" 
+                                 Clicked="_AllReportsButton_Clicked">
 
                          <local:RoundedButton.FontFamily>
                              <OnPlatform x:TypeArguments="x:String">

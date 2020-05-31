@@ -64,6 +64,7 @@ namespace Inwentaryzacja
 			await roomsTask;
 			EnableView(true);
 			rooms = roomsTask.Result;
+			
 
 			if (rooms == null)
 			{
