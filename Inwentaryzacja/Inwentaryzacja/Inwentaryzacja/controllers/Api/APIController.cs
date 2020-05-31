@@ -38,7 +38,7 @@ namespace Inwentaryzacja.Controllers.Api
         /// Asynchronicznie wysyła podane zapytanie do API i zwraca odpowiedź
         /// </summary>
         /// <param name="address">Adres zapytania</param>
-        /// <returns>Odpowiedź na zapytanie</returns>
+        /// <returns>Odpowiedź na zapytanie w formacie JSON</returns>
         private async Task<string> SendRequestWithResponse(string address)
         {
             string result;
@@ -101,11 +101,11 @@ namespace Inwentaryzacja.Controllers.Api
         }
         
         /// <summary>
-        /// Asynchronicznie wysyła zapytanie wraz z nagłówkiem autoryzacyjnym
+        /// Asynchronicznie wysyła zapytanie o logowanie
         /// </summary>
-        /// <param name="address">Adres zapytania</param>
-        /// <param name="content">Wartość zapytania</param>
-        /// <returns>Czy udało się wykonać zapytanie</returns>
+        /// <param name="address">Adres zapytania logowania</param>
+        /// <param name="content">Dane logowania w formacie JSON</param>
+        /// <returns>Czy udało się zalogować</returns>
         private async Task<bool> AuthorizationRequest(string address, StringContent content)
         {
             string result;
@@ -228,6 +228,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         /// <summary>
         /// Asynchronicznie zwraca z bazy informacje o wybranym środku trwałym
+        /// Jeżeli wystąpi błąd, zostanie wywołany event z błędem i zostanie zwrócony null
         /// </summary>
         /// <param name="assetId">ID środka trwałego</param>
         /// <returns>Informacje o środku trwałym</returns>
@@ -268,6 +269,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         /// <summary>
         /// Asynchronicznie zwraca tabelę budynków w bazie
+        /// Jeżeli wystąpi błąd, zostanie wywołany event z błędem i zostanie zwrócony null
         /// </summary>
         /// <returns>Tabela budynków</returns>
         public async Task<BuildingEntity[]> getBuildings()
@@ -280,6 +282,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         /// <summary>
         /// Asynchronicznie zwraca tablicę pokoi w wybranym budynku
+        /// Jeżeli wystąpi błąd, zostanie wywołany event z błędem i zostanie zwrócony null
         /// </summary>
         /// <param name="buildingId">ID budynku</param>
         /// <returns>Tablica pokoi</returns>
@@ -327,6 +330,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         /// <summary>
         /// Asynchronicznie zwraca tablicę wszystkich nagłówków raportów
+        /// Jeżeli wystąpi błąd, zostanie wywołany event z błędem i zostanie zwrócony null
         /// </summary>
         /// <returns>Tablica wszystkich nagłówków raportów</returns>
         public async Task<ReportHeaderEntity[]> getReportHeaders()
@@ -339,6 +343,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         /// <summary>
         /// Asynchronicznie zwraca wybrany nagłówek raportu
+        /// Jeżeli wystąpi błąd, zostanie wywołany event z błędem i zostanie zwrócony null
         /// </summary>
         /// <param name="reportId">ID raportu</param>
         /// <returns>Wybrany nagłówek raportu</returns>
@@ -352,6 +357,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         /// <summary>
         /// Asynchronicznie zwraca tablicę środków trwałych wybranego raportu
+        /// Jeżeli wystąpi błąd, zostanie wywołany event z błędem i zostanie zwrócony null
         /// </summary>
         /// <param name="reportId">ID raportu</param>
         /// <returns>Tablica środków trwałych wybranego raportu</returns>
@@ -387,6 +393,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         /// <summary>
         /// Asynchronicznie zwraca tablicę środków trwałych w wybranym pokoju
+        /// Jeżeli wystąpi błąd, zostanie wywołany event z błędem i zostanie zwrócony null
         /// </summary>
         /// <param name="room_id">ID pokoju</param>
         /// <returns>Tablicę środków trwałych w wybranym pokoju</returns>
@@ -447,6 +454,7 @@ namespace Inwentaryzacja.Controllers.Api
 
         /// <summary>
         /// Zwraca token
+        /// Jeżeli wystąpi błąd, zostanie wywołany event z błędem i zostanie zwrócony null
         /// </summary>
         /// <returns>Ciąg znaków tokena</returns>
         public string GetToken()
