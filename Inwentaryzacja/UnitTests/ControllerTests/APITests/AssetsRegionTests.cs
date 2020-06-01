@@ -11,7 +11,7 @@ using Moq;
 namespace UnitTests.ApiTests
 {
     [TestFixture]
-    class ApiControllerTests
+    class AssetsRegionTests
     {
         private APIController apiController;
         [SetUp]
@@ -21,15 +21,9 @@ namespace UnitTests.ApiTests
             await apiController.LoginUser("user1", "111");
         }
 
-        [Test]
-        public async Task GetAssetInfoTest()
-        {
-            AssetInfoEntity assetInfoEntity = await apiController.getAssetInfo(1);
-            Assert.AreEqual(1, assetInfoEntity.room.id);
-        }
-
         [TestCase(1, 1, 'c', "komputer")]
         [TestCase(5, 5, 's', "stół")]
+        [TestCase(83, 3, 'm', "monitor")]
         public async Task GetAssetInfoTest_CheckAssetType(int id, int typeId, char typeLetter, string typeName)
         {
             AssetInfoEntity assetInfo = await apiController.getAssetInfo(id);
@@ -37,7 +31,7 @@ namespace UnitTests.ApiTests
             Assert.AreEqual(assetType, assetInfo.type);
         }
 
-        [TestCase(36)]
+        [TestCase(91)]
         [TestCase(101)]
         public async Task GetAssetInfoTest_NotExist(int id)
         {
@@ -47,34 +41,42 @@ namespace UnitTests.ApiTests
         }
 
         [TestCase(1, 1, "3/6", 1, "b 34")]
-        [TestCase(7, 2, "3/40", 1, "b 34")]
+        [TestCase(19, 3, "3/19", 1, "b 34")]
+        [TestCase(5, 0, null, 0, null)]
         public async Task GetAssetInfoTest_CheckRoom(int id, int roomId, string roomName, int buildingId, string buildingName)
         {
-            //check room for assets: 1) with no privious room
-            //                       2) with previous room
-            //                       3) with room with id=0 (assetId 5,6)
-            //                       4) without room
             AssetInfoEntity assetInfoEntity = await apiController.getAssetInfo(id);
             BuildingEntity buildingEntity = new BuildingEntity { id = buildingId, name = buildingName };
             RoomEntity roomEntity = new RoomEntity { id = roomId, name = roomName, building = buildingEntity };
             Assert.AreEqual(roomEntity, assetInfoEntity.room);
         }
 
-        [TestCase(5)]
-        [TestCase(6)]
-        [TestCase(19)]
-        [TestCase(24)]
-        public async Task GetAssetInfoTest_AssetWithoutRoom(int id)
+        [TestCase(25, 0, null, 0, null)]
+        [TestCase(83, 0, null, 0, null)]
+        public async Task GetAssetInfoTest_NotInAnyReport(int id, int roomId, string roomName, int buildingId, string buildingName)
         {
             AssetInfoEntity assetInfoEntity = await apiController.getAssetInfo(id);
-            Assert.AreEqual(null, assetInfoEntity.room);
+            BuildingEntity buildingEntity = new BuildingEntity { id = buildingId, name = buildingName };
+            RoomEntity roomEntity = new RoomEntity { id = roomId, name = roomName, building = buildingEntity };
+            Assert.AreEqual(roomEntity, assetInfoEntity.room);
         }
-
-        [Test]
-        public async Task CreateAssetTest()
+        //[Test]
+        public async Task CreateAssetTest_CorrectAssetTypeData()
         {
             AssetPrototype assetPrototype = new AssetPrototype(new AssetType(3, "monitor", 'm'));
             Assert.AreEqual(true, await apiController.CreateAsset(assetPrototype));
+        }
+        [Test]
+        public async Task CreateAssetTest_WrongAssetTypeName()
+        {
+            AssetPrototype assetPrototype = new AssetPrototype(new AssetType(3, "TV", 'm'));
+            Assert.AreEqual(false, await apiController.CreateAsset(assetPrototype));
+        }
+        [Test]
+        public async Task CreateAssetTest_WrongAssetTypeId()
+        {
+            AssetPrototype assetPrototype = new AssetPrototype(new AssetType(11, "TV", 't'));
+            Assert.AreEqual(false, await apiController.CreateAsset(assetPrototype));
         }
     }
 }
