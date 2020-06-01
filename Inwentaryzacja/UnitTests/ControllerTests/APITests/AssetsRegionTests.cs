@@ -60,7 +60,7 @@ namespace UnitTests.ApiTests
             RoomEntity roomEntity = new RoomEntity { id = roomId, name = roomName, building = buildingEntity };
             Assert.AreEqual(roomEntity, assetInfoEntity.room);
         }
-        //[Test]
+        [Test]
         public async Task CreateAssetTest_CorrectAssetTypeData()
         {
             AssetPrototype assetPrototype = new AssetPrototype(new AssetType(3, "monitor", 'm'));
