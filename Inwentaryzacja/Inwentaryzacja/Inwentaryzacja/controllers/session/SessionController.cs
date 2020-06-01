@@ -11,15 +11,33 @@ namespace Inwentaryzacja.controllers.session
 {
     class SessionController
     {
+	    /// <summary>
+	    /// Obiekt do interakcji z API
+	    /// </summary>
 		APIController api;
+	    
+	    /// <summary>
+	    /// Nazwa pliku z tokenem
+	    /// </summary>
 		private static string TokenFileName = "Token.txt";
+	    
+	    /// <summary>
+	    /// Ścieżka do pliku z tokenem
+	    /// </summary>
 		private static string TokenPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), TokenFileName);
 
+	    /// <summary>
+	    /// Przypisuje podany obiekt kontrolera API
+	    /// </summary>
+	    /// <param name="api">Obiekt kontrolera API</param>
 		public SessionController(APIController api)
 		{
 			this.api = api;
 		}
 
+	    /// <summary>
+	    /// Zapisuje do pliku token obecnej sesji
+	    /// </summary>
 		public void SaveSessionToken()
         {
 			StreamWriter sw = new StreamWriter(TokenPath,false);
@@ -36,6 +54,9 @@ namespace Inwentaryzacja.controllers.session
 			sw.Close();
 		}
 
+	    /// <summary>
+	    /// Usuwa plik z tokenem i usuwa token z API
+	    /// </summary>
 		public void RemoveSession()
 		{
 			if (File.Exists(TokenPath))
@@ -46,6 +67,11 @@ namespace Inwentaryzacja.controllers.session
 			api.DeleteToken();
 		}
 
+	    /// <summary>
+	    /// Sprawdza czy użytkownik jest zalogowany (czy istnieje zapisany token)
+	    /// Jeżeli istnieje zapisany token, ustawia ten token w API
+	    /// </summary>
+	    /// <returns>Czy użytkownik jest zalogowany</returns>
 		public bool IsLogin()
 		{
 			if (File.Exists(TokenPath))
