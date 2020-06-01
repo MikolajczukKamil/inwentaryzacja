@@ -55,7 +55,7 @@ namespace Inwentaryzacja.controllers.session
 		}
 
 	    /// <summary>
-	    /// Usuwa plik z tokenem
+	    /// Usuwa plik z tokenem i usuwa token z API
 	    /// </summary>
 		public void RemoveSession()
 		{
