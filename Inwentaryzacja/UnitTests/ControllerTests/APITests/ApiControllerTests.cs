@@ -20,6 +20,13 @@ namespace UnitTests.ApiTests
             apiController = new APIController();
         }
 
+        [Test]
+        public async Task GetAssetInfoTest()
+        {
+            AssetInfoEntity assetInfoEntity = await apiController.getAssetInfo(1);
+            Assert.AreEqual(1, assetInfoEntity.room.id);
+        }
+
         [TestCase(1, 1, 'c', "komputer")]
         [TestCase(5, 5, 's', "stół")]
         public async Task GetAssetInfoTest_CheckAssetType(int id, int typeId, char typeLetter, string typeName)
@@ -34,7 +41,8 @@ namespace UnitTests.ApiTests
         public async Task GetAssetInfoTest_NotExist(int id)
         {
             AssetInfoEntity assetInfo = await apiController.getAssetInfo(id);
-            Assert.AreEqual(id, assetInfo.id);
+            Assert.AreEqual(null, assetInfo);
+            //Expected error message
         }
 
         [TestCase(1, 1, "3/6", 1, "b 34")]
@@ -61,16 +69,11 @@ namespace UnitTests.ApiTests
             Assert.AreEqual(null, assetInfoEntity.room);
         }
 
+        [Test]
         public async Task CreateAssetTest()
         {
             AssetPrototype assetPrototype = new AssetPrototype(new AssetType(3, "monitor", 'm'));
             Assert.AreEqual(true, await apiController.CreateAsset(assetPrototype));
-        }
-        [Test]
-        public async Task GetAssetInfoTest()
-        {
-            AssetInfoEntity assetInfoEntity = await apiController.getAssetInfo(1);
-            Assert.AreEqual(1, assetInfoEntity.room.id);
         }
     }
 }
