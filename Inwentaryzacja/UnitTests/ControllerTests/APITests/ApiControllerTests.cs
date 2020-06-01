@@ -15,9 +15,10 @@ namespace UnitTests.ApiTests
     {
         private APIController apiController;
         [SetUp]
-        public void Setup()
+        public async Task Setup()
         {
             apiController = new APIController();
+            await apiController.LoginUser("user1", "111");
         }
 
         [Test]
