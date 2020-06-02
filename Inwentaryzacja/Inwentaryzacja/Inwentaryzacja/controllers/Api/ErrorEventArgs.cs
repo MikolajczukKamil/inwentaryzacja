@@ -49,6 +49,8 @@ namespace Inwentaryzacja.Controllers.Api
                     else
                         MessageForUser = "Błąd autoryzacji, wymagane ponowne logowanie.";
                     break;
+                case 504:
+                    MessageForUser = "Przekroczono limit czasu oczekiwania na odpowiedź serwera, spróbuj ponownie później."; break;
                 default:
                     MessageForUser = "Niezidentyfikowany błąd. Kod błędu: "+code; break;
             }
