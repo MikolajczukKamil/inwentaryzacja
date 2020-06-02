@@ -7,7 +7,8 @@
              xmlns:local="clr-namespace:Inwentaryzacja"
              mc:Ignorable="d"
              BackgroundColor="#8EE3BA"
-             x:Class="Inwentaryzacja.views.view_chooseRoom.AddRoom">
+             x:Class="Inwentaryzacja.views.view_chooseRoom.AddRoom"
+             NavigationPage.HasNavigationBar="false">
 
 
     <ContentPage.Content>
