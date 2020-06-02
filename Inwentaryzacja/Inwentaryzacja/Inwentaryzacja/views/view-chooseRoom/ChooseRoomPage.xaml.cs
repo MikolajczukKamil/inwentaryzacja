@@ -4,6 +4,7 @@ using Inwentaryzacja.Models;
 using Inwentaryzacja.views.view_chooseRoom;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -139,14 +140,26 @@ namespace Inwentaryzacja
 			BuildingPicker.IsEnabled = state;
 			BackBtn.IsEnabled = state;
 			AddBuildingBtn.IsEnabled = state;
-			AddRoomBtn.IsEnabled = state;			
+			AddRoomBtn.IsEnabled = state;
+			LogoutButton.IsEnabled = state;
+
+			if(state==false)
+			{
+				ContinueBtn.IsEnabled = false;
+			}
+			else
+			{
+				RoomPicker_SelectedIndexChanged(this, null);
+			}
 		}
 
 		private async void Continue_Button_Clicked(object o, EventArgs args) 
 		{
-			if(RoomPicker.SelectedIndex < 0)
+			EnableView(false);
+			if (RoomPicker.SelectedIndex < 0)
 			{
 				await DisplayAlert("Pomieszczenie", "Wybierz pomieszczenie", "OK");
+				EnableView(false);
 				return;
 			}
 
@@ -179,6 +192,8 @@ namespace Inwentaryzacja
 			{
 				await DisplayAlert("Błąd", "Błąd niespodzianka, nie znaleziono wybranego pomieszczenia", "OK");
 			}
+
+			EnableView(true);
 		}
 
 		private async void onApiError(object o, ErrorEventArgs error)
@@ -194,17 +209,23 @@ namespace Inwentaryzacja
 
 		private async void Return_button_clicked(object o, EventArgs e)
 		{
+			EnableView(false);
 			await Navigation.PopAsync();
+			EnableView(true);
 		}
 		
 		public async void AddRoom_clicked(object o, EventArgs args)
 		{
+			EnableView(false);
 			await Navigation.PushAsync(new AddRoom());
+			EnableView(true);
 		}
 
 		public async void AddBuildingClicked(object o, EventArgs e)
 		{
+			EnableView(false);
 			await Navigation.PushAsync(new AddBuildingView());
+			EnableView(true);
 		}
 
 		public void RoomPicker_SelectedIndexChanged(object o, EventArgs e)
@@ -221,12 +242,14 @@ namespace Inwentaryzacja
 
 		private async void LogoutButtonClicked(object sender, EventArgs e)
 		{
+			EnableView(false);
 			if (await DisplayAlert("Wylogowywanie", "Czy na pewno chcesz się wylogować?", "Tak", "Nie"))
-      {
+			{
 				var session = new SessionController(new APIController());
 				session.RemoveSession();
 				App.Current.MainPage = new LoginPage();
 			}
+			EnableView(true);
 		}
 	}
 }

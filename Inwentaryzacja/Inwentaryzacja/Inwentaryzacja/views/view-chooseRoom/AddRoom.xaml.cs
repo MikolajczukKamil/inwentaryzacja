@@ -57,11 +57,15 @@ namespace Inwentaryzacja.views.view_chooseRoom
   
         public async void return_ChooseRoom(object o, EventArgs args)
         {
+            EnableView(false);
             await Navigation.PopAsync();
+            EnableView(true);
         }
        
         public async void Check_Room(object o, EventArgs args)
         {
+            EnableView(false);
+
             string number = room_number.Text;
 
             BuildingEntity mybuilding = new BuildingEntity();
@@ -81,12 +85,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
                 }
             }
             
-
-            EnableView(false);
-
             bool isCreated = await api.createRoom(new RoomPropotype(number, mybuilding));
-
-            EnableView(true);
 
             if (isCreated)
             {
@@ -96,6 +95,8 @@ namespace Inwentaryzacja.views.view_chooseRoom
                 await Navigation.PopAsync();
                 await DisplayAlert("Dodawanie pokoju", "Pomyślnie dodano nowy pokój", "OK");
             }
+
+            EnableView(true);
         }
         
         private void EnableView(bool state)
@@ -103,6 +104,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
             IsBusy = !state;
             AddRoomBtn.IsEnabled = state;
             BackBtn.IsEnabled = state;
+            LogoutButton.IsEnabled = state;
         }
       
         private async void onApiError(object o, ErrorEventArgs error)
@@ -117,12 +119,14 @@ namespace Inwentaryzacja.views.view_chooseRoom
 
         private async void LogoutButtonClicked(object sender, EventArgs e)
         {
+            EnableView(false);
             if (await DisplayAlert("Wylogowywanie", "Czy na pewno chcesz się wylogować?", "Tak", "Nie"))
             {
                 var session = new SessionController(new APIController());
                 session.RemoveSession();
                 App.Current.MainPage = new LoginPage();
             }
+            EnableView(true);
         }
     }
 }

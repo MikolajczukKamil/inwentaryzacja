@@ -56,8 +56,8 @@ namespace Inwentaryzacja
 
         private void PageIsBusy(bool state)
         {
-            LoadingScreen.IsVisible = state;
             _login.IsEnabled = !state;
+            LoadingScreen.IsVisible = state;
         }
 
         private void NextPage()

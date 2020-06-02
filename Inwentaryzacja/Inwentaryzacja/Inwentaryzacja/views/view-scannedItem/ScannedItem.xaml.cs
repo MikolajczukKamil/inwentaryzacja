@@ -53,13 +53,15 @@ namespace Inwentaryzacja.views.view_scannedItem
 
         private void EndScanning(object sender, EventArgs e)
         {
-
+            EnableView(false);
+            EnableView(true);
         }
 
         private async void RetPrevPage(object sender, EventArgs e)
         {
-            RetButton.IsEnabled = false;
+            EnableView(false);
             await Navigation.PopModalAsync();
+            EnableView(true);
         }
 
         private void _listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -67,6 +69,12 @@ namespace Inwentaryzacja.views.view_scannedItem
             string asset = (string)e.SelectedItem;
 
             DisplayAlert("Przedmiot", asset , "OK");
+        }
+
+        private void EnableView(bool state)
+        {
+            RetButton.IsEnabled = state;
+            EndButton.IsEnabled = state;
         }
     }
 }
