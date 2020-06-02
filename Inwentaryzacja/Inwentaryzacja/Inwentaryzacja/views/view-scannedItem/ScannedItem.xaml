@@ -6,7 +6,8 @@
              mc:Ignorable="d"
              xmlns:local="clr-namespace:Inwentaryzacja"
              xmlns:customControls="clr-namespace:Inwentaryzacja"
-             x:Class="Inwentaryzacja.views.view_scannedItem.ScannedItem">
+             x:Class="Inwentaryzacja.views.view_scannedItem.ScannedItem"
+             NavigationPage.HasNavigationBar="false">
 
     <ContentPage.Resources>
 

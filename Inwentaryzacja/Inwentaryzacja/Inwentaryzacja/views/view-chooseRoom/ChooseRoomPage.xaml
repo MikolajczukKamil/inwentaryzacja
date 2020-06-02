@@ -4,7 +4,8 @@
              xmlns:inwentaryzacja="clr-namespace:Inwentaryzacja;assembly=Inwentaryzacja" 
              xmlns:local="clr-namespace:Inwentaryzacja"
              x:Class="Inwentaryzacja.ChooseRoomPage"
-             BackgroundColor="#8EE3BA">
+             BackgroundColor="#8EE3BA"
+             NavigationPage.HasNavigationBar="false">
     <ContentPage.Content>
         <StackLayout>
 

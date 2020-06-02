@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:Inwentaryzacja"
              mc:Ignorable="d"
              x:Class="Inwentaryzacja.WelcomeViewPage"
+             NavigationPage.HasNavigationBar="false"
              BackgroundColor="#8EE3BA">
 
              <ContentPage.Content>
