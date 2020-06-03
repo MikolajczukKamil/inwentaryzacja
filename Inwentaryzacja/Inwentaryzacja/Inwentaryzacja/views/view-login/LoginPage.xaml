@@ -5,9 +5,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:Inwentaryzacja"
              mc:Ignorable="d"
-             x:Class="Inwentaryzacja.LoginPage">
+             x:Class="Inwentaryzacja.LoginPage"
+             NavigationPage.HasNavigationBar="false">
 
-    <NavigationPage.HasBackButton>False</NavigationPage.HasBackButton>
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>

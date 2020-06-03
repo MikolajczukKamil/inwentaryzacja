@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:Inwentaryzacja"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:Inwentaryzacja"
              mc:Ignorable="d"
-                 x:Class="Inwentaryzacja.views.view_allReports.ReportDetailsView"
-                 BackgroundColor="#8EE3BA">
+             x:Class="Inwentaryzacja.views.view_allReports.ReportDetailsView"
+             BackgroundColor="#8EE3BA"
+             NavigationPage.HasNavigationBar="false">
 
     <ScrollView Orientation="Both">
         

@@ -7,7 +7,8 @@
              xmlns:local="clr-namespace:Inwentaryzacja"
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              xmlns:customControls="clr-namespace:Inwentaryzacja"
-             x:Class="Inwentaryzacja.RaportPage">
+             x:Class="Inwentaryzacja.RaportPage"
+             NavigationPage.HasNavigationBar="false">
 
 
     

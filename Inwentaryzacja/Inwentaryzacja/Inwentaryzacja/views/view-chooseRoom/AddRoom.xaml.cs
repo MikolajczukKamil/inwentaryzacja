@@ -84,11 +84,11 @@ namespace Inwentaryzacja.views.view_chooseRoom
 
             EnableView(false);
 
-            bool isCreated = await api.createRoom(new RoomPropotype(number, mybuilding));
+            int isCreated = await api.createRoom(new RoomPropotype(number, mybuilding));
 
             EnableView(true);
 
-            if (isCreated)
+            if (isCreated>0)
             {
                 var stack = Navigation.NavigationStack;
                 var previousPage = (ChooseRoomPage)stack[stack.Count - 2];

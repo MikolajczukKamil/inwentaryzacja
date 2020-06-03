@@ -5,7 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:Inwentaryzacja"
              mc:Ignorable="d"
              xmlns:customControls="clr-namespace:Inwentaryzacja"
-             x:Class="Inwentaryzacja.AllReportsPage">
+             x:Class="Inwentaryzacja.AllReportsPage"
+             NavigationPage.HasNavigationBar="false">
 
 <ContentPage.Resources>
 

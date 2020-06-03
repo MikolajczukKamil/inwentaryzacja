@@ -6,7 +6,8 @@
              mc:Ignorable="d"
              xmlns:local="clr-namespace:Inwentaryzacja"
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
-             x:Class="Inwentaryzacja.ScanItemPage">
+             x:Class="Inwentaryzacja.ScanItemPage"
+             NavigationPage.HasNavigationBar="false">
 
     <NavigationPage.HasBackButton>False</NavigationPage.HasBackButton>
     

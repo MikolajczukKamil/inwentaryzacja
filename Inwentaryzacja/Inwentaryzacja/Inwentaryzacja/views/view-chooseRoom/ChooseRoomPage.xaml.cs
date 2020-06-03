@@ -57,8 +57,11 @@ namespace Inwentaryzacja
 
 		private void BuildingPicker_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			string choosenBuildingName = BuildingPicker.Items[BuildingPicker.SelectedIndex];
-			GetBuildingRooms(choosenBuildingName);
+			if(BuildingPicker.SelectedIndex >= 0 && BuildingPicker.SelectedIndex < BuildingPicker.Items.Count)
+			{
+				string choosenBuildingName = BuildingPicker.Items[BuildingPicker.SelectedIndex];
+				GetBuildingRooms(choosenBuildingName);
+			}
 		}
 
 		private void GetBuildingRooms(string name)
@@ -108,6 +111,7 @@ namespace Inwentaryzacja
 			if (buildings == null) return;
 
 			BuildingPicker.Items.Clear();
+
 			foreach (BuildingEntity item in buildings)
 			{
 				BuildingPicker.Items.Add(item.name);
