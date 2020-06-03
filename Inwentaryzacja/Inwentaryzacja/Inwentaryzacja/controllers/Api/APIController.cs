@@ -390,7 +390,11 @@ namespace Inwentaryzacja.Controllers.Api
             return ConvertJSONToObject<AssetEntity[]>(response);
         }
 
-
+        /// <summary>
+        ///  Asynchronicznie zwraca tablicę zawierającą informacje o akualych skanowaniach
+        /// Jeżeli wystąpi błąd, zostanie wywołany event z błędem i zostanie zwrócony null
+        /// </summary>
+        /// <returns>Tablica z informacjami o aktualnych skanowaniach</returns>
         public async Task<ScanEntity[]> getScans()
         {
             var uri = $"/getScans";
@@ -399,6 +403,11 @@ namespace Inwentaryzacja.Controllers.Api
             return ConvertJSONToObject<ScanEntity[]>(response);
         }
 
+        /// <summary>
+        /// Asynchronicznie tworzy i dodaje do bazy informacje o skanowaniu
+        /// </summary>
+        /// <param name="scan">Opis skanu</param>
+        /// <returns>Identyfikator liczbowy nowo dodanego skanu lub -1 jeśli nie udało się dodać pokoju do bazy danych</returns>
         public async Task<int> addScan(ScanPrototype scan)
         {
             var uri = "/addScan";
@@ -408,6 +417,11 @@ namespace Inwentaryzacja.Controllers.Api
             return await SendRequest(uri, content);
         }
 
+        /// <summary>
+        /// Asynchronicznie usuwa informacje o skanowaniu z bazy danych
+        /// </summary>
+        /// <param name="scan_id">Identyfikator liczbowy skanowania</param>
+        /// <returns>Informację czy udało się usunąć skanowanie z bazy danych</returns>
         public async Task<bool> deleteScan(int scan_id)
         {
             var uri = $"/deleteScan/{scan_id}";
@@ -419,13 +433,22 @@ namespace Inwentaryzacja.Controllers.Api
             return false;
         }
 
-        public async Task<int> updateScan(ScanPositionPropotype scan_update)
+        /// <summary>
+        /// Asynchronicznie aktualizuje informacje o skanowaniu w bazie danych
+        /// </summary>
+        /// <param name="scan_update">Opis skanowania</param>
+        /// <returns>Informację czy udało się zaktualizować informacje o skanowaniu w bazie danych</returns>
+        public async Task<bool> updateScan(ScanPositionPropotype scan_update)
         {
             var uri = "/updateScan";
             string data = ConvertDataToJSON(scan_update);
             var content = PreperDataToSend(data);
+            var res = await SendRequest(uri, content);
 
-            return await SendRequest(uri, content);
+            if (res != -1)
+                return true;
+
+            return false;
         }
 
         #endregion Scanning

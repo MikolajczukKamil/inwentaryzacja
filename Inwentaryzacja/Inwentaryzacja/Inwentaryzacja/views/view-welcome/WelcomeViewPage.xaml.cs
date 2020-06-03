@@ -23,13 +23,7 @@ namespace Inwentaryzacja
 
         private async void scanButtonClicked(object sender, EventArgs e)
         {
-            //await Navigation.PushAsync(new ChooseRoomPage());
-            var api = new APIController();
-            var dsa = new PositionPropotype[2];
-            dsa[0] = new PositionPropotype(1, 0);
-            dsa[1] = new PositionPropotype(2, 0);
-            var asd = await api.updateScan(new ScanPositionPropotype(2, dsa));
-
+            await Navigation.PushAsync(new ChooseRoomPage());
         }
         
         private async void _AllReportsButton_Clicked(object sender, EventArgs e)
