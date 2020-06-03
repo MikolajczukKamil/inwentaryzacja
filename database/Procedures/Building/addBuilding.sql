@@ -10,7 +10,7 @@ BEGIN
 
     IF NOT Name_unique THEN
         SELECT NULL                                                      AS id,
-               CONCAT('Building name=', Building_name, ' is not unique') AS message;
+               CONCAT('Budynek nazwa=', Building_name, ' już istnieje') AS message;
     ELSE
         INSERT INTO buildings (name)
         VALUES (Building_name);
