@@ -16,93 +16,212 @@ namespace Inwentaryzacja.views.view_scannedItem
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ScannedItem : ContentPage
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
         APIController api;
         RoomEntity ScanningRoom;
         List<AllScaning> allScaning;
         public ScannedItem(List<AllScaning> scannedItems, RoomEntity scanningRoom)
         {
             InitializeComponent();
-            ReportList.ItemsSource = scannedItems;
             allScaning = scannedItems;
             api = new APIController();
             ScanningRoom = scanningRoom;
             BindingContext = this;
+            ScannedInRoomTopic.Text = "Zeskanowane z sali " + ScanningRoom.name;
+            UnscannedInRoomTopic.Text = "Niezeskanowane z sali " + ScanningRoom.name;
+            ShowInfo();
         }
 
         public class AllScaning
         {
             public ReportPositionPrototype reportPositionPrototype;
 
-            private AssetEntity AssetEntity;
+            public AssetEntity AssetEntity;
             private RoomEntity ScanningRoom;
-            public bool IsScanned;
-            private bool WrongRoom = true;
-            private int? AssetRoom = null;
+            public bool Approved = false;
+            public int? AssetRoom = null;
 
-            public AllScaning(AssetEntity assetEntity, RoomEntity assetRoom, RoomEntity scanningRoom, bool isScanned)
+            public AllScaning(AssetEntity assetEntity, RoomEntity assetRoom, RoomEntity scanningRoom)
             {
                 AssetType assetType = new AssetType(assetEntity.type.id, assetEntity.type.name, assetEntity.type.letter);
                 Asset asset = new Asset(assetEntity.id, assetType);
                 Room room = null;
-                ButtonsViews = true;
                 if (assetRoom != null)
                 {
                     Building building = new Building(assetRoom.building.id, assetRoom.building.name);
                     room = new Room(assetRoom.id, assetRoom.name, building);
                     AssetRoom = assetRoom.id;
-                    if (assetRoom.id == scanningRoom.id)
-                    {
-                        ButtonsViews = false;
-                        WrongRoom = false;
-                    }
                 }
-                reportPositionPrototype = new ReportPositionPrototype(asset, room, isScanned);
+                reportPositionPrototype = new ReportPositionPrototype(asset, room, false);
                 AssetEntity = assetEntity;
-                IsScanned = isScanned;
                 ScannedId = assetEntity.id;
                 ScanningRoom = scanningRoom;
             }
-            public void Scanned()
+            public void ItemMoved()
             {
-                IsScanned = true;
+                Approved = true;
                 reportPositionPrototype.present = true;
-                WrongRoom = false;
                 AssetRoom = ScanningRoom.id;
             }
 
             public string ScaningText { get { return string.Format("{0} {1}", AssetEntity.type.name, AssetEntity.type.id); } }
-            public string RoomText { get { return string.Format("Id: {0}{1}", AssetEntity.id, AssetRoom != null ? "\nSala: " + AssetRoom : ", Nie należy do żadnej sali"); } } 
-            public string PictureUrl { get { return WrongRoom ? "No.png" : "Yes.png"; } }
-            public bool ScannedText { get { return (IsScanned && !ButtonsViews) ? true : false; } }
-            public bool ButtonsViews { get; set; }
             public int ScannedId { get; set; }
+            public string RoomId { get { if (AssetRoom != null) return AssetRoom.ToString(); return "brak"; } }
 
+        }
+
+        private void ShowInfo()
+        {
+            int[] items = { 0, 0, 0, 0, 0, 0 };//c k m p s t
+            string[] types = { "Komputer:", "Krzesło:", "Monitor:", "Projektor:", "Stół:", "Tablica:" };
+            foreach (AllScaning item in allScaning)
+            {
+                if (item.reportPositionPrototype.present)
+                {
+                    items = CheckAmount(items, item.AssetEntity.type.letter);
+                }
+            }
+            ScannedInRoomLabel.Text = "";
+            ScannedInRoomAmount.Text = "";
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (items[i] > 0)
+                {
+                    ScannedInRoomLabel.Text += types[i] + "\n";
+                    ScannedInRoomAmount.Text += items[i];
+                    if (items[i] == 1)
+                        ScannedInRoomAmount.Text += " sztuka\n";
+                    else if (items[i] <= 4)
+                        ScannedInRoomAmount.Text += " sztuki\n";
+                    else
+                        ScannedInRoomAmount.Text += " sztuk\n";
+                }
+            }
+            if (ScannedInRoomLabel.Text == "")
+                ScannedInRoomLabel.Text = "Brak";
+            else
+            {
+                ScannedInRoomLabel.Text = ScannedInRoomLabel.Text.Substring(0, ScannedInRoomLabel.Text.Length - 1);
+                ScannedInRoomAmount.Text = ScannedInRoomAmount.Text.Substring(0, ScannedInRoomAmount.Text.Length - 1);
+            }
+
+
+            items = new int[]{ 0, 0, 0, 0, 0, 0 };//c k m p s t
+            foreach (AllScaning item in allScaning)
+            {
+                if (!item.reportPositionPrototype.present && item.reportPositionPrototype.previous == ScanningRoom.id)
+                {
+                    items = CheckAmount(items, item.AssetEntity.type.letter);
+                }
+            }
+            UnscannedInRoomLabel.Text = "";
+            UnscannedInRoomAmount.Text = "";
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (items[i] > 0)
+                {
+                    UnscannedInRoomLabel.Text += types[i] + "\n";
+                    UnscannedInRoomAmount.Text += items[i];
+                    if (items[i] == 1) 
+                        UnscannedInRoomAmount.Text += " sztuka\n";
+                    else if (items[i] <= 4) 
+                        UnscannedInRoomAmount.Text += " sztuki\n";
+                    else
+                        UnscannedInRoomAmount.Text += " sztuk\n";
+
+                }
+            }
+            if (UnscannedInRoomLabel.Text == "")
+                UnscannedInRoomLabel.Text = "Brak";
+            else
+            {
+                UnscannedInRoomLabel.Text = UnscannedInRoomLabel.Text.Substring(0, UnscannedInRoomLabel.Text.Length - 1);
+                UnscannedInRoomAmount.Text = UnscannedInRoomAmount.Text.Substring(0, UnscannedInRoomAmount.Text.Length - 1);
+            }
+
+            List<AllScaning> scannedItems = new List<AllScaning>();
+            foreach (AllScaning item in allScaning)
+            {
+                if (!item.Approved && item.reportPositionPrototype.previous != ScanningRoom.id)
+                {
+                    scannedItems.Add(item);
+                }
+            }
+            ReportList.ItemsSource = scannedItems;
+            if (scannedItems.Count == 0)
+                ButtonMoveAll.IsVisible = false;
+            else
+                ButtonMoveAll.IsVisible = true;
+        }
+        
+        async private void ScannedInRoomDetails(object sender, EventArgs e)
+        {
+            string text = "";
+            foreach (AllScaning item in allScaning)
+            {
+                if (item.reportPositionPrototype.present)
+                {
+                    text += "(id: " + item.AssetEntity.id + ") " + item.AssetEntity.type.name + " numer: " + item.AssetEntity.type.id + "\n";
+                }
+            }
+            if (text == "")
+                text = "brak";
+            await DisplayAlert("Zeskanowane z sali " + ScanningRoom.name, text, "Ok");
+        }
+        
+        async private void UnscannedInRoomDetails(object sender, EventArgs e)
+        {
+            string text = "";
+            foreach (AllScaning item in allScaning)
+            {
+                if (!item.reportPositionPrototype.present && item.reportPositionPrototype.previous == ScanningRoom.id)
+                {
+                    text += "(id: " + item.AssetEntity.id + ") " + item.AssetEntity.type.name + " numer: " + item.AssetEntity.type.id + "\n";
+                }
+            }
+            if (text == "")
+                text = "brak";
+            await DisplayAlert("Niezeskanowane z sali " + ScanningRoom.name, text, "Ok");
+        }
+
+        private int[] CheckAmount(int[] items, char letter)
+        {
+            switch (letter)
+            {
+                case 'c': items[0]++; break;
+                case 'k': items[1]++; break;
+                case 'm': items[2]++; break;
+                case 'p': items[3]++; break;
+                case 's': items[4]++; break;
+                case 't': items[5]++; break;
+            }
+            return items;
         }
 
         async private void EndScanning(object sender, EventArgs e)
         {
-            bool message = false;
-            foreach (AllScaning item in ReportList.ItemsSource)
+            bool message1 = false;
+            bool message2 = false;
+            foreach (AllScaning item in allScaning)
             {
-                if (!item.IsScanned || item.ButtonsViews) 
+                if (!item.Approved)
                 {
-                    message = true;
-                    break;
+                    if(item.AssetRoom == ScanningRoom.id)
+                        message2 = true;
+                    else
+                        message1 = true;
                 }
             }
-            if (message == true)
+            if (message1 == true)
             {
-                bool response = await DisplayAlert("Uwaga", "Istnieją niezatwierdzone lub niezeskanowane przedmioty", "Kontynuuj", "Wróć");
-                if (response)
-                    GenerateRaport();
+                await DisplayAlert("Uwaga", "Istnieją niezatwierdzone przedmioty", "Wróć");
                 return;
+            }
+            else if (message2 == true)
+            {
+                bool response = await DisplayAlert("Uwaga", "Jeśli kontynuujesz, wszystkie niezeskanowane przedmioty z sali zostaną z niej usunięte!", "Kontunuuj", "Anuluj");
+                if(response)
+                    GenerateRaport();
+                else return;
             }
             GenerateRaport();
         }
@@ -119,9 +238,8 @@ namespace Inwentaryzacja.views.view_scannedItem
                 {
                     if (item.ScannedId == id)
                     {
-                        item.ButtonsViews = false;
-                        item.Scanned();
-                        await DisplayAlert("Uwaga", "Przycisk zadziałał, ale widok się nie odświeżył", "Ok");
+                        item.ItemMoved();
+                        ShowInfo();
                         break;
                     }
                 }
@@ -140,8 +258,8 @@ namespace Inwentaryzacja.views.view_scannedItem
                 {
                     if (item.ScannedId == id)
                     {
-                        item.ButtonsViews = false;
-                        await DisplayAlert("Uwaga", "Przycisk zadziałał, ale widok się nie odświeżył", "Ok");
+                        item.Approved = true;
+                        ShowInfo();
                         break;
                     }
                 }
@@ -156,55 +274,60 @@ namespace Inwentaryzacja.views.view_scannedItem
             {
                 foreach (AllScaning item in allScaning)
                 {
-                    if (item.ButtonsViews)
+                    if (!item.Approved && item.AssetRoom != ScanningRoom.id)
                     {
-                        item.ButtonsViews = false;
-                        item.Scanned();
-                        break;
+                        item.ItemMoved();
                     }
                 }
-                await DisplayAlert("Uwaga", "Przycisk zadziałał, ale widok się nie odświeżył", "Ok");
+                ShowInfo();
+            }
+        }
+
+        async private void MoveAllInRoom(object sender, EventArgs e)
+        {
+            bool response = await DisplayAlert("Uwaga", "Czy na pewno chcesz przenieść wszystkie przedmioty?", "Tak", "Nie");
+
+            if (response)
+            {
+                foreach (AllScaning item in allScaning)
+                {
+                    if (!item.Approved && item.AssetRoom == ScanningRoom.id)
+                    {
+                        item.ItemMoved();
+                    }
+                }
+                ShowInfo();
             }
         }
 
         private async void GenerateRaport()
         {
-            List<AllScaning> scanningCopy = new List<AllScaning>();
-            foreach (AllScaning item in allScaning)
+            EnableView(false);
+            ReportPositionPrototype[] reportPositionPrototype = new ReportPositionPrototype[allScaning.Count];
+            for (int i = 0; i < allScaning.Count; i++) 
             {
-                if(item.IsScanned)
-                {
-                    scanningCopy.Add(item);
-                }
-            }
-
-            ReportPositionPrototype[] reportPositionPrototype = new ReportPositionPrototype[scanningCopy.Count];
-            for (int i = 0; i < scanningCopy.Count; i++) 
-            {
-                reportPositionPrototype[i] = scanningCopy[i].reportPositionPrototype;
+                reportPositionPrototype[i] = allScaning[i].reportPositionPrototype;
             }
             Room roomEntity = new Room(ScanningRoom.id, ScanningRoom.name, new Building(ScanningRoom.building.id, ScanningRoom.building.name));
             
-            ReportPrototype reportPrototype = new ReportPrototype("Raport sala "+ScanningRoom.name, roomEntity, reportPositionPrototype);
-            EnableView(false);
+            ReportPrototype reportPrototype = new ReportPrototype("Raport " + ScanningRoom.building.name, roomEntity, reportPositionPrototype);
             bool end = await api.createReport(reportPrototype);
             EnableView(true);
             if (end)
             {
-                App.Current.MainPage = new NavigationPage(new AllReportsPage());
+                App.Current.MainPage = new NavigationPage(new WelcomeViewPage());
             }
             else
             {
-                await DisplayAlert("Błąd", "Nie udało się utworzyć raportu :(", "Ok");
+                await DisplayAlert("Błąd", "Nie udało się utworzyć raportu", "Ok");
             }
         }
 
         private void EnableView(bool state)
         {
             LoadingScreen.IsVisible = !state;
-            Button1.IsEnabled = state;
-            Button2.IsEnabled = state;
-            Button3.IsEnabled = state;
+            ButtonPrevPage.IsEnabled = state;
+            ButtonConfirm.IsEnabled = state;
         }
 
         private async void RetPrevPage(object sender, EventArgs e)

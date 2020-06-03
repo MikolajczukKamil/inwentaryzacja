@@ -56,7 +56,7 @@ namespace Inwentaryzacja
             AssetEntity[] assetEntity = await api.getAssetsInRoom(Room.id);
             foreach (var item in assetEntity)
             {
-                AllItems.Add(new AllScaning(item, Room, Room, false));
+                AllItems.Add(new AllScaning(item, Room, Room));
             }
         }
 
@@ -138,49 +138,127 @@ namespace Inwentaryzacja
                 if (!ListContainItem(result.Text))
                 {
                     string[] positions;
-                    AssetInfoEntity assetInfoEntity;
+                    int AssetId; 
+                    AssetInfoEntity assetInfoEntity; 
                     try
                     {
                         positions = result.Text.Split('-');
-                        assetInfoEntity = api.getAssetInfo(Convert.ToInt32(positions[1])).Result;
+                        AssetId = Convert.ToInt32(positions[1]);
                     }
                     catch (Exception)
                     {
                         Device.BeginInvokeOnMainThread(async () =>
                         {
-                            await ShowPopup("Zły format kodu"); ;
+                            await ShowPopup("Zły format kodu");
                         });
                         return;
                     }
-                    try
+                    assetInfoEntity = api.getAssetInfo(AssetId).Result;
+                    if(assetInfoEntity != null)
                     {
-                        if (assetInfoEntity.room.id == Room.id)
+                        try
                         {
-                            AllItems.Find(x => x.ScannedId == assetInfoEntity.id).Scanned();
+                            if (assetInfoEntity.room != null && assetInfoEntity.room.id == Room.id)
+                            {
+                                AllItems.Find(x => x.ScannedId == assetInfoEntity.id).ItemMoved();
+                                Device.BeginInvokeOnMainThread(async () =>
+                                {
+                                    await ShowPopup(); ;
+                                });
+                            }
+                            else
+                            {
+                                AllItems.Add(new AllScaning(assetInfoEntity, assetInfoEntity.room, Room));
+                                Device.BeginInvokeOnMainThread(async () =>
+                                {
+                                    await ShowPopup("Zeskanowano przedmiot z innej sali");
+                                });
+                            }
                         }
-                        else
+                        catch (Exception)
                         {
-                            AllItems.Add(new AllScaning(assetInfoEntity, assetInfoEntity.room, Room, true));
+                            Device.BeginInvokeOnMainThread(async () =>
+                            {
+                                await ShowPopup("Wystąpił błąd");
+                            });
+                            return;
                         }
                     }
-                    catch (Exception)
+                    else
                     {
                         Device.BeginInvokeOnMainThread(async () =>
                         {
-                            await ShowPopup("Nie udało się dodać przedmiotu"); ;
+                            await ShowPopup("Nieznany obiekt");
+                            //TU JEST DODAWANIE NOWEGO PRZEDMIOTU DO BAZY DANYCH, KTÓRE NIE MOŻE BYĆ ZREALIZOWANE
+                            /*
+                            bool response = await DisplayAlert("Nieznany przedmiot", "Wyktyro nowy obiekt. Czy chcesz dodać go do bazy danych?", "Tak", "Nie");
+                            if (response)
+                            {
+                                try
+                                {
+                                    AssetType at = null;
+                                    switch (positions[0])
+                                    {
+                                        case "c":
+                                            at = new AssetType(1, "komputer", 'c');
+                                            break;
+                                        case "k":
+                                            at = new AssetType(2, "krzesło", 'k');
+                                            break;
+                                        case "m":
+                                            at = new AssetType(3, "monitor", 'm');
+                                            break;
+                                        case "p":
+                                            at = new AssetType(4, "projektor", 'p');
+                                            break;
+                                        case "s":
+                                            at = new AssetType(5, "stół", 's');
+                                            break;
+                                        case "t":
+                                            at = new AssetType(6, "tablica", 't');
+                                            break;
+                                        default:
+                                            throw new Exception();
+                                    }
+                                    prev = result;
+                                    AssetPrototype ap = new AssetPrototype(at);
+                                    bool check = await api.CreateAsset(ap);
+                                    if (check)
+                                    {
+                                        assetInfoEntity = api.getAssetInfo(AssetId).Result;
+                                        AllItems.Add(new AllScaning(assetInfoEntity, null, Room, true));
+                                        Device.BeginInvokeOnMainThread(async () =>
+                                        {
+                                            await ShowPopup("Dodano nowy przedmiot");
+                                        });
+                                        scannedItem.Add(result.Text);
+                                        _infoLabel.Text = "Liczba zeskanowanych przedmiotów: " + scannedItem.Count;
+                                    }
+                                    else
+                                        throw new Exception();
+                                }
+                                catch (Exception)
+                                {
+                                    prev = null;
+                                    Device.BeginInvokeOnMainThread(async () =>
+                                    {
+                                        await ShowPopup("Nie udało się dodać");
+                                    });
+                                }
+                            }*/
                         });
                         return;
                     }
+
+                    prev = result;
+                    scannedItem.Add(result.Text);
                     Device.BeginInvokeOnMainThread(async () =>
                     {
-                        prev = result;
                         _infoLabel.Text = "Liczba zeskanowanych przedmiotów: " + scannedItem.Count;
                         Vibration.Vibrate(TimeSpan.FromMilliseconds(100));
-                        await ShowPopup();
 
                         //await DisplayAlert("Wynik skanowania", result.Text, "OK");
                     });
-                    scannedItem.Add(result.Text);
                 }
                 else
                 {
