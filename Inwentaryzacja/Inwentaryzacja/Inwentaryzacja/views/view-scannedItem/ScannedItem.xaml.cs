@@ -311,9 +311,9 @@ namespace Inwentaryzacja.views.view_scannedItem
             Room roomEntity = new Room(ScanningRoom.id, ScanningRoom.name, new Building(ScanningRoom.building.id, ScanningRoom.building.name));
             
             ReportPrototype reportPrototype = new ReportPrototype("Raport " + ScanningRoom.building.name, roomEntity, reportPositionPrototype);
-            bool end = await api.createReport(reportPrototype);
+            int end = await api.createReport(reportPrototype);
             EnableView(true);
-            if (end)
+            if (end != -1)
             {
                 App.Current.MainPage = new NavigationPage(new WelcomeViewPage());
             }
