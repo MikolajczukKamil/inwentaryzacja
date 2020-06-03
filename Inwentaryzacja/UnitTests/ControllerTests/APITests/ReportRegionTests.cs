@@ -34,9 +34,9 @@ namespace UnitTests.ControllerTests.APITests
         }
         //GetReportHeader Tests
         [Test]
-        [TestCase(1, 1, "Raport 1", 1, 1, "2020-05-23 14:14:13", "user1", "3/6", "b 34", 1)]
-        [TestCase(4, 4, "Raport 4", 3, 1, "2020-05-26 14:14:13", "user1", "3/19", "b 34", 1)]
-        [TestCase(6, 6, "Raport 6", 4, 1, "2020-05-28 14:14:13", "user1", "1/2", "b 4", 2)]
+        [TestCase(1, 1, "Raport 1", 1, 1, "2020-05-24 13:34:40", "user1", "3/6", "b 34", 1)]
+        [TestCase(4, 4, "Raport 4", 3, 1, "2020-05-27 13:34:40", "user1", "3/19", "b 34", 1)]
+        [TestCase(6, 6, "Raport 6", 4, 1, "2020-05-29 13:34:40", "user1", "1/2", "b 4", 2)]
         public async Task GetReportHeader_CorrectID(int id, int staticId, string staticName, int staticRoomId, int staticOwnerId, string staticDate, string staticLogin, string staticRoomName, string staticBuildingName, int staticBuildingId)
         {
             ReportHeaderEntity reportHeaderEntity = await apiController.getReportHeader(id);
@@ -83,36 +83,36 @@ namespace UnitTests.ControllerTests.APITests
         }
         //GetReportHeader Tests
         [Test]
-        [TestCase(3, new int[] { 1, 7, 2, 8, 3, 4, 5, 6 }, new int[] { 1, 1, 2, 2, 3, 4, 5, 6 }, new string[] { "komputer", "komputer" , "krzesło", "krzesło","monitor","projektor","stół","tablica" }, new char[] {'c', 'c', 'k', 'k', 'm', 'p', 's', 't' }, new int[] { 1, 2, 1, 2, 1, 1, 1, 1 }, new int[] { 1, 1, 1, 1, 1, 1, 0, 0 }, new string[] { "3/6", "3/40", "3/6", "3/40", "3/6", "3/6", "3/6", "3/40" }, new int[] { 1, 1, 1, 1, 1, 1, 1, 1 }, new string[] { "b 34", "b 34", "b 34", "b 34", "b 34", "b 34", "b 34", "b 34" })]
+        [TestCase(3, new int[] { 1, 7, 2, 8, 3, 4, 5, 6 }, new int[] { 1, 1, 2, 2, 3, 4, 5, 6 }, new string[] { "komputer", "komputer" , "krzesło", "krzesło","monitor","projektor","stół","tablica" }, new char[] {'c', 'c', 'k', 'k', 'm', 'p', 's', 't' }, new int[] { 1, 2, 1, 2, 1, 1, 1, 1 }, new int[] { 1, 1, 1, 1, 1, 1, 0, 0 }, new string[] { "3/6", "3/40", "3/6", "3/40", "3/6", "3/6", "3/6", "3/6" }, new int[] { 1, 1, 1, 1, 1, 1, 1, 1 }, new string[] { "b 34", "b 34", "b 34", "b 34", "b 34", "b 34", "b 34", "b 34" })]
         public async Task GetReportPositions_CorrectIdRoomWithoutNulls(int ReportId, int[] assetId, int[] assetTypeId, string[] assetName, char[] assetLetter, int[] prevRoom, int[] presentRoom, string[] roomName, int[] buildingId, string[] buildingName)
         {
             ReportPositionEntity[] reportPositionEntities = await apiController.getReportPositions(ReportId);
             for (int i = 0; i < assetId.Length; i++)
             {
                 ReportPositionEntity tempReportPositionEntity = new ReportPositionEntity();
-                tempReportPositionEntity.present = Convert.ToBoolean(presentRoom[1]);
+                tempReportPositionEntity.present = Convert.ToBoolean(presentRoom[i]);
                 AssetEntity tempAssetEntity = new AssetEntity();
-                tempAssetEntity.id = assetId[1];
+                tempAssetEntity.id = assetId[i];
                 AssetTypeEntity assetType = new AssetTypeEntity();
-                assetType.id = assetTypeId[1];
-                assetType.name = assetName[1];
-                assetType.letter = assetLetter[1];
+                assetType.id = assetTypeId[i];
+                assetType.name = assetName[i];
+                assetType.letter = assetLetter[i];
                 tempAssetEntity.type = assetType;
                 tempReportPositionEntity.asset = tempAssetEntity;
                 RoomEntity tempRoomEntity = new RoomEntity();
-                tempRoomEntity.id = prevRoom[1];
-                tempRoomEntity.name = roomName[1];
+                tempRoomEntity.id = prevRoom[i];
+                tempRoomEntity.name = roomName[i];
 
                 BuildingEntity tempBuildingEntity = new BuildingEntity();
-                tempBuildingEntity.id = buildingId[1];
-                tempBuildingEntity.name = buildingName[1];
+                tempBuildingEntity.id = buildingId[i];
+                tempBuildingEntity.name = buildingName[i];
                 tempRoomEntity.building = tempBuildingEntity;
                 tempReportPositionEntity.previous_room = tempRoomEntity;
 
-                Assert.AreEqual(tempReportPositionEntity, reportPositionEntities[1]);
-                //Assert.AreEqual(reportPositionEntities[0], tempReportPositionEntity);
+                Assert.AreEqual(tempReportPositionEntity, reportPositionEntities[i]);
             }
         }
+
         [Test]
         [TestCase(-1)]
         [TestCase('1')]
@@ -134,7 +134,7 @@ namespace UnitTests.ControllerTests.APITests
         }
         //createReport tests
         [Test]
-        [TestCase("Report testowy",1,"3/6",1,"b 34", 1,1,"komputer",'k', 4, "1/2", 2, "b 4", true)]
+        [TestCase("Report testowy",1,"3/6",1,"b 34", 1,1,"komputer",'c', 4, "1/2", 2, "b 4", true)]
         public async Task createReport_CorrectData_OneAsset(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int assetId, int assetTypeId, string assetTypeName, char assetLetter, int PreviousRoomId, string PreviousRoomName, int PreviousBuildingId, string PreviousBuildingName, bool present)
         {
             Room room = new Room(CurrentRoomId, CurrentRoomName, new Building(CurrentBuildingId, CurrentBuildingName));
@@ -144,7 +144,7 @@ namespace UnitTests.ControllerTests.APITests
         }
 
         [Test]
-        [TestCase("Report testowy - CorrectData TwoAssets", 1, "3/6", 1, "b 34", new int[] { 1,3 }, new int[] { 1,3 }, new string[] { "komputer", "monitor" }, new char[] { 'k','m' },new int[] {1,4},new string[] {"3/6","1/2"},new int[] {1, 2 },
+        [TestCase("Report testowy - CorrectData TwoAssets", 1, "3/6", 1, "b 34", new int[] { 1,3 }, new int[] { 1,3 }, new string[] { "komputer", "monitor" }, new char[] { 'c','m' },new int[] {1,4},new string[] {"3/6","1/2"},new int[] {1, 2 },
     new string[] { "b 34", "b 4" }, new bool[] { true, true })]
 
         public async Task createReport_CorrectData_TwoAsset(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present) 
@@ -157,8 +157,8 @@ namespace UnitTests.ControllerTests.APITests
         }
 
         [Test]
-        [TestCase("Report testowy", 1, "3/6", 1, "b 34", new int[] { 1, 3 }, new int[] { }, new string[] { }, new char[] { }, new bool[] { })]
-        public async Task createReport_CorrectData_ZeroAsset(string reportName, int roomId, string roomName, int buildingId, string buildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, bool[] present)
+        [TestCase("Report testowy", 1, "3/6", 1, "b 34")]
+        public async Task createReport_CorrectData_ZeroAsset(string reportName, int roomId, string roomName, int buildingId, string buildingName)
         {
             Room room = new Room(roomId, roomName, new Building(buildingId, buildingName));
             ReportPrototype reportPrototype = new ReportPrototype(reportName, room, new ReportPositionPrototype[] {});
@@ -166,7 +166,7 @@ namespace UnitTests.ControllerTests.APITests
         }
 
         [Test]
-        [TestCase("", 1, "3/6", 1, "b 34", new int[] { 1, 3 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'k', 'm' }, new int[] { 1, 4 }, new string[] { "3/6", "1/2" }, new int[] { 1, 2 },
+        [TestCase("", 1, "3/6", 1, "b 34", new int[] { 1, 3 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'c', 'm' }, new int[] { 1, 4 }, new string[] { "3/6", "1/2" }, new int[] { 1, 2 },
     new string[] { "b 34", "b 4" }, new bool[] { true, true })]
 
         public async Task createReport_WrongData_EmptyReportName(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present)
@@ -179,7 +179,7 @@ namespace UnitTests.ControllerTests.APITests
         }
 
         [Test]
-        [TestCase("Report testowy - WrongData No Room", null, "3/6", 1, "b 34", new int[] { 1, 3 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'k', 'm' }, new int[] { 1, 4 }, new string[] { "3/6", "1/2" }, new int[] { 1, 2 },
+        [TestCase("Report testowy - WrongData No Room", null, "3/6", 1, "b 34", new int[] { 1, 3 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'c', 'm' }, new int[] { 1, 4 }, new string[] { "3/6", "1/2" }, new int[] { 1, 2 },
     new string[] { "b 34", "b 4" }, new bool[] { true, true })]
 
         public async Task createReport_WrongData_NoCurrentRoom(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present)
@@ -192,7 +192,7 @@ namespace UnitTests.ControllerTests.APITests
         }
 
         [Test]
-        [TestCase("Report testowy - WrongData No Exist Room", 2202, "3/6", 1, "b 34", new int[] { 1, 3 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'k', 'm' }, new int[] { 1, 4 }, new string[] { "3/6", "1/2" }, new int[] { 1, 2 },
+        [TestCase("Report testowy - WrongData No Exist Room", 2202, "3/6", 1, "b 34", new int[] { 1, 3 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'c', 'm' }, new int[] { 1, 4 }, new string[] { "3/6", "1/2" }, new int[] { 1, 2 },
     new string[] { "b 34", "b 4" }, new bool[] { true, true })]
 
         public async Task createReport_WrongData_NoExistCurrentRoom(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present)
@@ -205,11 +205,11 @@ namespace UnitTests.ControllerTests.APITests
         }
 
         [Test]
-        [TestCase("Report testowy - WrongData Wrong Asset ID", 1, "3/6", 1, "b 34", new int[] { 1330, 3 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'k', 'm' }, new int[] { 1, 4 }, new string[] { "3/6", "1/2" }, new int[] { 1, 2 },
+        [TestCase("Report testowy - WrongData Wrong Asset ID", 1, "3/6", 1, "b 34", new int[] { 1330, 3 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'c', 'm' }, new int[] { 1, 4 }, new string[] { "3/6", "1/2" }, new int[] { 1, 2 },
     new string[] { "b 34", "b 4" }, new bool[] { true, true })]
-        [TestCase("Report testowy - WrongData Wrong Asset ID", 1, "3/6", 1, "b 34", new int[] { 1, 32020 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'k', 'm' }, new int[] { 1, 4 }, new string[] { "3/6", "1/2" }, new int[] { 1, 2 },
+        [TestCase("Report testowy - WrongData Wrong Asset ID", 1, "3/6", 1, "b 34", new int[] { 1, 32020 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'c', 'm' }, new int[] { 1, 4 }, new string[] { "3/6", "1/2" }, new int[] { 1, 2 },
     new string[] { "b 34", "b 4" }, new bool[] { true, true })]
-        [TestCase("Report testowy - WrongData Wrong Asset ID", 1, "3/6", 1, "b 34", new int[] { 1330, 3011 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'k', 'm' }, new int[] { 1, 4 }, new string[] { "3/6", "1/2" }, new int[] { 1, 2 },
+        [TestCase("Report testowy - WrongData Wrong Asset ID", 1, "3/6", 1, "b 34", new int[] { 1330, 3011 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'c', 'm' }, new int[] { 1, 4 }, new string[] { "3/6", "1/2" }, new int[] { 1, 2 },
     new string[] { "b 34", "b 4" }, new bool[] { true, true })]
 
         public async Task createReport_WrongData_WrongAssetId(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present)
@@ -222,7 +222,7 @@ namespace UnitTests.ControllerTests.APITests
         }
 
         [Test]
-        [TestCase("Report testowy - WrongData PreviousIsNullPresentIsFalse", 1, "3/6", 1, "b 34", new int[] { 1, 3 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'k', 'm' }, new bool[] { false, false })]
+        [TestCase("Report testowy - WrongData PreviousIsNullPresentIsFalse", 1, "3/6", 1, "b 34", new int[] { 1, 3 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'c', 'm' }, new bool[] { false, false })]
 
         public async Task createReport_WrongData_PreviousIsNullPresentIsFalse(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, bool[] present)
         {
@@ -234,8 +234,8 @@ namespace UnitTests.ControllerTests.APITests
         }
 
         [Test]
-        [TestCase("Report testowy", 1, "3/6", 1, "b 34", 1, 1, "komputer", 'k', 4, "1/2", 2, "b 4", true)]
-        public async Task createReport_WrongData_PreviousIsNullPresentIsTrue(string reportName, int currentRoomId, string currentRoomName, int currentBuildingId, string currentBuildingName, int assetId, int assetTypeId, string assetTypeName, char assetLetter, int previousRoomId, string previousRoomName, int previousBuildingId, string previousBuildingName, bool present)
+        [TestCase("Report testowy", 1, "3/6", 1, "b 34", 1, 1, "komputer", 'c', true)]
+        public async Task CreateReport_CorrectData_PreviousIsNullPresentIsTrue(string reportName, int currentRoomId, string currentRoomName, int currentBuildingId, string currentBuildingName, int assetId, int assetTypeId, string assetTypeName, char assetLetter, bool present)
         {
             Room CurrentRoom = new Room(currentRoomId, currentRoomName, new Building(currentBuildingId, currentBuildingName));
             ReportPositionPrototype positionPrototype = new ReportPositionPrototype(new Asset(assetId, new AssetType(assetTypeId, assetTypeName, assetLetter)), null, present);
