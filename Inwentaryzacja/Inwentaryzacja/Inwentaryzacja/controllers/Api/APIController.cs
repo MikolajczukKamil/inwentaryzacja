@@ -72,8 +72,8 @@ namespace Inwentaryzacja.Controllers.Api
         /// </summary>
         /// <param name="address">Adres zapytania</param>
         /// <param name="content">Zawartość zapytania</param>
-        /// <returns>Czy udało się wykonać zapytanie</returns>
-        private async Task<bool> SendRequest(string address, StringContent content)
+        /// <returns>Identyfikator liczbowy nowo dodanego elementu lub -1 jeśli nie udało się utworzyć elementu</returns>
+        private async Task<int> SendRequest(string address, StringContent content)
         {
             string result;
             int statusCode = 200;
@@ -87,7 +87,11 @@ namespace Inwentaryzacja.Controllers.Api
 
                     if (response.IsSuccessStatusCode)
                     {
-                        return true;
+                        AnswerEntity answer = ConvertJSONToObject<AnswerEntity>(result);
+                        if(answer!=null)
+                        {
+                            return answer.id;
+                        }
                     }
                 }
                 catch (Exception failConnection)
@@ -97,7 +101,7 @@ namespace Inwentaryzacja.Controllers.Api
                 }
 
             ErrorInvoke(result, statusCode);
-            return false;
+            return -1;
         }
         
         /// <summary>
@@ -243,28 +247,6 @@ namespace Inwentaryzacja.Controllers.Api
             return ConvertJSONToObject<AssetInfoEntity>(response);
         }
 
-        /// <summary>
-        /// Asynchronicznie tworzy i dodaje do bazy nowy środek trwały z podanego opisu
-        /// </summary>
-        /// <param name="asset">Opis środka trwałego</param>
-        /// <returns>Czy udało się stworzyć i dodać do bazy nowy środek trwały</returns>
-        public async Task<bool> CreateAsset(AssetPrototype asset)
-        {
-            string data = ConvertDataToJSON(asset);
-
-            if (string.IsNullOrEmpty(data))
-            {
-                return false;
-            }
-
-            var uri = "/addNewAsset";
-            var content = PreperDataToSend(data);
-            var response = await SendRequest(uri, content);
-
-            return response;
-        }
-
-
         #endregion Assets
 
 
@@ -301,8 +283,8 @@ namespace Inwentaryzacja.Controllers.Api
         /// Asynchronicznie tworzy i dodaje do bazy nowy budynek z podanego opisu
         /// </summary>
         /// <param name="building">Opis budynku</param>
-        /// <returns>Czy udało się stworzyć i dodać do bazy nowy budynek</returns>
-        public async Task<bool> createBuilding(BuildingPrototype building)
+        /// <returns>Identyfikator liczbowy nowo dodanego budynku lub -1 jeśli nie udało się dodać budynku do bazy danych</returns>
+        public async Task<int> createBuilding(BuildingPrototype building)
         {
             var uri = "/addNewBuilding";
             string data = ConvertDataToJSON(building);
@@ -315,8 +297,8 @@ namespace Inwentaryzacja.Controllers.Api
         /// Asynchronicznie tworzy i dodaje do bazy nowy pokój z podanego opisu
         /// </summary>
         /// <param name="room">Opis pokoju</param>
-        /// <returns>Czy udało się stworzyć i dodać do bazy nowy pokój</returns>
-        public async Task<bool> createRoom(RoomPropotype room)
+        /// <returns>Identyfikator liczbowy nowo dodanego pokoju lub -1 jeśli nie udało się dodać pokoju do bazy danych</returns>
+        public async Task<int> createRoom(RoomPropotype room)
         {
             var uri = "/addNewRoom";
             string data = ConvertDataToJSON(room);
@@ -371,18 +353,18 @@ namespace Inwentaryzacja.Controllers.Api
 
             return ConvertJSONToObject<ReportPositionEntity[]>(response);
         }
-        
+
         /// <summary>
         /// Asynchronicznie tworzy i dodaje do bazy nowy raport z podanego opisu
         /// </summary>
         /// <param name="report">Opis raportu</param>
-        /// <returns>Czy udało się stworzyć i dodać do bazy nowy raport</returns>
-        public async Task<bool> createReport(ReportPrototype report)
+        /// <returns>Identyfikator liczbowy nowo dodanego raportu lub -1 jeśli nie udało się dodać raportu do bazy danych</returns>
+        public async Task<int> createReport(ReportPrototype report)
         {
             var uri = "/addNewReport";
             string data = ConvertDataToJSON(report);
 
-            if (data == null) return false;
+            if (data == null) return -1;
 
             var content = PreperDataToSend(data);
 

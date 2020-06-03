@@ -21,10 +21,5 @@ namespace Inwentaryzacja.Services
 
 			throw new System.Exception("Not implemented");
 		}
-
-		public bool AddAsset(AssetPrototype newAsset)
-		{
-			return api.CreateAsset(newAsset).Result;
-		}
 	}
 }

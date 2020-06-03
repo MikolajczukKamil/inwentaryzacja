@@ -44,7 +44,7 @@ namespace Inwentaryzacja.Services
             return await api.getReportPositions(reportId);
         }
 
-        public bool AddNewReport(ReportPrototype newReport)
+        public int AddNewReport(ReportPrototype newReport)
         {
             return api.createReport(newReport).Result;
         }
