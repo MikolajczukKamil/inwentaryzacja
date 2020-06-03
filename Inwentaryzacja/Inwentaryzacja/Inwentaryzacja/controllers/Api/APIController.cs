@@ -399,6 +399,15 @@ namespace Inwentaryzacja.Controllers.Api
             return ConvertJSONToObject<ScanEntity[]>(response);
         }
 
+        public async Task<int> addScan(ScanPrototype scan)
+        {
+            var uri = "/addScan";
+            string data = ConvertDataToJSON(scan);
+            var content = PreperDataToSend(data);
+
+            return await SendRequest(uri, content);
+        }
+
         #endregion Scanning
 
 
