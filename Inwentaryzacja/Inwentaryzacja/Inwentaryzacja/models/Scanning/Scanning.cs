@@ -22,7 +22,7 @@ namespace Inwentaryzacja.Models
 			throw new System.Exception("Not implemented");
 		}
 
-		public ScanningPropotype GeneratePrototype()
+		public ScanPrototype GeneratePrototype()
 		{
 			throw new System.Exception("Not implemented");
 		}
