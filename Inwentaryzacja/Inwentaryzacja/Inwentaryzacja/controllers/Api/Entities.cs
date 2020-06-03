@@ -101,4 +101,12 @@ namespace Inwentaryzacja.Controllers.Api
         public int id;
         public string login;
     }
+
+    public class ScanEntity
+    {
+        public int id;
+        public RoomEntity room;
+        public UserEntity owner;
+        public DateTime create_date;
+    }
 }
