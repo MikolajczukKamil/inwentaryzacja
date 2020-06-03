@@ -419,6 +419,15 @@ namespace Inwentaryzacja.Controllers.Api
             return false;
         }
 
+        public async Task<int> updateScan(ScanPositionPropotype scan_update)
+        {
+            var uri = "/updateScan";
+            string data = ConvertDataToJSON(scan_update);
+            var content = PreperDataToSend(data);
+
+            return await SendRequest(uri, content);
+        }
+
         #endregion Scanning
 
 
