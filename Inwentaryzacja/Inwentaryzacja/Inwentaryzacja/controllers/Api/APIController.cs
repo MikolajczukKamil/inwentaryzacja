@@ -390,6 +390,15 @@ namespace Inwentaryzacja.Controllers.Api
             return ConvertJSONToObject<AssetEntity[]>(response);
         }
 
+
+        public async Task<ScanEntity[]> getScans()
+        {
+            var uri = $"/getScans";
+            var response = await SendRequestWithResponse(uri);
+
+            return ConvertJSONToObject<ScanEntity[]>(response);
+        }
+
         #endregion Scanning
 
 
