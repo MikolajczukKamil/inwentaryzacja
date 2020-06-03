@@ -238,7 +238,7 @@ namespace UnitTests.ControllerTests.APITests
         public async Task createReport_WrongData_PreviousIsNullPresentIsTrue(string reportName, int currentRoomId, string currentRoomName, int currentBuildingId, string currentBuildingName, int assetId, int assetTypeId, string assetTypeName, char assetLetter, int previousRoomId, string previousRoomName, int previousBuildingId, string previousBuildingName, bool present)
         {
             Room CurrentRoom = new Room(currentRoomId, currentRoomName, new Building(currentBuildingId, currentBuildingName));
-            ReportPositionPrototype positionPrototype = new ReportPositionPrototype(new Asset(assetId, new AssetType(assetTypeId, assetTypeName, assetLetter)), new Room(previousRoomId, previousRoomName, new Building(previousBuildingId, previousBuildingName)), present);
+            ReportPositionPrototype positionPrototype = new ReportPositionPrototype(new Asset(assetId, new AssetType(assetTypeId, assetTypeName, assetLetter)), null, present);
             ReportPrototype reportPrototype = new ReportPrototype(reportName, CurrentRoom, new ReportPositionPrototype[] { positionPrototype });
             Assert.AreEqual(true, await apiController.createReport(reportPrototype));
         }
