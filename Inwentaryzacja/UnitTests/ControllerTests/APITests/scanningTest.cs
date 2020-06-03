@@ -24,7 +24,7 @@ namespace UnitTests.ControllerTests.APITests
         [TestCase(3)]
         public async Task getAssetsInRoomTest(int room_id)
         {
-            AssetInfoEntity assetInfoEntity = await apiController.getAssetInfo(1);
+            AssetInfoEntity assetInfoEntity = await apiController.getAssetInfo(room_id);
             Assert.AreEqual(1, assetInfoEntity.room.id);
         }
     }
