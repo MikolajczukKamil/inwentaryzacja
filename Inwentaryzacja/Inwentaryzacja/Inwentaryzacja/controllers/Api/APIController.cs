@@ -408,6 +408,17 @@ namespace Inwentaryzacja.Controllers.Api
             return await SendRequest(uri, content);
         }
 
+        public async Task<bool> deleteScan(int scan_id)
+        {
+            var uri = $"/deleteScan/{scan_id}";
+            var response = await SendRequestWithResponse(uri);
+
+            if (response != null)
+                return true;
+
+            return false;
+        }
+
         #endregion Scanning
 
 
