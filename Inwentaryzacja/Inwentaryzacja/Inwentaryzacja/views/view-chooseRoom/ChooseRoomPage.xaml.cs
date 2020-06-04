@@ -1,4 +1,4 @@
-﻿using Inwentaryzacja.controllers.session;
+using Inwentaryzacja.controllers.session;
 using Inwentaryzacja.Controllers.Api;
 using Inwentaryzacja.Models;
 using Inwentaryzacja.views.view_chooseRoom;
@@ -108,7 +108,6 @@ namespace Inwentaryzacja
 			EnableView(false);
 			buildings = await api.getBuildings();
 
-
 			if (buildings == null)
 			{
 				EnableView(true);
@@ -162,6 +161,7 @@ namespace Inwentaryzacja
 		private async void Continue_Button_Clicked(object o, EventArgs args) 
 		{
 			EnableView(false);
+
 			if (RoomPicker.SelectedIndex < 0)
 			{
 				await DisplayAlert("Pomieszczenie", "Wybierz pomieszczenie", "OK");
@@ -223,7 +223,7 @@ namespace Inwentaryzacja
 		public async void AddRoom_clicked(object o, EventArgs args)
 		{
 			EnableView(false);
-			await Navigation.PushAsync(new AddRoom(buildings, BuildingPicker.SelectedIndex));
+			await Navigation.PushAsync(new AddRoom(buildings, BuildingPicker.SelectedIndex));	
 			EnableView(true);
 		}
 
@@ -250,7 +250,7 @@ namespace Inwentaryzacja
 		{
 			EnableView(false);
 			if (await DisplayAlert("Wylogowywanie", "Czy na pewno chcesz się wylogować?", "Tak", "Nie"))
-			{
+      {
 				var session = new SessionController(new APIController());
 				session.RemoveSession();
 				App.Current.MainPage = new LoginPage();
