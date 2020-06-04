@@ -14,7 +14,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
         int indexSelectedItem;
         APIController api = new APIController();
 
-        public AddRoom(BuildingEntity[] buildings, int indexSelectedItem=0)
+        public AddRoom(BuildingEntity[] buildings, int indexSelectedItem = 0)
         {
             this.buildings = buildings;
             this.indexSelectedItem = indexSelectedItem;
@@ -60,15 +60,11 @@ namespace Inwentaryzacja.views.view_chooseRoom
                     BuildingPicker.SelectedItem = BuildingPicker.Items[0];
                 }
             }
-
-            EnableView(true);
         }
   
         public async void return_ChooseRoom(object o, EventArgs args)
         {
-            EnableView(false);
             await Navigation.PopAsync();
-            EnableView(true);
         }
        
         public async void Check_Room(object o, EventArgs args)
@@ -80,10 +76,13 @@ namespace Inwentaryzacja.views.view_chooseRoom
             BuildingEntity mybuilding = new BuildingEntity();
 
             string choosenBuildingName = "";
-            if (BuildingPicker.Items.Count>0)
-                choosenBuildingName = BuildingPicker.Items[BuildingPicker.SelectedIndex];
 
-            if(buildings!=null)
+            if (BuildingPicker.Items.Count > 0) {
+                
+                choosenBuildingName = BuildingPicker.Items[BuildingPicker.SelectedIndex];
+            }
+
+            if(buildings != null)
             {
                 foreach (var item in buildings)
                 {
@@ -93,11 +92,10 @@ namespace Inwentaryzacja.views.view_chooseRoom
                     }
                 }
             }
-            
-            int isCreated = await api.createRoom(new RoomPropotype(number, mybuilding));
 
+            int roomId = await api.createRoom(new RoomPropotype(number, mybuilding));
 
-            if (isCreated>0)
+            if (roomId > 0)
             {
                 var stack = Navigation.NavigationStack;
                 var previousPage = (ChooseRoomPage)stack[stack.Count - 2];
@@ -136,6 +134,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
                 session.RemoveSession();
                 App.Current.MainPage = new LoginPage();
             }
+
             EnableView(true);
         }
     }
