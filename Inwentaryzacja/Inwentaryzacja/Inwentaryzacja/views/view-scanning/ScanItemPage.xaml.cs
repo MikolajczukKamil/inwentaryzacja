@@ -303,5 +303,12 @@ namespace Inwentaryzacja
             {
             }
         }
+
+        protected override bool OnBackButtonPressed()
+        {
+            Cancel(this, null);
+
+            return true;
+        }
     }
 }

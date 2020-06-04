@@ -379,7 +379,9 @@ namespace Inwentaryzacja.views.view_scannedItem
 
         private async void RetPrevPage(object sender, EventArgs e)
         {
+            EnableView(false);
             await Navigation.PopModalAsync();
+            EnableView(true);
         }
     }
 }

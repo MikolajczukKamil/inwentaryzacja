@@ -22,13 +22,16 @@ namespace Inwentaryzacja.views.view_chooseRoom
 
         public async void AddButtonClicked(object o, EventArgs e)
         {
-            string name = BuildingName.Text;
             EnableView(false);
+            string name = BuildingName.Text;
             BuildingEntity[] buildings = await api.getBuildings();
-            EnableView(true);
 
             if (buildings == null)
+            {
+                EnableView(true);
                 return;
+            }
+                
 
             foreach (BuildingEntity item in buildings)
             {
@@ -39,10 +42,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
                 }
             }
 
-            EnableView(false);
             int isCreated = await api.createBuilding(new BuildingPrototype(name));
-            EnableView(true);
-
 
             if (isCreated>0)
             {
@@ -52,6 +52,8 @@ namespace Inwentaryzacja.views.view_chooseRoom
                 await Navigation.PopAsync();
                 await DisplayAlert("Dodawanie budynku", "Pomyślnie dodano nowy budynek", "OK");
             }
+
+            EnableView(true);
         }
 
         private void EnableView(bool state)
@@ -73,7 +75,9 @@ namespace Inwentaryzacja.views.view_chooseRoom
 
         private void return_ChooseRoom(object o, EventArgs e)
         {
+            EnableView(false);
             Navigation.PopAsync();
+            EnableView(true);
         }
 
         private async void LogoutButtonClicked(object sender, EventArgs e)

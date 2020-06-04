@@ -60,11 +60,15 @@ namespace Inwentaryzacja.views.view_chooseRoom
                     BuildingPicker.SelectedItem = BuildingPicker.Items[0];
                 }
             }
+
+            EnableView(true);
         }
   
         public async void return_ChooseRoom(object o, EventArgs args)
         {
+            EnableView(false);
             await Navigation.PopAsync();
+            EnableView(true);
         }
        
         public async void Check_Room(object o, EventArgs args)
