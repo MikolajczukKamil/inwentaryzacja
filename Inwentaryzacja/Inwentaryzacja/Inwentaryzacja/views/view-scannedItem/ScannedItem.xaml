@@ -117,7 +117,8 @@
                     FontSize="Large" 
                     Margin="0, 0, 10, 20" 
                     Clicked="EndScanning"  
-                    Grid.Column="1"/>
+                    Grid.Column="1"
+                    x:Name="EndButton"/>
             </Grid>
         </StackLayout>
     </ContentPage.Content>
