@@ -106,7 +106,8 @@
                     HeightRequest="45"
                     Margin="20,10"
                     VerticalOptions="EndAndExpand"
-                    Clicked="LogoutButtonClicked"/>
+                    Clicked="LogoutButtonClicked"
+                    x:Name="LogoutButton"/>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

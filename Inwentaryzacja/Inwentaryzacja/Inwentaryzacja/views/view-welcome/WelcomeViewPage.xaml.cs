@@ -23,12 +23,16 @@ namespace Inwentaryzacja
 
         private async void scanButtonClicked(object sender, EventArgs e)
         {
+            EnableView(false);
             await Navigation.PushAsync(new ChooseRoomPage());
+            EnableView(true);
         }
         
         private async void _AllReportsButton_Clicked(object sender, EventArgs e)
         {
+            EnableView(false);
             await Navigation.PushAsync(new AllReportsPage());
+            EnableView(true);
         }
 
         private async void LogoutButtonClicked(object sender, EventArgs e)
@@ -39,6 +43,13 @@ namespace Inwentaryzacja
                 session.RemoveSession();
                 App.Current.MainPage = new LoginPage();
             }
+        }
+
+        private void EnableView(bool state)
+        {
+            ScanButton.IsEnabled = state;
+            AllReportsButton.IsEnabled = state;
+            LogoutButton.IsEnabled = state;
         }
     }
 }
