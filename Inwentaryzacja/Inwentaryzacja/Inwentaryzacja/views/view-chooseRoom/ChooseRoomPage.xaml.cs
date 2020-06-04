@@ -107,9 +107,13 @@ namespace Inwentaryzacja
 		{
 			EnableView(false);
 			buildings = await api.getBuildings();
-			EnableView(true);
 
-			if (buildings == null) return;
+
+			if (buildings == null)
+			{
+				EnableView(true);
+				return;
+			}
 
 			BuildingPicker.Items.Clear();
 
@@ -131,6 +135,8 @@ namespace Inwentaryzacja
 				}
 				
 			}
+
+			EnableView(true);
 		}
 
 		private void EnableView(bool state)

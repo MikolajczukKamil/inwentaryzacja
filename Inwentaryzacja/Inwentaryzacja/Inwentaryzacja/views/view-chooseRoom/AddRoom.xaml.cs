@@ -33,9 +33,12 @@ namespace Inwentaryzacja.views.view_chooseRoom
 
             buildings = await api.getBuildings();
 
-            EnableView(true);
 
-            if (buildings == null) return;
+            if (buildings == null)
+            {
+                EnableView(true);
+                return;
+            }
 
             foreach (BuildingEntity item in buildings)
             {
@@ -53,6 +56,8 @@ namespace Inwentaryzacja.views.view_chooseRoom
                     BuildingPicker.SelectedItem = BuildingPicker.Items[0];
                 }
             }
+
+            EnableView(true);
         }
   
         public async void return_ChooseRoom(object o, EventArgs args)
@@ -85,9 +90,8 @@ namespace Inwentaryzacja.views.view_chooseRoom
                 }
             }
             
-            bool isCreated = await api.createRoom(new RoomPropotype(number, mybuilding));
+            int isCreated = await api.createRoom(new RoomPropotype(number, mybuilding));
 
-            EnableView(true);
 
             if (isCreated>0)
             {
