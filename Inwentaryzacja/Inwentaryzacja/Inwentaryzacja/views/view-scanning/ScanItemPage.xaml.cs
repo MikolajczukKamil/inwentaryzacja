@@ -138,17 +138,20 @@ namespace Inwentaryzacja
                 if (!ListContainItem(result.Text))
                 {
                     string[] positions;
+                    int TypeID; 
                     int AssetId; 
                     AssetInfoEntity assetInfoEntity; 
                     try
                     {
                         positions = result.Text.Split('-');
+                        TypeID = Convert.ToInt32(positions[0]);
                         AssetId = Convert.ToInt32(positions[1]);
                     }
                     catch (Exception)
                     {
                         Device.BeginInvokeOnMainThread(async () =>
                         {
+                            positions = result.Text.Split('-');
                             await ShowPopup("Zły format kodu");
                         });
                         return;

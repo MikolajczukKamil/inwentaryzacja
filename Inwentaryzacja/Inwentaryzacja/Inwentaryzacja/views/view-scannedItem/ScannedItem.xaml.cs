@@ -63,7 +63,7 @@ namespace Inwentaryzacja.views.view_scannedItem
                 AssetRoom = ScanningRoom.id;
             }
 
-            public string ScaningText { get { return string.Format("{0} {1}", AssetEntity.type.name, AssetEntity.type.id); } }
+            public string ScaningText { get { return string.Format("{0} {1}", AssetEntity.type.name, AssetEntity.id); } }
             public int ScannedId { get; set; }
             public string RoomId { get { if (AssetRoom != null) return AssetRoom.ToString(); return "brak"; } }
 
@@ -77,7 +77,7 @@ namespace Inwentaryzacja.views.view_scannedItem
             {
                 if (item.reportPositionPrototype.present)
                 {
-                    items = CheckAmount(items, item.AssetEntity.type.letter);
+                    items = CheckAmount(items, item.AssetEntity.type.id);
                 }
             }
             ScannedInRoomLabel.Text = "";
@@ -104,13 +104,12 @@ namespace Inwentaryzacja.views.view_scannedItem
                 ScannedInRoomAmount.Text = ScannedInRoomAmount.Text.Substring(0, ScannedInRoomAmount.Text.Length - 1);
             }
 
-
-            items = new int[]{ 0, 0, 0, 0, 0, 0 };//c k m p s t
+            items = new int[] { 0, 0, 0, 0, 0, 0 };//c k m p s t
             foreach (AllScaning item in allScaning)
             {
                 if (!item.reportPositionPrototype.present && item.reportPositionPrototype.previous == ScanningRoom.id)
                 {
-                    items = CheckAmount(items, item.AssetEntity.type.letter);
+                    items = CheckAmount(items, item.AssetEntity.type.id);
                 }
             }
             UnscannedInRoomLabel.Text = "";
@@ -121,9 +120,9 @@ namespace Inwentaryzacja.views.view_scannedItem
                 {
                     UnscannedInRoomLabel.Text += types[i] + "\n";
                     UnscannedInRoomAmount.Text += items[i];
-                    if (items[i] == 1) 
+                    if (items[i] == 1)
                         UnscannedInRoomAmount.Text += " sztuka\n";
-                    else if (items[i] <= 4) 
+                    else if (items[i] <= 4)
                         UnscannedInRoomAmount.Text += " sztuki\n";
                     else
                         UnscannedInRoomAmount.Text += " sztuk\n";
@@ -136,6 +135,39 @@ namespace Inwentaryzacja.views.view_scannedItem
             {
                 UnscannedInRoomLabel.Text = UnscannedInRoomLabel.Text.Substring(0, UnscannedInRoomLabel.Text.Length - 1);
                 UnscannedInRoomAmount.Text = UnscannedInRoomAmount.Text.Substring(0, UnscannedInRoomAmount.Text.Length - 1);
+            }
+
+            items = new int[] { 0, 0, 0, 0, 0, 0 };//c k m p s t
+            foreach (AllScaning item in allScaning)
+            {
+                if (!item.reportPositionPrototype.present && item.reportPositionPrototype.previous != ScanningRoom.id)
+                {
+                    items = CheckAmount(items, item.AssetEntity.type.id);
+                }
+            }
+            OtherLabel.Text = "";
+            OtherAmount.Text = "";
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (items[i] > 0)
+                {
+                    OtherLabel.Text += types[i] + "\n";
+                    OtherAmount.Text += items[i];
+                    if (items[i] == 1)
+                        OtherAmount.Text += " sztuka\n";
+                    else if (items[i] <= 4)
+                        OtherAmount.Text += " sztuki\n";
+                    else
+                        OtherAmount.Text += " sztuk\n";
+
+                }
+            }
+            if (OtherLabel.Text == "")
+                OtherLabel.Text = "Brak";
+            else
+            {
+                OtherLabel.Text = OtherLabel.Text.Substring(0, OtherLabel.Text.Length - 1);
+                OtherAmount.Text = OtherAmount.Text.Substring(0, OtherAmount.Text.Length - 1);
             }
 
             List<AllScaning> scannedItems = new List<AllScaning>();
@@ -160,14 +192,14 @@ namespace Inwentaryzacja.views.view_scannedItem
             {
                 if (item.reportPositionPrototype.present)
                 {
-                    text += "(id: " + item.AssetEntity.id + ") " + item.AssetEntity.type.name + " numer: " + item.AssetEntity.type.id + "\n";
+                    text += item.AssetEntity.type.name + " numer: " + item.AssetEntity.id + "\n";
                 }
             }
             if (text == "")
                 text = "brak";
             await DisplayAlert("Zeskanowane z sali " + ScanningRoom.name, text, "Ok");
         }
-        
+
         async private void UnscannedInRoomDetails(object sender, EventArgs e)
         {
             string text = "";
@@ -175,7 +207,7 @@ namespace Inwentaryzacja.views.view_scannedItem
             {
                 if (!item.reportPositionPrototype.present && item.reportPositionPrototype.previous == ScanningRoom.id)
                 {
-                    text += "(id: " + item.AssetEntity.id + ") " + item.AssetEntity.type.name + " numer: " + item.AssetEntity.type.id + "\n";
+                    text += item.AssetEntity.type.name + " numer: " + item.AssetEntity.id + "\n";
                 }
             }
             if (text == "")
@@ -183,16 +215,31 @@ namespace Inwentaryzacja.views.view_scannedItem
             await DisplayAlert("Niezeskanowane z sali " + ScanningRoom.name, text, "Ok");
         }
 
-        private int[] CheckAmount(int[] items, char letter)
+        async private void OtherDetails(object sender, EventArgs e)
         {
-            switch (letter)
+            string text = "";
+            foreach (AllScaning item in allScaning)
             {
-                case 'c': items[0]++; break;
-                case 'k': items[1]++; break;
-                case 'm': items[2]++; break;
-                case 'p': items[3]++; break;
-                case 's': items[4]++; break;
-                case 't': items[5]++; break;
+                if (!item.reportPositionPrototype.present && item.reportPositionPrototype.previous != ScanningRoom.id)
+                {
+                    text += item.AssetEntity.type.name + " numer: " + item.AssetEntity.id + "\n";
+                }
+            }
+            if (text == "")
+                text = "brak";
+            await DisplayAlert("Nieprzeiesione z sali " + ScanningRoom.name, text, "Ok");
+        }
+
+        private int[] CheckAmount(int[] items, int typeId)
+        {
+            switch (typeId)
+            {
+                case 1: items[0]++; break;
+                case 2: items[1]++; break;
+                case 3: items[2]++; break;
+                case 4: items[3]++; break;
+                case 5: items[4]++; break;
+                case 6: items[5]++; break;
             }
             return items;
         }

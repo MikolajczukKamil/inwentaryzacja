@@ -152,6 +152,35 @@
                             TextColor="Black"
                             FontAttributes="Bold" />
                             <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.1*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label  
+                                x:Name="OtherLabel"
+                                Margin="20,0"
+                                FontSize="Medium" 
+                                Grid.Column="1"
+                                VerticalOptions="StartAndExpand"
+                                TextColor="Black"/>
+                                <Label  
+                                x:Name="OtherAmount"
+                                Margin="20,0"
+                                FontSize="Medium" 
+                                Grid.Column="2"
+                                VerticalOptions="StartAndExpand"
+                                TextColor="Black"/>
+                            </Grid>
+
+                            <local:RoundedButton 
+                            Text="Szczegóły"
+                            Clicked="OtherDetails"
+                            HorizontalOptions="Center"
+                            FontSize="Medium"
+                            BackgroundColor="White"
+                            Padding="10,5"/>
+                            <Grid>
                                 <ListView  
                                 RowHeight="100" 
                                 SeparatorVisibility="None" 
