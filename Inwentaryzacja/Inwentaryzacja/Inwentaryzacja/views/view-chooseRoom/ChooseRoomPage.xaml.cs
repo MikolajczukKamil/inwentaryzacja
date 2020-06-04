@@ -223,7 +223,7 @@ namespace Inwentaryzacja
 		public async void AddRoom_clicked(object o, EventArgs args)
 		{
 			EnableView(false);
-			await Navigation.PushAsync(new AddRoom());
+			await Navigation.PushAsync(new AddRoom(buildings, BuildingPicker.SelectedIndex));
 			EnableView(true);
 		}
 

@@ -11,11 +11,13 @@ namespace Inwentaryzacja.views.view_chooseRoom
     public partial class AddRoom : ContentPage
     {
         BuildingEntity[] buildings;
-        bool addedNewBuilding = false;
+        int indexSelectedItem;
         APIController api = new APIController();
 
-        public AddRoom()
+        public AddRoom(BuildingEntity[] buildings, int indexSelectedItem=0)
         {
+            this.buildings = buildings;
+            this.indexSelectedItem = indexSelectedItem;
             InitializeComponent();
             api.ErrorEventHandler += onApiError;
             BindingContext = this;
@@ -31,8 +33,10 @@ namespace Inwentaryzacja.views.view_chooseRoom
         {
             EnableView(false);
 
-            buildings = await api.getBuildings();
-
+            if (buildings == null)
+            {
+                buildings = await api.getBuildings();
+            }
 
             if (buildings == null)
             {
@@ -47,9 +51,9 @@ namespace Inwentaryzacja.views.view_chooseRoom
 
             if (BuildingPicker.Items.Count > 0)
             {
-                if (addedNewBuilding)
+                if (indexSelectedItem >=0 && indexSelectedItem < BuildingPicker.Items.Count)
                 {
-                    BuildingPicker.SelectedItem = BuildingPicker.Items[BuildingPicker.Items.Count - 1];
+                    BuildingPicker.SelectedItem = BuildingPicker.Items[indexSelectedItem];
                 }
                 else
                 {
