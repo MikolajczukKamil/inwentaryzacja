@@ -87,7 +87,9 @@ namespace Inwentaryzacja.views.view_chooseRoom
             
             bool isCreated = await api.createRoom(new RoomPropotype(number, mybuilding));
 
-            if (isCreated)
+            EnableView(true);
+
+            if (isCreated>0)
             {
                 var stack = Navigation.NavigationStack;
                 var previousPage = (ChooseRoomPage)stack[stack.Count - 2];
