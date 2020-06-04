@@ -21,22 +21,20 @@ namespace UnitTests.ControllerTests.APITests
             await apiController.LoginUser("user1", "111");
         }
         [Test]
-        [TestCase(1)]
-        public async Task getAssetsInRoomTest_CorrectId2Ass(int room_id)
+        public async Task getAssetsInRoomTest_CorrectId2Ass()
         {
-            AssetEntity[] assetEntity = await apiController.getAssetsInRoom(room_id);
+            AssetEntity[] assetEntityArr = await apiController.getAssetsInRoom(1);
 
             AssetEntity[] expected = new AssetEntity[2];
             expected[0] = new AssetEntity { id = 1, type = new AssetTypeEntity { id = 1, letter = 'c', name = "komputer" } };
             expected[1] = new AssetEntity { id = 3, type = new AssetTypeEntity { id = 3, letter = 'm', name = "monitor" } };
 
-            Assert.AreEqual(expected, assetEntity);
+            Assert.AreEqual(expected, assetEntityArr);
         }
         [Test]
-        [TestCase(2)]
-        public async Task getAssetsInRoomTest_CorrectId4Ass(int room_id)
+        public async Task getAssetsInRoomTest_CorrectId4Ass()
         {
-            AssetEntity[] assetEntity = await apiController.getAssetsInRoom(room_id);
+            AssetEntity[] assetEntityArr = await apiController.getAssetsInRoom(2);
 
             AssetEntity[] expected = new AssetEntity[4];
             expected[0] = new AssetEntity { id = 9, type = new AssetTypeEntity { id = 3, letter = 'm', name = "monitor" } };
@@ -44,16 +42,24 @@ namespace UnitTests.ControllerTests.APITests
             expected[2] = new AssetEntity { id = 11, type = new AssetTypeEntity { id = 5, letter = 's', name = "stół" } };
             expected[3] = new AssetEntity { id = 12, type = new AssetTypeEntity { id = 6, letter = 't', name = "tablica" } };
 
-            Assert.AreEqual(expected, assetEntity);
+            Assert.AreEqual(expected, assetEntityArr);
         }
-        [Test]
         [TestCase(500)]
         [TestCase(123)]
         [TestCase(-1)]
         public async Task getAssetsInRoomTest_NonexistentId(int room_id)
         {
-            AssetEntity[] assetEntity = await apiController.getAssetsInRoom(room_id);
-            Assert.AreEqual(null, assetEntity);
+            AssetEntity[] assetEntityArr = await apiController.getAssetsInRoom(room_id);
+            Assert.AreEqual(null, assetEntityArr);
+        }
+        [Test]
+        public async Task getAssetsInRoomTest_CorrectIdNoAss()
+        {
+            AssetEntity[] assetEntityArr = await apiController.getAssetsInRoom(7);
+
+            AssetEntity[] expected = new AssetEntity[0];
+
+            Assert.AreEqual(expected, assetEntityArr);
         }
     }
 }
