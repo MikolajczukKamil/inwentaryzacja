@@ -26,27 +26,16 @@ namespace UnitTests.ControllerTests.APITests
             await apiController.LoginUser("user1", "111");
         }
 
-        [TestCase("test 1")]
-        [TestCase("test 2")]
-        public async Task CreateBuildingTest_NewName(string name)
+        [TestCase("test 111", true)]
+        [TestCase("test 222", true)]
+        [TestCase("b 34", false)]
+        [TestCase("b 4", false)]
+        [TestCase("", false)]
+        public async Task CreateBuildingTest(string name, bool status)
         {
             BuildingPrototype buildingPrototype = new BuildingPrototype(name);
-            Assert.AreEqual(true, await apiController.createBuilding(buildingPrototype));
-        }
-
-        [TestCase("b 34")]
-        [TestCase("b 4")]
-        public async Task CreateBuildingTest_ExistingName(string name)
-        {
-            BuildingPrototype buildingPrototype = new BuildingPrototype(name);
-            Assert.AreEqual(false, await apiController.createBuilding(buildingPrototype));
-        }
-
-        [Test]
-        public async Task CreateBuildingTest_NoName()
-        {
-            BuildingPrototype buildingPrototype = new BuildingPrototype("");
-            Assert.AreEqual(false, await apiController.createBuilding(buildingPrototype));
+            bool result = await apiController.createBuilding(buildingPrototype) > 0;
+            Assert.AreEqual(status, result);
         }
 
         [TestCase(1, "b 34")]
@@ -139,46 +128,33 @@ namespace UnitTests.ControllerTests.APITests
         }
 
 
-        [TestCase(2, "testRoom1")]
-        [TestCase(4, "testRoom2")]
-        public async Task CreateRoomTest_NewRoom(int buildingID, string roomName)
+        [TestCase(2, "testRoom12", true)]
+        [TestCase(4, "testRoom22", true)]
+        [TestCase(1, "3/6", false)]
+        [TestCase(2, "1/2", false)]
+        [TestCase(99, "testRoom3", false)]
+        public async Task CreateRoomTest(int buildingID, string roomName, bool status)
         {
             BuildingEntity buildingEntity = new BuildingEntity { id = buildingID };
             RoomPropotype roomPrototype = new RoomPropotype(roomName, buildingEntity);
-            Assert.AreEqual(true, await apiController.createRoom(roomPrototype));
+            bool result = await apiController.createRoom(roomPrototype) > 0;
+            Assert.AreEqual(status, result);
         }
 
-        [TestCase(1, "3/6")]
-        [TestCase(2, "1/2")]
-        public async Task CreateRoomTest_DuplicateRoom(int buildingID, string roomName)
-        {
-            BuildingEntity buildingEntity = new BuildingEntity { id = buildingID };
-            RoomPropotype roomPrototype = new RoomPropotype(roomName, buildingEntity);
-            Assert.AreEqual(false, await apiController.createRoom(roomPrototype));
-        }
-
-        [TestCase(99, "testRoom3")]
-        public async Task CreateRoomTest_NonExistentBuilding(int buildingID, string roomName)
-        {
-            BuildingEntity buildingEntity = new BuildingEntity { id = buildingID };
-            RoomPropotype roomPrototype = new RoomPropotype(roomName, buildingEntity);
-            Assert.AreEqual(false, await apiController.createRoom(roomPrototype));
-        }
-
-        [TestCase("testRoom4")]
-        public async Task CreateRoomTest_NoBuilding(string roomName)
+        [Test]
+        public async Task CreateRoomTest_NoBuilding()
         {
             BuildingEntity buildingEntity = new BuildingEntity { };
-            RoomPropotype roomPrototype = new RoomPropotype(roomName, buildingEntity);
-            Assert.AreEqual(false, await apiController.createRoom(roomPrototype));
+            RoomPropotype roomPrototype = new RoomPropotype("testRoom4", buildingEntity);
+            Assert.AreEqual(-1, await apiController.createRoom(roomPrototype));
         }
 
-        [TestCase(2)]
-        public async Task CreateRoomTest_NoRoomName(int buildingID)
+        [Test]
+        public async Task CreateRoomTest_NoRoomName()
         {
-            BuildingEntity buildingEntity = new BuildingEntity { id = buildingID };
+            BuildingEntity buildingEntity = new BuildingEntity { id = 2 };
             RoomPropotype roomPrototype = new RoomPropotype("", buildingEntity);
-            Assert.AreEqual(false, await apiController.createRoom(roomPrototype));
+            Assert.AreEqual(-1, await apiController.createRoom(roomPrototype));
         }
 
         [TestCase(1, "b 34")]
