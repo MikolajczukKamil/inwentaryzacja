@@ -61,5 +61,46 @@ namespace UnitTests.ControllerTests.APITests
 
             Assert.AreEqual(expected, assetEntityArr);
         }
+
+        [Test]
+        public async Task GetScansTest()
+        {
+            var mockRoom = new RoomEntity { id = 1, name = "3/6", building = new BuildingEntity { id = 1, name = "b 34" } };
+            var mockOwner = new UserEntity { id = 1, login = "user1" };
+            var expected = new ScanEntity[] { new ScanEntity { id = 1, room = mockRoom, owner = mockOwner, create_date = new DateTime(2020, 6, 4, 9, 12, 9) } };
+            Assert.AreEqual(expected, await apiController.getScans());
+        }
+
+        [TestCase(2, true)]
+        [TestCase(32, false)]
+        public async Task AddScanTest(int roomID, bool status)
+        {
+            var scanPrototype = new ScanPrototype(roomID);
+            bool created = await apiController.addScan(scanPrototype) > 0;
+            Assert.AreEqual(status, created);
+        }
+
+        [Test]
+        public async Task AddScanTest_RoomNotExists() => Assert.AreEqual(-1, await apiController.addScan(new ScanPrototype(32)));
+
+        [TestCase(4, true)]
+        [TestCase(134, false)]
+        public async Task DeleteScanTest(int scanID, bool status) => Assert.AreEqual(status, await apiController.deleteScan(scanID));
+
+        [TestCase(5, 1, 1, 6, 0, true)]
+        [TestCase(5, 1, 1, 11, 0, true)]
+        [TestCase(18, 1, 1, 6, 0, false)]
+        [TestCase(6, 1, 1, 83, 0, false)]
+        [TestCase(6, 1, 1, 7, 7, false)]
+        public async Task UpdateScanTest(int scanID, int assetID1, int state1, int assetID2, int state2, bool status)
+        {
+            PositionPropotype[] positionPropotypes = new PositionPropotype[] {
+                new PositionPropotype(assetID1, state1),
+                new PositionPropotype(assetID2, state2) };
+            var scanPositionPrototype = new ScanPositionPropotype(scanID, positionPropotypes);
+            Assert.AreEqual(status, await apiController.updateScan(scanPositionPrototype));
+        }
+        [Test]
+        public async Task UpdateScanTest_EmptyPositionsArray() => Assert.AreEqual(false, await apiController.updateScan(new ScanPositionPropotype(5, new PositionPropotype[0])));
     }
 }
