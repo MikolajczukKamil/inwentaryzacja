@@ -15,44 +15,14 @@ namespace Inwentaryzacja.Services
             api = apiController;
         }
 
-        public ReportHeader[] GetReportHeaders()
-        {
-            // ReportHeaderEntity[] raportHeaderEntities = api.getReportHeaders().Result; // Map to ReportHeader[]
-
-            throw new System.Exception("Not implemented");
-        }
-
-        public ReportHeader GetReportHeader(int reportId)
-        {
-            // ReportHeaderEntity raportHeaderEntity = api.getReportHeader(reportId).Result; // To ReportHeader
-
-            throw new System.Exception("Not implemented");
-        }
-
-        public Report GetFullReport(ReportHeader reportHeader)
-        {
-            throw new System.Exception("Not implemented");
-        }
-
-        public Report GetFullReport(int reportId)
-        {
-            throw new System.Exception("Not implemented");
-        }
+      
 
         public async Task<ReportPositionEntity[]> GetReportPositions(int reportId)
         {
             return await api.getReportPositions(reportId);
         }
 
-        public bool AddNewReport(ReportPrototype newReport)
-        {
-            return api.createReport(newReport).Result;
-        }
-        
-        public bool ExportReportToPDF(int reportId)
-        {
-            throw new System.Exception("Not implemented");
-        }
+       
 
         public string[] GetScannedItemsCount(ReportPositionEntity[] reportPositionEntities, RoomEntity currentRoom)
         {
@@ -93,8 +63,8 @@ namespace Inwentaryzacja.Services
                         if (!movedToRoomCount.ContainsKey(typeName))
                         {
                             movedToRoomCount.Add(typeName, 1);
-                            if(item.previous_room == null) movedToRoomDetails.Add(typeName, item.asset.id + " (z magazynu)");
-                            if(item.previous_room != null) movedToRoomDetails.Add(typeName, item.asset.id + " (z sali " + item.previous_room.name + ")");
+                            if (item.previous_room == null) movedToRoomDetails.Add(typeName, item.asset.id + " (z magazynu)");
+                            if (item.previous_room != null) movedToRoomDetails.Add(typeName, item.asset.id + " (z sali " + item.previous_room.name + ")");
 
                         }
                         else
@@ -150,7 +120,7 @@ namespace Inwentaryzacja.Services
                         }
                     }
 
-                    
+
                 }
             }
 
@@ -217,37 +187,6 @@ namespace Inwentaryzacja.Services
             }
             return result;
         }
+    }
 
-#if false // Old
-    public Report GetReportById(int id)
-    {
-        ReportEntity raportEntity = ApiController.getReportByID(id).Result;
-
-        Report raport = new Report(raportEntity.name, raportEntity.id, raportEntity.room, raportEntity.create_date);
-        return raport;
-    }
-    public ReportHeader[] GetReportsHeaders()
-    {
-        List<ReportEntity> listreportEntity = new List<ReportEntity>();
-        listreportEntity = api.getAllReports().Result;
-        int size = listreportEntity.Count;
-        ReportHeader[] reportHeader = new ReportHeader[size];
-        for (int i = 0; i < reportHeader.Length; i++)
-        {
-            reportHeader[i] = new ReportHeader(listreportEntity[i].id, listreportEntity[i].name, listreportEntity[i].room, listreportEntity[i].create_date);
-        }
-        return reportHeader;
-    }
-    public bool DeleteReport(int id)
-    {
-        bool delete = api.deleteReportByID(id).Result;
-        return delete;
-    }
-    public bool AddNewReport(ReportPrototype newReport)
-    {
-        bool add = api.createReportWithAssets(newReport).Result;
-        return add;
-    } 
-#endif
-    } 
 }

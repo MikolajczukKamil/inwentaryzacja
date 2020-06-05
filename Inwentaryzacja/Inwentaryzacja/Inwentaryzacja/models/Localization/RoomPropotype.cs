@@ -8,13 +8,8 @@ namespace Inwentaryzacja.Models
 		public string name;
 		public int building;
 
-		public RoomPropotype(string name, Building building)
-		{
-			this.name = name;
-			this.building = building.Id;
-		}
 
-		public RoomPropotype(string name, BuildingEntity building)
+		public RoomPropotype(string name, BuildingEntity building) 
 		{
 			this.name = name;
 			this.building = building.id;

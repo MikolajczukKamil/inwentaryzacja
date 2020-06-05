@@ -372,23 +372,7 @@ namespace Inwentaryzacja.Controllers.Api
             return ConvertJSONToObject<ReportPositionEntity[]>(response);
         }
         
-        /// <summary>
-        /// Asynchronicznie tworzy i dodaje do bazy nowy raport z podanego opisu
-        /// </summary>
-        /// <param name="report">Opis raportu</param>
-        /// <returns>Czy udało się stworzyć i dodać do bazy nowy raport</returns>
-        public async Task<bool> createReport(ReportPrototype report)
-        {
-            var uri = "/addNewReport";
-            string data = ConvertDataToJSON(report);
-
-            if (data == null) return false;
-
-            var content = PreperDataToSend(data);
-
-            return await SendRequest(uri, content);
-        }
-
+       
         #endregion Report
 
 
