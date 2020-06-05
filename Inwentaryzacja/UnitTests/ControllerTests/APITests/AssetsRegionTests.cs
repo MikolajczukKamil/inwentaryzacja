@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Moq;
 
-namespace UnitTests.ApiTests
+namespace UnitTests.ControllerTests.APITests
 {
     [TestFixture]
     class AssetsRegionTests
@@ -20,23 +20,6 @@ namespace UnitTests.ApiTests
             apiController = new APIController();
             await apiController.LoginUser("user1", "111");
         }
-
-        /* Usunięto metodę CreateAsset
-        [Test]
-        public async Task CreateAssetTest_CorrectAssetTypeData()
-        {
-            AssetPrototype assetPrototype = new AssetPrototype(new AssetType(3, "monitor", 'm'));
-            Assert.AreEqual(true, await apiController.CreateAsset(assetPrototype));
-        }
-
-        [TestCase(3,"TV", 'm')]
-        [TestCase(11, "TV", 't')]
-        public async Task CreateAssetTest_WrongAssetTypeData(int typeId, string typeName, char typeLetter)
-        {
-            AssetPrototype assetPrototype = new AssetPrototype(new AssetType(typeId,typeName,typeLetter));
-            Assert.AreEqual(false, await apiController.CreateAsset(assetPrototype));
-        }
-        */
 
         [TestCase(1, 1, 'c', "komputer")]
         [TestCase(5, 5, 's', "stół")]
