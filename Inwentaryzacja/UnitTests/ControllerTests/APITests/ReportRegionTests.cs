@@ -32,11 +32,13 @@ namespace UnitTests.ControllerTests.APITests
                 Assert.AreEqual(reportHeaderEntities[i], await apiController.getReportHeader(reportHeaderEntities[i].id));
             }
         }
+
         //GetReportHeader Tests
+        //Tutaj się zmieniają daty w raportach
         [Test]
-        [TestCase(1, 1, "Raport 1", 1, 1, "2020-05-24 13:34:40", "user1", "3/6", "b 34", 1)]
-        [TestCase(4, 4, "Raport 4", 3, 1, "2020-05-27 13:34:40", "user1", "3/19", "b 34", 1)]
-        [TestCase(6, 6, "Raport 6", 4, 1, "2020-05-29 13:34:40", "user1", "1/2", "b 4", 2)]
+        [TestCase(1, 1, "Raport 1", 1, 1, "2020-05-25 09:12:09", "user1", "3/6", "b 34", 1)]
+        [TestCase(4, 4, "Raport 4", 3, 1, "2020-05-28 09:12:09", "user1", "3/19", "b 34", 1)]
+        [TestCase(6, 6, "Raport 6", 4, 1, "2020-05-30 09:12:09", "user1", "1/2", "b 4", 2)]
         public async Task GetReportHeader_CorrectID(int id, int staticId, string staticName, int staticRoomId, int staticOwnerId, string staticDate, string staticLogin, string staticRoomName, string staticBuildingName, int staticBuildingId)
         {
             ReportHeaderEntity reportHeaderEntity = await apiController.getReportHeader(id);
@@ -135,73 +137,92 @@ namespace UnitTests.ControllerTests.APITests
         //createReport tests
         [Test]
         [TestCase("Report testowy",1,"3/6",1,"b 34", 1,1,"komputer",'c', 4, "1/2", 2, "b 4", true)]
+        [TestCase("Report test", 5, "1/3", 3, "b 5", 13, 1, "komputer", 'c', 1, "3/6", 1, "b 34", true)]
         public async Task createReport_CorrectData_OneAsset(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int assetId, int assetTypeId, string assetTypeName, char assetLetter, int PreviousRoomId, string PreviousRoomName, int PreviousBuildingId, string PreviousBuildingName, bool present)
         {
             Room room = new Room(CurrentRoomId, CurrentRoomName, new Building(CurrentBuildingId, CurrentBuildingName));
             ReportPositionPrototype positionPrototyp = new ReportPositionPrototype(new Asset(assetId, new AssetType(assetTypeId, assetTypeName, assetLetter)), new Room(PreviousRoomId,PreviousRoomName, new Building(PreviousBuildingId, PreviousBuildingName)), present);
             ReportPrototype reportPrototype = new ReportPrototype(reportName, room, new ReportPositionPrototype[] { positionPrototyp });
-            Assert.AreEqual(true, await apiController.createReport(reportPrototype));
+            int resultInt = await apiController.createReport(reportPrototype);
+            bool resultBool = false;
+            if (resultInt > 0) { resultBool = true; }
+            Assert.AreEqual(true, resultBool);
         }
 
         [Test]
         [TestCase("Report testowy - CorrectData TwoAssets", 1, "3/6", 1, "b 34", new int[] { 1,3 }, new int[] { 1,3 }, new string[] { "komputer", "monitor" }, new char[] { 'c','m' },new int[] {1,4},new string[] {"3/6","1/2"},new int[] {1, 2 },
     new string[] { "b 34", "b 4" }, new bool[] { true, true })]
 
-        public async Task createReport_CorrectData_TwoAsset(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present) 
+        public async Task CreateReport_CorrectData_TwoAsset(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present) 
         { 
             Room room = new Room(CurrentRoomId, CurrentRoomName, new Building(CurrentBuildingId, CurrentBuildingName));
             ReportPositionPrototype positionPrototyp1 = new ReportPositionPrototype(new Asset(assetId[0], new AssetType(assetTypeId[0], assetTypeName[0], assetLetter[0])), new Room(PreviousRoomId[0], PreviousRoomName[0], new Building(PreviousBuildingId[0], PreviousBuildingName[0])), present[0]);
             ReportPositionPrototype positionPrototyp2 = new ReportPositionPrototype(new Asset(assetId[1], new AssetType(assetTypeId[1], assetTypeName[1], assetLetter[1])), new Room(PreviousRoomId[1], PreviousRoomName[1], new Building(PreviousBuildingId[1], PreviousBuildingName[1])), present[1]);
             ReportPrototype reportPrototype = new ReportPrototype(reportName, room, new ReportPositionPrototype[] { positionPrototyp1,positionPrototyp2 });
-            Assert.AreEqual(true, await apiController.createReport(reportPrototype));
+            int resultInt = await apiController.createReport(reportPrototype);
+            bool resultBool = false;
+            if (resultInt > 0) { resultBool = true; }
+            Assert.AreEqual(true, resultBool);
         }
 
         [Test]
         [TestCase("Report testowy", 1, "3/6", 1, "b 34")]
-        public async Task createReport_CorrectData_ZeroAsset(string reportName, int roomId, string roomName, int buildingId, string buildingName)
+        public async Task CreateReport_WrongData_ZeroAsset(string reportName, int roomId, string roomName, int buildingId, string buildingName)
         {
             Room room = new Room(roomId, roomName, new Building(buildingId, buildingName));
             ReportPrototype reportPrototype = new ReportPrototype(reportName, room, new ReportPositionPrototype[] {});
-            Assert.AreEqual(false, await apiController.createReport(reportPrototype));
+            int resultInt = await apiController.createReport(reportPrototype);
+            bool resultBool = false;
+            if (resultInt > 0) { resultBool = true; }
+            Assert.AreEqual(false, resultBool);
         }
 
         [Test]
         [TestCase("", 1, "3/6", 1, "b 34", new int[] { 1, 3 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'c', 'm' }, new int[] { 1, 4 }, new string[] { "3/6", "1/2" }, new int[] { 1, 2 },
     new string[] { "b 34", "b 4" }, new bool[] { true, true })]
 
-        public async Task createReport_WrongData_EmptyReportName(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present)
+        public async Task CreateReport_WrongData_EmptyReportName(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present)
         {
             Room room = new Room(CurrentRoomId, CurrentRoomName, new Building(CurrentBuildingId, CurrentBuildingName));
             ReportPositionPrototype positionPrototyp1 = new ReportPositionPrototype(new Asset(assetId[0], new AssetType(assetTypeId[0], assetTypeName[0], assetLetter[0])), new Room(PreviousRoomId[0], PreviousRoomName[0], new Building(PreviousBuildingId[0], PreviousBuildingName[0])), present[0]);
             ReportPositionPrototype positionPrototyp2 = new ReportPositionPrototype(new Asset(assetId[1], new AssetType(assetTypeId[1], assetTypeName[1], assetLetter[1])), new Room(PreviousRoomId[1], PreviousRoomName[1], new Building(PreviousBuildingId[1], PreviousBuildingName[1])), present[1]);
             ReportPrototype reportPrototype = new ReportPrototype(reportName, room, new ReportPositionPrototype[] { positionPrototyp1, positionPrototyp2 });
-            Assert.AreEqual(false, await apiController.createReport(reportPrototype));
+            int resultInt = await apiController.createReport(reportPrototype);
+            bool resultBool = false;
+            if (resultInt > 0) { resultBool = true; }
+            Assert.AreEqual(false, resultBool);
         }
 
         [Test]
         [TestCase("Report testowy - WrongData No Room", null, "3/6", 1, "b 34", new int[] { 1, 3 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'c', 'm' }, new int[] { 1, 4 }, new string[] { "3/6", "1/2" }, new int[] { 1, 2 },
     new string[] { "b 34", "b 4" }, new bool[] { true, true })]
 
-        public async Task createReport_WrongData_NoCurrentRoom(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present)
+        public async Task CreateReport_WrongData_NoCurrentRoom(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present)
         {
             Room room = new Room(CurrentRoomId, CurrentRoomName, new Building(CurrentBuildingId, CurrentBuildingName));
             ReportPositionPrototype positionPrototyp1 = new ReportPositionPrototype(new Asset(assetId[0], new AssetType(assetTypeId[0], assetTypeName[0], assetLetter[0])), new Room(PreviousRoomId[0], PreviousRoomName[0], new Building(PreviousBuildingId[0], PreviousBuildingName[0])), present[0]);
             ReportPositionPrototype positionPrototyp2 = new ReportPositionPrototype(new Asset(assetId[1], new AssetType(assetTypeId[1], assetTypeName[1], assetLetter[1])), new Room(PreviousRoomId[1], PreviousRoomName[1], new Building(PreviousBuildingId[1], PreviousBuildingName[1])), present[1]);
             ReportPrototype reportPrototype = new ReportPrototype(reportName, room, new ReportPositionPrototype[] { positionPrototyp1, positionPrototyp2 });
-            Assert.AreEqual(false, await apiController.createReport(reportPrototype));
+            int resultInt = await apiController.createReport(reportPrototype);
+            bool resultBool = false;
+            if (resultInt > 0) { resultBool = true; }
+            Assert.AreEqual(false, resultBool);
         }
 
         [Test]
         [TestCase("Report testowy - WrongData No Exist Room", 2202, "3/6", 1, "b 34", new int[] { 1, 3 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'c', 'm' }, new int[] { 1, 4 }, new string[] { "3/6", "1/2" }, new int[] { 1, 2 },
     new string[] { "b 34", "b 4" }, new bool[] { true, true })]
 
-        public async Task createReport_WrongData_NoExistCurrentRoom(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present)
+        public async Task CreateReport_WrongData_NoExistCurrentRoom(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present)
         {
             Room room = new Room(CurrentRoomId, CurrentRoomName, new Building(CurrentBuildingId, CurrentBuildingName));
             ReportPositionPrototype positionPrototyp1 = new ReportPositionPrototype(new Asset(assetId[0], new AssetType(assetTypeId[0], assetTypeName[0], assetLetter[0])), new Room(PreviousRoomId[0], PreviousRoomName[0], new Building(PreviousBuildingId[0], PreviousBuildingName[0])), present[0]);
             ReportPositionPrototype positionPrototyp2 = new ReportPositionPrototype(new Asset(assetId[1], new AssetType(assetTypeId[1], assetTypeName[1], assetLetter[1])), new Room(PreviousRoomId[1], PreviousRoomName[1], new Building(PreviousBuildingId[1], PreviousBuildingName[1])), present[1]);
             ReportPrototype reportPrototype = new ReportPrototype(reportName, room, new ReportPositionPrototype[] { positionPrototyp1, positionPrototyp2 });
-            Assert.AreEqual(false, await apiController.createReport(reportPrototype));
+            int resultInt = await apiController.createReport(reportPrototype);
+            bool resultBool = false;
+            if (resultInt > 0) { resultBool = true; }
+            Assert.AreEqual(false, resultBool);
         }
 
         [Test]
@@ -212,35 +233,45 @@ namespace UnitTests.ControllerTests.APITests
         [TestCase("Report testowy - WrongData Wrong Asset ID", 1, "3/6", 1, "b 34", new int[] { 1330, 3011 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'c', 'm' }, new int[] { 1, 4 }, new string[] { "3/6", "1/2" }, new int[] { 1, 2 },
     new string[] { "b 34", "b 4" }, new bool[] { true, true })]
 
-        public async Task createReport_WrongData_WrongAssetId(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present)
+        public async Task CreateReport_WrongData_WrongAssetId(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present)
         {
             Room room = new Room(CurrentRoomId, CurrentRoomName, new Building(CurrentBuildingId, CurrentBuildingName));
             ReportPositionPrototype positionPrototyp1 = new ReportPositionPrototype(new Asset(assetId[0], new AssetType(assetTypeId[0], assetTypeName[0], assetLetter[0])), new Room(PreviousRoomId[0], PreviousRoomName[0], new Building(PreviousBuildingId[0], PreviousBuildingName[0])), present[0]);
             ReportPositionPrototype positionPrototyp2 = new ReportPositionPrototype(new Asset(assetId[1], new AssetType(assetTypeId[1], assetTypeName[1], assetLetter[1])), new Room(PreviousRoomId[1], PreviousRoomName[1], new Building(PreviousBuildingId[1], PreviousBuildingName[1])), present[1]);
             ReportPrototype reportPrototype = new ReportPrototype(reportName, room, new ReportPositionPrototype[] { positionPrototyp1, positionPrototyp2 });
-            Assert.AreEqual(false, await apiController.createReport(reportPrototype));
+            int resultInt = await apiController.createReport(reportPrototype);
+            bool resultBool = false;
+            if (resultInt > 0) { resultBool = true; }
+            Assert.AreEqual(false, resultBool);
         }
 
         [Test]
         [TestCase("Report testowy - WrongData PreviousIsNullPresentIsFalse", 1, "3/6", 1, "b 34", new int[] { 1, 3 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'c', 'm' }, new bool[] { false, false })]
 
-        public async Task createReport_WrongData_PreviousIsNullPresentIsFalse(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, bool[] present)
+        public async Task CreateReport_WrongData_PreviousIsNullPresentIsFalse(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, bool[] present)
         {
             Room room = new Room(CurrentRoomId, CurrentRoomName, new Building(CurrentBuildingId, CurrentBuildingName));
             ReportPositionPrototype positionPrototyp1 = new ReportPositionPrototype(new Asset(assetId[0], new AssetType(assetTypeId[0], assetTypeName[0], assetLetter[0])), null, present[0]);
             ReportPositionPrototype positionPrototyp2 = new ReportPositionPrototype(new Asset(assetId[1], new AssetType(assetTypeId[1], assetTypeName[1], assetLetter[1])), null, present[1]);
             ReportPrototype reportPrototype = new ReportPrototype(reportName, room, new ReportPositionPrototype[] { positionPrototyp1, positionPrototyp2 });
-            Assert.AreEqual(false, await apiController.createReport(reportPrototype));
+            int resultInt = await apiController.createReport(reportPrototype);
+            bool resultBool = false;
+            if (resultInt > 0) { resultBool = true; }
+            Assert.AreEqual(false, resultBool);
         }
 
         [Test]
         [TestCase("Report testowy", 1, "3/6", 1, "b 34", 1, 1, "komputer", 'c', true)]
+        [TestCase("Report testowy", 6, "1/4", 4, "b 6", 8, 2, "krzesło", 'k', true)]
         public async Task CreateReport_CorrectData_PreviousIsNullPresentIsTrue(string reportName, int currentRoomId, string currentRoomName, int currentBuildingId, string currentBuildingName, int assetId, int assetTypeId, string assetTypeName, char assetLetter, bool present)
         {
             Room CurrentRoom = new Room(currentRoomId, currentRoomName, new Building(currentBuildingId, currentBuildingName));
             ReportPositionPrototype positionPrototype = new ReportPositionPrototype(new Asset(assetId, new AssetType(assetTypeId, assetTypeName, assetLetter)), null, present);
             ReportPrototype reportPrototype = new ReportPrototype(reportName, CurrentRoom, new ReportPositionPrototype[] { positionPrototype });
-            Assert.AreEqual(true, await apiController.createReport(reportPrototype));
+            int resultInt = await apiController.createReport(reportPrototype);
+            bool resultBool = false;
+            if (resultInt > 0) { resultBool = true; }
+            Assert.AreEqual(true, resultBool);
         }
     }
 }
