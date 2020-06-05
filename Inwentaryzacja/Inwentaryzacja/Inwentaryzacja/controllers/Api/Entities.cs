@@ -161,4 +161,18 @@ namespace Inwentaryzacja.Controllers.Api
             return hashCode;
         }
     }
+
+    public class AnswerEntity
+    {
+        public int id;
+        public string message;
+    }
+
+    public class ScanEntity
+    {
+        public int id;
+        public RoomEntity room;
+        public UserEntity owner;
+        public DateTime create_date;
+    }
 }

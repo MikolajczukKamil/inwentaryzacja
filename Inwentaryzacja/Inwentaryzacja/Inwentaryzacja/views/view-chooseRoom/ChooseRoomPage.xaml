@@ -122,7 +122,8 @@
                     HeightRequest="45"
                     Padding="10,5,10,5"
                     Margin="20,20"
-                    Clicked="LogoutButtonClicked" />
+                    Clicked="LogoutButtonClicked"
+                    x:Name="LogoutButton"/>
 
             </StackLayout>
 

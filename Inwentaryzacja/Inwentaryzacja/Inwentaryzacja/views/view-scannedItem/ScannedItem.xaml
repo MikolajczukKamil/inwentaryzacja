@@ -23,102 +23,318 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout BackgroundColor="#8EE3BA" >
-            <Label Text="Zeskanowane przedmioty" TextColor="Black"
-                  Margin="15,15, 15,0"
-                  VerticalOptions="Start" 
-                  HorizontalOptions="CenterAndExpand"
-                  HorizontalTextAlignment="Center" 
-                  FontSize="30"/>
-                <ListView  Margin="15" 
-                       RowHeight="120" 
-                       SeparatorVisibility="None" 
-                       x:Name="ReportList">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <customControls:CustomViewCell SelectedBackgroundColor="#8EE3BA" xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core">
-                                <ViewCell.View>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                                    <Frame CornerRadius="10" 
-                                   Margin="10" 
-                                   HasShadow="False">
+            <StackLayout 
+                BackgroundColor="#8EE3BA">
+                <StackLayout 
+                    VerticalOptions="Start">
+                    <Label  
+                        Text="Wyniki skanowania"
+                        FontSize="30" 
+                        VerticalTextAlignment="Center"
+                        HorizontalTextAlignment="Center"
+                        VerticalOptions="Center"
+                        Padding="0,10"
+                        BackgroundColor="#bfffe1"
+                        TextColor="Black"
+                        FontAttributes="Bold"/>
+                </StackLayout>
 
-                                        <StackLayout  BackgroundColor="White"
-                                             HorizontalOptions="FillAndExpand" 
-                                             VerticalOptions="FillAndExpand" 
-                                             Orientation="Vertical"
-                                                  >
-                                            <Grid Margin="0" 
-                                          Padding="0">
+                <StackLayout
+                    VerticalOptions="StartAndExpand"
+                    HorizontalOptions="CenterAndExpand">
+                    <ScrollView Orientation="Vertical">
+                        <StackLayout>
+                            <Label  
+                                x:Name="ScannedInRoomTopic"
+                                FontSize="Large" 
+                                BackgroundColor="#bfffe1"
+                                Margin="5,10"
+                                VerticalTextAlignment="Center"
+                                HorizontalTextAlignment="Center"
+                                TextColor="Black"
+                                FontAttributes="Bold"/>
 
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="*"/>
-                                                </Grid.RowDefinitions>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.1*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label  
+                                x:Name="ScannedInRoomLabel"
+                                Margin="20,0"
+                                FontSize="Medium" 
+                                Grid.Column="1"
+                                VerticalOptions="StartAndExpand"
+                                TextColor="Black"/>
+                                <Label  
+                                x:Name="ScannedInRoomAmount"
+                                Margin="20,0"
+                                FontSize="Medium" 
+                                Grid.Column="2"
+                                VerticalOptions="StartAndExpand"
+                                TextColor="Black"/>
+                            </Grid>
 
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
+                            <local:RoundedButton 
+                            Text="Szczegóły"
+                            Clicked="ScannedInRoomDetails"
+                            HorizontalOptions="Center"
+                            FontSize="Medium"
+                            BackgroundColor="White"
+                            Padding="10,5"/>
 
-                                                </Grid.ColumnDefinitions>
+                            <Label  
+                            x:Name="UnscannedInRoomTopic"
+                            FontSize="Large" 
+                            BackgroundColor="#bfffe1"
+                            Margin="5,10"
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Center"
+                            TextColor="Black"
+                            FontAttributes="Bold"  />
 
-                                                <Label Text="{Binding ScaningText}"  
-                                               FontSize="18" 
-                                               Grid.Column="0" 
-                                               Grid.Row="0"
-                                               Grid.RowSpan="2" 
-                                               TextColor="Black" 
-                                               FontAttributes="Bold"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.1*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                    <ColumnDefinition Width="0.1*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                x:Name="UnscannedInRoomLabel"
+                                Margin="20,0"
+                                FontSize="Medium" 
+                                Grid.Column="1"
+                                VerticalOptions="StartAndExpand"
+                                TextColor="Black"/>
+                                <Label  
+                                x:Name="UnscannedInRoomAmount"
+                                Margin="20,0"
+                                FontSize="Medium" 
+                                Grid.Column="2"
+                                VerticalOptions="StartAndExpand"
+                                TextColor="Black"/>
+                            </Grid>
+                            <Grid>
+                                <local:RoundedButton 
+                                Text="Szczegóły"
+                                Clicked="UnscannedInRoomDetails"
+                                FontSize="Medium"
+                                Grid.Column="0"
+                                BackgroundColor="White"
+                                Margin="40,0,5,0"/>
 
-                                                <Label Text="{Binding ScaningRoom,StringFormat='Sala: {0:F0}' }"   
-                                               FontSize="10" 
-                                               Grid.Column="0" 
-                                               Grid.Row="2"  
-                                               TextColor="Gray"/>
+                                <local:RoundedButton 
+                                Text="Uznaj za zeskanowane"
+                                Clicked="MoveAllInRoom"
+                                FontSize="Medium"
+                                Grid.Column="1"
+                                BackgroundColor="White"
+                                Margin="0,0,40,0"/>
+                            </Grid>
 
-                                                <Label Text="{Binding Info}"   
-                                               FontSize="14" 
-                                               Grid.Column="2" 
-                                               Grid.Row="0" 
-                                               Grid.RowSpan="3"
-                                               TextColor="{Binding TextColor}"/>
-                                            </Grid>
-                                        </StackLayout>
-                                    </Frame>
-                                </ViewCell.View>
-                            </customControls:CustomViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            <Grid MinimumHeightRequest="200">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <local:RoundedButton 
-                    Text="Powrót" 
-                    ImageSource="back_icon.png" 
-                    ContentLayout="Right, -70" 
-                    Padding="0, 0, 10, 0" 
-                    TextColor="Blue" 
-                    FontSize="Large" 
-                    Margin="10, 0, 0, 20" 
-                    Clicked="RetPrevPage" 
-                    Grid.Column="0" 
-                    x:Name="RetButton"/>
+                            <Label   
+                            Text="Inne"
+                            FontSize="Large" 
+                            BackgroundColor="#bfffe1"
+                            Margin="5,10"
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Center"
+                            TextColor="Black"
+                            FontAttributes="Bold" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.1*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label  
+                                x:Name="OtherLabel"
+                                Margin="20,0"
+                                FontSize="Medium" 
+                                Grid.Column="1"
+                                VerticalOptions="StartAndExpand"
+                                TextColor="Black"/>
+                                <Label  
+                                x:Name="OtherAmount"
+                                Margin="20,0"
+                                FontSize="Medium" 
+                                Grid.Column="2"
+                                VerticalOptions="StartAndExpand"
+                                TextColor="Black"/>
+                            </Grid>
 
-                <local:RoundedButton 
-                    Text="Zakończ" 
-                    ImageSource="fajka.png" 
-                    ContentLayout="Right, -50" 
-                    Padding="0, 0, 10, 0" 
-                    TextColor="Green" 
-                    FontSize="Large" 
-                    Margin="0, 0, 10, 20" 
-                    Clicked="EndScanning"  
-                    Grid.Column="1"/>
-            </Grid>
-        </StackLayout>
+                            <local:RoundedButton 
+                            Text="Szczegóły"
+                            Clicked="OtherDetails"
+                            HorizontalOptions="Center"
+                            FontSize="Medium"
+                            BackgroundColor="White"
+                            Padding="10,5"/>
+                            <Grid>
+                                <ListView  
+                                RowHeight="100" 
+                                SeparatorVisibility="None" 
+                                x:Name="ReportList">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <customControls:CustomViewCell SelectedBackgroundColor="#8EE3BA" xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core">
+                                                <ViewCell.View>
+                                                    <Frame 
+                                                    CornerRadius="5" 
+                                                    Margin="5" 
+                                                    HasShadow="False">
+                                                        <StackLayout 
+                                                        BackgroundColor="White"
+                                                        HorizontalOptions="FillAndExpand" 
+                                                        VerticalOptions="FillAndExpand" 
+                                                        Orientation="Vertical">
+                                                            <Grid 
+                                                            Margin="5,0"
+                                                            Padding="0" >
+
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="*"/>
+                                                                    <RowDefinition Height="*"/>
+                                                                </Grid.RowDefinitions>
+
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="0.25*"/>
+                                                                    <ColumnDefinition Width="0.25*"/>
+                                                                    <ColumnDefinition Width="0.25*"/>
+                                                                    <ColumnDefinition Width="0.25*"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Label 
+                                                                Text="{Binding ScaningText}"  
+                                                                FontSize="Medium" 
+                                                                Grid.Column="0" 
+                                                                Grid.Row="0"
+                                                                Grid.ColumnSpan="2" 
+                                                                TextColor="Black" 
+                                                                FontAttributes="Bold"/>
+
+                                                                <Label 
+                                                                Text="{Binding RoomId, StringFormat='Sala: {0:F0}'}"   
+                                                                VerticalOptions="Center"
+                                                                FontSize="Micro" 
+                                                                Grid.Column="0" 
+                                                                Grid.Row="1"  
+                                                                TextColor="Gray"/>
+
+                                                                <Label 
+                                                                Text="{Binding ScannedId, StringFormat='Id: {0:F0}'}"   
+                                                                VerticalOptions="Center"
+                                                                FontSize="Micro" 
+                                                                Grid.Column="1" 
+                                                                Grid.Row="1"  
+                                                                TextColor="Gray"/>
+
+                                                                <Button 
+                                                                Text="Przenieś tutaj"
+                                                                CommandParameter="{Binding ScannedId}"
+                                                                Grid.Column="2" 
+                                                                Grid.Row="0" 
+                                                                Grid.RowSpan="2"
+                                                                BackgroundColor="WhiteSmoke" 
+                                                                BorderColor="Black" 
+                                                                CornerRadius="10" 
+                                                                BorderWidth="2" 
+                                                                FontSize="Micro"
+                                                                Clicked="ChangeRoom" 
+                                                                android:Button.UseDefaultShadow="true" />
+
+                                                                <Button 
+                                                                Text="Nic nie zmieniaj" 
+                                                                CommandParameter="{Binding ScannedId}"
+                                                                Grid.Column="3" 
+                                                                Grid.Row="0" 
+                                                                Grid.RowSpan="2"
+                                                                BackgroundColor="WhiteSmoke" 
+                                                                BorderColor="Black" 
+                                                                CornerRadius="10" 
+                                                                BorderWidth="2"
+                                                                FontSize="Micro"
+                                                                Clicked="NoChange" 
+                                                                android:Button.UseDefaultShadow="true"/>
+                                                            </Grid>
+                                                        </StackLayout>
+                                                    </Frame>
+                                                </ViewCell.View>
+                                            </customControls:CustomViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </Grid>
+                            <local:RoundedButton 
+                                Text="Przenieś wszystkie tutaj" 
+                                x:Name="ButtonMoveAll"
+                                Clicked="moveAllItems" 
+                                BackgroundColor="White"  
+                                Grid.Column="0" 
+                                Grid.ColumnSpan="2" 
+                                Grid.Row="0" 
+                                Margin="40,0,40,5" 
+                                Padding="0, 0, 10,0" 
+                                FontSize="Medium" />
+                        </StackLayout>
+                    </ScrollView>
+                </StackLayout>
+                <StackLayout 
+                Orientation="Horizontal"
+                BackgroundColor="#8EE3BA" 
+                VerticalOptions="End"
+                HorizontalOptions="CenterAndExpand">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="55"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+
+                        <local:RoundedButton  
+                        Text="Powrót" 
+                        x:Name="ButtonPrevPage"
+                        ImageSource="back_icon.png"
+                        ContentLayout="Right,-10"
+                        BackgroundColor="White" 
+                        TextColor="Blue" 
+                        Grid.Column="0" 
+                        Margin="15,0,5,5" 
+                        Padding="0, 0, 10,0" 
+                        Clicked="RetPrevPage" 
+                        FontSize="Large"/>
+
+                        <local:RoundedButton  
+                        Text="Zatwierdź"  
+                        x:Name="ButtonConfirm"
+                        ImageSource="fajka.png"
+                        ContentLayout="Right,-10"
+                        BackgroundColor="White" 
+                        TextColor="Green" 
+                        Grid.Column="1" 
+                        Margin="5,0,15,5" 
+                        Padding="0, 0, 10,0" 
+                        Clicked="EndScanning"  
+                        FontSize="Large"/>
+                    </Grid>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout x:Name="LoadingScreen" Grid.Column="0" Grid.Row="0" BackgroundColor="Black" Opacity="0.5" IsVisible="false">
+                <ActivityIndicator x:Name="_load" Color="Orange" IsRunning="True" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+            </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

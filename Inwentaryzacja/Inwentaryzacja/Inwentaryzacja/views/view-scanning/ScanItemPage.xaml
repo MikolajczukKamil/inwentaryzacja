@@ -16,7 +16,7 @@
             <RowDefinition Height="0.1*"/>
             <RowDefinition Height="0.6*"/>
             <RowDefinition Height="0.1*"/>
-            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
         
         <Grid.ColumnDefinitions>
@@ -88,21 +88,19 @@
             <local:RoundedButton 
             ImageSource="light.png" 
             Clicked="TurnLight"
-            Margin="10, 0, 0, 0"
+            Margin="15, 0, 0, 0"
             Grid.Row="0" 
             Grid.Column="0" />
         </Grid>
         
-        
-        
         <local:RoundedButton 
             Text="Anuluj" 
             ImageSource="krzyzyk.png" 
-            ContentLayout="Right, -70" 
+            ContentLayout="Right, -10" 
             Padding="0, 0, 10,0" 
             TextColor="Red" 
             FontSize="Large" 
-            Margin="10, 0, 0, 20" 
+            Margin="15, 0, 5, 10" 
             Clicked="Cancel" 
             Grid.Row="3" 
             Grid.Column="0" />
@@ -110,11 +108,11 @@
         <local:RoundedButton 
             Text="Podgląd" 
             ImageSource="loupe.png" 
-            ContentLayout="Right, -50" 
+            ContentLayout="Right, -10" 
             Padding="0, 0, 10,0" 
             TextColor="Green" 
             FontSize="Large" 
-            Margin="0, 0, 10, 20" 
+            Margin="5, 0, 15, 10" 
             Clicked="ShowScanedItem"  
             Grid.Row="3" 
             Grid.Column="1"

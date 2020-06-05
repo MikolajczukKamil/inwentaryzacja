@@ -1,4 +1,4 @@
-﻿using Inwentaryzacja.controllers.session;
+using Inwentaryzacja.controllers.session;
 using Inwentaryzacja.Controllers.Api;
 using Inwentaryzacja.Models;
 using System;
@@ -11,11 +11,13 @@ namespace Inwentaryzacja.views.view_chooseRoom
     public partial class AddRoom : ContentPage
     {
         BuildingEntity[] buildings;
-        bool addedNewBuilding = false;
+        int indexSelectedItem;
         APIController api = new APIController();
 
-        public AddRoom()
+        public AddRoom(BuildingEntity[] buildings, int indexSelectedItem = 0)
         {
+            this.buildings = buildings;
+            this.indexSelectedItem = indexSelectedItem;
             InitializeComponent();
             api.ErrorEventHandler += onApiError;
             BindingContext = this;
@@ -31,11 +33,16 @@ namespace Inwentaryzacja.views.view_chooseRoom
         {
             EnableView(false);
 
-            buildings = await api.getBuildings();
+            if (buildings == null)
+            {
+                buildings = await api.getBuildings();
+            }
 
-            EnableView(true);
-
-            if (buildings == null) return;
+            if (buildings == null)
+            {
+                EnableView(true);
+                return;
+            }
 
             foreach (BuildingEntity item in buildings)
             {
@@ -44,33 +51,42 @@ namespace Inwentaryzacja.views.view_chooseRoom
 
             if (BuildingPicker.Items.Count > 0)
             {
-                if (addedNewBuilding)
+                if (indexSelectedItem >=0 && indexSelectedItem < BuildingPicker.Items.Count)
                 {
-                    BuildingPicker.SelectedItem = BuildingPicker.Items[BuildingPicker.Items.Count - 1];
+                    BuildingPicker.SelectedItem = BuildingPicker.Items[indexSelectedItem];
                 }
                 else
                 {
                     BuildingPicker.SelectedItem = BuildingPicker.Items[0];
                 }
             }
+
+            EnableView(true);
         }
   
         public async void return_ChooseRoom(object o, EventArgs args)
         {
+            EnableView(false);
             await Navigation.PopAsync();
+            EnableView(true);
         }
        
         public async void Check_Room(object o, EventArgs args)
         {
+            EnableView(false);
+
             string number = room_number.Text;
 
             BuildingEntity mybuilding = new BuildingEntity();
 
             string choosenBuildingName = "";
-            if (BuildingPicker.Items.Count>0)
-                choosenBuildingName = BuildingPicker.Items[BuildingPicker.SelectedIndex];
 
-            if(buildings!=null)
+            if (BuildingPicker.Items.Count > 0) {
+                
+                choosenBuildingName = BuildingPicker.Items[BuildingPicker.SelectedIndex];
+            }
+
+            if(buildings != null)
             {
                 foreach (var item in buildings)
                 {
@@ -80,15 +96,10 @@ namespace Inwentaryzacja.views.view_chooseRoom
                     }
                 }
             }
-            
 
-            EnableView(false);
+            int roomId = await api.createRoom(new RoomPropotype(number, mybuilding));
 
-            bool isCreated = await api.createRoom(new RoomPropotype(number, mybuilding));
-
-            EnableView(true);
-
-            if (isCreated)
+            if (roomId > 0)
             {
                 var stack = Navigation.NavigationStack;
                 var previousPage = (ChooseRoomPage)stack[stack.Count - 2];
@@ -96,6 +107,8 @@ namespace Inwentaryzacja.views.view_chooseRoom
                 await Navigation.PopAsync();
                 await DisplayAlert("Dodawanie pokoju", "Pomyślnie dodano nowy pokój", "OK");
             }
+
+            EnableView(true);
         }
         
         private void EnableView(bool state)
@@ -103,6 +116,7 @@ namespace Inwentaryzacja.views.view_chooseRoom
             IsBusy = !state;
             AddRoomBtn.IsEnabled = state;
             BackBtn.IsEnabled = state;
+            LogoutButton.IsEnabled = state;
         }
       
         private async void onApiError(object o, ErrorEventArgs error)
@@ -117,12 +131,15 @@ namespace Inwentaryzacja.views.view_chooseRoom
 
         private async void LogoutButtonClicked(object sender, EventArgs e)
         {
+            EnableView(false);
             if (await DisplayAlert("Wylogowywanie", "Czy na pewno chcesz się wylogować?", "Tak", "Nie"))
             {
                 var session = new SessionController(new APIController());
                 session.RemoveSession();
                 App.Current.MainPage = new LoginPage();
             }
+
+            EnableView(true);
         }
     }
 }

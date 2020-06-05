@@ -21,6 +21,7 @@ namespace UnitTests.ApiTests
             await apiController.LoginUser("user1", "111");
         }
 
+        /* Usunięto metodę CreateAsset
         [Test]
         public async Task CreateAssetTest_CorrectAssetTypeData()
         {
@@ -35,6 +36,7 @@ namespace UnitTests.ApiTests
             AssetPrototype assetPrototype = new AssetPrototype(new AssetType(typeId,typeName,typeLetter));
             Assert.AreEqual(false, await apiController.CreateAsset(assetPrototype));
         }
+        */
 
         [TestCase(1, 1, 'c', "komputer")]
         [TestCase(5, 5, 's', "stół")]

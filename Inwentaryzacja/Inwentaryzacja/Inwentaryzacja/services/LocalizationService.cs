@@ -28,12 +28,12 @@ namespace Inwentaryzacja.Services
 			throw new System.Exception("Not implemented");
 		}
 
-		public bool AddNewRoom(RoomPropotype newRoom)
+		public int AddNewRoom(RoomPropotype newRoom)
 		{
 			return api.createRoom(newRoom).Result;
 		}
 
-		public bool AddNewBuilding(BuildingPrototype newBuilding)
+		public int AddNewBuilding(BuildingPrototype newBuilding)
 		{
 			return api.createBuilding(newBuilding).Result;
 		}
