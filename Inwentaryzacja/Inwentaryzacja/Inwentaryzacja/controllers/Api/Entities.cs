@@ -15,13 +15,7 @@ namespace Inwentaryzacja.Controllers.Api
             return false;
         }
 
-        public override int GetHashCode()
-        {
-            int hashCode = -1056084179;
-            hashCode = hashCode * -1521134295 + id.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<AssetTypeEntity>.Default.GetHashCode(type);
-            return hashCode;
-        }
+        public override int GetHashCode() => id.GetHashCode();
     }
 
     public class AssetInfoEntity : AssetEntity
@@ -40,14 +34,7 @@ namespace Inwentaryzacja.Controllers.Api
                 return true;
             return false;
         }
-        public override int GetHashCode()
-        {
-            int hashCode = 1186222763;
-            hashCode = hashCode * -1521134295 + id.GetHashCode();
-            hashCode = hashCode * -1521134295 + letter.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
-            return hashCode;
-        }
+        public override int GetHashCode() => id.GetHashCode();
     }
 
     public class RoomEntity
@@ -59,19 +46,12 @@ namespace Inwentaryzacja.Controllers.Api
         {
             if (building.Equals(((RoomEntity)obj).building))
             {
-                if(id == ((RoomEntity)obj).id && name == ((RoomEntity)obj).name)
+                if (id == ((RoomEntity)obj).id && name == ((RoomEntity)obj).name)
                     return true;
             }
             return false;
         }
-        public override int GetHashCode()
-        {
-            int hashCode = -1737075669;
-            hashCode = hashCode * -1521134295 + id.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
-            hashCode = hashCode * -1521134295 + EqualityComparer<BuildingEntity>.Default.GetHashCode(building);
-            return hashCode;
-        }
+        public override int GetHashCode() => id.GetHashCode();
     }
 
     public class BuildingEntity
@@ -80,18 +60,11 @@ namespace Inwentaryzacja.Controllers.Api
         public string name;
         public override bool Equals(object obj)
         {
-            if (id == ((BuildingEntity)obj).id &&  name == ((BuildingEntity)obj).name)
+            if (id == ((BuildingEntity)obj).id && name == ((BuildingEntity)obj).name)
                 return true;
             return false;
         }
-
-        public override int GetHashCode()
-        {
-            int hashCode = -48284730;
-            hashCode = hashCode * -1521134295 + id.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
-            return hashCode;
-        }
+        public override int GetHashCode() => id.GetHashCode();
     }
 
     public class ReportHeaderEntity
@@ -107,17 +80,7 @@ namespace Inwentaryzacja.Controllers.Api
                 return true;
             return false;
         }
-
-        public override int GetHashCode()
-        {
-            int hashCode = -986270442;
-            hashCode = hashCode * -1521134295 + id.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
-            hashCode = hashCode * -1521134295 + create_date.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<UserEntity>.Default.GetHashCode(owner);
-            hashCode = hashCode * -1521134295 + EqualityComparer<RoomEntity>.Default.GetHashCode(room);
-            return hashCode;
-        }
+        public override int GetHashCode() => id.GetHashCode();
     }
 
     public class ReportPositionEntity
@@ -131,15 +94,7 @@ namespace Inwentaryzacja.Controllers.Api
                 return true;
             return false;
         }
-
-        public override int GetHashCode()
-        {
-            int hashCode = 198247793;
-            hashCode = hashCode * -1521134295 + EqualityComparer<AssetEntity>.Default.GetHashCode(asset);
-            hashCode = hashCode * -1521134295 + EqualityComparer<RoomEntity>.Default.GetHashCode(previous_room);
-            hashCode = hashCode * -1521134295 + present.GetHashCode();
-            return hashCode;
-        }
+        public override int GetHashCode() => asset.GetHashCode() * asset.GetHashCode();
     }
 
     public class UserEntity
@@ -152,14 +107,8 @@ namespace Inwentaryzacja.Controllers.Api
                 return true;
             return false;
         }
+        public override int GetHashCode() => id.GetHashCode();
 
-        public override int GetHashCode()
-        {
-            int hashCode = 962899218;
-            hashCode = hashCode * -1521134295 + id.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(login);
-            return hashCode;
-        }
     }
 
     public class AnswerEntity
@@ -174,5 +123,13 @@ namespace Inwentaryzacja.Controllers.Api
         public RoomEntity room;
         public UserEntity owner;
         public DateTime create_date;
+        public override bool Equals(object obj)
+        {
+            if (id == ((ScanEntity)obj).id && room.Equals(((ScanEntity)obj).room) && owner.Equals(((ScanEntity)obj).owner) && create_date.Equals(((ScanEntity)obj).create_date))
+                return true;
+            return false;
+        }
+
+        public override int GetHashCode() => id.GetHashCode();
     }
 }
