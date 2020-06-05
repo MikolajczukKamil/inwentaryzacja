@@ -8,6 +8,20 @@ namespace Inwentaryzacja.Controllers.Api
     {
         public int id;
         public AssetTypeEntity type;
+        public override bool Equals(object obj)
+        {
+            if (id == ((AssetEntity)obj).id && type.Equals(((AssetEntity)obj).type))
+                return true;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -1056084179;
+            hashCode = hashCode * -1521134295 + id.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<AssetTypeEntity>.Default.GetHashCode(type);
+            return hashCode;
+        }
     }
 
     public class AssetInfoEntity : AssetEntity
@@ -87,6 +101,23 @@ namespace Inwentaryzacja.Controllers.Api
         public DateTime create_date;
         public UserEntity owner;
         public RoomEntity room;
+        public override bool Equals(object obj)
+        {
+            if (id == ((ReportHeaderEntity)obj).id && name == ((ReportHeaderEntity)obj).name && owner.Equals(((ReportHeaderEntity)obj).owner) && room.Equals(((ReportHeaderEntity)obj).room) && create_date.Equals(((ReportHeaderEntity)obj).create_date))
+                return true;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -986270442;
+            hashCode = hashCode * -1521134295 + id.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
+            hashCode = hashCode * -1521134295 + create_date.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<UserEntity>.Default.GetHashCode(owner);
+            hashCode = hashCode * -1521134295 + EqualityComparer<RoomEntity>.Default.GetHashCode(room);
+            return hashCode;
+        }
     }
 
     public class ReportPositionEntity
@@ -94,12 +125,41 @@ namespace Inwentaryzacja.Controllers.Api
         public AssetEntity asset;
         public RoomEntity previous_room;
         public bool present;
+        public override bool Equals(object obj)
+        {
+            if (asset.Equals(((ReportPositionEntity)obj).asset) && previous_room.Equals(((ReportPositionEntity)obj).previous_room) && present == ((ReportPositionEntity)obj).present)
+                return true;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 198247793;
+            hashCode = hashCode * -1521134295 + EqualityComparer<AssetEntity>.Default.GetHashCode(asset);
+            hashCode = hashCode * -1521134295 + EqualityComparer<RoomEntity>.Default.GetHashCode(previous_room);
+            hashCode = hashCode * -1521134295 + present.GetHashCode();
+            return hashCode;
+        }
     }
 
     public class UserEntity
     {
         public int id;
         public string login;
+        public override bool Equals(object obj)
+        {
+            if (id == ((UserEntity)obj).id && login == ((UserEntity)obj).login)
+                return true;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 962899218;
+            hashCode = hashCode * -1521134295 + id.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(login);
+            return hashCode;
+        }
     }
 
     public class AnswerEntity
