@@ -50,7 +50,7 @@
                 <StackLayout
                     VerticalOptions="StartAndExpand"
                     HorizontalOptions="CenterAndExpand">
-                    <ScrollView Orientation="Vertical">
+                    <ScrollView Orientation="Vertical" x:Name="scrollView">
                         <StackLayout>
                             <Label  
                                 x:Name="ScannedInRoomTopic"

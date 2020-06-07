@@ -1,3 +1,4 @@
+using Inwentaryzacja.Controllers.Api;
 using System;
 using System.Collections.Generic;
 
@@ -9,10 +10,10 @@ namespace Inwentaryzacja.Models
 		public int room;
 		public ReportPositionPrototype[] assets;
 
-		public ReportPrototype(string name, Room room, ReportPositionPrototype[] postions)
+		public ReportPrototype(string name, RoomEntity room, ReportPositionPrototype[] postions)
 		{
 			this.name = name;
-			this.room = room.Id;
+			this.room = room.id;
 			this.assets = postions;
 		}
 	}
