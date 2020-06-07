@@ -42,16 +42,11 @@ namespace Inwentaryzacja.views.view_scannedItem
 
             public AllScaning(AssetEntity assetEntity, RoomEntity assetRoom, RoomEntity scanningRoom)
             {
-                AssetType assetType = new AssetType(assetEntity.type.id, assetEntity.type.name, assetEntity.type.letter);
-                Asset asset = new Asset(assetEntity.id, assetType);
-                Room room = null;
                 if (assetRoom != null)
                 {
-                    Building building = new Building(assetRoom.building.id, assetRoom.building.name);
-                    room = new Room(assetRoom.id, assetRoom.name, building);
                     AssetRoom = assetRoom.id;
                 }
-                reportPositionPrototype = new ReportPositionPrototype(asset, room, false);
+                reportPositionPrototype = new ReportPositionPrototype(assetEntity, assetRoom, false);
                 AssetEntity = assetEntity;
                 ScannedId = assetEntity.id;
                 ScanningRoom = scanningRoom;
@@ -327,6 +322,8 @@ namespace Inwentaryzacja.views.view_scannedItem
                     }
                 }
                 ShowInfo();
+                scrollView.IsEnabled = false;
+                await scrollView.ScrollToAsync(0, 0, true);
             }
         }
 
@@ -355,9 +352,8 @@ namespace Inwentaryzacja.views.view_scannedItem
             {
                 reportPositionPrototype[i] = allScaning[i].reportPositionPrototype;
             }
-            Room roomEntity = new Room(ScanningRoom.id, ScanningRoom.name, new Building(ScanningRoom.building.id, ScanningRoom.building.name));
             
-            ReportPrototype reportPrototype = new ReportPrototype("Raport " + ScanningRoom.building.name, roomEntity, reportPositionPrototype);
+            ReportPrototype reportPrototype = new ReportPrototype("Raport " + ScanningRoom.building.name, ScanningRoom, reportPositionPrototype);
             int end = await api.createReport(reportPrototype);
             EnableView(true);
             if (end != -1)

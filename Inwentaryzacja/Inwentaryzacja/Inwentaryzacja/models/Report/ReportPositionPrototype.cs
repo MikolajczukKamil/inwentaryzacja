@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inwentaryzacja.Controllers.Api;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,10 +11,10 @@ namespace Inwentaryzacja.Models
         public int previous;
         public bool present;
 
-        public ReportPositionPrototype(Asset asset, Room previous, bool present)
+        public ReportPositionPrototype(AssetEntity asset, RoomEntity previous, bool present)
         {
-            this.id = asset.Id;
-            this.previous = previous == null ? -1 : previous.Id;
+            this.id = asset.id;
+            this.previous = previous == null ? -1 : previous.id;
             this.present = present;
         }
     }
