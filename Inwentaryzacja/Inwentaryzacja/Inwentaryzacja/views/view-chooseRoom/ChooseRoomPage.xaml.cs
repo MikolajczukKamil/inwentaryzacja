@@ -106,7 +106,6 @@ namespace Inwentaryzacja
 			} 
 			else
 			{
-				await DisplayAlert("Uwaga", "W tym budynku nie ma żadnej sali!", "OK");
 				RoomPicker.Placeholder = "Brak sal dla tego budynku!";
 				RoomPicker.IsEnabled = false;
 			} 
