@@ -99,8 +99,17 @@ namespace Inwentaryzacja
 				RoomPicker.Items.Add(item.name);
 			}
 
-			if (RoomPicker.Items.Count > 0) RoomPicker.IsEnabled = true;
-			else RoomPicker.IsEnabled = false;
+			if (RoomPicker.Items.Count > 0)
+			{
+				RoomPicker.Placeholder = "Sala";
+				RoomPicker.IsEnabled = true;
+			} 
+			else
+			{
+				await DisplayAlert("Uwaga", "W tym budynku nie ma żadnej sali!", "OK");
+				RoomPicker.Placeholder = "Brak sal dla tego budynku!";
+				RoomPicker.IsEnabled = false;
+			} 
 		}		
 		
 		private async void GetBuildings()
@@ -250,7 +259,7 @@ namespace Inwentaryzacja
 		{
 			EnableView(false);
 			if (await DisplayAlert("Wylogowywanie", "Czy na pewno chcesz się wylogować?", "Tak", "Nie"))
-      {
+			{
 				var session = new SessionController(new APIController());
 				session.RemoveSession();
 				App.Current.MainPage = new LoginPage();
