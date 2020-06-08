@@ -75,17 +75,20 @@ namespace Inwentaryzacja
             });
         }
 
-        private async void _loginButton_Clicked(object sender, EventArgs e)
+        private void _loginButton_Clicked(object sender, EventArgs e)
         {
             PageIsBusy(true);
 
-            if (await api.LoginUser(_login.Text, _password.Text))
+            Device.BeginInvokeOnMainThread(async () =>
             {
-                var session = new SessionController(api);
-                session.SaveSessionToken();
+                if (await api.LoginUser(_login.Text, _password.Text))
+                {
+                    var session = new SessionController(api);
+                    session.SaveSessionToken();
 
-                NextPage();
-            }
+                    NextPage();
+                }
+            });
         }
 
         private async void LoginFail(object sender, ErrorEventArgs e)
