@@ -161,20 +161,20 @@ namespace Inwentaryzacja
                     {
                         try
                         {
-                            if (assetInfoEntity.room != null && assetInfoEntity.room.id == Room.id)
-                            {
-                                AllItems.Find(x => x.ScannedId == assetInfoEntity.id).ItemMoved();
-                                Device.BeginInvokeOnMainThread(async () =>
-                                {
-                                    await ShowPopup(); ;
-                                });
-                            }
-                            else
+                            if (assetInfoEntity.room == null || assetInfoEntity.room.id != Room.id)
                             {
                                 AllItems.Add(new AllScaning(assetInfoEntity, assetInfoEntity.room, Room));
                                 Device.BeginInvokeOnMainThread(async () =>
                                 {
                                     await ShowPopup("Zeskanowano przedmiot z innej sali");
+                                });
+                            }
+                            else
+                            {
+                                AllItems.Find(x => x.ScannedId == assetInfoEntity.id).ItemMoved();
+                                Device.BeginInvokeOnMainThread(async () =>
+                                {
+                                    await ShowPopup(); ;
                                 });
                             }
                         }
