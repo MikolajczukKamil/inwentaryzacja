@@ -166,48 +166,53 @@ namespace Inwentaryzacja
 			}
 		}
 
-		private async void Continue_Button_Clicked(object o, EventArgs args) 
+		private void Continue_Button_Clicked(object o, EventArgs args) 
 		{
 			EnableView(false);
-
-			if (RoomPicker.SelectedIndex < 0)
+			Device.BeginInvokeOnMainThread(async () =>
 			{
-				await DisplayAlert("Pomieszczenie", "Wybierz pomieszczenie", "OK");
-				EnableView(false);
-				return;
-			}
-
-			RoomEntity selectedRoom = null;
-			string selectedName = RoomPicker.Items[RoomPicker.SelectedIndex];
-
-			foreach (var room in rooms)
-			{
-				if(room.name == selectedName)
+				if (RoomPicker.SelectedIndex < 0)
 				{
-					selectedRoom = room;
-					break;
+					await DisplayAlert("Pomieszczenie", "Wybierz pomieszczenie", "OK");
+					EnableView(true);
+					return;
 				}
-			}
 
-			if(selectedRoom != null)
-			{
-				var status = await CheckPermissions();
+				RoomEntity selectedRoom = null;
+				string selectedName = RoomPicker.Items[RoomPicker.SelectedIndex];
 
-				if (status != PermissionStatus.Granted)
+				await Task.Run(() => 
+				{ 
+					foreach (var room in rooms)
+					{
+						if (room.name == selectedName)
+						{
+							selectedRoom = room;
+							break;
+						}
+					}
+				});
+
+				if (selectedRoom != null)
 				{
-					await DisplayAlert("Komunikat","Bez uprawnień do kamery aplikacja nie może działać poprawnie", "OK");
+					var status = await CheckPermissions();
+
+					if (status != PermissionStatus.Granted)
+					{
+						await DisplayAlert("Komunikat", "Bez uprawnień do kamery aplikacja nie może działać poprawnie", "OK");
+					}
+					else
+					{
+						await Navigation.PushModalAsync(new ScanItemPage(selectedRoom));
+					}
 				}
 				else
 				{
-					await Navigation.PushModalAsync(new ScanItemPage(selectedRoom));
+					await DisplayAlert("Błąd", "Błąd niespodzianka, nie znaleziono wybranego pomieszczenia", "OK");
 				}
-			}
-			else
-			{
-				await DisplayAlert("Błąd", "Błąd niespodzianka, nie znaleziono wybranego pomieszczenia", "OK");
-			}
 
-			EnableView(true);
+				EnableView(true);
+			});
 		}
 
 		private async void onApiError(object o, ErrorEventArgs error)
