@@ -8,13 +8,14 @@ namespace Inwentaryzacja.Models
     public class ReportPositionPrototype
     {
         public int id;
-        public int previous;
+        public int? previous = null;
         public bool present;
 
         public ReportPositionPrototype(AssetEntity asset, RoomEntity previous, bool present)
         {
             this.id = asset.id;
-            this.previous = previous == null ? -1 : previous.id;
+            if (previous != null)
+                this.previous = previous.id;
             this.present = present;
         }
     }

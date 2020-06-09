@@ -39,13 +39,19 @@ namespace Inwentaryzacja.views.view_scannedItem
             public AssetEntity AssetEntity;
             private RoomEntity ScanningRoom;
             public bool Approved = false;
-            public int? AssetRoom = null;
+            public int? AssetRoomId;
 
             public AllScaning(AssetEntity assetEntity, RoomEntity assetRoom, RoomEntity scanningRoom)
             {
                 if (assetRoom != null)
                 {
-                    AssetRoom = assetRoom.id;
+                    AssetRoomId = assetRoom.id;
+                    AssetRoomName = assetRoom.name;
+                }
+                else
+                {
+                    AssetRoomId = null;
+                    AssetRoomName = "brak";
                 }
                 reportPositionPrototype = new ReportPositionPrototype(assetEntity, assetRoom, false);
                 AssetEntity = assetEntity;
@@ -56,12 +62,12 @@ namespace Inwentaryzacja.views.view_scannedItem
             {
                 Approved = true;
                 reportPositionPrototype.present = true;
-                AssetRoom = ScanningRoom.id;
+                AssetRoomId = ScanningRoom.id;
             }
 
             public string ScaningText { get { return string.Format("{0} {1}", AssetEntity.type.name, AssetEntity.id); } }
             public int ScannedId { get; set; }
-            public string RoomId { get { if (AssetRoom != null) return AssetRoom.ToString(); return "brak"; } }
+            public string AssetRoomName { get; set; }
 
         }
 
@@ -223,7 +229,7 @@ namespace Inwentaryzacja.views.view_scannedItem
             }
             if (text == "")
                 text = "brak";
-            await DisplayAlert("Nieprzeiesione z sali " + ScanningRoom.name, text, "Ok");
+            await DisplayAlert("Nieprzeiesione z innych sal", text, "Ok");
         }
 
         private int[] CheckAmount(int[] items, int typeId)
@@ -248,7 +254,7 @@ namespace Inwentaryzacja.views.view_scannedItem
             {
                 if (!item.Approved)
                 {
-                    if(item.AssetRoom == ScanningRoom.id)
+                    if(item.AssetRoomId == ScanningRoom.id)
                         message2 = true;
                     else
                         message1 = true;
@@ -317,7 +323,7 @@ namespace Inwentaryzacja.views.view_scannedItem
             {
                 foreach (AllScaning item in allScaning)
                 {
-                    if (!item.Approved && item.AssetRoom != ScanningRoom.id)
+                    if (!item.Approved && item.AssetRoomId != ScanningRoom.id)
                     {
                         item.ItemMoved();
                     }
@@ -336,7 +342,7 @@ namespace Inwentaryzacja.views.view_scannedItem
             {
                 foreach (AllScaning item in allScaning)
                 {
-                    if (!item.Approved && item.AssetRoom == ScanningRoom.id)
+                    if (!item.Approved && item.AssetRoomId == ScanningRoom.id)
                     {
                         item.ItemMoved();
                     }
@@ -379,7 +385,7 @@ namespace Inwentaryzacja.views.view_scannedItem
 
         private async void onApiError(object o, ErrorEventArgs error)
         {
-            await DisplayAlert("Błąd", error.MessageForUser, "OK");
+            await DisplayAlert("Błąd", error.Message, "OK");
 
             if (error.Auth == false)
             {

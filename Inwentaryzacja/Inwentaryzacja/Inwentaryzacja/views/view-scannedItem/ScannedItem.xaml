@@ -223,7 +223,7 @@
                                                                 FontAttributes="Bold"/>
 
                                                                 <Label 
-                                                                Text="{Binding RoomId, StringFormat='Sala: {0:F0}'}"   
+                                                                Text="{Binding AssetRoomName, StringFormat='Sala: {0:F0}'}"   
                                                                 VerticalOptions="Center"
                                                                 FontSize="Micro" 
                                                                 Grid.Column="0" 
