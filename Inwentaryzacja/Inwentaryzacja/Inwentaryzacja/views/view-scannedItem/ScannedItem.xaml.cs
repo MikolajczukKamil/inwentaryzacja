@@ -24,6 +24,7 @@ namespace Inwentaryzacja.views.view_scannedItem
             InitializeComponent();
             allScaning = scannedItems;
             api = new APIController();
+            api.ErrorEventHandler += onApiError;
             ScanningRoom = scanningRoom;
             BindingContext = this;
             ScannedInRoomTopic.Text = "Zeskanowane z sali " + ScanningRoom.name;
@@ -360,10 +361,6 @@ namespace Inwentaryzacja.views.view_scannedItem
             {
                 App.Current.MainPage = new NavigationPage(new WelcomeViewPage());
             }
-            else
-            {
-                await DisplayAlert("Błąd", "Nie udało się utworzyć raportu", "Ok");
-            }
         }
 
         private void EnableView(bool state)
@@ -378,6 +375,16 @@ namespace Inwentaryzacja.views.view_scannedItem
             EnableView(false);
             await Navigation.PopModalAsync();
             EnableView(true);
+        }
+
+        private async void onApiError(object o, ErrorEventArgs error)
+        {
+            await DisplayAlert("Błąd", error.MessageForUser, "OK");
+
+            if (error.Auth == false)
+            {
+                await Navigation.PushAsync(new LoginPage());
+            }
         }
     }
 }
