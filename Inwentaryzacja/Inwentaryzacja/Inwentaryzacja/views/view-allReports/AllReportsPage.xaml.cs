@@ -41,7 +41,7 @@ namespace Inwentaryzacja
 
             for (int i = 0; i < reportHeaders.Length; i++)
             {
-                allReportList.Add(new AllReport() { ReportName = reportHeaders[i].name, ReportRoom = reportHeaders[i].room.name, ReportDate = Convert.ToString(reportHeaders[i].create_date) });
+                allReportList.Add(new AllReport() { id = reportHeaders[i].id, ReportName = reportHeaders[i].name, ReportRoom = reportHeaders[i].room.name, ReportDate = Convert.ToString(reportHeaders[i].create_date) });
             }
 
             ReportList.ItemsSource = allReportList;
@@ -61,6 +61,7 @@ namespace Inwentaryzacja
 
         public class AllReport
         {
+            public int id { get; set; }
             public string ReportName { get; set; }
             public string ReportRoom { get; set; }
             public string ReportDate { get; set; }
@@ -84,7 +85,7 @@ namespace Inwentaryzacja
 
             foreach (ReportHeaderEntity item in reportHeaders)
             {
-                if (item.name == selectedReport.ReportName)
+                if (item.id == selectedReport.id)
                 {
                     reportHeaderEntity = item;
                 }
