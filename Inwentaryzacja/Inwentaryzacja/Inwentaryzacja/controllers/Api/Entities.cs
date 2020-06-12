@@ -132,4 +132,13 @@ namespace Inwentaryzacja.Controllers.Api
 
         public override int GetHashCode() => id.GetHashCode();
     }
+
+    /// <summary>
+    /// Pozycja skanowania
+    /// </summary>
+    public class ScanPositionEntity
+    {
+        public int state;
+        public AssetInfoEntity assetInfo;
+    }
 }

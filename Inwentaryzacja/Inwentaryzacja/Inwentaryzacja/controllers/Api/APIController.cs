@@ -451,6 +451,19 @@ namespace Inwentaryzacja.Controllers.Api
             return false;
         }
 
+        /// <summary>
+        ///  Asynchronicznie zwraca tablicę zawierającą informacje o pozycjach zapisanych w danym skanowaniu
+        /// Jeżeli wystąpi błąd, zostanie wywołany event z błędem i zostanie zwrócony null
+        /// </summary>
+        /// <returns>Tablica z informacjami o pozycjach zapisanych w danym skanowaniu</returns>
+        public async Task<ScanPositionEntity[]> GetScanPositions(int scan_id)
+        {
+            var uri = $"/getPositionsInScan";
+            var response = await SendRequestWithResponse(uri);
+
+            return ConvertJSONToObject<ScanPositionEntity[]>(response);
+        }
+
         #endregion Scanning
 
 

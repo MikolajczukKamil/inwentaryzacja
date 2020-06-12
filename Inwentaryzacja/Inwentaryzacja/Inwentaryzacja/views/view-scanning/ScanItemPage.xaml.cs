@@ -23,7 +23,7 @@ namespace Inwentaryzacja
     {
         private APIController api = new APIController();
         private RoomEntity Room;
-        private Result prev = null;
+        private Result previus = null;
         private List<string> scannedItem = new List<string>();
         private List<AllScaning> AllItems = new List<AllScaning>();
 
@@ -40,10 +40,7 @@ namespace Inwentaryzacja
 
             if(previusScan != null)
             {
-                //foreach (var item in previusScan)
-                //{
-
-                //}
+                InitializeWith(previusScan);
             }
 
             _scanner.Options = new MobileBarcodeScanningOptions()
@@ -59,6 +56,30 @@ namespace Inwentaryzacja
                 }),
                 TryHarder = false //Gets or sets a flag which cause a deeper look into the bitmap.
             };
+        }
+
+        async void InitializeWith(ScanEntity previusScan)
+        {
+            var positions = await api.GetScanPositions(previusScan.id);
+
+            if (positions == null) return;
+
+            foreach (var position in positions)
+            {
+                ScanAsset(position.assetInfo);
+
+                var localReprezentation = AllItems.Find(el => el.AssetEntity.id == position.assetInfo.id);
+
+                if (position.state == 0 || position.state == 1)
+                {
+                    localReprezentation.ItemMoved();
+                }
+
+                if(position.state == 2)
+                {
+                    localReprezentation.ItemDontMove();
+                }
+            }
         }
 
         async void GetAllAssets()
@@ -145,7 +166,7 @@ namespace Inwentaryzacja
 
         private async void ZXingScannerView_OnScanResult(Result result)
         {
-            if (prev != null && (result.Text == prev.Text || ListContainItem(result.Text)))
+            if (previus != null && (result.Text == previus.Text || ListContainItem(result.Text)))
             {
                 Device.BeginInvokeOnMainThread(async () =>
                 {
@@ -191,7 +212,7 @@ namespace Inwentaryzacja
 
             scannedItem.Add(result.Text);
 
-            prev = result;
+            previus = result;
 
             Device.BeginInvokeOnMainThread(() =>
             {
