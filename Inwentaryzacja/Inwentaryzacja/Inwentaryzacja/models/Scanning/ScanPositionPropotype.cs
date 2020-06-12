@@ -7,6 +7,7 @@ namespace Inwentaryzacja.Models
     public class ScanPositionPropotype
     {
         public int id;
+        
         public PositionPropotype[] positions;
 
         public ScanPositionPropotype(int id, PositionPropotype[] positions)
