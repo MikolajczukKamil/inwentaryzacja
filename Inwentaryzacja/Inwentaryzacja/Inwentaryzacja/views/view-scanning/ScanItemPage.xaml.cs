@@ -19,6 +19,9 @@ using static Inwentaryzacja.views.view_scannedItem.ScannedItem;
 namespace Inwentaryzacja
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
+    /// <summary>
+    /// Klasa odpowiadajaca za widok okna skanowania przedmiotu w danym pokoju
+    /// </summary>
     public partial class ScanItemPage : ContentPage
     {
         private APIController api = new APIController();
@@ -29,6 +32,10 @@ namespace Inwentaryzacja
 
         private ScanningUpdate scanningUpdate;
 
+        /// <summary>
+        /// Konstruktor klasy
+        /// </summary>
+        /// <param name="room">pokoj w ktorym odbywa sie skanowanie</param>
         public ScanItemPage(RoomEntity room, int scanId, ScanEntity previusScan)
         {
             Room = room;
@@ -58,6 +65,9 @@ namespace Inwentaryzacja
             };
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za inicjalizację skanowania z wykorzystaniem poprzedniego składowania
+        /// </summary>
         async void InitializeWith(ScanEntity previusScan)
         {
             var positions = await api.GetScanPositions(previusScan.id);
@@ -82,6 +92,9 @@ namespace Inwentaryzacja
             }
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za zwrocenie wszystkich srodkow trwalych z danego pokoju
+        /// </summary>
         async void GetAllAssets()
         {
             AssetEntity[] assetEntity = await api.getAssetsInRoom(Room.id);
@@ -94,18 +107,27 @@ namespace Inwentaryzacja
             }
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za wyswietlenie okna skanowania po jego zaladowaniu
+        /// </summary>
         protected override void OnAppearing()
         {
             base.OnAppearing();
             _scanner.IsScanning = true;
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za zamkniecie okna skanowania
+        /// </summary>
         protected override void OnDisappearing()
         {
             //_scanner.IsScanning = false;
             base.OnDisappearing();
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za anulowanie sesji skanowania
+        /// </summary>
         async private void Cancel(object sender, EventArgs e)
         {
             bool response = await DisplayAlert("Anulować skanowanie?", "Czy na pewno chcesz anulować skanowanie?", "Tak", "Nie");
@@ -116,6 +138,9 @@ namespace Inwentaryzacja
             }
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za pokazanie zeskanowanego przedmiotu 
+        /// </summary>
         private async void ShowScanedItem(object sender, EventArgs e)
         {
             PreviewButton.IsEnabled = false;
@@ -123,6 +148,9 @@ namespace Inwentaryzacja
             PreviewButton.IsEnabled = true;
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za wyswietlenie informacji ze dany srodek trwaly zostal zeskanowany
+        /// </summary>
         private async Task ShowPopup(string message = "Zeskanowano!")
         {
             await Task.Run(() =>
@@ -164,6 +192,9 @@ namespace Inwentaryzacja
 
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za skanowanie danego srodka trwalego
+        /// </summary>
         private async void ZXingScannerView_OnScanResult(Result result)
         {
             if (previus != null && (result.Text == previus.Text || ListContainItem(result.Text)))
@@ -259,6 +290,9 @@ namespace Inwentaryzacja
             }
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za liste zeskanowanych srodkow trwalych
+        /// </summary>
         private bool ListContainItem(string text)
         {
             foreach (var item in scannedItem)
@@ -272,6 +306,9 @@ namespace Inwentaryzacja
             return false;
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za wlaczenie latarki/flasha w skanerze (telefonie)
+        /// </summary>
         private void TurnLight(object sender, EventArgs e)
         {
             try
@@ -282,7 +319,10 @@ namespace Inwentaryzacja
             {
             }
         }
-
+        
+        /// <summary>
+        /// Funkcja odpowiadajaca za obsluge przycisku powrotu
+        /// </summary>
         protected override bool OnBackButtonPressed()
         {
             Cancel(this, null);

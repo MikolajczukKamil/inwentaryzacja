@@ -10,6 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace Inwentaryzacja.views.view_scannedItem
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
+    /// <summary>
+    /// Klasa odpowiadajaca za widok okna zeskanowych srodkow trwalych i rzeczy z tym zwiazane
+    /// </summary>
     public partial class ScannedItem : ContentPage
     {
         APIController api = new APIController();
@@ -17,6 +20,11 @@ namespace Inwentaryzacja.views.view_scannedItem
         List<AllScaning> allScaning;
         ScanningUpdate scanningUpdate;
 
+        /// <summary>
+        /// Konstruktor klasy
+        /// </summary>
+        /// <param name="scannedItems">zeskanowane srodki trwale</param>
+        /// <param name="scanningRoom">pokoj w ktorym odbylo sie skanowanie</param>
         public ScannedItem(List<AllScaning> scannedItems, RoomEntity scanningRoom, ScanningUpdate scanningUpdate)
         {
             InitializeComponent();
@@ -30,6 +38,9 @@ namespace Inwentaryzacja.views.view_scannedItem
             ShowInfo();
         }
 
+        /// <summary>
+        /// Klasa odpowiadajaca za skanowanie srodkow trwalych i rzeczy z tym zwiazane
+        /// </summary>
         public class AllScaning
         {
             public ReportPositionPrototype reportPositionPrototype;
@@ -41,6 +52,12 @@ namespace Inwentaryzacja.views.view_scannedItem
 
             public int state = 0;
 
+            /// <summary>
+            /// Konstruktor klasy
+            /// </summary>
+            /// <param name="scanningRoom">pokoj w ktorym odbywa sie skanowanie</param>
+            /// <param name="assetEntity">zeskanowany srodek trwaly</param>
+            /// <param name="assetRoom">pokoj z ktorego pochodzi srodek trwaly</param>
             public AllScaning(AssetEntity assetEntity, RoomEntity assetRoom, RoomEntity scanningRoom)
             {
                 if (assetRoom != null)
@@ -60,6 +77,9 @@ namespace Inwentaryzacja.views.view_scannedItem
                 ScanningRoom = scanningRoom;
             }
 
+            /// <summary>
+            /// Funkcja odpowiadajaca za przeniesienie srodka trwalego do aktualnie skanowanego pokoju
+            /// </summary>
             public void ItemMoved()
             {
                 state = 1;
@@ -68,18 +88,30 @@ namespace Inwentaryzacja.views.view_scannedItem
                 AssetRoomId = ScanningRoom.id;
             }
 
+            /// <summary>
+            /// Opcja nie rób nic
+            /// </summary>
             public void ItemDontMove()
             {
                 state = 2;
                 Approved = true;
             }
 
+            /// <summary>
+            /// Funkcja odpowiadajaca za tekst wyswietlany po zeskanowaniu danego srodka trwalego
+            /// </summary>
             public string ScaningText {
                 get { return $"{AssetEntity.type.name} {AssetEntity.id}"; }
             }
 
+            /// <summary>
+            /// Funkcja odpowiadajaca za ustawienie/zwrocenie ID zeskanowanego srodka trwalego
+            /// </summary>
             public int ScannedId { get; set; }
 
+            /// <summary>
+            /// Funkcja odpowiadajaca za ustawienie/zwrocenie nazwy pokoju pochodzenia zeskanowanego srodka trwalego
+            /// </summary>
             public string AssetRoomName { get; set; }
         }
 
@@ -114,7 +146,9 @@ namespace Inwentaryzacja.views.view_scannedItem
                 await Api.deleteScan(Scanid);
             }
         }
-
+        /// <summary>
+        /// Funkcja odpowiadajaca za wyswietlenie informacji dotyczacych srodkow trwalych po zeskanowaniu
+        /// </summary>
         private void ShowInfo()
         {
             int[] items = { 0, 0, 0, 0, 0, 0 };//c k m p s t
@@ -252,7 +286,9 @@ namespace Inwentaryzacja.views.view_scannedItem
             else
                 ButtonMoveAll.IsVisible = true;
         }
-        
+        /// <summary>
+        /// Funkcja odpowiadajaca za wyswietlenie szczegolow srodkow trwalych ktore zostaly zeskanowane w pokoju
+        /// </summary>
         async private void ScannedInRoomDetails(object sender, EventArgs e)
         {
             string text = "";
@@ -269,7 +305,9 @@ namespace Inwentaryzacja.views.view_scannedItem
 
             await DisplayAlert("Zeskanowane z sali " + ScanningRoom.name, text, "Ok");
         }
-
+        /// <summary>
+        /// Funkcja odpowiadajaca za wyswietlenie szczegolow srodkow trwalych ktore nie zostaly zeskanowane w pokoju
+        /// </summary>
         async private void UnscannedInRoomDetails(object sender, EventArgs e)
         {
             string text = "";
@@ -286,7 +324,9 @@ namespace Inwentaryzacja.views.view_scannedItem
 
             await DisplayAlert("Niezeskanowane z sali " + ScanningRoom.name, text, "Ok");
         }
-
+        /// <summary>
+        /// Funkcja odpowiadajaca za wyswietlenie innych szczegolow
+        /// </summary>
         async private void OtherDetails(object sender, EventArgs e)
         {
             string text = "";
@@ -304,6 +344,9 @@ namespace Inwentaryzacja.views.view_scannedItem
             await DisplayAlert("Nieprzeniesione z innych sal", text, "Ok");
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za sprawdzenie ilosci srodkow trwalych po skanowaniu
+        /// </summary>
         private void UpdateAmount(int[] items, int typeId)
         {
             switch (typeId)
@@ -317,6 +360,9 @@ namespace Inwentaryzacja.views.view_scannedItem
             }
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za zakonczenie skanowania
+        /// </summary>
         async private void EndScanning(object sender, EventArgs e)
         {
             bool message1 = false;
@@ -350,6 +396,9 @@ namespace Inwentaryzacja.views.view_scannedItem
             GenerateRaport();
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za probe zmiany lokalizacji/pokoju danego srodka trwalego
+        /// </summary>
         async private void ChangeRoom(object sender, EventArgs e)
         {
             bool response = await DisplayAlert("Uwaga", "Czy na pewno chcesz przenieść tutaj ten przedmiot?", "Tak", "Nie");
@@ -373,6 +422,9 @@ namespace Inwentaryzacja.views.view_scannedItem
             }
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za odrzucenie proby zmiany lokalizacji/pokoju danego srodka trwalego
+        /// </summary>
         async private void DontDoAnything(object sender, EventArgs e)
         {
             bool response = await DisplayAlert("Uwaga", "Czy na pewno nie chcesz zmieniać lokalizacji tego przedmiotu?", "Tak", "Nie");
@@ -396,6 +448,9 @@ namespace Inwentaryzacja.views.view_scannedItem
             }
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za przeniesienie wszystkich zeskanowanych przedmiotow, do pokoju w ktorym sie odbylo skanowanie, jezeli z niego nie pochodza
+        /// </summary>s
         async private void moveAllForeignAssetsToThisRoom(object sender, EventArgs e)
         {
             bool response = await DisplayAlert("Uwaga", "Czy na pewno chcesz przenieść wszystkie przedmioty?", "Tak", "Nie");
@@ -418,6 +473,9 @@ namespace Inwentaryzacja.views.view_scannedItem
             }
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za przeniesienie wszystkich zeskanowanych przedmiotow, do pokoju w ktorym sie odbylo skanowanie, jezeli z niego nie pochodza
+        /// </summary>
         async private void considerEverythingInRoomAsScanned(object sender, EventArgs e)
         {
             bool response = await DisplayAlert("Uwaga", "Czy na pewno chcesz przenieść wszystkie przedmioty?", "Tak", "Nie");
@@ -437,7 +495,10 @@ namespace Inwentaryzacja.views.view_scannedItem
                 ShowInfo();
             }
         }
-
+        
+        /// <summary>
+        /// Funkcja odpowiadajaca za wygenerowanie raportu po skanowaniu
+        /// </summary>
         private async void GenerateRaport()
         {
             EnableView(false);
@@ -458,21 +519,30 @@ namespace Inwentaryzacja.views.view_scannedItem
                 App.Current.MainPage = new NavigationPage(new WelcomeViewPage());
             }
         }
-
+        
+        /// <summary>
+        /// Funkcja odpowiadajaca za umozliwienie wyswietlenia widoku okna
+        /// </summary>
         private void EnableView(bool state)
         {
             LoadingScreen.IsVisible = !state;
             ButtonPrevPage.IsEnabled = state;
             ButtonConfirm.IsEnabled = state;
         }
-
+        
+        /// <summary>
+        /// Funkcja odpowiadajaca za powrot do poprzedniego okna
+        /// </summary>
         private async void RetPrevPage(object sender, EventArgs e)
         {
             EnableView(false);
             await Navigation.PopModalAsync();
             EnableView(true);
         }
-
+        
+        /// <summary>
+        /// Funkcja odpowiadajaca za wyswietlenie bledu
+        /// </summary>
         private async void onApiError(object o, ErrorEventArgs error)
         {
             await DisplayAlert("Błąd", error.Message, "OK");
