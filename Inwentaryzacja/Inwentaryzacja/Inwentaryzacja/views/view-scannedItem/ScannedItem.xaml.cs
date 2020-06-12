@@ -16,14 +16,14 @@ namespace Inwentaryzacja.views.view_scannedItem
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ScannedItem : ContentPage
     {
-        APIController api;
+        APIController api = new APIController();
         RoomEntity ScanningRoom;
         List<AllScaning> allScaning;
+
         public ScannedItem(List<AllScaning> scannedItems, RoomEntity scanningRoom)
         {
             InitializeComponent();
             allScaning = scannedItems;
-            api = new APIController();
             api.ErrorEventHandler += onApiError;
             ScanningRoom = scanningRoom;
             BindingContext = this;
@@ -58,6 +58,7 @@ namespace Inwentaryzacja.views.view_scannedItem
                 ScannedId = assetEntity.id;
                 ScanningRoom = scanningRoom;
             }
+
             public void ItemMoved()
             {
                 Approved = true;
@@ -75,21 +76,25 @@ namespace Inwentaryzacja.views.view_scannedItem
         {
             int[] items = { 0, 0, 0, 0, 0, 0 };//c k m p s t
             string[] types = { "Komputer:", "Krzesło:", "Monitor:", "Projektor:", "Stół:", "Tablica:" };
+
             foreach (AllScaning item in allScaning)
             {
                 if (item.reportPositionPrototype.present)
                 {
-                    items = CheckAmount(items, item.AssetEntity.type.id);
+                    UpdateAmount(items, item.AssetEntity.type.id);
                 }
             }
+
             ScannedInRoomLabel.Text = "";
             ScannedInRoomAmount.Text = "";
+
             for (int i = 0; i < items.Length; i++)
             {
                 if (items[i] > 0)
                 {
                     ScannedInRoomLabel.Text += types[i] + "\n";
                     ScannedInRoomAmount.Text += items[i];
+
                     if (items[i] == 1)
                         ScannedInRoomAmount.Text += " sztuka\n";
                     else if (items[i] <= 4)
@@ -98,8 +103,11 @@ namespace Inwentaryzacja.views.view_scannedItem
                         ScannedInRoomAmount.Text += " sztuk\n";
                 }
             }
+
             if (ScannedInRoomLabel.Text == "")
+            {
                 ScannedInRoomLabel.Text = "Brak";
+            }
             else
             {
                 ScannedInRoomLabel.Text = ScannedInRoomLabel.Text.Substring(0, ScannedInRoomLabel.Text.Length - 1);
@@ -107,15 +115,18 @@ namespace Inwentaryzacja.views.view_scannedItem
             }
 
             items = new int[] { 0, 0, 0, 0, 0, 0 };//c k m p s t
+
             foreach (AllScaning item in allScaning)
             {
                 if (!item.reportPositionPrototype.present && item.reportPositionPrototype.previous == ScanningRoom.id)
                 {
-                    items = CheckAmount(items, item.AssetEntity.type.id);
+                    UpdateAmount(items, item.AssetEntity.type.id);
                 }
             }
+
             UnscannedInRoomLabel.Text = "";
             UnscannedInRoomAmount.Text = "";
+
             for (int i = 0; i < items.Length; i++)
             {
                 if (items[i] > 0)
@@ -131,8 +142,11 @@ namespace Inwentaryzacja.views.view_scannedItem
 
                 }
             }
+
             if (UnscannedInRoomLabel.Text == "")
+            {
                 UnscannedInRoomLabel.Text = "Brak";
+            }
             else
             {
                 UnscannedInRoomLabel.Text = UnscannedInRoomLabel.Text.Substring(0, UnscannedInRoomLabel.Text.Length - 1);
@@ -140,15 +154,18 @@ namespace Inwentaryzacja.views.view_scannedItem
             }
 
             items = new int[] { 0, 0, 0, 0, 0, 0 };//c k m p s t
+
             foreach (AllScaning item in allScaning)
             {
                 if (!item.reportPositionPrototype.present && item.reportPositionPrototype.previous != ScanningRoom.id)
                 {
-                    items = CheckAmount(items, item.AssetEntity.type.id);
+                    UpdateAmount(items, item.AssetEntity.type.id);
                 }
             }
+
             OtherLabel.Text = "";
             OtherAmount.Text = "";
+
             for (int i = 0; i < items.Length; i++)
             {
                 if (items[i] > 0)
@@ -164,8 +181,11 @@ namespace Inwentaryzacja.views.view_scannedItem
 
                 }
             }
+
             if (OtherLabel.Text == "")
+            {
                 OtherLabel.Text = "Brak";
+            }
             else
             {
                 OtherLabel.Text = OtherLabel.Text.Substring(0, OtherLabel.Text.Length - 1);
@@ -173,6 +193,7 @@ namespace Inwentaryzacja.views.view_scannedItem
             }
 
             List<AllScaning> scannedItems = new List<AllScaning>();
+
             foreach (AllScaning item in allScaning)
             {
                 if (!item.Approved && item.reportPositionPrototype.previous != ScanningRoom.id)
@@ -180,7 +201,9 @@ namespace Inwentaryzacja.views.view_scannedItem
                     scannedItems.Add(item);
                 }
             }
+
             ReportList.ItemsSource = scannedItems;
+
             if (scannedItems.Count == 0)
                 ButtonMoveAll.IsVisible = false;
             else
@@ -197,8 +220,9 @@ namespace Inwentaryzacja.views.view_scannedItem
                     text += item.AssetEntity.type.name + " numer: " + item.AssetEntity.id + "\n";
                 }
             }
-            if (text == "")
-                text = "brak";
+
+            if (text == "") text = "brak";
+
             await DisplayAlert("Zeskanowane z sali " + ScanningRoom.name, text, "Ok");
         }
 
@@ -232,7 +256,7 @@ namespace Inwentaryzacja.views.view_scannedItem
             await DisplayAlert("Nieprzeniesione z innych sal", text, "Ok");
         }
 
-        private int[] CheckAmount(int[] items, int typeId)
+        private void UpdateAmount(int[] items, int typeId)
         {
             switch (typeId)
             {
@@ -243,7 +267,6 @@ namespace Inwentaryzacja.views.view_scannedItem
                 case 5: items[4]++; break;
                 case 6: items[5]++; break;
             }
-            return items;
         }
 
         async private void EndScanning(object sender, EventArgs e)
