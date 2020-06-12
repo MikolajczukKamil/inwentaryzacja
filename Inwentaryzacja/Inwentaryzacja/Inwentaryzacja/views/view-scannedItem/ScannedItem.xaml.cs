@@ -229,7 +229,7 @@ namespace Inwentaryzacja.views.view_scannedItem
             }
             if (text == "")
                 text = "brak";
-            await DisplayAlert("Nieprzeiesione z innych sal", text, "Ok");
+            await DisplayAlert("Nieprzeniesione z innych sal", text, "Ok");
         }
 
         private int[] CheckAmount(int[] items, int typeId)
