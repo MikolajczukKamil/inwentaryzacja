@@ -6,16 +6,23 @@ using Inwentaryzacja.Models;
 
 namespace Inwentaryzacja.Services
 {
+	/// <summary>
+	/// Klasa odpowiadajaca za obsluge pokojow i budynkow
+	/// </summary>
 	public class LocalizationService
 	{
 
 		private APIController api;
 
+		/// <summary>
+		/// Konstruktor klasy
+		/// </summary>
+		/// <param name="apiController">obiekt do interakcji z api</param>
 		public LocalizationService(APIController apiController)
 		{
 			api = apiController;
 		}
-
+		
 		public Building[] GetBuildings()
 		{
 			// return api.getAllBuildings().Result; // map to Building[]
@@ -28,11 +35,20 @@ namespace Inwentaryzacja.Services
 			throw new System.Exception("Not implemented");
 		}
 
+		/// <summary>
+		/// Funkcja dodajaca nowy pokoj
+		/// </summary>
+		/// <param name="newRoom">Pokoj ktory chcemy dodac</param>
+		/// <returns></returns>
 		public int AddNewRoom(RoomPropotype newRoom)
 		{
 			return api.createRoom(newRoom).Result;
 		}
-
+		/// <summary>
+		/// Funkcja dodajaca nowy budynek
+		/// </summary>
+		/// <param name="newBuilding">budynek ktory chcemy dodac</param>
+		/// <returns></returns>
 		public int AddNewBuilding(BuildingPrototype newBuilding)
 		{
 			return api.createBuilding(newBuilding).Result;
