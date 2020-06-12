@@ -15,10 +15,12 @@ namespace Inwentaryzacja.views.view_scannedItem
         APIController api = new APIController();
         RoomEntity ScanningRoom;
         List<AllScaning> allScaning;
+        ScanningUpdate scanningUpdate;
 
-        public ScannedItem(List<AllScaning> scannedItems, RoomEntity scanningRoom)
+        public ScannedItem(List<AllScaning> scannedItems, RoomEntity scanningRoom, ScanningUpdate scanningUpdate)
         {
             InitializeComponent();
+            this.scanningUpdate = scanningUpdate;
             allScaning = scannedItems;
             api.ErrorEventHandler += onApiError;
             ScanningRoom = scanningRoom;
@@ -37,6 +39,8 @@ namespace Inwentaryzacja.views.view_scannedItem
             public bool Approved = false;
             public int? AssetRoomId;
 
+            public int state = 0;
+
             public AllScaning(AssetEntity assetEntity, RoomEntity assetRoom, RoomEntity scanningRoom)
             {
                 if (assetRoom != null)
@@ -49,6 +53,7 @@ namespace Inwentaryzacja.views.view_scannedItem
                     AssetRoomId = null;
                     AssetRoomName = "brak";
                 }
+
                 reportPositionPrototype = new ReportPositionPrototype(assetEntity, assetRoom, false);
                 AssetEntity = assetEntity;
                 ScannedId = assetEntity.id;
@@ -57,15 +62,25 @@ namespace Inwentaryzacja.views.view_scannedItem
 
             public void ItemMoved()
             {
+                state = 1;
                 Approved = true;
                 reportPositionPrototype.present = true;
                 AssetRoomId = ScanningRoom.id;
             }
 
-            public string ScaningText { get { return string.Format("{0} {1}", AssetEntity.type.name, AssetEntity.id); } }
-            public int ScannedId { get; set; }
-            public string AssetRoomName { get; set; }
+            public void ItemDontMove()
+            {
+                state = 2;
+                Approved = true;
+            }
 
+            public string ScaningText {
+                get { return $"{AssetEntity.type.name} {AssetEntity.id}"; }
+            }
+
+            public int ScannedId { get; set; }
+
+            public string AssetRoomName { get; set; }
         }
 
         public class ScanningUpdate {
@@ -88,10 +103,15 @@ namespace Inwentaryzacja.views.view_scannedItem
 
                 foreach (var position in scannedItems)
                 {
-                    positions.Add(new ScanPositionPropotype(position.AssetEntity.id, position.Approved ? 1 : 0));
+                    positions.Add(new ScanPositionPropotype(position.AssetEntity.id, position.state));
                 }
 
                 await Api.updateScan(new ScanUpdatePropotype(Scanid, positions.ToArray()));
+            }
+
+            public async void Delete()
+            {
+                await Api.deleteScan(Scanid);
             }
         }
 
@@ -275,7 +295,7 @@ namespace Inwentaryzacja.views.view_scannedItem
             {
                 if (!item.reportPositionPrototype.present && item.reportPositionPrototype.previous != ScanningRoom.id)
                 {
-                    text += item.AssetEntity.type.name + " numer: " + item.AssetEntity.id + "\n";
+                    text += $"{item.AssetEntity.type.name} numer: {item.AssetEntity.id}\n";
                 }
             }
 
@@ -348,6 +368,8 @@ namespace Inwentaryzacja.views.view_scannedItem
                         break;
                     }
                 }
+
+                scanningUpdate.Update(allScaning);
             }
         }
 
@@ -364,11 +386,13 @@ namespace Inwentaryzacja.views.view_scannedItem
                 {
                     if (item.ScannedId == id)
                     {
-                        item.Approved = true;
+                        item.ItemDontMove();
                         ShowInfo();
                         break;
                     }
                 }
+
+                scanningUpdate.Update(allScaning);
             }
         }
 
@@ -385,6 +409,8 @@ namespace Inwentaryzacja.views.view_scannedItem
                         item.ItemMoved();
                     }
                 }
+
+                scanningUpdate.Update(allScaning);
 
                 ShowInfo();
                 scrollView.IsEnabled = false;
@@ -406,6 +432,8 @@ namespace Inwentaryzacja.views.view_scannedItem
                     }
                 }
 
+                scanningUpdate.Update(allScaning);
+
                 ShowInfo();
             }
         }
@@ -419,14 +447,14 @@ namespace Inwentaryzacja.views.view_scannedItem
             {
                 reportPositionPrototype[i] = allScaning[i].reportPositionPrototype;
             }
-
             
-            ReportPrototype reportPrototype = new ReportPrototype("Raport " + ScanningRoom.building.name, ScanningRoom, reportPositionPrototype);
-            int end = await api.createReport(reportPrototype);
+            int reportId = await api.createReport(new ReportPrototype($"Raport {ScanningRoom.building.name}", ScanningRoom, reportPositionPrototype));
+
             EnableView(true);
             
-            if (end != -1)
+            if (reportId != -1)
             {
+                scanningUpdate.Delete();
                 App.Current.MainPage = new NavigationPage(new WelcomeViewPage());
             }
         }

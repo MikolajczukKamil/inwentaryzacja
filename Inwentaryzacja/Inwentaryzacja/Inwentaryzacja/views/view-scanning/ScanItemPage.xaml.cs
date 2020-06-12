@@ -90,7 +90,7 @@ namespace Inwentaryzacja
         private async void ShowScanedItem(object sender, EventArgs e)
         {
             PreviewButton.IsEnabled = false;
-            await Navigation.PushModalAsync(new ScannedItem(AllItems, Room), true);
+            await Navigation.PushModalAsync(new ScannedItem(AllItems, Room, scanningUpdate), true);
             PreviewButton.IsEnabled = true;
         }
 
