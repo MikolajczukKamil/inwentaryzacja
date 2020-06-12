@@ -21,9 +21,9 @@ namespace Inwentaryzacja
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ScanItemPage : ContentPage
     {
-        APIController api;
+        private APIController api = new APIController();
         private RoomEntity Room;
-        private ZXing.Result prev = null;
+        private Result prev = null;
         private List<string> scannedItem = new List<string>();
         private List<AllScaning> AllItems = new List<AllScaning>();
 
@@ -32,7 +32,6 @@ namespace Inwentaryzacja
             Room = room;
 
             InitializeComponent();
-            api = new APIController();
             GetAllAssets();
 
             var zXingOptions = new MobileBarcodeScanningOptions()
