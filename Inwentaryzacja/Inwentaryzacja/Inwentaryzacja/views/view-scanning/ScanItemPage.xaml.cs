@@ -29,7 +29,7 @@ namespace Inwentaryzacja
 
         private ScanningUpdate scanningUpdate;
 
-        public ScanItemPage(RoomEntity room, int scanId = 1)
+        public ScanItemPage(RoomEntity room, int scanId, ScanEntity previusScan)
         {
             Room = room;
 
@@ -37,6 +37,14 @@ namespace Inwentaryzacja
 
             InitializeComponent();
             GetAllAssets();
+
+            if(previusScan != null)
+            {
+                //foreach (var item in previusScan)
+                //{
+
+                //}
+            }
 
             _scanner.Options = new MobileBarcodeScanningOptions()
             {

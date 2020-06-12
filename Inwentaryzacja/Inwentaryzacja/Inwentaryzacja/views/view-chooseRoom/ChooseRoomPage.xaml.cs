@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using static Inwentaryzacja.views.view_scannedItem.ScannedItem;
 
 namespace Inwentaryzacja
 {
@@ -35,6 +36,7 @@ namespace Inwentaryzacja
 			{
 				GetBuildings();
 			}
+
 			if(addedNewRoom)
 			{
 				BuildingPicker_SelectedIndexChanged(this, null);
@@ -169,6 +171,7 @@ namespace Inwentaryzacja
 		private void Continue_Button_Clicked(object o, EventArgs args) 
 		{
 			EnableView(false);
+
 			Device.BeginInvokeOnMainThread(async () =>
 			{
 				if (RoomPicker.SelectedIndex < 0)
@@ -203,7 +206,38 @@ namespace Inwentaryzacja
 					}
 					else
 					{
-						await Navigation.PushModalAsync(new ScanItemPage(selectedRoom));
+						var scans = await api.getScans();
+						ScanEntity existingScan = null;
+
+						if(scans != null && scans.Length > 0)
+						{
+							foreach (var scan in scans)
+							{
+								if(scan.room.id == selectedRoom.id)
+								{
+									existingScan = scan;
+								}
+							}
+						}
+
+						ScanningUpdate scanning = null;
+
+						if (existingScan != null)
+						{
+							bool useThisScan = await DisplayAlert("Znaleziono niedokończone skanowanie", "Czy chcesz uzyć niedokończonego skanowania?", "Tak", "Nie");
+
+							scanning = new ScanningUpdate(api, selectedRoom, existingScan.id);
+
+							if(!useThisScan)
+							{
+								scanning.Delete();
+								scanning = null;
+							}
+						}
+
+						int scanId = existingScan != null ? existingScan.id : await api.addScan(new ScanPrototype(selectedRoom.id));
+
+						await Navigation.PushModalAsync(new ScanItemPage(selectedRoom, scanId, existingScan));
 					}
 				}
 				else
