@@ -1,6 +1,7 @@
 using Inwentaryzacja.controllers.session;
 using Inwentaryzacja.Controllers.Api;
 using Inwentaryzacja.Models;
+using Inwentaryzacja.views.Helpers;
 using Inwentaryzacja.views.view_chooseRoom;
 using System;
 using System.Linq;
@@ -9,7 +10,6 @@ using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using static Inwentaryzacja.views.view_scannedItem.ScannedItem;
 
 namespace Inwentaryzacja
 {
@@ -26,6 +26,7 @@ namespace Inwentaryzacja
 		public bool addedNewRoom = false;
 
 		APIController api = new APIController();
+
 		/// <summary>
 		/// Konstruktor klasy
 		/// </summary>
@@ -35,6 +36,7 @@ namespace Inwentaryzacja
 			api.ErrorEventHandler += onApiError;
 			BindingContext = this;
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za wyswietlenie budynkow po przejsciu do okna
 		/// </summary>
@@ -53,6 +55,7 @@ namespace Inwentaryzacja
 			
 			base.OnAppearing();
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za sprawdzenie permisji uzytkownika probujacego wybrac pokoj w oknie
 		/// </summary>
@@ -67,10 +70,10 @@ namespace Inwentaryzacja
 
 			return status;
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za zmiane wybranego budynku
 		/// </summary>
-
 		private void BuildingPicker_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if(BuildingPicker.SelectedIndex >= 0 && BuildingPicker.SelectedIndex < BuildingPicker.Items.Count)
@@ -79,6 +82,7 @@ namespace Inwentaryzacja
 				GetBuildingRooms(choosenBuildingName);
 			}
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za zwrocenie pokojow w danym budynku
 		/// </summary>
@@ -98,6 +102,7 @@ namespace Inwentaryzacja
 
 			if (buildingItem != null) GetRooms(buildingItem.id);
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za zwrocenie pokojow w danym budynku
 		/// </summary>
@@ -131,6 +136,7 @@ namespace Inwentaryzacja
 				RoomPicker.IsEnabled = false;
 			} 
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za zwrocenie budynkow
 		/// </summary>
@@ -168,6 +174,7 @@ namespace Inwentaryzacja
 
 			EnableView(true);
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za umozliwienie wyswietlenia widoku okna
 		/// </summary>
@@ -191,6 +198,7 @@ namespace Inwentaryzacja
 				RoomPicker_SelectedIndexChanged(this, null);
 			}
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za obsluge przycisku kontynuowania
 		/// </summary>
@@ -274,6 +282,7 @@ namespace Inwentaryzacja
 				EnableView(true);
 			});
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za wyswietlenie bledu
 		/// </summary>
@@ -296,6 +305,7 @@ namespace Inwentaryzacja
 			await Navigation.PopAsync();
 			EnableView(true);
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za obsluge przycisku dodania pokoju
 		/// </summary>
@@ -305,6 +315,7 @@ namespace Inwentaryzacja
 			await Navigation.PushAsync(new AddRoom(buildings, BuildingPicker.SelectedIndex));	
 			EnableView(true);
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za obsluge przycisku dodania budynku
 		/// </summary>
@@ -314,6 +325,7 @@ namespace Inwentaryzacja
 			await Navigation.PushAsync(new AddBuildingView());
 			EnableView(true);
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za zmiane wybranego pokoju 
 		/// </summary>
@@ -328,6 +340,7 @@ namespace Inwentaryzacja
 				ContinueBtn.IsEnabled = true;
 			}
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za obsluge przycisku wylogowania
 		/// </summary>

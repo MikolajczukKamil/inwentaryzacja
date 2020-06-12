@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Inwentaryzacja.views.Helpers;
 
 namespace Inwentaryzacja.views.view_scannedItem
 {
@@ -17,7 +18,7 @@ namespace Inwentaryzacja.views.view_scannedItem
     {
         APIController api = new APIController();
         RoomEntity ScanningRoom;
-        List<AllScaning> allScaning;
+        List<ScanPosition> allScaning;
         ScanningUpdate scanningUpdate;
 
         /// <summary>
@@ -25,7 +26,7 @@ namespace Inwentaryzacja.views.view_scannedItem
         /// </summary>
         /// <param name="scannedItems">zeskanowane srodki trwale</param>
         /// <param name="scanningRoom">pokoj w ktorym odbylo sie skanowanie</param>
-        public ScannedItem(List<AllScaning> scannedItems, RoomEntity scanningRoom, ScanningUpdate scanningUpdate)
+        public ScannedItem(List<ScanPosition> scannedItems, RoomEntity scanningRoom, ScanningUpdate scanningUpdate)
         {
             InitializeComponent();
             this.scanningUpdate = scanningUpdate;
@@ -39,114 +40,6 @@ namespace Inwentaryzacja.views.view_scannedItem
         }
 
         /// <summary>
-        /// Klasa odpowiadajaca za skanowanie srodkow trwalych i rzeczy z tym zwiazane
-        /// </summary>
-        public class AllScaning
-        {
-            public ReportPositionPrototype reportPositionPrototype;
-
-            public AssetEntity AssetEntity;
-            private RoomEntity ScanningRoom;
-            public bool Approved = false;
-            public int? AssetRoomId;
-
-            public int state = 0;
-
-            /// <summary>
-            /// Konstruktor klasy
-            /// </summary>
-            /// <param name="scanningRoom">pokoj w ktorym odbywa sie skanowanie</param>
-            /// <param name="assetEntity">zeskanowany srodek trwaly</param>
-            /// <param name="assetRoom">pokoj z ktorego pochodzi srodek trwaly</param>
-            public AllScaning(AssetEntity assetEntity, RoomEntity assetRoom, RoomEntity scanningRoom)
-            {
-                if (assetRoom != null)
-                {
-                    AssetRoomId = assetRoom.id;
-                    AssetRoomName = assetRoom.name;
-                }
-                else
-                {
-                    AssetRoomId = null;
-                    AssetRoomName = "brak";
-                }
-
-                reportPositionPrototype = new ReportPositionPrototype(assetEntity, assetRoom, false);
-                AssetEntity = assetEntity;
-                ScannedId = assetEntity.id;
-                ScanningRoom = scanningRoom;
-            }
-
-            /// <summary>
-            /// Funkcja odpowiadajaca za przeniesienie srodka trwalego do aktualnie skanowanego pokoju
-            /// </summary>
-            public void ItemMoved()
-            {
-                state = 1;
-                Approved = true;
-                reportPositionPrototype.present = true;
-                AssetRoomId = ScanningRoom.id;
-            }
-
-            /// <summary>
-            /// Opcja nie rób nic
-            /// </summary>
-            public void ItemDontMove()
-            {
-                state = 2;
-                Approved = true;
-            }
-
-            /// <summary>
-            /// Funkcja odpowiadajaca za tekst wyswietlany po zeskanowaniu danego srodka trwalego
-            /// </summary>
-            public string ScaningText {
-                get { return $"{AssetEntity.type.name} {AssetEntity.id}"; }
-            }
-
-            /// <summary>
-            /// Funkcja odpowiadajaca za ustawienie/zwrocenie ID zeskanowanego srodka trwalego
-            /// </summary>
-            public int ScannedId { get; set; }
-
-            /// <summary>
-            /// Funkcja odpowiadajaca za ustawienie/zwrocenie nazwy pokoju pochodzenia zeskanowanego srodka trwalego
-            /// </summary>
-            public string AssetRoomName { get; set; }
-        }
-
-        public class ScanningUpdate {
-            private APIController Api;
-            private RoomEntity ThisRoom;
-            private int Scanid;
-
-            public ScanningUpdate(APIController api, RoomEntity room, int scanid)
-            {
-                ThisRoom = room;
-                Scanid = scanid;
-                Api = api;
-            }
-
-            public async void Update(List<AllScaning> allPositions)
-            {
-                var scannedItems = allPositions.FindAll((el) => el.Approved || el.AssetRoomId != ThisRoom.id);
-
-                var positions = new List<ScanPositionPropotype>();
-
-                foreach (var position in scannedItems)
-                {
-                    positions.Add(new ScanPositionPropotype(position.AssetEntity.id, position.state));
-                }
-
-                await Api.updateScan(new ScanUpdatePropotype(Scanid, positions.ToArray()));
-            }
-
-            public async void Delete()
-            {
-                await Api.deleteScan(Scanid);
-            }
-        }
-        /// <summary>
         /// Funkcja odpowiadajaca za wyswietlenie informacji dotyczacych srodkow trwalych po zeskanowaniu
         /// </summary>
         private void ShowInfo()
@@ -154,7 +47,7 @@ namespace Inwentaryzacja.views.view_scannedItem
             int[] items = { 0, 0, 0, 0, 0, 0 };//c k m p s t
             string[] types = { "Komputer:", "Krzesło:", "Monitor:", "Projektor:", "Stół:", "Tablica:" };
 
-            foreach (AllScaning item in allScaning)
+            foreach (ScanPosition item in allScaning)
             {
                 if (item.reportPositionPrototype.present)
                 {
@@ -193,7 +86,7 @@ namespace Inwentaryzacja.views.view_scannedItem
 
             items = new int[] { 0, 0, 0, 0, 0, 0 };//c k m p s t
 
-            foreach (AllScaning item in allScaning)
+            foreach (ScanPosition item in allScaning)
             {
                 if (!item.reportPositionPrototype.present && item.reportPositionPrototype.previous == ScanningRoom.id)
                 {
@@ -232,7 +125,7 @@ namespace Inwentaryzacja.views.view_scannedItem
 
             items = new int[] { 0, 0, 0, 0, 0, 0 };//c k m p s t
 
-            foreach (AllScaning item in allScaning)
+            foreach (ScanPosition item in allScaning)
             {
                 if (!item.reportPositionPrototype.present && item.reportPositionPrototype.previous != ScanningRoom.id)
                 {
@@ -269,9 +162,9 @@ namespace Inwentaryzacja.views.view_scannedItem
                 OtherAmount.Text = OtherAmount.Text.Substring(0, OtherAmount.Text.Length - 1);
             }
 
-            List<AllScaning> scannedItems = new List<AllScaning>();
+            List<ScanPosition> scannedItems = new List<ScanPosition>();
 
-            foreach (AllScaning item in allScaning)
+            foreach (ScanPosition item in allScaning)
             {
                 if (!item.Approved && item.reportPositionPrototype.previous != ScanningRoom.id)
                 {
@@ -293,7 +186,7 @@ namespace Inwentaryzacja.views.view_scannedItem
         {
             string text = "";
 
-            foreach (AllScaning item in allScaning)
+            foreach (ScanPosition item in allScaning)
             {
                 if (item.reportPositionPrototype.present)
                 {
@@ -312,7 +205,7 @@ namespace Inwentaryzacja.views.view_scannedItem
         {
             string text = "";
 
-            foreach (AllScaning item in allScaning)
+            foreach (ScanPosition item in allScaning)
             {
                 if (!item.reportPositionPrototype.present && item.reportPositionPrototype.previous == ScanningRoom.id)
                 {
@@ -331,7 +224,7 @@ namespace Inwentaryzacja.views.view_scannedItem
         {
             string text = "";
 
-            foreach (AllScaning item in allScaning)
+            foreach (ScanPosition item in allScaning)
             {
                 if (!item.reportPositionPrototype.present && item.reportPositionPrototype.previous != ScanningRoom.id)
                 {
@@ -368,7 +261,7 @@ namespace Inwentaryzacja.views.view_scannedItem
             bool message1 = false;
             bool message2 = false;
 
-            foreach (AllScaning item in allScaning)
+            foreach (ScanPosition item in allScaning)
             {
                 if (!item.Approved)
                 {
@@ -408,7 +301,7 @@ namespace Inwentaryzacja.views.view_scannedItem
                 Button button = sender as Button;
                 int id = Convert.ToInt32(button.CommandParameter);
 
-                foreach (AllScaning item in allScaning)
+                foreach (ScanPosition item in allScaning)
                 {
                     if (item.ScannedId == id)
                     {
@@ -434,7 +327,7 @@ namespace Inwentaryzacja.views.view_scannedItem
                 Button button = sender as Button;
                 int id = Convert.ToInt32(button.CommandParameter);
 
-                foreach (AllScaning item in allScaning)
+                foreach (ScanPosition item in allScaning)
                 {
                     if (item.ScannedId == id)
                     {
@@ -457,7 +350,7 @@ namespace Inwentaryzacja.views.view_scannedItem
 
             if (response)
             {
-                foreach (AllScaning item in allScaning)
+                foreach (ScanPosition item in allScaning)
                 {
                     if (!item.Approved && item.AssetRoomId != ScanningRoom.id)
                     {
@@ -482,7 +375,7 @@ namespace Inwentaryzacja.views.view_scannedItem
 
             if (response)
             {
-                foreach (AllScaning item in allScaning)
+                foreach (ScanPosition item in allScaning)
                 {
                     if (!item.Approved && item.AssetRoomId == ScanningRoom.id)
                     {

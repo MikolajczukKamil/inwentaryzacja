@@ -14,7 +14,7 @@ using Inwentaryzacja.views;
 using Inwentaryzacja.Models;
 using Xamarin.Essentials;
 using Inwentaryzacja.Controllers.Api;
-using static Inwentaryzacja.views.view_scannedItem.ScannedItem;
+using Inwentaryzacja.views.Helpers;
 
 namespace Inwentaryzacja
 {
@@ -28,7 +28,7 @@ namespace Inwentaryzacja
         private RoomEntity Room;
         private Result previus = null;
         private List<string> scannedItem = new List<string>();
-        private List<AllScaning> AllItems = new List<AllScaning>();
+        private List<ScanPosition> AllPositions = new List<ScanPosition>();
 
         private ScanningUpdate scanningUpdate;
 
@@ -78,7 +78,7 @@ namespace Inwentaryzacja
             {
                 ScanAsset(position.assetInfo);
 
-                var localReprezentation = AllItems.Find(el => el.AssetEntity.id == position.assetInfo.id);
+                var localReprezentation = AllPositions.Find(el => el.AssetEntity.id == position.assetInfo.id);
 
                 if (position.state == 0 || position.state == 1)
                 {
@@ -103,7 +103,7 @@ namespace Inwentaryzacja
 
             foreach (var item in assetEntity)
             {
-                AllItems.Add(new AllScaning(item, Room, Room));
+                AllPositions.Add(new ScanPosition(item, Room, Room));
             }
         }
 
@@ -144,7 +144,7 @@ namespace Inwentaryzacja
         private async void ShowScanedItem(object sender, EventArgs e)
         {
             PreviewButton.IsEnabled = false;
-            await Navigation.PushModalAsync(new ScannedItem(AllItems, Room, scanningUpdate), true);
+            await Navigation.PushModalAsync(new ScannedItem(AllPositions, Room, scanningUpdate), true);
             PreviewButton.IsEnabled = true;
         }
 
@@ -239,7 +239,7 @@ namespace Inwentaryzacja
 
             ScanAsset(assetInfo);
 
-            scanningUpdate.Update(AllItems);
+            scanningUpdate.Update(AllPositions);
 
             scannedItem.Add(result.Text);
 
@@ -260,7 +260,7 @@ namespace Inwentaryzacja
                 {
                     // Nowy asset
 
-                    AllItems.Add(new AllScaning(assetInfo, assetInfo.room, Room));
+                    AllPositions.Add(new ScanPosition(assetInfo, assetInfo.room, Room));
 
                     Device.BeginInvokeOnMainThread(async () =>
                     {
@@ -271,7 +271,7 @@ namespace Inwentaryzacja
                 {
                     // Zapisz jako zeskanowany
 
-                    AllItems.Find(x => x.ScannedId == assetInfo.id).ItemMoved();
+                    AllPositions.Find(x => x.ScannedId == assetInfo.id).ItemMoved();
 
                     Device.BeginInvokeOnMainThread(async () =>
                     {
