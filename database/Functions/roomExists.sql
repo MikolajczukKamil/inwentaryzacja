@@ -3,5 +3,5 @@ DROP FUNCTION IF EXISTS roomExists;
 DELIMITER $
 CREATE FUNCTION roomExists(_id INT) RETURNS BOOLEAN
 BEGIN
-    RETURN (SELECT COUNT(*) FROM rooms WHERE rooms.id = _id) = 1;
+  RETURN (SELECT COUNT(*) FROM rooms WHERE rooms.id = _id) = 1;
 END $ DELIMITER ;

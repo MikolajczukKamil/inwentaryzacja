@@ -3,5 +3,5 @@ DROP FUNCTION IF EXISTS userExists;
 DELIMITER $
 CREATE FUNCTION userExists(_id INT) RETURNS BOOLEAN
 BEGIN
-    RETURN (SELECT COUNT(*) FROM users WHERE users.id = _id) = 1;
+  RETURN (SELECT COUNT(*) FROM users WHERE users.id = _id) = 1;
 END $ DELIMITER ;

@@ -3,5 +3,5 @@ DROP FUNCTION IF EXISTS buildingExists;
 DELIMITER $
 CREATE FUNCTION buildingExists(_id INT) RETURNS BOOLEAN
 BEGIN
-    RETURN (SELECT COUNT(*) FROM buildings WHERE buildings.id = _id) = 1;
+  RETURN (SELECT COUNT(*) FROM buildings WHERE buildings.id = _id) = 1;
 END $ DELIMITER ;

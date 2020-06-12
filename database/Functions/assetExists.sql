@@ -3,5 +3,5 @@ DROP FUNCTION IF EXISTS assetExists;
 DELIMITER $
 CREATE FUNCTION assetExists(_id INT) RETURNS BOOLEAN
 BEGIN
-    RETURN (SELECT COUNT(*) FROM assets WHERE assets.id = _id) = 1;
+  RETURN (SELECT COUNT(*) FROM assets WHERE assets.id = _id) = 1;
 END $ DELIMITER ;
