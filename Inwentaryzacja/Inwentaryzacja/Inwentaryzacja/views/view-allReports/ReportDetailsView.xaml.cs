@@ -12,8 +12,14 @@ using Xamarin.Forms.Xaml;
 namespace Inwentaryzacja.views.view_allReports
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
+    /// <summary>
+    /// Klasa odpowiadajaca za widok okna szczegolow raportu
+    /// </summary>
     public partial class ReportDetailsView : ContentPage
     {
+        /// <summary>
+        /// Konstruktor klasy
+        /// </summary>
         public ReportDetailsView(string headerText, string roomText, string createDate, string createTime, string ownerText, string inThisRoom, string moveToRoom, string moveFromRoom, string inAnotherRoom, string scannedAll, string scannedAllDetails, string inThisRoomDetails, string movedToRoomDetails, string movedFromRoomDetails, string inAnotherRoomDetails, string scannedAllLabel, string moveFromRoomLabel, string moveToRoomLabel, string inAnotherRoomLabel, string inThisRoomLabel)
         {
             InitializeComponent();
@@ -21,6 +27,9 @@ namespace Inwentaryzacja.views.view_allReports
             DetailsButtonsImplementation(scannedAllDetails, inThisRoomDetails, movedToRoomDetails, movedFromRoomDetails, inAnotherRoomDetails);            
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za wypelnienie okna widoku tekstem
+        /// </summary>
         private void FillViewWithText(string headerText, string roomText, string createDate, string createTime, string ownerText, string inThisRoom, string moveToRoom, string moveFromRoom, string inAnotherRoom, string scannedAll, string scannedAllLabel, string moveFromRoomLabel, string moveToRoomLabel, string inAnotherRoomLabel, string inThisRoomLabel)
         {
             RoomText.Text = "Nazwa sali: " + roomText;
@@ -85,6 +94,9 @@ namespace Inwentaryzacja.views.view_allReports
             }
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za wyswietlenie przyciskow szczegolow
+        /// </summary>
         private void DetailsButtonsImplementation(string scannedAllDetails, string inThisRoomDetails, string movedToRoomDetails, string movedFromRoomDetails, string inAnotherRoomDetails)
         {
             ScannedAllBtn.Clicked += (object o, EventArgs e) => DisplayAlert("Szczegóły", scannedAllDetails, "OK");
@@ -93,12 +105,17 @@ namespace Inwentaryzacja.views.view_allReports
             InThisRoomBtn.Clicked += (object o, EventArgs e) => DisplayAlert("Szczegóły", inThisRoomDetails, "OK");
             InAnotherRoomBtn.Clicked += (object o, EventArgs e) => DisplayAlert("Szczegóły", inAnotherRoomDetails, "OK");
         }
-
+        /// <summary>
+        /// Funkcja odpowiadajaca za wybranie pokoju
+        /// </summary>
         private async void return_ChooseRoom(object o, EventArgs e)
         {
             await Navigation.PopAsync();
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za obsluge przycisku powrotu
+        /// </summary>
         protected override bool OnBackButtonPressed()
         {
             Navigation.PopAsync();
