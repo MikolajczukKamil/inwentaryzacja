@@ -135,7 +135,7 @@
 
                                 <local:RoundedButton 
                                 Text="Uznaj za zeskanowane"
-                                Clicked="MoveAllInRoom"
+                                Clicked="considerEverythingInRoomAsScanned"
                                 FontSize="Medium"
                                 Grid.Column="1"
                                 BackgroundColor="White"
@@ -263,7 +263,7 @@
                                                                 CornerRadius="10" 
                                                                 BorderWidth="2"
                                                                 FontSize="Micro"
-                                                                Clicked="NoChange" 
+                                                                Clicked="DontDoAnything" 
                                                                 android:Button.UseDefaultShadow="true"/>
                                                             </Grid>
                                                         </StackLayout>
@@ -277,7 +277,7 @@
                             <local:RoundedButton 
                                 Text="Przenieś wszystkie tutaj" 
                                 x:Name="ButtonMoveAll"
-                                Clicked="moveAllItems" 
+                                Clicked="moveAllForeignAssetsToThisRoom" 
                                 BackgroundColor="White"  
                                 Grid.Column="0" 
                                 Grid.ColumnSpan="2" 

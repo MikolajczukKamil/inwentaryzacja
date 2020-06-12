@@ -373,7 +373,7 @@ namespace Inwentaryzacja.views.view_scannedItem
             }
         }
 
-        async private void NoChange(object sender, EventArgs e)
+        async private void DontDoAnything(object sender, EventArgs e)
         {
             bool response = await DisplayAlert("Uwaga", "Czy na pewno nie chcesz zmieniać lokalizacji tego przedmiotu?", "Tak", "Nie");
 
@@ -396,7 +396,7 @@ namespace Inwentaryzacja.views.view_scannedItem
             }
         }
 
-        async private void moveAllItems(object sender, EventArgs e)
+        async private void moveAllForeignAssetsToThisRoom(object sender, EventArgs e)
         {
             bool response = await DisplayAlert("Uwaga", "Czy na pewno chcesz przenieść wszystkie przedmioty?", "Tak", "Nie");
 
@@ -418,7 +418,7 @@ namespace Inwentaryzacja.views.view_scannedItem
             }
         }
 
-        async private void MoveAllInRoom(object sender, EventArgs e)
+        async private void considerEverythingInRoomAsScanned(object sender, EventArgs e)
         {
             bool response = await DisplayAlert("Uwaga", "Czy na pewno chcesz przenieść wszystkie przedmioty?", "Tak", "Nie");
 
