@@ -189,6 +189,22 @@ getScans(user_id INT): OPTIONAL[
 </pre>
 
 <pre>
+getScanPositions(scan_id INT): OPTIONAL[
+  {
+    state INT
+    id INT
+    type INT
+    letter CHAR
+    asset_type_name VARCHAR
+    room_id INT
+    room_name VARCHAR
+    building_id INT
+    building_name VARCHAR
+  }[]
+]
+</pre>
+
+<pre>
 updateScans(scan_id INT, scan_positions VARCHAR( JSON( { asset INT, state: INT } ) )): OPTIONAL[{}]
 </pre>
 
