@@ -9,10 +9,15 @@ using Xamarin.Forms.Xaml;
 namespace Inwentaryzacja.views.view_chooseRoom
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
+    /// <summary>
+    /// Klasa odpowiadajaca za widok okna dodania budynku
+    /// </summary>
     public partial class AddBuildingView : ContentPage
     {
         APIController api = new APIController();
-
+        /// <summary>
+		/// Konstruktor klasy
+		/// </summary>
         public AddBuildingView()
         {
             InitializeComponent();
@@ -20,6 +25,9 @@ namespace Inwentaryzacja.views.view_chooseRoom
             BindingContext = this;
         }
 
+        /// <summary>
+		/// Funkcja odpowiadajaca za obsluge przycisku dodawania budynku
+		/// </summary>
         public async void AddButtonClicked(object o, EventArgs e)
         {
             EnableView(false);
@@ -56,13 +64,19 @@ namespace Inwentaryzacja.views.view_chooseRoom
             EnableView(true);
         }
 
+        /// <summary>
+		/// Funkcja odpowiadajaca za umozliwienie wyswietlenia widoku okna
+        /// <param name="state">stan okna</param>
+		/// </summary>
         private void EnableView(bool state)
         {
             IsBusy = !state;
             AddBtn.IsEnabled = state;
             BackBtn.IsEnabled = state;
         }
-
+        /// <summary>
+		/// Funkcja odpowiadajaca za wyswietlenie bledu
+		/// </summary>
         private async void onApiError(object o, ErrorEventArgs error)
         {
             await DisplayAlert("Błąd", error.MessageForUser, "OK");
@@ -73,6 +87,9 @@ namespace Inwentaryzacja.views.view_chooseRoom
             }
         }
 
+        /// <summary>
+		/// Funkcja odpowiadajaca za wybranie pokoju
+		/// </summary>
         private void return_ChooseRoom(object o, EventArgs e)
         {
             EnableView(false);
@@ -80,6 +97,9 @@ namespace Inwentaryzacja.views.view_chooseRoom
             EnableView(true);
         }
 
+        /// <summary>
+		/// Funkcja odpowiadajaca za obsluge przycisku wylogowania
+		/// </summary>
         private async void LogoutButtonClicked(object sender, EventArgs e)
         {
             if (await DisplayAlert("Wylogowywanie", "Czy na pewno chcesz się wylogować?", "Tak", "Nie"))

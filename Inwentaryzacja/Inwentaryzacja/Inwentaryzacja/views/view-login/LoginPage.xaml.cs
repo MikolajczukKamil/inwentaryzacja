@@ -8,9 +8,15 @@ using System.Threading.Tasks;
 namespace Inwentaryzacja
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
+    /// <summary>
+    /// Klasa odpowiadajaca za widok okna logowania
+    /// </summary>
     public partial class LoginPage : ContentPage
     {
         APIController api;
+        /// <summary>
+        /// Konstruktor klasy
+        /// </summary>
         public LoginPage()
         {
             api = new APIController();
@@ -19,14 +25,18 @@ namespace Inwentaryzacja
             InitializeComponent();
         }
 
-
+        /// <summary>
+        /// Funkcja odpowiadajaca za wyswietlenie wstepnego widoku okna
+        /// </summary>
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
             OnstartPage();
         }
-
+        /// <summary>
+        /// Funkcja odpowiadajaca za utworzenie sesji logowania uzytkownika
+        /// </summary>
         private async void OnstartPage()
         {
 
@@ -53,13 +63,18 @@ namespace Inwentaryzacja
                 }
             });  
         }
-
+        /// <summary>
+        /// Funkcja odpowiadajaca za obsluge okna logowania 
+        /// </summary>
+        /// <param name="state">stan okna</param>
         private void PageIsBusy(bool state)
         {
             _login.IsEnabled = !state;
             LoadingScreen.IsVisible = state;
         }
-
+        /// <summary>
+        /// Funkcja odpowiadajaca za przejscie do nastepnego okna
+        /// </summary>
         private void NextPage()
         {
             Device.BeginInvokeOnMainThread(async () =>
@@ -74,7 +89,9 @@ namespace Inwentaryzacja
                 }
             });
         }
-
+        /// <summary>
+        /// Funkcja odpowiadajaca za obsluge przycisku logowania
+        /// </summary>
         private void _loginButton_Clicked(object sender, EventArgs e)
         {
             PageIsBusy(true);
@@ -90,7 +107,9 @@ namespace Inwentaryzacja
                 }
             });
         }
-
+        /// <summary>
+        /// Funkcja odpowiadajaca za wyswietlenie komunikatu w przypadku nieudanej proby logowania
+        /// </summary>
         private async void LoginFail(object sender, ErrorEventArgs e)
         {
             await DisplayAlert("Błąd logowania", e.MessageForUser, "OK");

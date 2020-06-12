@@ -8,12 +8,19 @@ using Xamarin.Forms.Xaml;
 namespace Inwentaryzacja.views.view_chooseRoom
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
+
+    /// <summary>
+    /// Klasa odpowiadajaca za widok okna dodania pokoju
+    /// </summary>
     public partial class AddRoom : ContentPage
     {
         BuildingEntity[] buildings;
         int indexSelectedItem;
         APIController api = new APIController();
 
+        /// <summary>
+		/// Konstruktor klasy
+		/// </summary>
         public AddRoom(BuildingEntity[] buildings, int indexSelectedItem = 0)
         {
             this.buildings = buildings;
@@ -23,12 +30,18 @@ namespace Inwentaryzacja.views.view_chooseRoom
             BindingContext = this;
         }
 
+        /// <summary>
+		/// Funkcja odpowiadajaca za wyswietlenie budynkow po przejsciu do okna
+		/// </summary>
         protected override void OnAppearing()
         {
             GetBuildings();
             base.OnAppearing();
         }
 
+        /// <summary>
+		/// Funkcja odpowiadajaca za zwrocenie budynkow
+		/// </summary>
         private async void GetBuildings()
         {
             EnableView(false);
@@ -63,14 +76,19 @@ namespace Inwentaryzacja.views.view_chooseRoom
 
             EnableView(true);
         }
-  
+
+        /// <summary>
+        /// Funkcja odpowiadajaca za wybranie pokoju
+        /// </summary>
         public async void return_ChooseRoom(object o, EventArgs args)
         {
             EnableView(false);
             await Navigation.PopAsync();
             EnableView(true);
         }
-       
+        /// <summary>
+        /// Funkcja odpowiadajaca za sprawdzenie pokoju
+        /// </summary>
         public async void Check_Room(object o, EventArgs args)
         {
             EnableView(false);
@@ -110,7 +128,10 @@ namespace Inwentaryzacja.views.view_chooseRoom
 
             EnableView(true);
         }
-        
+        /// <summary>
+		/// Funkcja odpowiadajaca za umozliwienie wyswietlenia widoku okna
+        /// <param name="state">stan okna</param>
+		/// </summary>
         private void EnableView(bool state)
         {
             IsBusy = !state;
@@ -118,7 +139,9 @@ namespace Inwentaryzacja.views.view_chooseRoom
             BackBtn.IsEnabled = state;
             LogoutButton.IsEnabled = state;
         }
-      
+        /// <summary>
+        /// Funkcja odpowiadajaca za wyswietlenie bledu
+        /// </summary>
         private async void onApiError(object o, ErrorEventArgs error)
         {
             await DisplayAlert("Dodawanie pokoju", error.MessageForUser, "OK");
@@ -128,7 +151,9 @@ namespace Inwentaryzacja.views.view_chooseRoom
                 await Navigation.PushAsync(new LoginPage());
             }
         }
-
+        /// <summary>
+		/// Funkcja odpowiadajaca za obsluge przycisku wylogowania
+		/// </summary>
         private async void LogoutButtonClicked(object sender, EventArgs e)
         {
             EnableView(false);
