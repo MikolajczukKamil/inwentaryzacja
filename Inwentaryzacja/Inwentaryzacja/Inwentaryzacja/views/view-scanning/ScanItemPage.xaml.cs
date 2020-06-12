@@ -27,14 +27,18 @@ namespace Inwentaryzacja
         private List<string> scannedItem = new List<string>();
         private List<AllScaning> AllItems = new List<AllScaning>();
 
-        public ScanItemPage(RoomEntity room)
+        private ScanningUpdate scanningUpdate;
+
+        public ScanItemPage(RoomEntity room, int scanId = 1)
         {
             Room = room;
+
+            scanningUpdate = new ScanningUpdate(api, room, scanId);
 
             InitializeComponent();
             GetAllAssets();
 
-            var zXingOptions = new MobileBarcodeScanningOptions()
+            _scanner.Options = new MobileBarcodeScanningOptions()
             {
                 DelayBetweenContinuousScans = 1800, // msec
                 UseFrontCameraIfAvailable = false,
@@ -47,7 +51,6 @@ namespace Inwentaryzacja
                 }),
                 TryHarder = false //Gets or sets a flag which cause a deeper look into the bitmap.
             };
-            _scanner.Options = zXingOptions;
         }
 
         async void GetAllAssets()
@@ -132,7 +135,6 @@ namespace Inwentaryzacja
 
         }
 
-
         private async void ZXingScannerView_OnScanResult(Result result)
         {
             if (prev != null && (result.Text == prev.Text || ListContainItem(result.Text)))
@@ -146,29 +148,26 @@ namespace Inwentaryzacja
             }
 
             string[] positions;
-            int TypeID; 
             int AssetId;
 
             try
             {
                 positions = result.Text.Split('-');
-                TypeID = Convert.ToInt32(positions[0]);
                 AssetId = Convert.ToInt32(positions[1]);
             }
             catch (Exception)
             {
                 Device.BeginInvokeOnMainThread(async () =>
                 {
-                    positions = result.Text.Split('-');
                     await ShowPopup("Zły format kodu");
                 });
 
                 return;
             }
 
-            AssetInfoEntity assetInfoEntity = await api.getAssetInfo(AssetId);
+            AssetInfoEntity assetInfo = await api.getAssetInfo(AssetId);
 
-            if (assetInfoEntity == null)
+            if (assetInfo == null)
             {
                 Device.BeginInvokeOnMainThread(async () =>
                 {
@@ -178,11 +177,30 @@ namespace Inwentaryzacja
                 return;
             }
 
+            ScanAsset(assetInfo);
+
+            scanningUpdate.Update(AllItems);
+
+            scannedItem.Add(result.Text);
+
+            prev = result;
+
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                _infoLabel.Text = "Liczba zeskanowanych przedmiotów: " + scannedItem.Count;
+                Vibration.Vibrate(TimeSpan.FromMilliseconds(100));
+            });
+        }
+
+        private void ScanAsset(AssetInfoEntity assetInfo)
+        {
             try
             {
-                if (assetInfoEntity.room == null || assetInfoEntity.room.id != Room.id)
+                if (assetInfo.room == null || assetInfo.room.id != Room.id)
                 {
-                    AllItems.Add(new AllScaning(assetInfoEntity, assetInfoEntity.room, Room));
+                    // Nowy asset
+
+                    AllItems.Add(new AllScaning(assetInfo, assetInfo.room, Room));
 
                     Device.BeginInvokeOnMainThread(async () =>
                     {
@@ -191,7 +209,9 @@ namespace Inwentaryzacja
                 }
                 else
                 {
-                    AllItems.Find(x => x.ScannedId == assetInfoEntity.id).ItemMoved();
+                    // Zapisz jako zeskanowany
+
+                    AllItems.Find(x => x.ScannedId == assetInfo.id).ItemMoved();
 
                     Device.BeginInvokeOnMainThread(async () =>
                     {
@@ -208,15 +228,6 @@ namespace Inwentaryzacja
 
                 return;
             }
-  
-            prev = result;
-            scannedItem.Add(result.Text);
-
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                _infoLabel.Text = "Liczba zeskanowanych przedmiotów: " + scannedItem.Count;
-                Vibration.Vibrate(TimeSpan.FromMilliseconds(100));
-            });
         }
 
         private bool ListContainItem(string text)

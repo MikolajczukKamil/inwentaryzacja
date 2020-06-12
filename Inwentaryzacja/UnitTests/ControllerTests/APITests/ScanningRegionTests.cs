@@ -94,13 +94,13 @@ namespace UnitTests.ControllerTests.APITests
         [TestCase(6, 1, 1, 7, 7, false)]
         public async Task UpdateScanTest(int scanID, int assetID1, int state1, int assetID2, int state2, bool status)
         {
-            PositionPropotype[] positionPropotypes = new PositionPropotype[] {
-                new PositionPropotype(assetID1, state1),
-                new PositionPropotype(assetID2, state2) };
-            var scanPositionPrototype = new ScanPositionPropotype(scanID, positionPropotypes);
+            ScanPositionPropotype[] positionPropotypes = new ScanPositionPropotype[] {
+                new ScanPositionPropotype(assetID1, state1),
+                new ScanPositionPropotype(assetID2, state2) };
+            var scanPositionPrototype = new ScanUpdatePropotype(scanID, positionPropotypes);
             Assert.AreEqual(status, await apiController.updateScan(scanPositionPrototype));
         }
         [Test]
-        public async Task UpdateScanTest_EmptyPositionsArray() => Assert.AreEqual(false, await apiController.updateScan(new ScanPositionPropotype(5, new PositionPropotype[0])));
+        public async Task UpdateScanTest_EmptyPositionsArray() => Assert.AreEqual(false, await apiController.updateScan(new ScanUpdatePropotype(5, new ScanPositionPropotype[0])));
     }
 }

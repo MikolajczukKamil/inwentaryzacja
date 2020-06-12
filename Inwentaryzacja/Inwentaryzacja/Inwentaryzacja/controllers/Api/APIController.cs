@@ -438,7 +438,7 @@ namespace Inwentaryzacja.Controllers.Api
         /// </summary>
         /// <param name="scan_update">Opis skanowania</param>
         /// <returns>Informację czy udało się zaktualizować informacje o skanowaniu w bazie danych</returns>
-        public async Task<bool> updateScan(ScanPositionPropotype scan_update)
+        public async Task<bool> updateScan(ScanUpdatePropotype scan_update)
         {
             var uri = "/updateScan";
             string data = ConvertDataToJSON(scan_update);

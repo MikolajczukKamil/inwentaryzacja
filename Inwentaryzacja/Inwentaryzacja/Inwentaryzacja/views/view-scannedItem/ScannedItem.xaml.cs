@@ -1,12 +1,8 @@
 ﻿using Inwentaryzacja.Controllers.Api;
 using Inwentaryzacja.Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -70,6 +66,33 @@ namespace Inwentaryzacja.views.view_scannedItem
             public int ScannedId { get; set; }
             public string AssetRoomName { get; set; }
 
+        }
+
+        public class ScanningUpdate {
+            private APIController Api;
+            private RoomEntity ThisRoom;
+            private int Scanid;
+
+            public ScanningUpdate(APIController api, RoomEntity room, int scanid)
+            {
+                ThisRoom = room;
+                Scanid = scanid;
+                Api = api;
+            }
+
+            public async void Update(List<AllScaning> allPositions)
+            {
+                var scannedItems = allPositions.FindAll((el) => el.Approved || el.AssetRoomId != ThisRoom.id);
+
+                var positions = new List<ScanPositionPropotype>();
+
+                foreach (var position in scannedItems)
+                {
+                    positions.Add(new ScanPositionPropotype(position.AssetEntity.id, position.Approved ? 1 : 0));
+                }
+
+                await Api.updateScan(new ScanUpdatePropotype(Scanid, positions.ToArray()));
+            }
         }
 
         private void ShowInfo()
@@ -213,6 +236,7 @@ namespace Inwentaryzacja.views.view_scannedItem
         async private void ScannedInRoomDetails(object sender, EventArgs e)
         {
             string text = "";
+
             foreach (AllScaning item in allScaning)
             {
                 if (item.reportPositionPrototype.present)
@@ -229,6 +253,7 @@ namespace Inwentaryzacja.views.view_scannedItem
         async private void UnscannedInRoomDetails(object sender, EventArgs e)
         {
             string text = "";
+
             foreach (AllScaning item in allScaning)
             {
                 if (!item.reportPositionPrototype.present && item.reportPositionPrototype.previous == ScanningRoom.id)
@@ -236,14 +261,16 @@ namespace Inwentaryzacja.views.view_scannedItem
                     text += item.AssetEntity.type.name + " numer: " + item.AssetEntity.id + "\n";
                 }
             }
-            if (text == "")
-                text = "brak";
+
+            if (text == "") text = "brak";
+
             await DisplayAlert("Niezeskanowane z sali " + ScanningRoom.name, text, "Ok");
         }
 
         async private void OtherDetails(object sender, EventArgs e)
         {
             string text = "";
+
             foreach (AllScaning item in allScaning)
             {
                 if (!item.reportPositionPrototype.present && item.reportPositionPrototype.previous != ScanningRoom.id)
@@ -251,8 +278,9 @@ namespace Inwentaryzacja.views.view_scannedItem
                     text += item.AssetEntity.type.name + " numer: " + item.AssetEntity.id + "\n";
                 }
             }
-            if (text == "")
-                text = "brak";
+
+            if (text == "") text = "brak";
+
             await DisplayAlert("Nieprzeniesione z innych sal", text, "Ok");
         }
 
@@ -273,6 +301,7 @@ namespace Inwentaryzacja.views.view_scannedItem
         {
             bool message1 = false;
             bool message2 = false;
+
             foreach (AllScaning item in allScaning)
             {
                 if (!item.Approved)
@@ -283,18 +312,21 @@ namespace Inwentaryzacja.views.view_scannedItem
                         message1 = true;
                 }
             }
+
             if (message1 == true)
             {
                 await DisplayAlert("Uwaga", "Istnieją niezatwierdzone przedmioty", "Wróć");
+
                 return;
             }
             else if (message2 == true)
             {
                 bool response = await DisplayAlert("Uwaga", "Jeśli kontynuujesz, wszystkie niezeskanowane przedmioty z sali zostaną z niej usunięte!", "Kontunuuj", "Anuluj");
-                if(response)
-                    GenerateRaport();
+                if(response) GenerateRaport();
+
                 else return;
             }
+
             GenerateRaport();
         }
 
@@ -306,6 +338,7 @@ namespace Inwentaryzacja.views.view_scannedItem
             {
                 Button button = sender as Button;
                 int id = Convert.ToInt32(button.CommandParameter);
+
                 foreach (AllScaning item in allScaning)
                 {
                     if (item.ScannedId == id)
@@ -326,6 +359,7 @@ namespace Inwentaryzacja.views.view_scannedItem
             {
                 Button button = sender as Button;
                 int id = Convert.ToInt32(button.CommandParameter);
+
                 foreach (AllScaning item in allScaning)
                 {
                     if (item.ScannedId == id)
@@ -351,6 +385,7 @@ namespace Inwentaryzacja.views.view_scannedItem
                         item.ItemMoved();
                     }
                 }
+
                 ShowInfo();
                 scrollView.IsEnabled = false;
                 await scrollView.ScrollToAsync(0, 0, true);
@@ -370,6 +405,7 @@ namespace Inwentaryzacja.views.view_scannedItem
                         item.ItemMoved();
                     }
                 }
+
                 ShowInfo();
             }
         }
@@ -378,14 +414,17 @@ namespace Inwentaryzacja.views.view_scannedItem
         {
             EnableView(false);
             ReportPositionPrototype[] reportPositionPrototype = new ReportPositionPrototype[allScaning.Count];
+            
             for (int i = 0; i < allScaning.Count; i++) 
             {
                 reportPositionPrototype[i] = allScaning[i].reportPositionPrototype;
             }
+
             
             ReportPrototype reportPrototype = new ReportPrototype("Raport " + ScanningRoom.building.name, ScanningRoom, reportPositionPrototype);
             int end = await api.createReport(reportPrototype);
             EnableView(true);
+            
             if (end != -1)
             {
                 App.Current.MainPage = new NavigationPage(new WelcomeViewPage());
