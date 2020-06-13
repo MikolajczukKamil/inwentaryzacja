@@ -646,7 +646,7 @@ BEGIN
     SELECT COUNT(*) + 1
     INTO Previous_reports_with_name
     FROM reports
-    WHERE reports.name REGEXP CONCAT(Report_name, '\s?\d*')
+    WHERE reports.name REGEXP CONCAT(Report_name, '\s?\d*');
 
     INSERT INTO reports (name, room, owner, create_date)
     VALUES (CONCAT(Report_name, ' ', Previous_reports_with_name), Report_room, Report_owner, NOW());
