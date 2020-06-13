@@ -5,9 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Plugin.DownloadManager;
+using Plugin.DownloadManager.Abstractions;
+using Rg.Plugins.Popup.Extensions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Inwentaryzacja.Controllers.Api;
 
 namespace Inwentaryzacja.views.view_allReports
 {
@@ -17,14 +20,90 @@ namespace Inwentaryzacja.views.view_allReports
     /// </summary>
     public partial class ReportDetailsView : ContentPage
     {
-        /// <summary>
-        /// Konstruktor klasy
-        /// </summary>
-        public ReportDetailsView(string headerText, string roomText, string createDate, string createTime, string ownerText, string inThisRoom, string moveToRoom, string moveFromRoom, string inAnotherRoom, string scannedAll, string scannedAllDetails, string inThisRoomDetails, string movedToRoomDetails, string movedFromRoomDetails, string inAnotherRoomDetails, string scannedAllLabel, string moveFromRoomLabel, string moveToRoomLabel, string inAnotherRoomLabel, string inThisRoomLabel)
+
+	    /// <summary>
+	    /// Zmienne odpowiadające za pobieranie pliku
+	    /// </summary>
+	    private IDownloadFile File;
+	    private bool isDownloading = true;
+	    private int reportId;
+
+	    /// <summary>
+	    /// Konstruktor klasy
+	    /// </summary>
+	    public ReportDetailsView(string headerText, string roomText, string createDate, string createTime, string ownerText, string inThisRoom, string moveToRoom, string moveFromRoom, string inAnotherRoom, string scannedAll, string scannedAllDetails, string inThisRoomDetails, string movedToRoomDetails, string movedFromRoomDetails, string inAnotherRoomDetails, string scannedAllLabel, string moveFromRoomLabel, string moveToRoomLabel, string inAnotherRoomLabel, string inThisRoomLabel, int id)
         {
             InitializeComponent();
+            reportId = id;
             FillViewWithText(headerText, roomText, createDate, createTime, ownerText, inThisRoom, moveToRoom, moveFromRoom, inAnotherRoom, scannedAll, scannedAllLabel, moveFromRoomLabel, moveToRoomLabel, inAnotherRoomLabel, inThisRoomLabel);
-            DetailsButtonsImplementation(scannedAllDetails, inThisRoomDetails, movedToRoomDetails, movedFromRoomDetails, inAnotherRoomDetails);            
+            DetailsButtonsImplementation(scannedAllDetails, inThisRoomDetails, movedToRoomDetails, movedFromRoomDetails, inAnotherRoomDetails);
+            CrossDownloadManager.Current.CollectionChanged += (sender, e) =>
+	            System.Diagnostics.Debug.WriteLine(
+		            "[DownloadManager] " + e.Action +
+                    " -> New items: " + (e.NewItems?.Count ?? 0) +
+                    " at " + e.NewStartingIndex + 
+                    " || Old items: " + (e.OldItems?.Count ?? 0) + 
+                    " at " + e.OldStartingIndex
+	            );
+        }
+
+        /// <summary>
+        /// Funkcja odpowiadajaca za pobranie pliku
+        /// </summary>
+        public async void DownloadFile(string fileName)
+        {
+	        await Task.Yield();
+
+	        await Task.Run(() =>
+	        {
+		        var downloadManager = CrossDownloadManager.Current;
+		        var file = downloadManager.CreateDownloadFile(fileName);
+                downloadManager.Start(file, true);
+
+                while (isDownloading)
+                {
+	                isDownloading = IsDownloading(file);
+                }
+	        });
+
+	        if (!isDownloading)
+	        {
+		        await DisplayAlert("Status pliku", "Raport pobrany pomyślnie", "OK");
+	        }
+        }
+
+        /// <summary>
+        /// Funkcja odpowiadajaca za sprawdzenie czy plik jest pobierany
+        /// </summary>
+        public bool IsDownloading(IDownloadFile file)
+        {
+            if (file == null)
+                return false;
+
+            switch (file.Status)
+            {
+	            case DownloadFileStatus.INITIALIZED:
+	            case DownloadFileStatus.PAUSED:
+	            case DownloadFileStatus.PENDING:
+	            case DownloadFileStatus.RUNNING:
+                    return true;
+                
+                case DownloadFileStatus.COMPLETED:
+                case DownloadFileStatus.CANCELED:
+                case DownloadFileStatus.FAILED:
+	                return false;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        /// <summary>
+        /// Funkcja odpowiadajaca za pobranie pliku po kliknieciu przycisku
+        /// </summary>
+        private void DownloadBtn_Clicked(object sender, EventArgs e)
+        {
+            DownloadFile($"{APIController.BaseUrl}/pdfGenerator/{reportId}/1");
         }
 
         /// <summary>
@@ -105,6 +184,7 @@ namespace Inwentaryzacja.views.view_allReports
             InThisRoomBtn.Clicked += (object o, EventArgs e) => DisplayAlert("Szczegóły", inThisRoomDetails, "OK");
             InAnotherRoomBtn.Clicked += (object o, EventArgs e) => DisplayAlert("Szczegóły", inAnotherRoomDetails, "OK");
         }
+       
         /// <summary>
         /// Funkcja odpowiadajaca za wybranie pokoju
         /// </summary>

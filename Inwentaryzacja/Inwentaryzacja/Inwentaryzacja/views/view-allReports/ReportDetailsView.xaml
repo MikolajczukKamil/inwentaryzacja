@@ -76,7 +76,15 @@
                         x:Name="FrameRequest">
 
                 <StackLayout>
-
+                    <local:RoundedButton Text="Pobierz"
+                                         HorizontalOptions="Center"
+                                         FontSize="20"
+                                         BackgroundColor="White"
+                                         WidthRequest="100"
+                                         HeightRequest="35"
+                                         Padding="3,3,3,3"
+                                         x:Name="DownloadBtn"
+                                         Clicked="DownloadBtn_Clicked"/>
                     <Label  FontSize="25" 
                             Margin="0,20,0,5"
                             VerticalTextAlignment="Center"
@@ -105,7 +113,6 @@
                                         HeightRequest="35"
                                         Padding="3,3,3,3"
                                         x:Name="ScannedAllBtn"/>
-
 
                     <Label  FontSize="25" 
                             Margin="0,20,0,5"

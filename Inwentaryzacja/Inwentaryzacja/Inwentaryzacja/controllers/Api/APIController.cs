@@ -24,7 +24,7 @@ namespace Inwentaryzacja.Controllers.Api
         /// <summary>
         /// URL serwera API
         /// </summary>
-        static private readonly string BaseUrl = "https://aplikacja-do-inwentaryzacji.000webhostapp.com/api";
+        static public readonly string BaseUrl = "https://aplikacja-do-inwentaryzacji.000webhostapp.com/api";
 
         /// <summary>
         /// Event handler dla błędow występujących podczas zapytań do API
