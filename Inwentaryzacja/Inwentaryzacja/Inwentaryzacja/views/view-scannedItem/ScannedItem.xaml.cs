@@ -272,18 +272,22 @@ namespace Inwentaryzacja.views.view_scannedItem
                 }
             }
 
-            if (message1 == true)
+            if (message1)
             {
                 await DisplayAlert("Uwaga", "Istnieją niezatwierdzone przedmioty", "Wróć");
 
                 return;
             }
-            else if (message2 == true)
+
+            if (message2)
             {
                 bool response = await DisplayAlert("Uwaga", "Jeśli kontynuujesz, wszystkie niezeskanowane przedmioty z sali zostaną z niej usunięte!", "Kontunuuj", "Anuluj");
-                if(response) GenerateRaport();
+                
+                if(response) {
+                    GenerateRaport();
+                }
 
-                else return;
+                return;
             }
 
             GenerateRaport();
