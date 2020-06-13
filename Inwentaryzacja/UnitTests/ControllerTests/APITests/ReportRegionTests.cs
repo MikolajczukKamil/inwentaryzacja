@@ -36,9 +36,9 @@ namespace UnitTests.ControllerTests.APITests
         //GetReportHeader Tests
         //Tutaj się zmieniają daty w raportach
         [Test]
-        [TestCase(1, 1, "Raport 1", 1, 1, "2020-05-25 09:12:09", "user1", "3/6", "b 34", 1)]
-        [TestCase(4, 4, "Raport 4", 3, 1, "2020-05-28 09:12:09", "user1", "3/19", "b 34", 1)]
-        [TestCase(6, 6, "Raport 6", 4, 1, "2020-05-30 09:12:09", "user1", "1/2", "b 4", 2)]
+        [TestCase(1, 1, "Raport 1", 1, 1, "2020-06-03 16:54:55", "user1", "3/6", "b 34", 1)]
+        [TestCase(4, 4, "Raport 4", 3, 1, "2020-06-06 16:54:55", "user1", "3/19", "b 34", 1)]
+        [TestCase(6, 6, "Raport 6", 4, 1, "2020-06-08 16:54:55", "user1", "1/2", "b 4", 2)]
         public async Task GetReportHeader_CorrectID(int id, int staticId, string staticName, int staticRoomId, int staticOwnerId, string staticDate, string staticLogin, string staticRoomName, string staticBuildingName, int staticBuildingId)
         {
             ReportHeaderEntity reportHeaderEntity = await apiController.getReportHeader(id);
@@ -85,7 +85,7 @@ namespace UnitTests.ControllerTests.APITests
         }
         //GetReportHeader Tests
         [Test]
-        [TestCase(3, new int[] { 1, 7, 2, 8, 3, 4, 5, 6 }, new int[] { 1, 1, 2, 2, 3, 4, 5, 6 }, new string[] { "komputer", "komputer" , "krzesło", "krzesło","monitor","projektor","stół","tablica" }, new char[] {'c', 'c', 'k', 'k', 'm', 'p', 's', 't' }, new int[] { 1, 2, 1, 2, 1, 1, 1, 1 }, new int[] { 1, 1, 1, 1, 1, 1, 0, 0 }, new string[] { "3/6", "3/40", "3/6", "3/40", "3/6", "3/6", "3/6", "3/6" }, new int[] { 1, 1, 1, 1, 1, 1, 1, 1 }, new string[] { "b 34", "b 34", "b 34", "b 34", "b 34", "b 34", "b 34", "b 34" })]
+        [TestCase(3, new int[] { 1, 7, 2, 8, 3, 4, 5, 6 }, new int[] { 1, 1, 2, 2, 3, 4, 5, 6 }, new string[] { "komputer", "komputer", "krzesło", "krzesło", "monitor", "projektor", "stół", "tablica" }, new char[] { 'c', 'c', 'k', 'k', 'm', 'p', 's', 't' }, new int[] { 1, 2, 1, 2, 1, 1, 1, 1 }, new int[] { 1, 1, 1, 1, 1, 1, 0, 0 }, new string[] { "3/6", "3/40", "3/6", "3/40", "3/6", "3/6", "3/6", "3/6" }, new int[] { 1, 1, 1, 1, 1, 1, 1, 1 }, new string[] { "b 34", "b 34", "b 34", "b 34", "b 34", "b 34", "b 34", "b 34" })]
         public async Task GetReportPositions_CorrectIdRoomWithoutNulls(int ReportId, int[] assetId, int[] assetTypeId, string[] assetName, char[] assetLetter, int[] prevRoom, int[] presentRoom, string[] roomName, int[] buildingId, string[] buildingName)
         {
             ReportPositionEntity[] reportPositionEntities = await apiController.getReportPositions(ReportId);
@@ -136,12 +136,12 @@ namespace UnitTests.ControllerTests.APITests
         }
         //createReport tests
         [Test]
-        [TestCase("Report testowy",1,"3/6",1,"b 34", 1,1,"komputer",'c', 4, "1/2", 2, "b 4", true)]
+        [TestCase("Report testowy", 1, "3/6", 1, "b 34", 1, 1, "komputer", 'c', 4, "1/2", 2, "b 4", true)]
         [TestCase("Report test", 5, "1/3", 3, "b 5", 13, 1, "komputer", 'c', 1, "3/6", 1, "b 34", true)]
         public async Task createReport_CorrectData_OneAsset(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int assetId, int assetTypeId, string assetTypeName, char assetLetter, int PreviousRoomId, string PreviousRoomName, int PreviousBuildingId, string PreviousBuildingName, bool present)
         {
-            Room room = new Room(CurrentRoomId, CurrentRoomName, new Building(CurrentBuildingId, CurrentBuildingName));
-            ReportPositionPrototype positionPrototyp = new ReportPositionPrototype(new Asset(assetId, new AssetType(assetTypeId, assetTypeName, assetLetter)), new Room(PreviousRoomId,PreviousRoomName, new Building(PreviousBuildingId, PreviousBuildingName)), present);
+            RoomEntity room = new RoomEntity { id = CurrentRoomId, name = CurrentRoomName, building = new BuildingEntity { id = CurrentBuildingId, name = CurrentBuildingName } };
+            ReportPositionPrototype positionPrototyp = new ReportPositionPrototype(new AssetEntity { id = assetId, type = new AssetTypeEntity { id=assetTypeId, name=assetTypeName, letter=assetLetter } }, new RoomEntity { id = PreviousRoomId, name = PreviousRoomName, building = new BuildingEntity { id = PreviousBuildingId, name = PreviousBuildingName } }, present);
             ReportPrototype reportPrototype = new ReportPrototype(reportName, room, new ReportPositionPrototype[] { positionPrototyp });
             int resultInt = await apiController.createReport(reportPrototype);
             bool resultBool = false;
@@ -150,14 +150,14 @@ namespace UnitTests.ControllerTests.APITests
         }
 
         [Test]
-        [TestCase("Report testowy - CorrectData TwoAssets", 1, "3/6", 1, "b 34", new int[] { 1,3 }, new int[] { 1,3 }, new string[] { "komputer", "monitor" }, new char[] { 'c','m' },new int[] {1,4},new string[] {"3/6","1/2"},new int[] {1, 2 },
+        [TestCase("Report testowy - CorrectData TwoAssets", 1, "3/6", 1, "b 34", new int[] { 1, 3 }, new int[] { 1, 3 }, new string[] { "komputer", "monitor" }, new char[] { 'c', 'm' }, new int[] { 1, 4 }, new string[] { "3/6", "1/2" }, new int[] { 1, 2 },
     new string[] { "b 34", "b 4" }, new bool[] { true, true })]
 
-        public async Task CreateReport_CorrectData_TwoAsset(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present) 
-        { 
-            Room room = new Room(CurrentRoomId, CurrentRoomName, new Building(CurrentBuildingId, CurrentBuildingName));
-            ReportPositionPrototype positionPrototyp1 = new ReportPositionPrototype(new Asset(assetId[0], new AssetType(assetTypeId[0], assetTypeName[0], assetLetter[0])), new Room(PreviousRoomId[0], PreviousRoomName[0], new Building(PreviousBuildingId[0], PreviousBuildingName[0])), present[0]);
-            ReportPositionPrototype positionPrototyp2 = new ReportPositionPrototype(new Asset(assetId[1], new AssetType(assetTypeId[1], assetTypeName[1], assetLetter[1])), new Room(PreviousRoomId[1], PreviousRoomName[1], new Building(PreviousBuildingId[1], PreviousBuildingName[1])), present[1]);
+        public async Task CreateReport_CorrectData_TwoAsset(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present)
+        {
+            RoomEntity room = new RoomEntity { id = CurrentRoomId, name = CurrentRoomName, building = new BuildingEntity { id = CurrentBuildingId, name = CurrentBuildingName } };
+            ReportPositionPrototype positionPrototyp1 = new ReportPositionPrototype(new AssetEntity { id = assetId[0], type = new AssetTypeEntity { id = assetTypeId[0], name = assetTypeName[0], letter = assetLetter[0] } }, new RoomEntity {id=PreviousRoomId[0], name=PreviousRoomName[0], building=new BuildingEntity{id=PreviousBuildingId[0], name=PreviousBuildingName[0]}}, present[0]);
+            ReportPositionPrototype positionPrototyp2 = new ReportPositionPrototype(new AssetEntity { id = assetId[1], type = new AssetTypeEntity { id = assetTypeId[1], name = assetTypeName[1], letter = assetLetter[1] } }, new RoomEntity { id = PreviousRoomId[1], name = PreviousRoomName[1], building = new BuildingEntity { id = PreviousBuildingId[1], name = PreviousBuildingName[1] } }, present[1]);
             ReportPrototype reportPrototype = new ReportPrototype(reportName, room, new ReportPositionPrototype[] { positionPrototyp1,positionPrototyp2 });
             int resultInt = await apiController.createReport(reportPrototype);
             bool resultBool = false;
@@ -169,7 +169,7 @@ namespace UnitTests.ControllerTests.APITests
         [TestCase("Report testowy", 1, "3/6", 1, "b 34")]
         public async Task CreateReport_WrongData_ZeroAsset(string reportName, int roomId, string roomName, int buildingId, string buildingName)
         {
-            Room room = new Room(roomId, roomName, new Building(buildingId, buildingName));
+            RoomEntity room = new RoomEntity { id = roomId, name = roomName, building = new BuildingEntity { id = buildingId, name = buildingName } };
             ReportPrototype reportPrototype = new ReportPrototype(reportName, room, new ReportPositionPrototype[] {});
             int resultInt = await apiController.createReport(reportPrototype);
             bool resultBool = false;
@@ -183,9 +183,9 @@ namespace UnitTests.ControllerTests.APITests
 
         public async Task CreateReport_WrongData_EmptyReportName(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present)
         {
-            Room room = new Room(CurrentRoomId, CurrentRoomName, new Building(CurrentBuildingId, CurrentBuildingName));
-            ReportPositionPrototype positionPrototyp1 = new ReportPositionPrototype(new Asset(assetId[0], new AssetType(assetTypeId[0], assetTypeName[0], assetLetter[0])), new Room(PreviousRoomId[0], PreviousRoomName[0], new Building(PreviousBuildingId[0], PreviousBuildingName[0])), present[0]);
-            ReportPositionPrototype positionPrototyp2 = new ReportPositionPrototype(new Asset(assetId[1], new AssetType(assetTypeId[1], assetTypeName[1], assetLetter[1])), new Room(PreviousRoomId[1], PreviousRoomName[1], new Building(PreviousBuildingId[1], PreviousBuildingName[1])), present[1]);
+            RoomEntity room = new RoomEntity { id = CurrentRoomId, name = CurrentRoomName, building = new BuildingEntity { id = CurrentBuildingId, name = CurrentBuildingName } };
+            ReportPositionPrototype positionPrototyp1 = new ReportPositionPrototype(new AssetEntity { id = assetId[0], type = new AssetTypeEntity { id = assetTypeId[0], name = assetTypeName[0], letter = assetLetter[0] } }, new RoomEntity { id = PreviousRoomId[0], name = PreviousRoomName[0], building = new BuildingEntity { id = PreviousBuildingId[0], name = PreviousBuildingName[0] } }, present[0]);
+            ReportPositionPrototype positionPrototyp2 = new ReportPositionPrototype(new AssetEntity { id = assetId[1], type = new AssetTypeEntity { id = assetTypeId[1], name = assetTypeName[1], letter = assetLetter[1] } }, new RoomEntity { id = PreviousRoomId[1], name = PreviousRoomName[1], building = new BuildingEntity { id = PreviousBuildingId[1], name = PreviousBuildingName[1] } }, present[1]);
             ReportPrototype reportPrototype = new ReportPrototype(reportName, room, new ReportPositionPrototype[] { positionPrototyp1, positionPrototyp2 });
             int resultInt = await apiController.createReport(reportPrototype);
             bool resultBool = false;
@@ -199,9 +199,9 @@ namespace UnitTests.ControllerTests.APITests
 
         public async Task CreateReport_WrongData_NoCurrentRoom(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present)
         {
-            Room room = new Room(CurrentRoomId, CurrentRoomName, new Building(CurrentBuildingId, CurrentBuildingName));
-            ReportPositionPrototype positionPrototyp1 = new ReportPositionPrototype(new Asset(assetId[0], new AssetType(assetTypeId[0], assetTypeName[0], assetLetter[0])), new Room(PreviousRoomId[0], PreviousRoomName[0], new Building(PreviousBuildingId[0], PreviousBuildingName[0])), present[0]);
-            ReportPositionPrototype positionPrototyp2 = new ReportPositionPrototype(new Asset(assetId[1], new AssetType(assetTypeId[1], assetTypeName[1], assetLetter[1])), new Room(PreviousRoomId[1], PreviousRoomName[1], new Building(PreviousBuildingId[1], PreviousBuildingName[1])), present[1]);
+            RoomEntity room = new RoomEntity { id = CurrentRoomId, name = CurrentRoomName, building = new BuildingEntity { id = CurrentBuildingId, name = CurrentBuildingName } };
+            ReportPositionPrototype positionPrototyp1 = new ReportPositionPrototype(new AssetEntity { id = assetId[0], type = new AssetTypeEntity { id = assetTypeId[0], name = assetTypeName[0], letter = assetLetter[0] } }, new RoomEntity { id = PreviousRoomId[0], name = PreviousRoomName[0], building = new BuildingEntity { id = PreviousBuildingId[0], name = PreviousBuildingName[0] } }, present[0]);
+            ReportPositionPrototype positionPrototyp2 = new ReportPositionPrototype(new AssetEntity { id = assetId[1], type = new AssetTypeEntity { id = assetTypeId[1], name = assetTypeName[1], letter = assetLetter[1] } }, new RoomEntity { id = PreviousRoomId[1], name = PreviousRoomName[1], building = new BuildingEntity { id = PreviousBuildingId[1], name = PreviousBuildingName[1] } }, present[1]);
             ReportPrototype reportPrototype = new ReportPrototype(reportName, room, new ReportPositionPrototype[] { positionPrototyp1, positionPrototyp2 });
             int resultInt = await apiController.createReport(reportPrototype);
             bool resultBool = false;
@@ -215,9 +215,9 @@ namespace UnitTests.ControllerTests.APITests
 
         public async Task CreateReport_WrongData_NoExistCurrentRoom(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present)
         {
-            Room room = new Room(CurrentRoomId, CurrentRoomName, new Building(CurrentBuildingId, CurrentBuildingName));
-            ReportPositionPrototype positionPrototyp1 = new ReportPositionPrototype(new Asset(assetId[0], new AssetType(assetTypeId[0], assetTypeName[0], assetLetter[0])), new Room(PreviousRoomId[0], PreviousRoomName[0], new Building(PreviousBuildingId[0], PreviousBuildingName[0])), present[0]);
-            ReportPositionPrototype positionPrototyp2 = new ReportPositionPrototype(new Asset(assetId[1], new AssetType(assetTypeId[1], assetTypeName[1], assetLetter[1])), new Room(PreviousRoomId[1], PreviousRoomName[1], new Building(PreviousBuildingId[1], PreviousBuildingName[1])), present[1]);
+            RoomEntity room = new RoomEntity { id = CurrentRoomId, name = CurrentRoomName, building = new BuildingEntity { id = CurrentBuildingId, name = CurrentBuildingName } };
+            ReportPositionPrototype positionPrototyp1 = new ReportPositionPrototype(new AssetEntity { id = assetId[0], type = new AssetTypeEntity { id = assetTypeId[0], name = assetTypeName[0], letter = assetLetter[0] } }, new RoomEntity { id = PreviousRoomId[0], name = PreviousRoomName[0], building = new BuildingEntity { id = PreviousBuildingId[0], name = PreviousBuildingName[0] } }, present[0]);
+            ReportPositionPrototype positionPrototyp2 = new ReportPositionPrototype(new AssetEntity { id = assetId[1], type = new AssetTypeEntity { id = assetTypeId[1], name = assetTypeName[1], letter = assetLetter[1] } }, new RoomEntity { id = PreviousRoomId[1], name = PreviousRoomName[1], building = new BuildingEntity { id = PreviousBuildingId[1], name = PreviousBuildingName[1] } }, present[1]);
             ReportPrototype reportPrototype = new ReportPrototype(reportName, room, new ReportPositionPrototype[] { positionPrototyp1, positionPrototyp2 });
             int resultInt = await apiController.createReport(reportPrototype);
             bool resultBool = false;
@@ -235,9 +235,9 @@ namespace UnitTests.ControllerTests.APITests
 
         public async Task CreateReport_WrongData_WrongAssetId(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, int[] PreviousRoomId, string[] PreviousRoomName, int[] PreviousBuildingId, string[] PreviousBuildingName, bool[] present)
         {
-            Room room = new Room(CurrentRoomId, CurrentRoomName, new Building(CurrentBuildingId, CurrentBuildingName));
-            ReportPositionPrototype positionPrototyp1 = new ReportPositionPrototype(new Asset(assetId[0], new AssetType(assetTypeId[0], assetTypeName[0], assetLetter[0])), new Room(PreviousRoomId[0], PreviousRoomName[0], new Building(PreviousBuildingId[0], PreviousBuildingName[0])), present[0]);
-            ReportPositionPrototype positionPrototyp2 = new ReportPositionPrototype(new Asset(assetId[1], new AssetType(assetTypeId[1], assetTypeName[1], assetLetter[1])), new Room(PreviousRoomId[1], PreviousRoomName[1], new Building(PreviousBuildingId[1], PreviousBuildingName[1])), present[1]);
+            RoomEntity room = new RoomEntity { id = CurrentRoomId, name = CurrentRoomName, building = new BuildingEntity { id = CurrentBuildingId, name = CurrentBuildingName } };
+            ReportPositionPrototype positionPrototyp1 = new ReportPositionPrototype(new AssetEntity { id = assetId[0], type = new AssetTypeEntity { id = assetTypeId[0], name = assetTypeName[0], letter = assetLetter[0] } }, new RoomEntity { id = PreviousRoomId[0], name = PreviousRoomName[0], building = new BuildingEntity { id = PreviousBuildingId[0], name = PreviousBuildingName[0] } }, present[0]);
+            ReportPositionPrototype positionPrototyp2 = new ReportPositionPrototype(new AssetEntity { id = assetId[1], type = new AssetTypeEntity { id = assetTypeId[1], name = assetTypeName[1], letter = assetLetter[1] } }, new RoomEntity { id = PreviousRoomId[1], name = PreviousRoomName[1], building = new BuildingEntity { id = PreviousBuildingId[1], name = PreviousBuildingName[1] } }, present[1]);
             ReportPrototype reportPrototype = new ReportPrototype(reportName, room, new ReportPositionPrototype[] { positionPrototyp1, positionPrototyp2 });
             int resultInt = await apiController.createReport(reportPrototype);
             bool resultBool = false;
@@ -250,9 +250,9 @@ namespace UnitTests.ControllerTests.APITests
 
         public async Task CreateReport_WrongData_PreviousIsNullPresentIsFalse(string reportName, int CurrentRoomId, string CurrentRoomName, int CurrentBuildingId, string CurrentBuildingName, int[] assetId, int[] assetTypeId, string[] assetTypeName, char[] assetLetter, bool[] present)
         {
-            Room room = new Room(CurrentRoomId, CurrentRoomName, new Building(CurrentBuildingId, CurrentBuildingName));
-            ReportPositionPrototype positionPrototyp1 = new ReportPositionPrototype(new Asset(assetId[0], new AssetType(assetTypeId[0], assetTypeName[0], assetLetter[0])), null, present[0]);
-            ReportPositionPrototype positionPrototyp2 = new ReportPositionPrototype(new Asset(assetId[1], new AssetType(assetTypeId[1], assetTypeName[1], assetLetter[1])), null, present[1]);
+            RoomEntity room = new RoomEntity { id = CurrentRoomId, name = CurrentRoomName, building = new BuildingEntity { id = CurrentBuildingId, name = CurrentBuildingName } };
+            ReportPositionPrototype positionPrototyp1 = new ReportPositionPrototype(new AssetEntity { id = assetId[0], type = new AssetTypeEntity { id = assetTypeId[0], name = assetTypeName[0], letter = assetLetter[0] } }, null, present[0]);
+            ReportPositionPrototype positionPrototyp2 = new ReportPositionPrototype(new AssetEntity { id = assetId[1], type = new AssetTypeEntity { id = assetTypeId[1], name = assetTypeName[1], letter = assetLetter[1] } }, null, present[1]);
             ReportPrototype reportPrototype = new ReportPrototype(reportName, room, new ReportPositionPrototype[] { positionPrototyp1, positionPrototyp2 });
             int resultInt = await apiController.createReport(reportPrototype);
             bool resultBool = false;
@@ -265,8 +265,8 @@ namespace UnitTests.ControllerTests.APITests
         [TestCase("Report testowy", 6, "1/4", 4, "b 6", 8, 2, "krzesło", 'k', true)]
         public async Task CreateReport_CorrectData_PreviousIsNullPresentIsTrue(string reportName, int currentRoomId, string currentRoomName, int currentBuildingId, string currentBuildingName, int assetId, int assetTypeId, string assetTypeName, char assetLetter, bool present)
         {
-            Room CurrentRoom = new Room(currentRoomId, currentRoomName, new Building(currentBuildingId, currentBuildingName));
-            ReportPositionPrototype positionPrototype = new ReportPositionPrototype(new Asset(assetId, new AssetType(assetTypeId, assetTypeName, assetLetter)), null, present);
+            RoomEntity CurrentRoom = new RoomEntity { id = currentRoomId, name = currentRoomName, building = new BuildingEntity { id = currentBuildingId, name = currentBuildingName } };
+            ReportPositionPrototype positionPrototype = new ReportPositionPrototype(new AssetEntity { id = assetId, type = new AssetTypeEntity { id = assetTypeId, name = assetTypeName, letter = assetLetter } }, null, present);
             ReportPrototype reportPrototype = new ReportPrototype(reportName, CurrentRoom, new ReportPositionPrototype[] { positionPrototype });
             int resultInt = await apiController.createReport(reportPrototype);
             bool resultBool = false;

@@ -24,7 +24,7 @@ namespace UnitTests.ControllerTests.APITests
         [TestCase(1, 1, 'c', "komputer", 7, "1/5", 5, "b 7")]
         [TestCase(5, 5, 's', "stół", 7, "1/5", 5, "b 7")]
         [TestCase(19, 1, 'c', "komputer", 4, "1/2", 2, "b 4")]
-        public async Task GetAssetInfoTest_CheckAssetType(int id, int typeId, char typeLetter, string typeName, int roomId, string roomName, int buildingId, string buildingName)
+        public async Task GetAssetInfoTest(int id, int typeId, char typeLetter, string typeName, int roomId, string roomName, int buildingId, string buildingName)
         {
             AssetTypeEntity assetTypeEntity = new AssetTypeEntity { id = typeId, letter = typeLetter, name = typeName };
             BuildingEntity buildingEntity = new BuildingEntity { id = buildingId, name = buildingName };
@@ -46,11 +46,11 @@ namespace UnitTests.ControllerTests.APITests
         {
             AssetInfoEntity expected = new AssetInfoEntity
             {
-                id = 61,
-                type = new AssetTypeEntity { id = 2, letter = 'k', name = "krzesło" },
+                id = 33,
+                type = new AssetTypeEntity { id = 3, letter = 'm', name = "monitor" },
                 room = null
             };
-            Assert.AreEqual(expected, await apiController.getAssetInfo(61));
+            Assert.AreEqual(expected, await apiController.getAssetInfo(33));
         }
     }
 }
