@@ -46,13 +46,14 @@ namespace Inwentaryzacja.views.view_chooseRoom
                 if (name == item.name)
                 {
                     await DisplayAlert("Dodawanie budynku", "Taki budynek już istnieje.", "OK");
+                    EnableView(true);
                     return;
                 }
             }
 
             int isCreated = await api.createBuilding(new BuildingPrototype(name));
 
-            if (isCreated>0)
+            if (isCreated > 0)
             {
                 var stack = Navigation.NavigationStack;
                 var previousPage = (ChooseRoomPage)stack[stack.Count - 2];
