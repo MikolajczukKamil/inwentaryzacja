@@ -70,6 +70,7 @@ namespace Inwentaryzacja
                 await Navigation.PushAsync(new LoginPage());
             }
         }
+
         /// <summary>
 		/// Klasa odpowiadajaca za wszystkie raporty
 		/// </summary>
@@ -161,6 +162,7 @@ namespace Inwentaryzacja
 
             await Navigation.PushAsync(new ReportDetailsView(headerText, roomText, createDate, createTime, ownerText, inThisRoom, moveToRoom, moveFromRoom, inAnotherRoom, scannedAll, scannedAllDetails, inThisRoomDetails, movedToRoomDetails, movedFromRoomDetails, inAnotherRoomDetails, scannedAllLabel, movedFromRoomLabel, movedToRoomLabel, inAnotherRoomLabel, inThisRoomLabel));
         }
+        
         /// <summary>
         /// Funkcja odpowiadajaca za wyswietlenie widoku okna
         /// </summary>                     

@@ -22,30 +22,6 @@ namespace Inwentaryzacja.Services
             api = apiController;
         }
 
-        public ReportHeader[] GetReportHeaders()
-        {
-            // ReportHeaderEntity[] raportHeaderEntities = api.getReportHeaders().Result; // Map to ReportHeader[]
-
-            throw new System.Exception("Not implemented");
-        }
-
-        public ReportHeader GetReportHeader(int reportId)
-        {
-            // ReportHeaderEntity raportHeaderEntity = api.getReportHeader(reportId).Result; // To ReportHeader
-
-            throw new System.Exception("Not implemented");
-        }
-
-        public Report GetFullReport(ReportHeader reportHeader)
-        {
-            throw new System.Exception("Not implemented");
-        }
-
-        public Report GetFullReport(int reportId)
-        {
-            throw new System.Exception("Not implemented");
-        }
-
         /// <summary>
         /// Funkcja zwracajaca pozycje (srodki trwale) z raportu 
         /// </summary>
@@ -56,20 +32,6 @@ namespace Inwentaryzacja.Services
             return await api.getReportPositions(reportId);
         }
 
-        /// <summary>
-        /// Funkcja dodajaca nowy raport
-        /// </summary>
-        /// <param name="newReport">Raport ktory chcemy dodac</param>
-        /// <returns></returns>
-        public int AddNewReport(ReportPrototype newReport)
-        {
-            return api.createReport(newReport).Result;
-        }
-        
-        public bool ExportReportToPDF(int reportId)
-        {
-            throw new System.Exception("Not implemented");
-        }
         /// <summary>
         /// Funkcja liczaca ilosci srodkow trwalych z pokoju z raportu
         /// </summary>
@@ -196,6 +158,7 @@ namespace Inwentaryzacja.Services
 
             return result;
         }
+        
         /// <summary>
         /// Funkcja tworzaca string opisujacy ilosci srodkow trwalych ze slownika srodkow trwalych
         /// </summary>
@@ -219,6 +182,7 @@ namespace Inwentaryzacja.Services
 
             return result;
         }
+        
         /// <summary>
         /// Funkcja tworzaca etykiete stringa opisujacy ilosci srodkow trwalych ze slownika srodkow trwalych
         /// </summary>
@@ -237,6 +201,7 @@ namespace Inwentaryzacja.Services
 
             return result;
         }
+        
         /// <summary>
         /// Funkcja tworzaca string opisujacy ilosci srodkow trwalych ze slownika srodkow trwalych
         /// </summary>
@@ -254,37 +219,5 @@ namespace Inwentaryzacja.Services
             }
             return result;
         }
-
-#if false // Old
-    public Report GetReportById(int id)
-    {
-        ReportEntity raportEntity = ApiController.getReportByID(id).Result;
-
-        Report raport = new Report(raportEntity.name, raportEntity.id, raportEntity.room, raportEntity.create_date);
-        return raport;
-    }
-    public ReportHeader[] GetReportsHeaders()
-    {
-        List<ReportEntity> listreportEntity = new List<ReportEntity>();
-        listreportEntity = api.getAllReports().Result;
-        int size = listreportEntity.Count;
-        ReportHeader[] reportHeader = new ReportHeader[size];
-        for (int i = 0; i < reportHeader.Length; i++)
-        {
-            reportHeader[i] = new ReportHeader(listreportEntity[i].id, listreportEntity[i].name, listreportEntity[i].room, listreportEntity[i].create_date);
-        }
-        return reportHeader;
-    }
-    public bool DeleteReport(int id)
-    {
-        bool delete = api.deleteReportByID(id).Result;
-        return delete;
-    }
-    public bool AddNewReport(ReportPrototype newReport)
-    {
-        bool add = api.createReportWithAssets(newReport).Result;
-        return add;
-    } 
-#endif
     } 
 }
