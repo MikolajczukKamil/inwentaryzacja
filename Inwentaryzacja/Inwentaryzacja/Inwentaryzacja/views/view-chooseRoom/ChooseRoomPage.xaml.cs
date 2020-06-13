@@ -1,6 +1,7 @@
 using Inwentaryzacja.controllers.session;
 using Inwentaryzacja.Controllers.Api;
 using Inwentaryzacja.Models;
+using Inwentaryzacja.views.Helpers;
 using Inwentaryzacja.views.view_chooseRoom;
 using System;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace Inwentaryzacja
 		public bool addedNewRoom = false;
 
 		APIController api = new APIController();
+
 		/// <summary>
 		/// Konstruktor klasy
 		/// </summary>
@@ -34,6 +36,7 @@ namespace Inwentaryzacja
 			api.ErrorEventHandler += onApiError;
 			BindingContext = this;
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za wyswietlenie budynkow po przejsciu do okna
 		/// </summary>
@@ -43,6 +46,7 @@ namespace Inwentaryzacja
 			{
 				GetBuildings();
 			}
+
 			if(addedNewRoom)
 			{
 				BuildingPicker_SelectedIndexChanged(this, null);
@@ -51,6 +55,7 @@ namespace Inwentaryzacja
 			
 			base.OnAppearing();
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za sprawdzenie permisji uzytkownika probujacego wybrac pokoj w oknie
 		/// </summary>
@@ -65,10 +70,10 @@ namespace Inwentaryzacja
 
 			return status;
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za zmiane wybranego budynku
 		/// </summary>
-
 		private void BuildingPicker_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if(BuildingPicker.SelectedIndex >= 0 && BuildingPicker.SelectedIndex < BuildingPicker.Items.Count)
@@ -77,6 +82,7 @@ namespace Inwentaryzacja
 				GetBuildingRooms(choosenBuildingName);
 			}
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za zwrocenie pokojow w danym budynku
 		/// </summary>
@@ -96,6 +102,7 @@ namespace Inwentaryzacja
 
 			if (buildingItem != null) GetRooms(buildingItem.id);
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za zwrocenie pokojow w danym budynku
 		/// </summary>
@@ -129,6 +136,7 @@ namespace Inwentaryzacja
 				RoomPicker.IsEnabled = false;
 			} 
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za zwrocenie budynkow
 		/// </summary>
@@ -166,6 +174,7 @@ namespace Inwentaryzacja
 
 			EnableView(true);
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za umozliwienie wyswietlenia widoku okna
 		/// </summary>
@@ -189,12 +198,14 @@ namespace Inwentaryzacja
 				RoomPicker_SelectedIndexChanged(this, null);
 			}
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za obsluge przycisku kontynuowania
 		/// </summary>
 		private void Continue_Button_Clicked(object o, EventArgs args) 
 		{
 			EnableView(false);
+
 			Device.BeginInvokeOnMainThread(async () =>
 			{
 				if (RoomPicker.SelectedIndex < 0)
@@ -229,7 +240,35 @@ namespace Inwentaryzacja
 					}
 					else
 					{
-						await Navigation.PushModalAsync(new ScanItemPage(selectedRoom));
+						var scans = await api.getScans();
+						ScanEntity existingScan = null;
+
+						if(scans != null && scans.Length > 0)
+						{
+							foreach (var scan in scans)
+							{
+								if(scan.room.id == selectedRoom.id)
+								{
+									existingScan = scan;
+								}
+							}
+						}
+
+						if (existingScan != null)
+						{
+							bool useThisScan = await DisplayAlert("Znaleziono niedokończone skanowanie", "Czy chcesz użyć niedokończonego skanowania?", "Tak", "Nie");
+
+							if(!useThisScan)
+							{
+								var scanning = new ScanningUpdate(api, selectedRoom, existingScan.id);
+								scanning.Delete();
+								existingScan = null;
+							}
+						}
+
+						int scanId = existingScan != null ? existingScan.id : await api.addScan(new ScanPrototype(selectedRoom.id));
+
+						await Navigation.PushModalAsync(new ScanItemPage(selectedRoom, scanId, existingScan));
 					}
 				}
 				else
@@ -240,6 +279,7 @@ namespace Inwentaryzacja
 				EnableView(true);
 			});
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za wyswietlenie bledu
 		/// </summary>
@@ -262,6 +302,7 @@ namespace Inwentaryzacja
 			await Navigation.PopAsync();
 			EnableView(true);
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za obsluge przycisku dodania pokoju
 		/// </summary>
@@ -271,6 +312,7 @@ namespace Inwentaryzacja
 			await Navigation.PushAsync(new AddRoom(buildings, BuildingPicker.SelectedIndex));	
 			EnableView(true);
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za obsluge przycisku dodania budynku
 		/// </summary>
@@ -280,6 +322,7 @@ namespace Inwentaryzacja
 			await Navigation.PushAsync(new AddBuildingView());
 			EnableView(true);
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za zmiane wybranego pokoju 
 		/// </summary>
@@ -294,6 +337,7 @@ namespace Inwentaryzacja
 				ContinueBtn.IsEnabled = true;
 			}
 		}
+
 		/// <summary>
 		/// Funkcja odpowiadajaca za obsluge przycisku wylogowania
 		/// </summary>

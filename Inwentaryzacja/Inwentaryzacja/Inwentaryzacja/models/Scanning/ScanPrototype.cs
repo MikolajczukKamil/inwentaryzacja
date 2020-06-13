@@ -16,9 +16,9 @@ namespace Inwentaryzacja.Models
         /// Konstruktor prototypu skanu
         /// </summary>
         /// <param name="room">Id pokoju w ktorym zostal wykonany skan</param>
-        public ScanPrototype(int room)
+        public ScanPrototype(int roomId)
         {
-            this.room = room;
+            this.room = roomId;
         }
     }
 }
