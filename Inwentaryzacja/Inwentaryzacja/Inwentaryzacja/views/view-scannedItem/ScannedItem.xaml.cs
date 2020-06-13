@@ -406,7 +406,7 @@ namespace Inwentaryzacja.views.view_scannedItem
                 reportPositionPrototype[i] = allScaning[i].reportPositionPrototype;
             }
             
-            int reportId = await api.createReport(new ReportPrototype($"Raport {ScanningRoom.building.name}", ScanningRoom, reportPositionPrototype));
+            int reportId = await api.createReport(new ReportPrototype($"Raport {ScanningRoom.building.name} {ScanningRoom.name}", ScanningRoom, reportPositionPrototype));
 
             EnableView(true);
             
