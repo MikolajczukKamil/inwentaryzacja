@@ -20,7 +20,7 @@
                         HeightRequest="70"
                         BackgroundColor="#bfffe1">
 
-                <Label  FontSize="40" 
+                <Label  FontSize="32" 
                             VerticalTextAlignment="Center"
                             HorizontalTextAlignment="Center"
                             TextColor="Black"
