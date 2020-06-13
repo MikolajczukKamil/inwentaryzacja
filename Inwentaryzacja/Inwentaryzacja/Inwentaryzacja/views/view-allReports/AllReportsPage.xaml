@@ -48,7 +48,7 @@
 
                                 <Frame CornerRadius="10" 
                                    Margin="10" 
-                                   HasShadow="False">
+                                   HasShadow="True">
 
                                     <StackLayout  BackgroundColor="White"
                                              HorizontalOptions="FillAndExpand" 
@@ -101,11 +101,11 @@
                 </ListView.ItemTemplate>
             </ListView>
             <StackLayout Orientation="Horizontal">
-                <Button Text="Powrót" Clicked="back_Clicked"
+                <local:RoundedButton Text="Powrót" Clicked="back_Clicked"
                       HorizontalOptions="StartAndExpand" WidthRequest="150" BackgroundColor="White" CornerRadius="10"
                       VerticalOptions="Start"  Margin="15" />
 
-                <Button Text="Wyloguj" Clicked="LogoutButtonClicked"
+                <local:RoundedButton Text="Wyloguj" Clicked="LogoutButtonClicked"
                       HorizontalOptions="EndAndExpand" WidthRequest="150" BackgroundColor="White" CornerRadius="10"
                       VerticalOptions="Start"  Margin="15"/>
             </StackLayout>
