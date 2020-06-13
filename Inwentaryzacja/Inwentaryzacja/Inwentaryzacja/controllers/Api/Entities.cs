@@ -139,6 +139,6 @@ namespace Inwentaryzacja.Controllers.Api
     public class ScanPositionEntity
     {
         public int state;
-        public AssetInfoEntity assetInfo;
+        public AssetInfoEntity asset;
     }
 }

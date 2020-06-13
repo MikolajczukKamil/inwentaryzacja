@@ -76,20 +76,29 @@ namespace Inwentaryzacja
 
             foreach (var position in positions)
             {
-                ScanAsset(position.assetInfo);
+                scannedItem.Add($"{position.asset.type.id}-{position.asset.id}");
 
-                var localReprezentation = AllPositions.Find(el => el.AssetEntity.id == position.assetInfo.id);
+                ScanAsset(position.asset);
 
-                if (position.state == 0 || position.state == 1)
+                var localReprezentation = AllPositions.Find(el => el.AssetEntity.id == position.asset.id);
+
+                switch(position.state)
                 {
-                    localReprezentation.ItemMoved();
-                }
-
-                if(position.state == 2)
-                {
-                    localReprezentation.ItemDontMove();
+                    case 0:
+                        // po prostu zeskanowano
+                        break;
+                    case 1:
+                        // zaakceptowano
+                        localReprezentation.ItemMoved();
+                        break;
+                    case 2:
+                        // usunięto
+                        localReprezentation.ItemDontMove();
+                        break;
                 }
             }
+
+            UpdateCounter();
         }
 
         /// <summary>
@@ -245,9 +254,15 @@ namespace Inwentaryzacja
 
             previus = result;
 
+            UpdateCounter();
+        }
+
+        private void UpdateCounter()
+        {
             Device.BeginInvokeOnMainThread(() =>
             {
-                _infoLabel.Text = "Liczba zeskanowanych przedmiotów: " + scannedItem.Count;
+                _infoLabel.Text = $"Liczba zeskanowanych przedmiotów: {scannedItem.Count}";
+
                 Vibration.Vibrate(TimeSpan.FromMilliseconds(100));
             });
         }

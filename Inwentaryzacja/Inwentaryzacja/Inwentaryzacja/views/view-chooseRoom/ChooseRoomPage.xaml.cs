@@ -260,9 +260,9 @@ namespace Inwentaryzacja
 
 							if(!useThisScan)
 							{
-								existingScan = null;
 								var scanning = new ScanningUpdate(api, selectedRoom, existingScan.id);
 								scanning.Delete();
+								existingScan = null;
 							}
 						}
 
