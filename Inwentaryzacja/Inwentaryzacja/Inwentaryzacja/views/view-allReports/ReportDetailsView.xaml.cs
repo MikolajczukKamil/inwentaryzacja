@@ -10,6 +10,7 @@ using Plugin.DownloadManager.Abstractions;
 using Rg.Plugins.Popup.Extensions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Inwentaryzacja.Controllers.Api;
 
 namespace Inwentaryzacja.views.view_allReports
 {
@@ -49,14 +50,14 @@ namespace Inwentaryzacja.views.view_allReports
         /// <summary>
         /// Funkcja odpowiadajaca za pobranie pliku
         /// </summary>
-        public async void DownloadFile(String FileName)
+        public async void DownloadFile(string fileName)
         {
 	        await Task.Yield();
-	        //await Navigation.PushPopupAsync(new DownLoadingPage());
+
 	        await Task.Run(() =>
 	        {
 		        var downloadManager = CrossDownloadManager.Current;
-		        var file = downloadManager.CreateDownloadFile(FileName);
+		        var file = downloadManager.CreateDownloadFile(fileName);
                 downloadManager.Start(file, true);
 
                 while (isDownloading)
@@ -74,12 +75,12 @@ namespace Inwentaryzacja.views.view_allReports
         /// <summary>
         /// Funkcja odpowiadajaca za sprawdzenie czy plik jest pobierany
         /// </summary>
-        public bool IsDownloading(IDownloadFile File)
+        public bool IsDownloading(IDownloadFile file)
         {
-            if (File == null)
+            if (file == null)
                 return false;
 
-            switch (File.Status)
+            switch (file.Status)
             {
 	            case DownloadFileStatus.INITIALIZED:
 	            case DownloadFileStatus.PAUSED:
@@ -102,8 +103,7 @@ namespace Inwentaryzacja.views.view_allReports
         /// </summary>
         private void DownloadBtn_Clicked(object sender, EventArgs e)
         {
-	        var Url = "https://aplikacja-do-inwentaryzacji.000webhostapp.com/api/pdfGenerator/"+reportId+"/1";
-            DownloadFile(Url);
+            DownloadFile($"{APIController.BaseUrl}/pdfGenerator/{reportId}/1");
         }
 
         /// <summary>
