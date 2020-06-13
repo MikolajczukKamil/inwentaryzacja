@@ -254,18 +254,15 @@ namespace Inwentaryzacja
 							}
 						}
 
-						ScanningUpdate scanning = null;
-
 						if (existingScan != null)
 						{
-							bool useThisScan = await DisplayAlert("Znaleziono niedokończone skanowanie", "Czy chcesz uzyć niedokończonego skanowania?", "Tak", "Nie");
-
-							scanning = new ScanningUpdate(api, selectedRoom, existingScan.id);
+							bool useThisScan = await DisplayAlert("Znaleziono niedokończone skanowanie", "Czy chcesz użyć niedokończonego skanowania?", "Tak", "Nie");
 
 							if(!useThisScan)
 							{
+								existingScan = null;
+								var scanning = new ScanningUpdate(api, selectedRoom, existingScan.id);
 								scanning.Delete();
-								scanning = null;
 							}
 						}
 

@@ -458,7 +458,7 @@ namespace Inwentaryzacja.Controllers.Api
         /// <returns>Tablica z informacjami o pozycjach zapisanych w danym skanowaniu</returns>
         public async Task<ScanPositionEntity[]> GetScanPositions(int scan_id)
         {
-            var uri = $"/getPositionsInScan";
+            var uri = $"/getScanPositions/{scan_id}";
             var response = await SendRequestWithResponse(uri);
 
             return ConvertJSONToObject<ScanPositionEntity[]>(response);
