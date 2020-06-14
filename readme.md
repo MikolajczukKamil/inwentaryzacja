@@ -30,6 +30,10 @@ Projekt w ramach zajęć z inżynierii oprogramwoania
   </p>
 </details>
 
+## Dokumentacja
+- [Dokumentacja api by doxygen](http://aplikacja-do-inwentaryzacji.000webhostapp.com/dokumentacja/api/)
+- [Dokumentacja samej aplikacji by doxygen](http://aplikacja-do-inwentaryzacji.000webhostapp.com/dokumentacja/aplikacja/)
+
 ## Ważne pliki
 - [Przykładowe kody QR](QRCodes/)
 - [Specyfikacja](Specyfikacja.pdf)
