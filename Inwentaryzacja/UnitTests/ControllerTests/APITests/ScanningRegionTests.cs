@@ -65,9 +65,12 @@ namespace UnitTests.ControllerTests.APITests
         [Test]
         public async Task GetScansTest()
         {
-            var mockRoom = new RoomEntity { id = 1, name = "3/6", building = new BuildingEntity { id = 1, name = "b 34" } };
+            var mockRoom = new RoomEntity { id = 12, name = "123", building = new BuildingEntity { id = 13, name = "unikalna nazwa budynku" } };
+            var mockRoom2 = new RoomEntity { id = 2, name = "3/40", building = new BuildingEntity { id = 1, name = "b 34" } };
             var mockOwner = new UserEntity { id = 1, login = "user1" };
-            var expected = new ScanEntity[] { new ScanEntity { id = 1, room = mockRoom, owner = mockOwner, create_date = new DateTime(2020, 6, 4, 9, 12, 9) } };
+            var expected = new ScanEntity[] {
+                           new ScanEntity { id = 5, room = mockRoom2, owner = mockOwner, create_date = new DateTime(2020, 6, 13, 21, 9, 12) },
+                           new ScanEntity { id = 3, room = mockRoom, owner = mockOwner, create_date = new DateTime(2020, 6, 13, 19, 51, 37) }};
             Assert.AreEqual(expected, await apiController.getScans());
         }
 
@@ -94,13 +97,26 @@ namespace UnitTests.ControllerTests.APITests
         [TestCase(6, 1, 1, 7, 7, false)]
         public async Task UpdateScanTest(int scanID, int assetID1, int state1, int assetID2, int state2, bool status)
         {
-            PositionPropotype[] positionPropotypes = new PositionPropotype[] {
-                new PositionPropotype(assetID1, state1),
-                new PositionPropotype(assetID2, state2) };
-            var scanPositionPrototype = new ScanPositionPropotype(scanID, positionPropotypes);
+            ScanPositionPropotype[] positionPropotypes = new ScanPositionPropotype[] {
+                new ScanPositionPropotype(assetID1, state1),
+                new ScanPositionPropotype(assetID2, state2) };
+            var scanPositionPrototype = new ScanUpdatePropotype(scanID, positionPropotypes);
             Assert.AreEqual(status, await apiController.updateScan(scanPositionPrototype));
         }
         [Test]
-        public async Task UpdateScanTest_EmptyPositionsArray() => Assert.AreEqual(false, await apiController.updateScan(new ScanPositionPropotype(5, new PositionPropotype[0])));
+        public async Task UpdateScanTest_EmptyPositionsArray() => Assert.AreEqual(false, await apiController.updateScan(new ScanUpdatePropotype(5, new ScanPositionPropotype[0])));
+
+        [Test]
+        public async Task GetScanPositionsTest()
+        {
+            ScanPositionEntity sc1 = new ScanPositionEntity { state = 1, asset = new AssetInfoEntity { id = 1, type = new AssetTypeEntity { id = 1, name = "komputer", letter='c' }, room = new RoomEntity { id = 1, name = "3/6", building = new BuildingEntity { id = 1, name = "b 34" } } } };
+            ScanPositionEntity sc2 = new ScanPositionEntity { state = 0, asset = new AssetInfoEntity { id = 11, type = new AssetTypeEntity { id = 5, name = "stół", letter = 's' }, room = new RoomEntity { id = 2, name = "3/40", building = new BuildingEntity { id = 1, name = "b 34" } } } };
+            ScanPositionEntity[] scanPositionEntities = new ScanPositionEntity[] { sc1, sc2 };
+            Assert.AreEqual(scanPositionEntities, await apiController.GetScanPositions(5));
+        }
+        [Test]
+        public async Task GetScanPositionsTest_ScanNotExists() => Assert.AreEqual(null, await apiController.GetScanPositions(125));
+        [Test]
+        public async Task GetScanPositionsTest_ScanWithoutPositions() => Assert.AreEqual(new ScanPositionEntity[0], await apiController.GetScanPositions(7));
     }
 }

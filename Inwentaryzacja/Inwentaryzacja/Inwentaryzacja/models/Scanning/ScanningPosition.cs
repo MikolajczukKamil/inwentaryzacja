@@ -35,7 +35,7 @@ namespace Inwentaryzacja.Models
             Previus = previus;
         }
 		
-		public ScanPositionPropotype GeneratePrototype()
+		public ScanUpdatePropotype GeneratePrototype()
         {
             throw new System.Exception("Not implemented");
         }

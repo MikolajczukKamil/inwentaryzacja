@@ -10,8 +10,14 @@ using Xamarin.Forms.Xaml;
 namespace Inwentaryzacja.views.view_Loading
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
+    /// <summary>
+    /// Klasa odpowiadajaca za widok okna ladowania
+    /// </summary>
     public partial class LoadingPage : ContentPage
     {
+        /// <summary>
+        /// Konstruktor klasy
+        /// </summary>
         public LoadingPage()
         {
             InitializeComponent();

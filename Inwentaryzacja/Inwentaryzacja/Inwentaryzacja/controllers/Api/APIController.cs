@@ -24,7 +24,7 @@ namespace Inwentaryzacja.Controllers.Api
         /// <summary>
         /// URL serwera API
         /// </summary>
-        static private readonly string BaseUrl = "https://aplikacja-do-inwentaryzacji.000webhostapp.com/api";
+        static public readonly string BaseUrl = "https://aplikacja-do-inwentaryzacji.000webhostapp.com/api";
 
         /// <summary>
         /// Event handler dla błędow występujących podczas zapytań do API
@@ -438,7 +438,7 @@ namespace Inwentaryzacja.Controllers.Api
         /// </summary>
         /// <param name="scan_update">Opis skanowania</param>
         /// <returns>Informację czy udało się zaktualizować informacje o skanowaniu w bazie danych</returns>
-        public async Task<bool> updateScan(ScanPositionPropotype scan_update)
+        public async Task<bool> updateScan(ScanUpdatePropotype scan_update)
         {
             var uri = "/updateScan";
             string data = ConvertDataToJSON(scan_update);
@@ -449,6 +449,19 @@ namespace Inwentaryzacja.Controllers.Api
                 return true;
 
             return false;
+        }
+
+        /// <summary>
+        ///  Asynchronicznie zwraca tablicę zawierającą informacje o pozycjach zapisanych w danym skanowaniu
+        /// Jeżeli wystąpi błąd, zostanie wywołany event z błędem i zostanie zwrócony null
+        /// </summary>
+        /// <returns>Tablica z informacjami o pozycjach zapisanych w danym skanowaniu</returns>
+        public async Task<ScanPositionEntity[]> GetScanPositions(int scan_id)
+        {
+            var uri = $"/getScanPositions/{scan_id}";
+            var response = await SendRequestWithResponse(uri);
+
+            return ConvertJSONToObject<ScanPositionEntity[]>(response);
         }
 
         #endregion Scanning

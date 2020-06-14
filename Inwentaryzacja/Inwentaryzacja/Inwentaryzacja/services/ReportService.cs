@@ -6,54 +6,38 @@ using Inwentaryzacja.Models;
 
 namespace Inwentaryzacja.Services
 {
+    /// <summary>
+    /// Klasa odpowiadajaca za obsluge raportow
+    /// </summary>
     public class ReportService
     {
         private APIController api;
 
+        /// <summary>
+        /// Konstruktor klasy
+        /// </summary>
+        /// <param name="apiController">obiekt do interakcji z api</param>
         public ReportService(APIController apiController)
         {
             api = apiController;
         }
 
-        public ReportHeader[] GetReportHeaders()
-        {
-            // ReportHeaderEntity[] raportHeaderEntities = api.getReportHeaders().Result; // Map to ReportHeader[]
-
-            throw new System.Exception("Not implemented");
-        }
-
-        public ReportHeader GetReportHeader(int reportId)
-        {
-            // ReportHeaderEntity raportHeaderEntity = api.getReportHeader(reportId).Result; // To ReportHeader
-
-            throw new System.Exception("Not implemented");
-        }
-
-        public Report GetFullReport(ReportHeader reportHeader)
-        {
-            throw new System.Exception("Not implemented");
-        }
-
-        public Report GetFullReport(int reportId)
-        {
-            throw new System.Exception("Not implemented");
-        }
-
+        /// <summary>
+        /// Funkcja zwracajaca pozycje (srodki trwale) z raportu 
+        /// </summary>
+        /// <param name="reportId">ID Raportu z ktorego chcemy zwrocic srodki trwale</param>
+        /// <returns></returns>
         public async Task<ReportPositionEntity[]> GetReportPositions(int reportId)
         {
             return await api.getReportPositions(reportId);
         }
 
-        public int AddNewReport(ReportPrototype newReport)
-        {
-            return api.createReport(newReport).Result;
-        }
-        
-        public bool ExportReportToPDF(int reportId)
-        {
-            throw new System.Exception("Not implemented");
-        }
-
+        /// <summary>
+        /// Funkcja liczaca ilosci srodkow trwalych z pokoju z raportu
+        /// </summary>
+        /// <param name="reportPositionEntities">srodki trwale z raportu</param>
+        /// <param name="currentRoom">pokoj ktorego dotyczy raport</param>
+        /// <returns></returns>
         public string[] GetScannedItemsCount(ReportPositionEntity[] reportPositionEntities, RoomEntity currentRoom)
         {
             string[] result = new string[15];
@@ -174,6 +158,12 @@ namespace Inwentaryzacja.Services
 
             return result;
         }
+        
+        /// <summary>
+        /// Funkcja tworzaca string opisujacy ilosci srodkow trwalych ze slownika srodkow trwalych
+        /// </summary>
+        /// <param name="dict">slownik <string,int> z ilosciami srodkow trwalych</param>
+        /// <returns></returns>
         private string GenerateString(Dictionary<string, int> dict)
         {
             string result = "";
@@ -192,6 +182,12 @@ namespace Inwentaryzacja.Services
 
             return result;
         }
+        
+        /// <summary>
+        /// Funkcja tworzaca etykiete stringa opisujacy ilosci srodkow trwalych ze slownika srodkow trwalych
+        /// </summary>
+        /// <param name="dict">slownik <string,int> z ilosciami srodkow trwalych</param>
+        /// <returns></returns>
         private string GenerateStringLabel(Dictionary<string, int> dict)
         {
             string result = "";
@@ -205,6 +201,12 @@ namespace Inwentaryzacja.Services
 
             return result;
         }
+        
+        /// <summary>
+        /// Funkcja tworzaca string opisujacy ilosci srodkow trwalych ze slownika srodkow trwalych
+        /// </summary>
+        /// <param name="dict">slownik <string,string> z ilosciami srodkow trwalych</param>
+        /// <returns></returns>
         private string GenerateString(Dictionary<string, string> dict)
         {
             string result = "";
@@ -217,37 +219,5 @@ namespace Inwentaryzacja.Services
             }
             return result;
         }
-
-#if false // Old
-    public Report GetReportById(int id)
-    {
-        ReportEntity raportEntity = ApiController.getReportByID(id).Result;
-
-        Report raport = new Report(raportEntity.name, raportEntity.id, raportEntity.room, raportEntity.create_date);
-        return raport;
-    }
-    public ReportHeader[] GetReportsHeaders()
-    {
-        List<ReportEntity> listreportEntity = new List<ReportEntity>();
-        listreportEntity = api.getAllReports().Result;
-        int size = listreportEntity.Count;
-        ReportHeader[] reportHeader = new ReportHeader[size];
-        for (int i = 0; i < reportHeader.Length; i++)
-        {
-            reportHeader[i] = new ReportHeader(listreportEntity[i].id, listreportEntity[i].name, listreportEntity[i].room, listreportEntity[i].create_date);
-        }
-        return reportHeader;
-    }
-    public bool DeleteReport(int id)
-    {
-        bool delete = api.deleteReportByID(id).Result;
-        return delete;
-    }
-    public bool AddNewReport(ReportPrototype newReport)
-    {
-        bool add = api.createReportWithAssets(newReport).Result;
-        return add;
-    } 
-#endif
     } 
 }

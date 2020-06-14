@@ -16,12 +16,18 @@ using Xamarin.Forms.Xaml;
 namespace Inwentaryzacja
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
+    /// <summary>
+    /// Klasa odpowiadajaca za widok okna wszystkich raportow
+    /// </summary>
     public partial class AllReportsPage : ContentPage
     {
         ReportHeaderEntity[] reportHeaders;
 
         APIController api = new APIController();
 
+        /// <summary>
+		/// Konstruktor klasy
+		/// </summary>
         public AllReportsPage()
         {
             InitializeComponent();
@@ -29,6 +35,9 @@ namespace Inwentaryzacja
             BindingContext = this;
         }
 
+        /// <summary>
+		/// Funkcja wyswietlajaca wszystkie raporty w oknie
+		/// </summary>
         protected async override void OnAppearing()
         {
             base.OnAppearing();
@@ -49,6 +58,9 @@ namespace Inwentaryzacja
             EnableView(true);
         }
 
+        /// <summary>
+		/// Funkcja wyswietlajaca blad w oknie
+		/// </summary>
         private async void onApiError(object o, ErrorEventArgs error)
         {
             await DisplayAlert("Błąd", error.MessageForUser, "OK");
@@ -59,19 +71,40 @@ namespace Inwentaryzacja
             }
         }
 
+        /// <summary>
+		/// Klasa odpowiadajaca za wszystkie raporty
+		/// </summary>
         public class AllReport
         {
+            /// <summary>
+            /// Funkcja odpowiadajaca za ustawienie/zwrocenie id
+            /// </summary>
             public int id { get; set; }
+            /// <summary>
+            /// Funkcja odpowiadajaca za ustawienie/zwrocenie nazwy raportu
+            /// </summary>
             public string ReportName { get; set; }
+            /// <summary>
+            /// Funkcja odpowiadajaca za ustawienie/zwrocenie pokoju raportu
+            /// </summary>
             public string ReportRoom { get; set; }
+            /// <summary>
+            /// Funkcja odpowiadajaca za ustawienie/zwrocenie daty raportu
+            /// </summary>
             public string ReportDate { get; set; }
         }
 
+        /// <summary>
+		/// Funkcja odpowiadajaca za obsluge przycisku wstecz
+		/// </summary>
         private async void back_Clicked(object sender, EventArgs e)
         {
             await Navigation.PopAsync();
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za poszczegolne srodki trwale zaznaczone w oknie raportu
+        /// </summary>
         private async void ReportList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             EnableView(false);
@@ -127,15 +160,22 @@ namespace Inwentaryzacja
 
             EnableView(true);
 
-            await Navigation.PushAsync(new ReportDetailsView(headerText, roomText, createDate, createTime, ownerText, inThisRoom, moveToRoom, moveFromRoom, inAnotherRoom, scannedAll, scannedAllDetails, inThisRoomDetails, movedToRoomDetails, movedFromRoomDetails, inAnotherRoomDetails, scannedAllLabel, movedFromRoomLabel, movedToRoomLabel, inAnotherRoomLabel, inThisRoomLabel));
-        }                                                                                                                                                                                                                                                                                                 
-                                                                                                                                                                                                                                                                                                          
+            await Navigation.PushAsync(new ReportDetailsView(headerText, roomText, createDate, createTime, ownerText, inThisRoom, moveToRoom, moveFromRoom, inAnotherRoom, scannedAll, scannedAllDetails, inThisRoomDetails, movedToRoomDetails, movedFromRoomDetails, inAnotherRoomDetails, scannedAllLabel, movedFromRoomLabel, movedToRoomLabel, inAnotherRoomLabel, inThisRoomLabel, selectedReport.id));
+        }
+        
+        /// <summary>
+        /// Funkcja odpowiadajaca za wyswietlenie widoku okna
+        /// </summary>                     
+        /// <param name="state">stan okna</param>
         private void EnableView(bool state)
         {
             IsBusy = !state;
             ReportList.IsEnabled = state;
         }
 
+        /// <summary>
+		/// Funkcja odpowiadajaca za obsluge przycisku wylogowania
+		/// </summary>
         private async void LogoutButtonClicked(object sender, EventArgs e)
         {
             if (await DisplayAlert("Wylogowywanie", "Czy na pewno chcesz się wylogować?", "Tak", "Nie"))
