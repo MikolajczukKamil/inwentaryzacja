@@ -26,7 +26,7 @@ namespace Inwentaryzacja.Services
         /// Funkcja zwracajaca pozycje (srodki trwale) z raportu 
         /// </summary>
         /// <param name="reportId">ID Raportu z ktorego chcemy zwrocic srodki trwale</param>
-        /// <returns></returns>
+        /// <returns>srodki trwale z danego raportu</returns>
         public async Task<ReportPositionEntity[]> GetReportPositions(int reportId)
         {
             return await api.getReportPositions(reportId);
@@ -37,7 +37,7 @@ namespace Inwentaryzacja.Services
         /// </summary>
         /// <param name="reportPositionEntities">srodki trwale z raportu</param>
         /// <param name="currentRoom">pokoj ktorego dotyczy raport</param>
-        /// <returns></returns>
+        /// <returns>tablica licznosci zeskanowanych srodkow trwalych</returns>
         public string[] GetScannedItemsCount(ReportPositionEntity[] reportPositionEntities, RoomEntity currentRoom)
         {
             string[] result = new string[15];
@@ -158,12 +158,12 @@ namespace Inwentaryzacja.Services
 
             return result;
         }
-        
+
         /// <summary>
         /// Funkcja tworzaca string opisujacy ilosci srodkow trwalych ze slownika srodkow trwalych
         /// </summary>
         /// <param name="dict">slownik <string,int> z ilosciami srodkow trwalych</param>
-        /// <returns></returns>
+        /// <returns>string opisujacy ilosci srodkow trwalych ze slownika srodkow trwalych</returns>
         private string GenerateString(Dictionary<string, int> dict)
         {
             string result = "";
@@ -182,12 +182,12 @@ namespace Inwentaryzacja.Services
 
             return result;
         }
-        
+
         /// <summary>
         /// Funkcja tworzaca etykiete stringa opisujacy ilosci srodkow trwalych ze slownika srodkow trwalych
         /// </summary>
         /// <param name="dict">slownik <string,int> z ilosciami srodkow trwalych</param>
-        /// <returns></returns>
+        /// <returns>etykiete stringa opisujacego ilosci srodkow trwalych ze slownika srodkow trwalych</returns>
         private string GenerateStringLabel(Dictionary<string, int> dict)
         {
             string result = "";
@@ -201,12 +201,12 @@ namespace Inwentaryzacja.Services
 
             return result;
         }
-        
+
         /// <summary>
         /// Funkcja tworzaca string opisujacy ilosci srodkow trwalych ze slownika srodkow trwalych
         /// </summary>
         /// <param name="dict">slownik <string,string> z ilosciami srodkow trwalych</param>
-        /// <returns></returns>
+        /// <returns>string opisujacy ilosci srodkow trwalych ze slownika srodkow trwalych</returns>
         private string GenerateString(Dictionary<string, string> dict)
         {
             string result = "";
