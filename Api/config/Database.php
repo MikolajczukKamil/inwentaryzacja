@@ -6,8 +6,8 @@
 
 class Database
 {
-    private $host = "localhost.inwentaryzacja.com";
-    private $db_name = "inwentaryzacja_db";
+    private $host = "localhost";
+    private $db_name = "inwentaryzacja";
     private $username = "root";
     private $password = "";
     public $conn;
