@@ -1,0 +1,7 @@
+DROP FUNCTION IF EXISTS reportExists;
+
+DELIMITER $
+CREATE FUNCTION reportExists(_id INT) RETURNS BOOLEAN
+BEGIN
+  RETURN (SELECT COUNT(*) FROM reports WHERE reports.id = _id) = 1;
+END $ DELIMITER ;
