@@ -104,7 +104,7 @@ namespace Inwentaryzacja.views.view_allReports
         /// </summary>
         private void DownloadBtn_Clicked(object sender, EventArgs e)
         {
-            DownloadFile($"{APIController.BaseUrl}/pdfGenerator/{reportId}/1");
+            DownloadFile($"{APIController.BaseUrl}/pdfGenerator/{reportId}/1/report-{reportId}.pdf");
         }
 
         /// <summary>
