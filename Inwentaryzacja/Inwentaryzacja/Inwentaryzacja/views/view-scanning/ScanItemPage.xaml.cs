@@ -66,8 +66,9 @@ namespace Inwentaryzacja
         }
 
         /// <summary>
-        /// Funkcja odpowiadajaca za inicjalizację skanowania z wykorzystaniem poprzedniego składowania
+        /// Funkcja odpowiadajaca za inicjalizacje skanowania z wykorzystaniem poprzedniego skanowania
         /// </summary>
+        /// <param name="previusScan">poprzedni skan</param>
         async void InitializeWith(ScanEntity previusScan)
         {
             var positions = await api.GetScanPositions(previusScan.id);
@@ -202,8 +203,9 @@ namespace Inwentaryzacja
         }
 
         /// <summary>
-        /// Funkcja odpowiadajaca za skanowanie danego srodka trwalego
+        /// Funkcja odpowiadajaca za widok skanowania danego srodka trwalego i wyniku skanowania
         /// </summary>
+        /// <param name="result">wynik poprzedniego skanowania</param>
         private async void ZXingScannerView_OnScanResult(Result result)
         {
             if (previus != null && (result.Text == previus.Text || ListContainItem(result.Text)))
@@ -256,7 +258,9 @@ namespace Inwentaryzacja
 
             UpdateCounter();
         }
-
+        /// <summary>
+        /// Funkcja odpowiadajaca za aktualizacje licznika skanowania
+        /// </summary>
         private void UpdateCounter()
         {
             Device.BeginInvokeOnMainThread(() =>
@@ -266,7 +270,10 @@ namespace Inwentaryzacja
                 Vibration.Vibrate(TimeSpan.FromMilliseconds(100));
             });
         }
-
+        /// <summary>
+        /// Funkcja odpowiadajaca za rozpoczecie skanowania danego srodka trwalego
+        /// </summary>
+        /// <param name="assetInfo">encja informacji o srodku trwalym</param>
         private void ScanAsset(AssetInfoEntity assetInfo)
         {
             try
