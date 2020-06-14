@@ -5,6 +5,9 @@ using Xamarin.Forms;
 
 namespace Inwentaryzacja
 {
+    /// <summary>
+    /// Zaokraglony przycisk
+    /// </summary>
     public class RoundedButton : Button
     {
     }
