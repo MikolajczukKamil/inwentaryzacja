@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:Inwentaryzacja"
+             mc:Ignorable="d"
+             x:Class="Inwentaryzacja.views.view_allReports.ReportDetailsView"
+             BackgroundColor="#8EE3BA"
+             NavigationPage.HasNavigationBar="false">
+
+    <ScrollView Orientation="Both">
+        
+        <StackLayout>
+            <Frame
+                        Margin="0,10,0,20"
+                        Padding="10,5,10,5"               
+                        VerticalOptions="Center"
+                        CornerRadius="0"
+                        WidthRequest="20"
+                        HeightRequest="70"
+                        BackgroundColor="#bfffe1">
+
+                <Label  FontSize="32" 
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Center"
+                            TextColor="Black"
+                            x:Name="HeaderText"/>
+                
+            </Frame>
+
+            <Frame
+                        Margin="0"
+                        Padding="30,30,30,30"               
+                        VerticalOptions="Center"
+                        CornerRadius="0"
+                        WidthRequest="20"
+                        HeightRequest="130"
+                        BackgroundColor="#bfffe1">
+                <StackLayout>
+
+                    <Label  FontSize="20" 
+                            VerticalOptions="Start"
+                            TextColor="Black"
+                            FontAttributes="Bold"                
+                            x:Name="RoomText"/>
+
+                    <Label  FontSize="20" 
+                            VerticalOptions="Start"
+                            TextColor="Black"
+                            FontAttributes="Bold"  
+                            x:Name="CreateDate"/>
+
+                    <Label  FontSize="20" 
+                            VerticalOptions="Start"
+                            TextColor="Black"
+                            FontAttributes="Bold"  
+                            x:Name="CreateTime"/>
+
+                    <Label  FontSize="20" 
+                            VerticalOptions="Start"
+                            TextColor="Black"
+                            FontAttributes="Bold"  
+                            x:Name="OwnerText"/>
+
+                </StackLayout>
+            </Frame>
+
+            <Frame
+                        Margin="0,30,0,30"
+                        Padding="30,30,30,30"               
+                        VerticalOptions="Center"
+                        CornerRadius="0"
+                        WidthRequest="20"
+                        HeightRequest="1000"
+                        BackgroundColor="#bfffe1"
+                        x:Name="FrameRequest">
+
+                <StackLayout>
+                    <local:RoundedButton Text="Pobierz"
+                                         HorizontalOptions="Center"
+                                         FontSize="20"
+                                         BackgroundColor="White"
+                                         WidthRequest="100"
+                                         HeightRequest="35"
+                                         Padding="3,3,3,3"
+                                         x:Name="DownloadBtn"
+                                         Clicked="DownloadBtn_Clicked"/>
+                    <Label  FontSize="25" 
+                            Margin="0,20,0,5"
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Center"
+                            TextColor="Black"
+                            FontAttributes="Bold"  
+                            Text="Zawartość sali po skanowaniu"
+                            x:Name="ScannedAllHeader"/>
+                    <Grid>
+
+                        <Label  FontSize="20" Grid.Column="0"
+                            VerticalOptions="StartAndExpand"
+                            TextColor="Black"
+                            x:Name="ScannedAllLabel"/>
+                        <Label  FontSize="20" Grid.Column="1"
+                            VerticalOptions="StartAndExpand"
+                            TextColor="Black"
+                            x:Name="ScannedAll"/>
+
+                    </Grid>
+                    <local:RoundedButton Text="Szczegóły"
+                                        HorizontalOptions="Center"
+                                        FontSize="20"
+                                        BackgroundColor="White"
+                                        WidthRequest="100"
+                                        HeightRequest="35"
+                                        Padding="3,3,3,3"
+                                        x:Name="ScannedAllBtn"/>
+
+                    <Label  FontSize="25" 
+                            Margin="0,20,0,5"
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Center"
+                            TextColor="Black"
+                            FontAttributes="Bold"  
+                            Text="Były i są w sali"
+                            x:Name="InThisRoomHeader"/>
+
+                    <Grid>
+
+                        <Label  FontSize="20" Grid.Column="0"
+                            VerticalOptions="StartAndExpand"
+                            TextColor="Black"
+                            x:Name="InThisRoomLabel"/>
+                        <Label  FontSize="20" Grid.Column="1"
+                            VerticalOptions="StartAndExpand"
+                            TextColor="Black"
+                            x:Name="InThisRoom"/>
+
+                    </Grid>
+
+                    <local:RoundedButton Text="Szczegóły"
+                                        HorizontalOptions="Center"
+                                        FontSize="20"
+                                        BackgroundColor="White"
+                                        WidthRequest="100"
+                                        HeightRequest="35"
+                                        Padding="3,3,3,3"
+                                        x:Name="InThisRoomBtn"/>
+
+                    <Label  FontSize="25" 
+                            Margin="0,20,0,5"
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Center"
+                            TextColor="Black"
+                            FontAttributes="Bold"  
+                            Text="Przeniesione z innej sali"
+                            x:Name="MoveToRoomHeader"/>
+
+                    <Grid>
+
+                        <Label  FontSize="20" Grid.Column="0"
+                            VerticalOptions="StartAndExpand"
+                            TextColor="Black"
+                            x:Name="MoveToRoomLabel"/>
+                        <Label  FontSize="20" Grid.Column="1"
+                            VerticalOptions="StartAndExpand"
+                            TextColor="Black"
+                            x:Name="MoveToRoom"/>
+
+                    </Grid>
+
+                    <local:RoundedButton Text="Szczegóły"
+                                        HorizontalOptions="Center"
+                                        FontSize="20"
+                                        BackgroundColor="White"
+                                        WidthRequest="100"
+                                        HeightRequest="35"
+                                        Padding="3,3,3,3"
+                                        x:Name="MoveToRoomBtn"/>
+
+                    <Label  FontSize="25" 
+                            Margin="0,20,0,5"
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Center"
+                            TextColor="Black"
+                            FontAttributes="Bold"  
+                            Text="Usunięto"
+                            x:Name="MoveFromRoomHeader"/>
+
+                    <Grid>
+
+                        <Label  FontSize="20" Grid.Column="0"
+                            VerticalOptions="StartAndExpand"
+                            TextColor="Black"
+                            x:Name="MoveFromRoomLabel"/>
+                        <Label  FontSize="20" Grid.Column="1"
+                            VerticalOptions="StartAndExpand"
+                            TextColor="Black"
+                            x:Name="MoveFromRoom"/>
+
+                    </Grid>
+
+                    <local:RoundedButton Text="Szczegóły"
+                                        HorizontalOptions="Center"
+                                        FontSize="20"
+                                        BackgroundColor="White"
+                                        WidthRequest="100"
+                                        HeightRequest="35"
+                                        Padding="3,3,3,3"
+                                        x:Name="MoveFromRoomBtn"/>
+
+                    <Label  FontSize="25" 
+                            Margin="0,20,0,5"
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Center"
+                            TextColor="Black"
+                            FontAttributes="Bold"  
+                            Text="Zeskanowano bez przeniesienia"
+                            x:Name="InAnotherRoomHeader"/>
+
+                    <Grid>
+
+                        <Label  FontSize="20" Grid.Column="0"
+                            VerticalOptions="StartAndExpand"
+                            TextColor="Black"
+                            x:Name="InAnotherRoomLabel"/>
+                        <Label  FontSize="20" Grid.Column="1"
+                            VerticalOptions="StartAndExpand"
+                            TextColor="Black"
+                            x:Name="InAnotherRoom"/>
+
+                    </Grid>
+
+                    <local:RoundedButton Text="Szczegóły"
+                                        HorizontalOptions="Center"
+                                        FontSize="20"
+                                        BackgroundColor="White"
+                                        WidthRequest="100"
+                                        HeightRequest="35"
+                                        Padding="3,3,3,3"
+                                        x:Name="InAnotherRoomBtn"/>
+                </StackLayout>
+
+            </Frame>
+
+        </StackLayout>
+        
+    </ScrollView>
+
+</ContentPage>

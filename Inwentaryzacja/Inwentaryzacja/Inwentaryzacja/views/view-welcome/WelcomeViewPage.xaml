@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:Inwentaryzacja"
+             mc:Ignorable="d"
+             x:Class="Inwentaryzacja.WelcomeViewPage"
+             NavigationPage.HasNavigationBar="false"
+             BackgroundColor="#8EE3BA">
+
+             <ContentPage.Content>
+                 <StackLayout>
+
+                    <Label Text="Witaj ponownie"  HorizontalOptions="Center" Margin="0,60,0,60"  FontSize="43" TextColor="Black">
+                        <Label.FontFamily>
+                            <OnPlatform x:TypeArguments="x:String">
+                                <On Platform="Android" Value="Comfortaa-VariableFont_wght.ttf#Comfortaa" />
+                            </OnPlatform>
+                        </Label.FontFamily>
+                    </Label>
+
+
+                    <local:RoundedButton Text="Rozpocznij skanowanie"
+                                          ContentLayout="Bottom"
+                                          Margin="40,0,40,0" FontSize="23"
+                                          ImageSource="btnimg.png"
+                                          Padding="10,20,10,20"
+                                          TextColor="Black"
+                                          Clicked="scanButtonClicked"
+                                          x:Name="ScanButton">
+
+                         <local:RoundedButton.FontFamily>
+                             <OnPlatform x:TypeArguments="x:String">
+                                 <On Platform="Android" Value="Roboto-Light.ttf#Roboto" />
+                             </OnPlatform>
+                         </local:RoundedButton.FontFamily>
+
+                    </local:RoundedButton>
+
+
+            <local:RoundedButton Text="Przeglądaj raporty" 
+                                 FontSize="25" Margin="40,25,40,50" 
+                                 Padding="10,10,10,10" 
+                                 TextColor="Black" 
+                                 Clicked="_AllReportsButton_Clicked"
+                                 x:Name="AllReportsButton">
+
+                         <local:RoundedButton.FontFamily>
+                             <OnPlatform x:TypeArguments="x:String">
+                                 <On Platform="Android" Value="Roboto-Light.ttf#Roboto" />
+                             </OnPlatform>
+                         </local:RoundedButton.FontFamily>
+
+                     </local:RoundedButton>
+
+
+                     <local:RoundedButton Text="Wyloguj"
+                                          VerticalOptions="EndAndExpand"
+                                          HorizontalOptions="Start"
+                                          FontSize="20"
+                                          Margin="20,0,0,30"
+                                          TextColor="Black"
+                                          Padding="10,10,10,10"
+                                          Clicked="LogoutButtonClicked"
+                                          x:Name="LogoutButton">
+
+                         <local:RoundedButton.FontFamily>
+                             <OnPlatform x:TypeArguments="x:String">
+                                 <On Platform="Android" Value="Roboto-Light.ttf#Roboto" />
+                             </OnPlatform>
+                         </local:RoundedButton.FontFamily>
+
+                     </local:RoundedButton>
+
+                 </StackLayout>
+             </ContentPage.Content>
+</ContentPage>

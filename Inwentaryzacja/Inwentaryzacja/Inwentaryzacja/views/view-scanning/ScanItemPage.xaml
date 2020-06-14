@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:local="clr-namespace:Inwentaryzacja"
+             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             x:Class="Inwentaryzacja.ScanItemPage"
+             NavigationPage.HasNavigationBar="false">
+
+    <NavigationPage.HasBackButton>False</NavigationPage.HasBackButton>
+    
+    <Grid BackgroundColor="#8EE3BA">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.6*"/>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label 
+            Text="Skanuj kod" 
+            HorizontalTextAlignment="Center" 
+            VerticalTextAlignment="Center" 
+            FontSize="Large" 
+            TextColor="Black" 
+            Grid.Column="0" 
+            Grid.Row="0" 
+            Grid.ColumnSpan="2" />
+        
+        <zxing:ZXingScannerView 
+            x:Name="_scanner" 
+            IsScanning="True" 
+            OnScanResult="ZXingScannerView_OnScanResult" 
+            Margin="40, 0, 40, 0" 
+            Grid.Column="0" 
+            Grid.Row="1" 
+            Grid.ColumnSpan="2" />
+
+
+        <AbsoluteLayout x:Name="_popup" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalOptions="Center" VerticalOptions="End" Opacity="0" Margin="20">
+            <BoxView 
+                x:Name="_backColorPopup" 
+                BackgroundColor="White" 
+                Opacity="0.5" 
+                CornerRadius="10" />
+            
+            <Label 
+                x:Name="_contentPopup" 
+                Text="Zeskanowano!" 
+                HorizontalTextAlignment="Center" 
+                VerticalTextAlignment="End" 
+                FontSize="Medium" 
+                Padding="10,8,10,10" 
+                Opacity="1" 
+                TextColor="Black" />
+            
+        </AbsoluteLayout>
+
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.18*"/>
+                <ColumnDefinition Width="0.82*"/>
+            </Grid.ColumnDefinitions>
+  
+
+            <Label 
+            x:Name="_infoLabel"
+            Text="Liczba zeskanowanych przedmiotów: 0" 
+            HorizontalTextAlignment="Center" 
+            VerticalTextAlignment="Center" 
+            FontSize="Large" 
+            TextColor="Black"
+            Margin="0, 0, 10, 0"
+            Grid.Column="1" 
+            Grid.Row="0" />
+
+            <local:RoundedButton 
+            ImageSource="light.png" 
+            Clicked="TurnLight"
+            Margin="15, 0, 0, 0"
+            Grid.Row="0" 
+            Grid.Column="0" />
+        </Grid>
+        
+        <local:RoundedButton 
+            Text="Anuluj" 
+            ImageSource="krzyzyk.png" 
+            ContentLayout="Right, -10" 
+            Padding="0, 0, 10,0" 
+            TextColor="Red" 
+            FontSize="Large" 
+            Margin="15, 0, 5, 10" 
+            Clicked="Cancel" 
+            Grid.Row="3" 
+            Grid.Column="0" />
+        
+        <local:RoundedButton 
+            Text="Podgląd" 
+            ImageSource="loupe.png" 
+            ContentLayout="Right, -10" 
+            Padding="0, 0, 10,0" 
+            TextColor="Green" 
+            FontSize="Large" 
+            Margin="5, 0, 15, 10" 
+            Clicked="ShowScanedItem"  
+            Grid.Row="3" 
+            Grid.Column="1"
+            x:Name="PreviewButton"/>
+    </Grid>
+
+</ContentPage>

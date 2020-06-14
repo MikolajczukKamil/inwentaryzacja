@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:Inwentaryzacja"
+             mc:Ignorable="d"
+             xmlns:customControls="clr-namespace:Inwentaryzacja"
+             x:Class="Inwentaryzacja.AllReportsPage"
+             NavigationPage.HasNavigationBar="false">
+
+<ContentPage.Resources>
+
+        <ResourceDictionary>
+
+            <Style x:Key="Reportstyle" TargetType="Button">
+                <Setter Property="Margin" Value="15,4,14,5"/>
+                <Setter Property="HeightRequest" Value="80"/>
+                <Setter Property="WidthRequest" Value="331"/>
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+            </Style>
+        </ResourceDictionary>
+ </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="#8EE3BA" >
+                 <Label Text="Raporty" TextColor="Black"
+                  Margin="106,20, 106,15"
+                  VerticalOptions="Start" 
+                  HorizontalOptions="CenterAndExpand"
+                  HorizontalTextAlignment="Center" 
+                  FontSize="36"/>
+            <ActivityIndicator x:Name="activityIndicator" 
+                               IsRunning="{Binding IsBusy}"  
+                               IsVisible="{Binding IsBusy}" 
+                               VerticalOptions="CenterAndExpand" 
+                               HorizontalOptions="CenterAndExpand" 
+                               Color="Blue"/>
+            <ListView  Margin="15" 
+                       RowHeight="120" 
+                       SeparatorVisibility="None" 
+                       x:Name="ReportList"
+                       ItemSelected="ReportList_ItemSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <customControls:CustomViewCell SelectedBackgroundColor="#8EE3BA" 
+                                                       xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core">
+                            <ViewCell.View>
+
+                                <Frame CornerRadius="10" 
+                                   Margin="10" 
+                                   HasShadow="True">
+
+                                    <StackLayout  BackgroundColor="White"
+                                             HorizontalOptions="FillAndExpand" 
+                                             VerticalOptions="FillAndExpand" 
+                                             Orientation="Vertical"
+                                                  >
+                                        <Grid Margin="0" 
+                                          Padding="0">
+
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+
+                                            </Grid.ColumnDefinitions>
+
+                                            <Label Text="{Binding ReportName}"  
+                                               FontSize="18" 
+                                               Grid.Column="0"
+                                               Grid.ColumnSpan="2" 
+                                               Grid.Row="0"
+                                               Grid.RowSpan="2" 
+                                               TextColor="Black" 
+                                               FontAttributes="Bold"/>
+
+                                            <Label Text="{Binding ReportDate}"  
+                                               FontSize="10" 
+                                               Grid.Column="0" 
+                                               Grid.Row="2"  
+                                               TextColor="Gray"/>
+
+                                            
+                                            <Label Text="{Binding ReportRoom,StringFormat='Sala: {0:F0}' }"   
+                                               FontSize="14" 
+                                               Grid.Column="1" 
+                                               Grid.Row="2"  
+                                               TextColor="Gray"/>
+
+
+                                        </Grid>
+                                    </StackLayout>
+                                </Frame>
+                            </ViewCell.View>
+                        </customControls:CustomViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackLayout Orientation="Horizontal">
+                <local:RoundedButton Text="Powrót" Clicked="back_Clicked"
+                      HorizontalOptions="StartAndExpand" WidthRequest="150" BackgroundColor="White" CornerRadius="10"
+                      VerticalOptions="Start"  Margin="15" />
+
+                <local:RoundedButton Text="Wyloguj" Clicked="LogoutButtonClicked"
+                      HorizontalOptions="EndAndExpand" WidthRequest="150" BackgroundColor="White" CornerRadius="10"
+                      VerticalOptions="Start"  Margin="15"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

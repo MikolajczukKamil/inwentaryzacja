@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+              xmlns:inwentaryzacja="clr-namespace:Inwentaryzacja;assembly=Inwentaryzacja" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:local="clr-namespace:Inwentaryzacja"
+             mc:Ignorable="d"
+             BackgroundColor="#8EE3BA"
+             x:Class="Inwentaryzacja.views.view_chooseRoom.AddRoom"
+             NavigationPage.HasNavigationBar="false">
+
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Dodaj salę"
+                   FontSize="50" 
+                   VerticalOptions="Start"
+                   HorizontalOptions="CenterAndExpand"
+                   HorizontalTextAlignment="Center"
+                   Margin="0, 30"
+                   TextColor="Black"
+                   FontFamily=""/>
+
+            <Label Text="Wybierz budynek:"
+                   FontSize="Medium" 
+                   VerticalOptions="Start"
+                   HorizontalOptions="CenterAndExpand"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,10"
+                   TextColor="Black"
+                   />
+
+            <Frame
+                Margin="20, 0"
+                Padding="20,5,20,5"               
+                HorizontalOptions="Fill"
+                VerticalOptions="CenterAndExpand"
+                CornerRadius="18"
+                WidthRequest="20">
+                <inwentaryzacja:BorderlessPicker
+                                                 HorizontalOptions="FillAndExpand" 
+                                                 VerticalOptions="CenterAndExpand"
+                                                 x:Name="BuildingPicker"
+                                                />
+            </Frame>
+
+            <Label Text="Wpisz nazwę sali:"
+                   FontSize="Medium" 
+                   VerticalOptions="Start"
+                   HorizontalOptions="CenterAndExpand"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,10"
+                   TextColor="Black"
+                   
+                   />
+
+            <local:RoundedEntry Placeholder="nazwa sali"
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="Start"
+                    Margin="20, 0"
+                    WidthRequest="20"
+                    HeightRequest="55"
+                    x:Name="room_number"/>
+
+            <Button Text="Dodaj"
+                    BackgroundColor="White"
+                    FontSize="Large"
+                    CornerRadius="12"
+                    HeightRequest="50"
+                    WidthRequest="180"
+                    Margin="0, 20, 0, 0"
+                    HorizontalOptions="Center"
+                    VerticalOptions="End"
+                    x:Name="AddRoomBtn"
+                    Clicked="Check_Room"
+                  />
+
+            <ActivityIndicator x:Name="activityIndicator" 
+                               IsRunning="{Binding IsBusy}"  
+                               VerticalOptions="CenterAndExpand" 
+                               HorizontalOptions="CenterAndExpand"
+                               Color="Blue"/>
+
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Powrót"
+                    ImageSource="back_icon.png"
+                    ContentLayout="Right, -40"
+                    HorizontalOptions="Start"
+                    FontSize="20"
+                    CornerRadius="12"
+                    BackgroundColor="White"
+                    WidthRequest="150"
+                    HeightRequest="45"
+                    Margin="20,10"
+                    VerticalOptions="EndAndExpand"
+                     x:Name="BackBtn"
+                    Clicked="return_ChooseRoom"/>
+
+                <Button Text="Wyloguj"
+                    HorizontalOptions="EndAndExpand"
+                    FontSize="20"
+                    CornerRadius="12"
+                    BackgroundColor="White"
+                    WidthRequest="150"
+                    HeightRequest="45"
+                    Margin="20,10"
+                    VerticalOptions="EndAndExpand"
+                    Clicked="LogoutButtonClicked"
+                    x:Name="LogoutButton"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+    
+</ContentPage>
