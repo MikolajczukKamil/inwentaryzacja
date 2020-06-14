@@ -1,0 +1,4 @@
+C:\Users\Kamil\Documents\inwentaryzacja\Inwentaryzacja\UnitTests\obj\Debug\netcoreapp3.1\UnitTests.csprojAssemblyReference.cache
+C:\Users\Kamil\Documents\inwentaryzacja\Inwentaryzacja\UnitTests\obj\Debug\netcoreapp3.1\UnitTests.csproj.CoreCompileInputs.cache
+C:\Users\Kamil\Documents\inwentaryzacja\Inwentaryzacja\UnitTests\obj\Debug\netcoreapp3.1\UnitTests.AssemblyInfoInputs.cache
+C:\Users\Kamil\Documents\inwentaryzacja\Inwentaryzacja\UnitTests\obj\Debug\netcoreapp3.1\UnitTests.AssemblyInfo.cs

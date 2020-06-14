@@ -1,0 +1,1 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"><item><color android:color="@color/startPage_background" /></item><item><bitmap android:src="@drawable/xamarinlogo" android:tileMode="disabled" android:gravity="center" /></item></layer-list>
