@@ -36,6 +36,9 @@ Projekt w ramach zajęć z inżynierii oprogramwoania
 - [Instrukcja Obsługi](InstrukcjaObsługi.pdf)
 - [Schematy](Schematy.pdf)
 
+## Api
+- [API, obsługujące procedury z bazy danych](https://github.com/Jerry-BloodBerry/InwentaryzacjaAPI)
+
 # Schemat bazy danych
 
 ![Schemat bazy](diagramy/baza.png)
