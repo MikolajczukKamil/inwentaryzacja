@@ -13,6 +13,13 @@ namespace Inwentaryzacja.views.Helpers
         private RoomEntity ThisRoom;
         private int Scanid;
 
+
+        /// <summary>
+        /// Konstruktor klasy
+        /// </summary>
+        /// <param name="api">obiekt api do interakcji</param>
+        /// <param name="room">pokoj w ktorym odbywa sie skanowanie</param>
+        /// <param name="scanid">id skanowania</param>
         public ScanningUpdate(APIController api, RoomEntity room, int scanid)
         {
             ThisRoom = room;

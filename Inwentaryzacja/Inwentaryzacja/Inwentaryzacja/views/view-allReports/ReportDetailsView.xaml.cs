@@ -75,6 +75,7 @@ namespace Inwentaryzacja.views.view_allReports
         /// <summary>
         /// Funkcja odpowiadajaca za sprawdzenie czy plik jest pobierany
         /// </summary>
+        /// <returns>true jezeli tak, false jezeli nie</returns>
         public bool IsDownloading(IDownloadFile file)
         {
             if (file == null)

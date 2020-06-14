@@ -313,8 +313,9 @@ namespace Inwentaryzacja
         }
 
         /// <summary>
-        /// Funkcja odpowiadajaca za liste zeskanowanych srodkow trwalych
+        /// Funkcja odpowiadajaca za sprawdzenie czy lista zawiera srodek trwaly
         /// </summary>
+        /// <returns>true jezeli zawiera, false jezeli nie</returns>
         private bool ListContainItem(string text)
         {
             foreach (var item in scannedItem)
