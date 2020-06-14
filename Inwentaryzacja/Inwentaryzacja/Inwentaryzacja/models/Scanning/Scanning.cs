@@ -3,13 +3,32 @@ using System.Collections.Generic;
 
 namespace Inwentaryzacja.Models
 {
+	/// <summary>
+	/// Klasa obsugujaca skanowanie
+	/// </summary>
 	public class Scanning
 	{
+		/// <summary>
+		/// Numer id skanu
+		/// </summary>
 		private int Id = -1;
+		
+		/// <summary>
+		/// Pokoj w ktorym wykonywany jest skan
+		/// </summary>
 		public Room Room { get; private set; }
+		
+		/// <summary>
+		/// Lista zeskanowanych srodkow trwalych
+		/// </summary>
 		public List<ScanningPosition> Positions { get; private set; }
 
-		/// <param name="id">Unused, if scanning is not save in database</param>
+		/// <summary>
+		/// Przygotowuje skanowanie
+		/// </summary>
+		/// <param name="room">Pokoj w ktorym wykonywany jest skan</param>
+		/// <param name="InitialPositions">Lista zeskanowanych srodkow trwalych</param>
+		/// <param name="id">Id skanu, jezeli zostanie pominiete, to skan nie zapisze sie w bazie</param>
 		public Scanning(Room room, ScanningPosition[] InitialPositions, int id = -1)
 		{
 			Id = id;
