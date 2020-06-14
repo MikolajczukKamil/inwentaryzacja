@@ -68,6 +68,7 @@ namespace Inwentaryzacja.views.Helpers
         /// <summary>
         /// Funkcja odpowiadajaca za tekst wyswietlany po zeskanowaniu danego srodka trwalego
         /// </summary>
+        /// <returns>tekst z nazwa srodka trwalego i jego id</returns>
         public string ScaningText
         {
             get { return $"{AssetEntity.type.name} {AssetEntity.id}"; }

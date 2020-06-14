@@ -57,8 +57,9 @@ namespace Inwentaryzacja
 		}
 
 		/// <summary>
-		/// Funkcja odpowiadajaca za sprawdzenie permisji uzytkownika probujacego wybrac pokoj w oknie
+		/// Funkcja odpowiadajaca za sprawdzenie permisji dostepu do kamery uzytkownika 
 		/// </summary>
+		/// <returns>status permisji</returns>
 		private async Task<PermissionStatus> CheckPermissions()
 		{
 			var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
