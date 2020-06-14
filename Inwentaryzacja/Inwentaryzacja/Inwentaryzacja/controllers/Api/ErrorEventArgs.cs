@@ -5,14 +5,32 @@ using Xamarin.Forms;
 
 namespace Inwentaryzacja.Controllers.Api
 {
+    /// <summary>
+    /// Klasa obslugujaca kody bledow
+    /// </summary>
     public class ErrorEventArgs : EventArgs
     {
+        /// <summary>
+        /// Status bledu
+        /// </summary>
         public int ErrorStatus;
+        
+        /// <summary>
+        /// Komunikat bledu
+        /// </summary>
         public string Message;
+        
+        /// <summary>
+        /// Komunikat bledu dla uzytkownika
+        /// </summary>
         public string MessageForUser;
 
         public bool Auth = true;
 
+        /// <summary>
+        /// Ustawia kod bledu
+        /// </summary>
+        /// <param name="code">Kod bledy</param>
         public void SetErrorStatus(int code)
         {
             ErrorStatus = code;

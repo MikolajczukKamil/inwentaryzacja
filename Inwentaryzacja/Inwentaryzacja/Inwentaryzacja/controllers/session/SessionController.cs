@@ -9,6 +9,9 @@ using ZXing.Aztec.Internal;
 
 namespace Inwentaryzacja.controllers.session
 {
+	/// <summary>
+	/// Kontroler sesji
+	/// </summary>
     class SessionController
     {
 	    /// <summary>
