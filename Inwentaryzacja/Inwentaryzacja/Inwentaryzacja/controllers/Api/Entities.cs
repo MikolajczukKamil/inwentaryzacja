@@ -140,5 +140,13 @@ namespace Inwentaryzacja.Controllers.Api
     {
         public int state;
         public AssetInfoEntity asset;
+        public override bool Equals(object obj)
+        {
+            if (state == ((ScanPositionEntity)obj).state && asset.Equals(((ScanPositionEntity)obj).asset))
+                return true;
+            return false;
+        }
+
+        public override int GetHashCode() => state.GetHashCode()*asset.id.GetHashCode();
     }
 }
