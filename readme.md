@@ -1,6 +1,34 @@
-### Aplikacja do inwentaryzacji
+# Aplikacja do inwentaryzacji
 
 Projekt w ramach zajęć z inżynierii oprogramwoania
+
+## Galeria zrzutów
+<details>
+  <summary>Pokaż całość</summary>
+  
+  <p>
+    <a href="zrzuty/przykładowy-raport.pdf">Przykładowy raport w formie pdf</a>
+  </p>
+
+  <p>
+    <img src="zrzuty/zrzut0.jpg" width="256">
+    <img src="zrzuty/zrzut1.jpg" width="256">
+    <img src="zrzuty/zrzut2.jpg" width="256">
+    <img src="zrzuty/zrzut3.jpg" width="256">
+    <img src="zrzuty/zrzut4.jpg" width="256">
+    <img src="zrzuty/zrzut5.jpg" width="256">
+    <img src="zrzuty/zrzut6.jpg" width="256">
+    <img src="zrzuty/zrzut7.jpg" width="256">
+    <img src="zrzuty/zrzut8.jpg" width="256">
+    <img src="zrzuty/zrzut9.jpg" width="256">
+    <img src="zrzuty/zrzut10.jpg" width="256">
+    <img src="zrzuty/zrzut11.jpg" width="256">
+    <img src="zrzuty/zrzut12.jpg" width="256">
+    <img src="zrzuty/zrzut13.jpg" width="256">
+    <img src="zrzuty/zrzut14.jpg" width="256">
+    <img src="zrzuty/zrzut15.jpg" width="256">
+  </p>
+</details>
 
 ## Ważne pliki
 - [Przykładowe kody QR](QRCodes/)
@@ -10,16 +38,16 @@ Projekt w ramach zajęć z inżynierii oprogramwoania
 
 # Schemat bazy danych
 
-![Schemat bazy](http://aplikacja-do-inwentaryzacji.000webhostapp.com/schematy/baza.png)
+![Schemat bazy](diagramy/baza.png)
 
 # Diagram klas UML
 
-![Klasy UML](http://aplikacja-do-inwentaryzacji.000webhostapp.com/schematy/uml.jpg)
+![Klasy UML](diagramy/klasy.jpg)
 
 # Diagram przypadków użycia UML
 
-![Przypadki użycia UML](http://aplikacja-do-inwentaryzacji.000webhostapp.com/schematy/przypadki-uzycia.png)
+![Przypadki użycia UML](diagramy/przypadki-uzycia.png)
 
 # Diagram czynności UML
 
-![Czynności UML](http://aplikacja-do-inwentaryzacji.000webhostapp.com/schematy/czynnosci.png)
+![Czynności UML](diagramy/czynnosci.png)
