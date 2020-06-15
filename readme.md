@@ -40,6 +40,12 @@ Projekt w ramach zajęć z inżynierii oprogramwoania
 - [Instrukcja Obsługi](InstrukcjaObsługi.pdf)
 - [Schematy](Schematy.pdf)
 
+## Protokoły i scenariusze testowe
+- [Protokoły testowe APIController](Protokoły%20i%20scenariusze%20testowe/Protokoły%20testowe%20APIController%20.pdf)
+- [Protokół z przeprowadzenia testów API](Protokoły%20i%20scenariusze%20testowe/Protokół%20z%20przeprowadzenia%20testów%20API.pdf)
+- [Protokół z przeprowadzenia testów funkcjonalnych](Protokoły%20i%20scenariusze%20testowe/Protokół%20z%20przeprowadzenia%20testów%20funkcjonalnych.pdf)
+- [Scenariusze testowe](Protokoły%20i%20scenariusze%20testowe/Scenariusze%20testowe.pdf)
+
 ## Api
 - [API, obsługujące procedury z bazy danych](https://github.com/Jerry-BloodBerry/InwentaryzacjaAPI)
 
